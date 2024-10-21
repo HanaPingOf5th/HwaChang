@@ -13,7 +13,7 @@ export default function Home() {
         <CardHeader>
           엄마
         </CardHeader>
-        <CardContent>엄마 사진</CardContent>
+        <CardContent>엄마사진</CardContent>
         <CardContent> 조르기 </CardContent>
       </Card>
       <Card>
