@@ -17,7 +17,6 @@ export default function Home() {
         consulting room page
       </h1>
       <div className="grid gap-6 grid-rows text-center">
-        {/* 상단 채팅 참여자: isWait이 ture일 경우에만 상단 참여자 화면 렌더링*/}
         {
         key=='true'
         ?<div></div>
@@ -49,7 +48,7 @@ export default function Home() {
         </Card>
         }
 
-        {/* 은행원 화면 ToDo - 배경 이미지 대신 웹소켓으로 받은 실시간 데이터를 보여주기 */}
+        {/* 은행원 화면 ToDo: 배경 이미지 대신 웹소켓으로 받은 실시간 데이터를 보여주기 */}
         <Card className="relative bg-cover bg-center" style={{ backgroundImage: `url(${Banker.src})` }}>
           <CardContent>
             <div className="p-60"/>
