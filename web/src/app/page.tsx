@@ -7,7 +7,7 @@ export default function Home() {
     <main className="flex min-h-[100dvh] items-center justify-center bg-white px-4 dark:bg-gray-950">
       <div className="w-full max-w-md space-y-6">
         <div className="flex flex-col justify-center items-center text-center text-4xl">
-          화창(畫:窗) jira test
+          화창(畫:窗)
         </div>
         {/* 일반 로그인 */}
         <Card>
