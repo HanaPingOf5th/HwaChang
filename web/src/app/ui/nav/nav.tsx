@@ -13,7 +13,7 @@ export default function Nav() {
           <button
             className="flex h-[48px] grow items-center justify-center gap-2 rounded-md bg-white-50 p-3 text-sm text-emerald-800 font-medium hover:bg-emerald-50 hover:text-emerald-600 md:flex-none md:justify-start md:p-2 md:px-3"
           >
-            <div className="hidden md:block">Sign Out</div>
+            <div>Sign Out</div>
           </button>
         </form>
       </div>

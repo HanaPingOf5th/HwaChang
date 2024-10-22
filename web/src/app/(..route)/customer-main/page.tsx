@@ -1,44 +1,33 @@
-import { Card, CardContent, CardHeader } from "@/app/ui/component/molecule/card/card";
+import { Card, CardContent, CardFooter, CardHeader } from "@/app/ui/component/molecule/card/card";
 
 export default function Home() {
-  const credit:number = 100;
   return (
     <main>
       <h1 className={` mb-4 text-xl md:text-2xl text-center`} >
-        아이 메인 화면
+        은행 고객 메인 화면
       </h1>
-      <div className="grid gap-6 sm:grid-rows-2 lg:grid-rows-4 text-center">
-      <Card>
-        <CardHeader>
-          신용도
-        </CardHeader>
-        <CardContent>그래프 올 자리</CardContent>
-        <CardContent>
-          내 신용점수: {credit} 점
-        </CardContent>
-      </Card>
       <div className={`grid gap-6 grid-cols-2 text-center`}>
       <Card>
-      <CardHeader> 나의 용돈 </CardHeader>
+      <CardHeader> <strong>기업</strong> </CardHeader>
         <CardContent>
-          나의 용돈
+          <div className="flex justify-center items-center ">
+            <img src="https://raw.githubusercontent.com/Tarikul-Islam-Anik/Animated-Fluent-Emojis/master/Emojis/People/Man%20Gesturing%20No.png" alt="Man Gesturing No" width="200" height="200" />  
+          </div>
         </CardContent>
-        <CardContent>
-          100000원
-        </CardContent>
+        <CardFooter className="justify-center">
+          혼잡해요 !
+        </CardFooter>
       </Card>
       <Card>
-      <CardHeader> 나의 미션 </CardHeader>
+        <CardHeader> <strong>기업</strong> </CardHeader>
         <CardContent>
-          미션을 수행해 신용도와 용돈을 획득해보아요 !
+          <div className="flex justify-center items-center ">
+          <img src="https://raw.githubusercontent.com/Tarikul-Islam-Anik/Animated-Fluent-Emojis/master/Emojis/People/Man%20Gesturing%20OK.png" alt="Man Gesturing OK" width="200" height="200" />
+          </div>
         </CardContent>
-      </Card>
-      </div>
-      <Card>
-        <CardHeader>절약 레이스</CardHeader>
-        <CardContent>
-          친구들과 함께 절약 경쟁을 펼쳐봅시다.
-        </CardContent>
+        <CardFooter className="justify-center">
+          원활해요 !
+        </CardFooter>
       </Card>
       </div>
     </main>

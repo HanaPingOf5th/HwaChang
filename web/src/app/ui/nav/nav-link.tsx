@@ -9,8 +9,8 @@ interface navLinkType {
 }
 
 const links: navLinkType[] = [
-  {name: 'Home', href: '/home'},
-  {name: 'Add Recipe', href: '/add-recipe'},
+  {name: '화상 상담', href: '/customer-main'},
+  {name: '마이 페이지 - 히스토리', href: '/customer-main/my-page'},
 ]
 
 export default function NavLinks(){
@@ -32,7 +32,7 @@ export default function NavLinks(){
               md:p-2 md:px-3`,
               {'bg-emerald-200 text-emerald-800': pathName === link.href}
             )}>
-            <p className='hidden md:block'>{link.name}</p>
+            <p>{link.name}</p>
           </Link>
         )
      })}
