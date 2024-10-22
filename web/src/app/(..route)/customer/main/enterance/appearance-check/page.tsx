@@ -5,7 +5,7 @@ export default function Home() {
   return (
     <main>
       <h1 className={` mb-4 text-xl md:text-2xl text-center`} >
-        용돈 조르기
+        외모 체크
       </h1>
       <div className="grid gap-6 sm:grid-rows-2 lg:grid-rows-4 text-center">
       <div className={`grid gap-6 grid-cols-2 text-center`}>

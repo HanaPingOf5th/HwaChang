@@ -9,8 +9,8 @@ interface navLinkType {
 }
 
 const links: navLinkType[] = [
-  {name: '화상 상담', href: '/customer-main'},
-  {name: '마이 페이지 - 히스토리', href: '/customer-main/my-page'},
+  {name: '화상 상담', href: '/customer/main'},
+  {name: '마이 페이지 - 히스토리', href: '/customer/main/my-page'},
 ]
 
 export default function NavLinks(){
