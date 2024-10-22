@@ -1,6 +1,7 @@
 import AchromaticButton from "@/app/ui/component/atom/achromatic-button";
 import { NotFineEmoji,FineEmoji } from "@/app/ui/component/atom/fluent-emoji";
 import { Card, CardContent, CardFooter, CardHeader } from "@/app/ui/component/molecule/card/card";
+import Link from "next/link";
 
 export default function Home() {
   return (
@@ -18,7 +19,11 @@ export default function Home() {
           </div>
         </CardContent>
         <CardFooter className="justify-center">
-          <AchromaticButton>상담하러 가기</AchromaticButton>
+          <AchromaticButton >
+            <Link href='/customer/main/enterance?isIndividual=true'>
+              상담하러 가기
+            </Link>
+          </AchromaticButton>
         </CardFooter>
       </Card>
       <Card>
@@ -30,7 +35,11 @@ export default function Home() {
           </div>
         </CardContent>
         <CardFooter className="justify-center">
-          <AchromaticButton>상담하러 가기</AchromaticButton>
+          <AchromaticButton>
+            <Link href='/customer/main/enterance?isIndividual=false'>
+              상담하러 가기
+            </Link>
+          </AchromaticButton>
         </CardFooter>
       </Card>
       </div>
