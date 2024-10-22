@@ -10,12 +10,12 @@ export default function Home() {
       </h1>
       <div className="grid gap-6 grid-rows text-center">
         {/* 상단 채팅 참여자 */}
-        <div className={`grid gap-6 grid-cols-3 text-center`}>
+        <Card className="grid gap-6 grid-cols-3 text-center px-3 py-3">
           <Card>
             <></>
             <CardContent>
               <div className="flex flex-col justify-center items-center">
-                <FineEmoji heignt={250} width={250}/>
+                <FineEmoji heignt={150} width={150}/>
               </div>
             </CardContent>
           </Card>
@@ -23,7 +23,7 @@ export default function Home() {
             <></>
             <CardContent>
               <div className="flex flex-col justify-center items-center">
-                <FineEmoji heignt={250} width={250}/>
+                <FineEmoji heignt={150} width={150}/>
               </div>
             </CardContent>
           </Card>
@@ -31,23 +31,25 @@ export default function Home() {
             <></>
             <CardContent>
               <div className="flex flex-col justify-center items-center">
-                <FineEmoji heignt={250} width={250}/>
+                <FineEmoji heignt={150} width={150}/>
               </div>
             </CardContent>
           </Card>
-        </div>
+        </Card>
         {/* 은행원 화면 */}
           <Card>
             <></>
             <CardContent>
               <div className="flex flex-col justify-center items-center">
-                <FineEmoji heignt={250} width={250}/>
+                <FineEmoji heignt={500} width={500}/>
               </div>
             </CardContent>
             <CardFooter className="flex justify-center space-x-4">
-              <AchromaticButton>버튼1</AchromaticButton>
-              <AchromaticButton>버튼2</AchromaticButton>
-              <AchromaticButton>버튼3</AchromaticButton>
+              <AchromaticButton>button</AchromaticButton>
+              <AchromaticButton>button</AchromaticButton>
+              <AchromaticButton className="bg-red-400 hover:bg-red-600">상담 종료</AchromaticButton>
+              <AchromaticButton>button</AchromaticButton>
+              <AchromaticButton>button</AchromaticButton>
             </CardFooter>
           </Card>
       </div>
