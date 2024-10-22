@@ -52,7 +52,7 @@ export default function Home() {
         {/* 은행원 화면 ToDo - 배경 이미지 대신 웹소켓으로 받은 실시간 데이터를 보여주기 */}
         <Card className="relative bg-cover bg-center" style={{ backgroundImage: `url(${Banker.src})` }}>
           <CardContent>
-            <div className="p-40"/>
+            <div className="p-60"/>
           </CardContent>
           <CardFooter>
             <NameTag name="이수민"/>
