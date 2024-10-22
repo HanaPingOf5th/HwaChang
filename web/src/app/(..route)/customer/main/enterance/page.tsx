@@ -16,8 +16,8 @@ export default function Home() {
   
   return (
     <main>
-      <h1 className={` mb-4 text-xl md:text-4xl text-center`} >
-        <strong>{pageTitle} 페이지입니다.</strong>
+      <h1 className={` mb-4 text-4xl md:text-4xl text-center`} >
+        <strong>{pageTitle}</strong>
       </h1>
       <div className="py-2">
         <h1 className={` mb-4 text-xl md:text-2xl text-center`} >
