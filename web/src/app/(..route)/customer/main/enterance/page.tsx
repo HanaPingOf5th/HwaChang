@@ -1,12 +1,30 @@
+'use client'
 import AchromaticButton from "@/app/ui/component/atom/achromatic-button";
 import { Card, CardContent, CardFooter, CardHeader } from "@/app/ui/component/molecule/card/card";
+import { useSearchParams } from "next/navigation";
 
 export default function Home() {
+  //To-Do: userSearchParam 이용해서 isIndividual의 값에 따라 컴포넌트 내에서 다른 내용 보여주기
+  const params = useSearchParams();
+  const key = params.get('isIndividual');
+  let pageTitle: string;
+  if(key==='true'){
+    pageTitle = '개인 금융'
+  }else{
+    pageTitle = '기업 금융'
+  }
+  
   return (
     <main>
-      <h1 className={` mb-4 text-xl md:text-2xl text-center`} >
-        <strong>어떤 업무를 원하시나요?</strong>
+      <h1 className={` mb-4 text-xl md:text-4xl text-center`} >
+        <strong>{pageTitle} 페이지입니다.</strong>
       </h1>
+      <div className="py-2">
+        <h1 className={` mb-4 text-xl md:text-2xl text-center`} >
+          <strong>어떤 업무를 원하시나요?</strong>
+        </h1>
+      </div>
+    
       <div className="grid gap-6 sm:grid-rows-2 lg:grid-rows-4 text-center">
       <div className={`grid gap-6 grid-cols-2 text-center`}>
       <Card>
