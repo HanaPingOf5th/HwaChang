@@ -139,6 +139,51 @@ export default function Home() {
             </AchromaticButton>
             </CardFooter>
         </Card>
+        <Card>
+            <CardHeader> <p className="text-xl">기업 상담</p> </CardHeader>
+            <CardContent>
+            <div className="flex flex-col justify-center items-center ">
+                <EnterPriseEmoji heignt={200} width={200}/>
+            </div>
+            </CardContent>
+            <CardFooter className="justify-center">
+            <AchromaticButton>
+                <Link href='/customer/main/enterance?isIndividual=false'>
+                상담하러 가기
+                </Link>
+            </AchromaticButton>
+            </CardFooter>
+        </Card>
+        <Card>
+            <CardHeader> <p className="text-xl">기업 상담</p> </CardHeader>
+            <CardContent>
+            <div className="flex flex-col justify-center items-center ">
+                <EnterPriseEmoji heignt={200} width={200}/>
+            </div>
+            </CardContent>
+            <CardFooter className="justify-center">
+            <AchromaticButton>
+                <Link href='/customer/main/enterance?isIndividual=false'>
+                상담하러 가기
+                </Link>
+            </AchromaticButton>
+            </CardFooter>
+        </Card>
+        <Card>
+            <CardHeader> <p className="text-xl">기업 상담</p> </CardHeader>
+            <CardContent>
+            <div className="flex flex-col justify-center items-center ">
+                <EnterPriseEmoji heignt={200} width={200}/>
+            </div>
+            </CardContent>
+            <CardFooter className="justify-center">
+            <AchromaticButton>
+                <Link href='/customer/main/enterance?isIndividual=false'>
+                상담하러 가기
+                </Link>
+            </AchromaticButton>
+            </CardFooter>
+        </Card>
       </div>
       <br></br>
 
@@ -325,6 +370,93 @@ export default function Home() {
             </CardFooter>
         </Card>
       </div>
+
+      <div className="text-center py-2">
+      --------------------------------------- 카드 안에 카드 배치하기 ----------------------------------------------
+      </div>
+      <Card>
+        <CardContent className="pt-6">
+            <div className={`grid gap-6 grid-cols-3 text-center`}>
+                <Card>
+                    <CardHeader> <p className="text-xl">기업 상담</p> </CardHeader>
+                    <CardContent>
+                    <div className="flex flex-col justify-center items-center ">
+                        <EnterPriseEmoji heignt={200} width={200}/>
+                    </div>
+                    </CardContent>
+                    <CardFooter className="justify-center">
+                    <AchromaticButton>
+                        <Link href='/customer/main/enterance?isIndividual=false'>
+                        상담하러 가기
+                        </Link>
+                    </AchromaticButton>
+                    </CardFooter>
+                </Card>
+                <div className={`grid gap-6 grid-rows-3 text-center`}>
+                    <Card>
+                        <CardHeader> <p className="text-xl">기업 상담</p> </CardHeader>
+                        <CardContent>
+                        <div className="flex flex-col justify-center items-center ">
+                            <EnterPriseEmoji heignt={200} width={200}/>
+                        </div>
+                        </CardContent>
+                        <CardFooter className="justify-center">
+                        <AchromaticButton>
+                            <Link href='/customer/main/enterance?isIndividual=false'>
+                            상담하러 가기
+                            </Link>
+                        </AchromaticButton>
+                        </CardFooter>
+                    </Card>
+                    <Card>
+                        <CardHeader> <p className="text-xl">기업 상담</p> </CardHeader>
+                        <CardContent>
+                        <div className="flex flex-col justify-center items-center ">
+                            <EnterPriseEmoji heignt={200} width={200}/>
+                        </div>
+                        </CardContent>
+                        <CardFooter className="justify-center">
+                        <AchromaticButton>
+                            <Link href='/customer/main/enterance?isIndividual=false'>
+                            상담하러 가기
+                            </Link>
+                        </AchromaticButton>
+                        </CardFooter>
+                    </Card>
+                    <Card>
+                        <CardHeader> <p className="text-xl">기업 상담</p> </CardHeader>
+                        <CardContent>
+                        <div className="flex flex-col justify-center items-center ">
+                            <EnterPriseEmoji heignt={200} width={200}/>
+                        </div>
+                        </CardContent>
+                        <CardFooter className="justify-center">
+                        <AchromaticButton>
+                            <Link href='/customer/main/enterance?isIndividual=false'>
+                            상담하러 가기
+                            </Link>
+                        </AchromaticButton>
+                        </CardFooter>
+                    </Card>
+                </div>
+                <Card>
+                    <CardHeader> <p className="text-xl">기업 상담</p> </CardHeader>
+                    <CardContent>
+                    <div className="flex flex-col justify-center items-center ">
+                        <EnterPriseEmoji heignt={200} width={200}/>
+                    </div>
+                    </CardContent>
+                    <CardFooter className="justify-center">
+                    <AchromaticButton>
+                        <Link href='/customer/main/enterance?isIndividual=false'>
+                        상담하러 가기
+                        </Link>
+                    </AchromaticButton>
+                    </CardFooter>
+                </Card>
+            </div>
+        </CardContent>  
+      </Card>
 
       <div className="text-center py-2">
       --------------------------------------- 버튼 ----------------------------------------------
