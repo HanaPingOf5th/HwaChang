@@ -5,6 +5,7 @@ import { Card, CardContent, CardFooter} from "@/app/ui/component/molecule/card/c
 import { useSearchParams } from "next/navigation";
 import Banker from '@/app/utils/public/banker.png';
 import { NameTag } from "@/app/ui/component/atom/name-tag";
+import Callout from "@/app/ui/component/molecule/callout/callout";
 
 export default function Home() {
   // ToDo: userSearchParam 이용해서 isIndividual의 값에 따라 컴포넌트 내에서 다른 내용 보여주기
@@ -16,10 +17,11 @@ export default function Home() {
       <h1 className={` mb-4 text-xl md:text-2xl text-center`} >
         consulting room page
       </h1>
+      <Callout content={"invalid"}></Callout>
       <div className="grid gap-6 grid-rows text-center">
         {
         key=='true'
-        ?<div></div>
+        ? null
         :<Card className="grid gap-6 grid-cols-3 text-center px-3 py-3">
           <Card>
             <></>
