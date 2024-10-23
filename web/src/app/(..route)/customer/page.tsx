@@ -232,6 +232,91 @@ export default function Home() {
       </div>
 
       <div className="text-center py-2">
+      -------------------------------------------------------------------------------------
+      </div>
+
+      <div className="text-center py-2">가로 세로 혼합 배치하기</div>
+      <div className={`grid gap-6 grid-cols-3 text-center`}>
+        <Card>
+            <CardHeader> <p className="text-xl">기업 상담</p> </CardHeader>
+            <CardContent>
+            <div className="flex flex-col justify-center items-center ">
+                <EnterPriseEmoji heignt={200} width={200}/>
+            </div>
+            </CardContent>
+            <CardFooter className="justify-center">
+            <AchromaticButton>
+                <Link href='/customer/main/enterance?isIndividual=false'>
+                상담하러 가기
+                </Link>
+            </AchromaticButton>
+            </CardFooter>
+        </Card>
+        <div className={`grid gap-6 grid-rows-3 text-center`}>
+            <Card>
+                <CardHeader> <p className="text-xl">기업 상담</p> </CardHeader>
+                <CardContent>
+                <div className="flex flex-col justify-center items-center ">
+                    <EnterPriseEmoji heignt={200} width={200}/>
+                </div>
+                </CardContent>
+                <CardFooter className="justify-center">
+                <AchromaticButton>
+                    <Link href='/customer/main/enterance?isIndividual=false'>
+                    상담하러 가기
+                    </Link>
+                </AchromaticButton>
+                </CardFooter>
+            </Card>
+            <Card>
+                <CardHeader> <p className="text-xl">기업 상담</p> </CardHeader>
+                <CardContent>
+                <div className="flex flex-col justify-center items-center ">
+                    <EnterPriseEmoji heignt={200} width={200}/>
+                </div>
+                </CardContent>
+                <CardFooter className="justify-center">
+                <AchromaticButton>
+                    <Link href='/customer/main/enterance?isIndividual=false'>
+                    상담하러 가기
+                    </Link>
+                </AchromaticButton>
+                </CardFooter>
+            </Card>
+            <Card>
+                <CardHeader> <p className="text-xl">기업 상담</p> </CardHeader>
+                <CardContent>
+                <div className="flex flex-col justify-center items-center ">
+                    <EnterPriseEmoji heignt={200} width={200}/>
+                </div>
+                </CardContent>
+                <CardFooter className="justify-center">
+                <AchromaticButton>
+                    <Link href='/customer/main/enterance?isIndividual=false'>
+                    상담하러 가기
+                    </Link>
+                </AchromaticButton>
+                </CardFooter>
+            </Card>
+        </div>
+        <Card>
+            <CardHeader> <p className="text-xl">기업 상담</p> </CardHeader>
+            <CardContent>
+            <div className="flex flex-col justify-center items-center ">
+                <EnterPriseEmoji heignt={200} width={200}/>
+            </div>
+            </CardContent>
+            <CardFooter className="justify-center">
+            <AchromaticButton>
+                <Link href='/customer/main/enterance?isIndividual=false'>
+                상담하러 가기
+                </Link>
+            </AchromaticButton>
+            </CardFooter>
+        </Card>
+      </div>
+
+      <div className="text-center py-2">
       --------------------------------------- 버튼 ----------------------------------------------
       </div>
 
