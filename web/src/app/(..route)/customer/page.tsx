@@ -348,9 +348,8 @@ export default function Home() {
       <div className="text-center py-2">
       --------------------------------------- Form ----------------------------------------------
       </div>
-      <FormSelect placeholder={"안녕"}>
-        <FormSelectItem value={"안녕하십니까"} placeholder={"안녕"}></FormSelectItem>
-        <FormSelectItem value={"안녕하십니까"} placeholder={"안녕하십니까"}></FormSelectItem>
+      <FormSelect placeholder={"drop down 예시"}>
+        <FormSelectItem value={"value1"} placeholder={"value1"}></FormSelectItem>
       </FormSelect>
       <br></br>
       <div className="text-center py-2">
@@ -358,15 +357,16 @@ export default function Home() {
       </div>
       <div className={`grid gap-6 grid-cols-3 text-center`}>
         <FormSelect placeholder={"안녕"}>
-            <FormSelectItem value={"안녕하십니까"} placeholder={"안녕"}></FormSelectItem>
+            <FormSelectItem value={"안녕"} placeholder={"안녕"}></FormSelectItem>
             <FormSelectItem value={"안녕하십니까"} placeholder={"안녕하십니까"}></FormSelectItem>
+            <FormSelectItem value={"안녕하시렵니까"} placeholder={"안녕하시렵니까"}></FormSelectItem>
         </FormSelect>
         <FormSelect placeholder={"안녕"}>
-            <FormSelectItem value={"안녕하십니까"} placeholder={"안녕"}></FormSelectItem>
-            <FormSelectItem value={"안녕하십니까"} placeholder={"안녕하십니까"}></FormSelectItem>
+            <FormSelectItem value={"안녕"} placeholder={"안녕"}></FormSelectItem>
+            <FormSelectItem value={"안녕"} placeholder={"안녕"}></FormSelectItem>
         </FormSelect>
         <FormSelect placeholder={"안녕"}>
-            <FormSelectItem value={"안녕하십니까"} placeholder={"안녕"}></FormSelectItem>
+            <FormSelectItem value={"안녕"} placeholder={"안녕"}></FormSelectItem>
             <FormSelectItem value={"안녕하십니까"} placeholder={"안녕하십니까"}></FormSelectItem>
         </FormSelect>
       </div>
