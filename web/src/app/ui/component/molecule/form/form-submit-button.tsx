@@ -1,5 +1,5 @@
 import { VariantProps } from 'class-variance-authority';
-import AchromaticButton, { buttonVariants } from '@/app/ui/component/atom/achromatic-button';
+import AchromaticButton, { buttonVariants } from '@/app/ui/component/atom/button/achromatic-button';
 import { useContext } from 'react';
 import { FormContext } from './form.context';
 import { useFormStatus } from 'react-dom';
