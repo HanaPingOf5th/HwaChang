@@ -1,6 +1,7 @@
 'use client'
 import AchromaticButton from "@/app/ui/component/atom/achromatic-button";
 import { HouseEmoji, EnterPriseEmoji } from "@/app/ui/component/atom/fluent-emoji";
+import { NameTag } from "@/app/ui/component/atom/name-tag";
 import { Card, CardContent, CardFooter, CardHeader } from "@/app/ui/component/molecule/card/card";
 import Form from "@/app/ui/component/molecule/form/form-index";
 import { FormNumberInput } from "@/app/ui/component/molecule/form/form-number-input";
@@ -74,6 +75,15 @@ export default function Home() {
             <CardContent>
             <div className="flex flex-col justify-center items-center ">
                 <EnterPriseEmoji heignt={200} width={200}/>
+                이렇게 div에 새로운 컴포넌트를 넣어서 사용할 수 도 있습니다. 최종적으로 도화지라고 생각하시면 됩니다.
+                <div className="grid gap-2 grid-cols-3 text-center">
+                    <NameTag name={"안녕"}></NameTag>
+                    <NameTag name={"안녕"}></NameTag>
+                    <NameTag name={"안녕"}></NameTag>
+                    <NameTag name={"안녕"}></NameTag>
+                    <NameTag name={"안녕"}></NameTag>
+                    <NameTag name={"안녕"}></NameTag>
+                </div>
             </div>
             </CardContent>
             <CardFooter className="justify-center">
