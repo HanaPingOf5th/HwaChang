@@ -330,9 +330,9 @@ export default function Home() {
       </div>
       <Form id={"form"} action={formAction} failMessageControl={"toast"}>
         <Card>
-            <CardHeader>제출 할 폼의 이름</CardHeader>
+            <CardHeader>Card Header: 제출 할 폼의 이름</CardHeader>
             <CardContent>
-                <p>(이곳에 보통 입력 인풋들이 들어갑니다.)</p>
+                <p>(Card Contents: 이곳에 보통 입력 인풋들이 들어갑니다.)</p>
                 <br></br>
                 <FormTextInput label={"텍스트 입력입니다."} id={"id"} placeholder={"플레이스 홀더입니다."}></FormTextInput>
                 <FormNumberInput label={"숫자 입력입니다."} id={"id"} placeholder={"플레이스 홀더입니다."}></FormNumberInput>
