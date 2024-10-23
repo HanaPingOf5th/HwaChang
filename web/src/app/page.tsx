@@ -12,11 +12,6 @@ export default function Home() {
           화창(畫:窗)
         </div>
         {/* 일반 로그인 */}
-        {/* 드랍 다운 예시
-        <FormSelect placeholder={"안녕"}>
-          <FormSelectItem value={"안녕하십니까 안녕하십니까 안녕하십니까"} placeholder={"안녕"}></FormSelectItem>
-          <FormSelectItem value={"안녕하십니까"} placeholder={"안녕하십니까"}></FormSelectItem>
-        </FormSelect> */}
         <Card>
           <CardContent className="space-y-4 pt-6">
             <div className="space-y-2">

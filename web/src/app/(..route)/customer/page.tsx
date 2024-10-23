@@ -5,6 +5,8 @@ import { Card, CardContent, CardFooter, CardHeader } from "@/app/ui/component/mo
 import Form from "@/app/ui/component/molecule/form/form-index";
 import { FormNumberInput } from "@/app/ui/component/molecule/form/form-number-input";
 import { FormPasswordInput } from "@/app/ui/component/molecule/form/form-password-input";
+import FormSelect from "@/app/ui/component/molecule/form/form-select-index";
+import { FormSelectItem } from "@/app/ui/component/molecule/form/form-select-item";
 import { FormSubmitButton } from "@/app/ui/component/molecule/form/form-submit-button";
 import { FormTextInput } from "@/app/ui/component/molecule/form/form-textinput";
 import Link from "next/link";
@@ -257,6 +259,36 @@ export default function Home() {
             </CardFooter>
         </Card>
       </Form>
+
+      <div className="text-center py-2">
+      --------------------------------------- Form ----------------------------------------------
+      </div>
+      <FormSelect placeholder={"안녕"}>
+        <FormSelectItem value={"안녕하십니까"} placeholder={"안녕"}></FormSelectItem>
+        <FormSelectItem value={"안녕하십니까"} placeholder={"안녕하십니까"}></FormSelectItem>
+      </FormSelect>
+      <br></br>
+      <div className="text-center py-2">
+      --------------------------------------- Form또한 반응형이라 레이아웃에 맞추어 샤이즈 조절가능합니다.----------------------------------------------
+      </div>
+      <div className={`grid gap-6 grid-cols-3 text-center`}>
+        <FormSelect placeholder={"안녕"}>
+            <FormSelectItem value={"안녕하십니까"} placeholder={"안녕"}></FormSelectItem>
+            <FormSelectItem value={"안녕하십니까"} placeholder={"안녕하십니까"}></FormSelectItem>
+        </FormSelect>
+        <FormSelect placeholder={"안녕"}>
+            <FormSelectItem value={"안녕하십니까"} placeholder={"안녕"}></FormSelectItem>
+            <FormSelectItem value={"안녕하십니까"} placeholder={"안녕하십니까"}></FormSelectItem>
+        </FormSelect>
+        <FormSelect placeholder={"안녕"}>
+            <FormSelectItem value={"안녕하십니까"} placeholder={"안녕"}></FormSelectItem>
+            <FormSelectItem value={"안녕하십니까"} placeholder={"안녕하십니까"}></FormSelectItem>
+        </FormSelect>
+      </div>
+
+      <div className="text-center py-2">
+      --------------------------------------- End ----------------------------------------------
+      </div>
     </main>
   );
 }
