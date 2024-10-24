@@ -8,9 +8,8 @@ import { MyChat, OtherChat } from "./chat-box"
 
 export default function ConsultingRoomSideBar() {
   return (
-    <div className="flex h-full w-full flex-col px-4 py-4 md:px-2">
-      <div className="mb-2 flex h-10 justify-start items-center rounded-md bg-emerald-300 p-4 border-2\"/>
-      <div className="flex justify-between flex-col space-x-0 space-y-2">
+    <div className="flex h-full w-full flex-col px-4 py-4 pt-60 md:px-2 bg-hwachang-darkgreen">
+      <div className="flex justify-center flex-col space-x-0 space-y-2">
         <div className="h-auto w-full grow block">
           <Card className="h-full flex flex-col">
             <CardHeader className="text-center">
