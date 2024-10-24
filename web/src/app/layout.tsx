@@ -1,5 +1,14 @@
 import type { Metadata } from "next";
+import localFont from 'next/font/local';
 import "./globals.css";
+import { cn } from "./utils/style";
+
+const globalFont = localFont({
+  src: './PretendardVariable.woff2',
+  display: 'swap',
+  variable: '--font-pretendard',
+});
+
 
 export const metadata: Metadata = {
   title: "HwaChang",
@@ -13,7 +22,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body>
+      <body className={cn(globalFont.variable, 'font-pretendard')}>
         {children}
       </body>
     </html>

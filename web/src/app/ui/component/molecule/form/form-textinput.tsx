@@ -1,4 +1,4 @@
-import TextInput from '../../atom/text-input';
+import TextInput from '../../atom/text-input/text-input';
 import { FormContext } from './form.context';
 import { useContext } from 'react';
 import { useFormStatus } from 'react-dom';

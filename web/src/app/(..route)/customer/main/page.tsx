@@ -1,4 +1,4 @@
-import AchromaticButton from "@/app/ui/component/atom/achromatic-button";
+import AchromaticButton from "@/app/ui/component/atom/button/achromatic-button";
 import { HouseEmoji, EnterPriseEmoji } from "@/app/ui/component/atom/fluent-emoji";
 import { Card, CardContent, CardFooter, CardHeader } from "@/app/ui/component/molecule/card/card";
 import Link from "next/link";

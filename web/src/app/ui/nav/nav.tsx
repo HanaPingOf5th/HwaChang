@@ -1,5 +1,5 @@
 'use client'
-import AchromaticButton from "../component/atom/achromatic-button";
+import AchromaticButton from "../component/atom/button/achromatic-button";
 import NavLinks from "./nav-link";
 
 export default function Nav() {
