@@ -1,16 +1,16 @@
 import type { Config } from 'tailwindcss';
 import headlessui from '@headlessui/tailwindcss';
 import forms from '@tailwindcss/forms';
-import colors from 'tailwindcss/colors';
 import animate from 'tailwindcss-animate';
 import { fontFamily } from 'tailwindcss/defaultTheme';
 import scrollbar from 'tailwind-scrollbar';
 
 const config: Config = {
   content: [
-    "./src/pages/**/*.{js,ts,jsx,tsx,mdx}",
-    "./src/components/**/*.{js,ts,jsx,tsx,mdx}",
-    "./src/app/**/*.{js,ts,jsx,tsx,mdx}",
+    './src/app/pages/**/*.{js,ts,jsx,tsx,mdx}',
+    './src/app/components/**/*.{js,ts,jsx,tsx,mdx}',
+    './src/app/**/*.{js,ts,jsx,tsx,mdx}',
+    './node_modules/@tremor/**/*.{js,ts,jsx,tsx}',
   ],
   theme: {
     transparent: 'transparent',
@@ -31,8 +31,28 @@ const config: Config = {
         'accordion-up': 'accordion-up 0.4s ease-out',
       },
       colors: {
-        background: "var(--background)",
-        foreground: "var(--foreground)",
+        hwachang: {
+          darkgreen: "#1FAB89",
+          green: "#62D2A2",
+          lightgreen: "#9DF3C4",
+          brightgreen: "#D7FBE8",
+          hanagreen: "#008485",
+          hanared: "#E90061",
+          hanagold: "#AD9A5F",
+          hanasilver: "#B5B5B5",
+          hwachanggray: "#8E8E8E",
+          hwachangred: "#F24F4F",
+          hwachangcolor: "#62D2A2",
+          mute: "#E91313",
+          gray2: "#D6D6D6",
+          gray3: "#BEBEBE",
+          green1: "#275247",
+        },
+      },
+      borderRadius: {
+        'tremor-small': '0.375rem',
+        'tremor-default': '0.5rem',
+        'tremor-full': '9999px',
       },
       fontSize: {
         'custom-inherit': ['inherit', { lineHeight: 'inherit' }],
