@@ -1,7 +1,6 @@
 import type { Config } from 'tailwindcss';
 import headlessui from '@headlessui/tailwindcss';
 import forms from '@tailwindcss/forms';
-import colors from 'tailwindcss/colors';
 import animate from 'tailwindcss-animate';
 import { fontFamily } from 'tailwindcss/defaultTheme';
 import scrollbar from 'tailwind-scrollbar';
@@ -33,6 +32,21 @@ const config: Config = {
       colors: {
         background: "var(--background)",
         foreground: "var(--foreground)",
+        'hwachang-dark-green': "1FAB89",
+        'hwachang-green': "62D2A2",
+        'hwachang-light-green': "9DF3C4",
+        'hwachang-bright-green': "D7FBE8",
+        'hwachang-hana-green': "008485",
+        'hwachang-hana-red': "E90061",
+        'hwachang-hana-gold': "AD9A5F",
+        'hwachang-hana-silver': "B5B5B5",
+        'hwachang-gray1': "8E8E8E",
+        'hwachang-red': "F24F4F",
+        'hwachang-color': "62D2A2",
+        'hwachang-mute': "E91313",
+        'hwachang-gray2': "D6D6D6",
+        'hwachang-gray3': "BEBEBE",
+        'hwachang-green1': "275247",
       },
       fontSize: {
         'custom-inherit': ['inherit', { lineHeight: 'inherit' }],
