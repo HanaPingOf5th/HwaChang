@@ -1,8 +1,8 @@
 'use client'
 
-import AchromaticButton from "../component/atom/achromatic-button"
+import AchromaticButton from "../component/atom/button/achromatic-button"
 import { NameTag } from "../component/atom/name-tag"
-import TextInput from "../component/atom/text-input"
+import TextInput from "../component/atom/text-input/text-input"
 import { Card, CardContent, CardHeader } from "../component/molecule/card/card"
 import { MyChat, OtherChat } from "./chat-box"
 

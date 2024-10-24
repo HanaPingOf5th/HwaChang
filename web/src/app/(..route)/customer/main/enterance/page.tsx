@@ -1,5 +1,5 @@
 'use client'
-import AchromaticButton from "@/app/ui/component/atom/achromatic-button";
+import AchromaticButton from "@/app/ui/component/atom/button/achromatic-button";
 import { Card, CardContent, CardFooter, CardHeader } from "@/app/ui/component/molecule/card/card";
 import { useSearchParams } from "next/navigation";
 

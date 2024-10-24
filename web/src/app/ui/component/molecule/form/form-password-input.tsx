@@ -1,7 +1,7 @@
 import { useContext } from "react";
 import { FormContext } from "./form.context";
 import { useFormStatus } from "react-dom";
-import TextInput from '../../atom/text-input';
+import TextInput from '../../atom/text-input/text-input';
 
 interface FormPasswordInputProps {
   label: string;
