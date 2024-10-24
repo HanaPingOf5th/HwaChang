@@ -11,8 +11,14 @@ import Teller from "./utils/public/Teller.svg";
 import Sun from "./utils/public/Sun.svg";
 import { useEffect, useState } from "react";
 import Link from "next/link";
+import { login } from "./business/login";
+import { useRouter } from "next/navigation";
+import MainPageContent from "./ui/component/organism/mainpage-content";
+import TextInput from "./ui/component/atom/text-input";
 
 export default function Home() {
+  const router = useRouter();
+
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [mismatch, setMismatch] = useState(false);
@@ -28,7 +34,7 @@ export default function Home() {
       if (username === "username" && password === "password") {
         setUsername("");
         setPassword("");
-        window.location.href = "/customer";
+        router.push("/customer");
       } else {
         setMismatch(true);
       }
@@ -46,31 +52,7 @@ export default function Home() {
   return (
     <main className="flex h-screen">
       {/* 왼쪽 절반 */}
-      <div className="relative p-20 flex flex-col justify-between text-white text-7xl w-1/2 h-full bg-[#1FAB89]">
-        <Image
-          className="absolute top-0 -right-32"
-          src={Sun}
-          alt="Sun"
-          width={300}
-          height={300}
-        />
-        <div className="flex flex-col items-start gap-5">
-          <p>은행</p>
-          <p>업무도</p>
-          <p>
-            <span className="text-8xl font-bold">화창</span>하게
-          </p>
-        </div>
-
-        {/* 로고 이미지 */}
-        <div className="text-2xl flex items-end justify-between">
-          <Image src={Teller} alt="Teller" width={150} height={150} />
-          <div className="flex items-end">
-            <p>화상 창구,</p>
-            <Image src={Logo} alt="Logo" width={150} height={150} />
-          </div>
-        </div>
-      </div>
+      <MainPageContent />
 
       {/* 오른쪽 절반 */}
       <div className="flex w-1/2 h-full items-center justify-center bg-white px-4 dark:bg-gray-950">
@@ -86,13 +68,13 @@ export default function Home() {
                 <label htmlFor="username" className="font-bold">
                   아이디
                 </label>
-                <input
+                <TextInput
                   id="username"
-                  className="border rounded-lg p-3 focus:outline-none focus:ring-2 focus:ring-[#62D2A2]"
+                  className="border rounded-xl p-3"
                   type="text"
                   placeholder="아이디를 입력하세요"
                   value={username}
-                  onChange={(e) => setUsername(e.target.value)}
+                  onValueChange={setUsername}
                 />
               </div>
               {/* 비밀번호 input */}
@@ -100,13 +82,13 @@ export default function Home() {
                 <label htmlFor="password" className="font-bold">
                   비밀번호
                 </label>
-                <input
+                <TextInput
                   id="password"
-                  className="border rounded-lg p-3 focus:outline-none focus:ring-2 focus:ring-[#62D2A2]"
+                  className="border rounded-xl p-3"
                   type="password"
                   placeholder="비밀번호를 입력하세요"
                   value={password}
-                  onChange={(e) => setPassword(e.target.value)}
+                  onValueChange={setPassword}
                 />
                 {mismatch && (
                   <p className="text-red-500">비밀번호가 일치하지 않습니다.</p>
@@ -114,7 +96,7 @@ export default function Home() {
               </div>
               <button
                 onClick={clickHandler}
-                className={`text-white w-1/2 py-3 rounded-lg ${
+                className={`text-white w-1/2 py-4 rounded-lg ${
                   isEmpty
                     ? "bg-[#D9D9D9] cursor-auto"
                     : "bg-[#1FAB89] hover:brightness-90"
@@ -145,28 +127,27 @@ export default function Home() {
           </div>
           {/* 아토믹 디자인 */}
           {/* <Card>
-            <CardContent className="space-y-4 pt-6">
-              <div className="space-y-2">
+            <CardContent>
+              <Form
+                id="login-form"
+                action={login}
+                onSuccess={() => router.push("/customer")}
+                failMessageControl="alert"
+              >
                 <Form.TextInput
                   label="아이디"
                   id="username"
                   placeholder="아이디를 입력하세요"
-                />
-              </div>
-              <div className="space-y-2">
+                ></Form.TextInput>
                 <Form.PasswordInput
                   label="비밀번호"
                   id="password"
                   placeholder="비밀번호를 입력하세요"
-                />
-              </div>
+                ></Form.PasswordInput>
+              </Form>
             </CardContent>
             <CardFooter>
-              <Form.SubmitButton
-                label="로그인"
-                position="center"
-                className="w-1/2"
-              />
+              <Form.SubmitButton label="로그인" position="center" />
             </CardFooter>
           </Card> */}
         </div>
