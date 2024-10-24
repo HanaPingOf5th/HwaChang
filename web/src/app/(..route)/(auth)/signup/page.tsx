@@ -1,19 +1,37 @@
 "use client";
 
 import TextInput from "@/app/ui/component/atom/text-input";
-import Form from "@/app/ui/component/molecule/form/form-index";
 import MainPageContent from "@/app/ui/component/organism/mainpage-content";
-import Link from "next/navigation";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
+import check from "@/app/utils/public/Check.svg";
+import Image from "next/image";
 
 export default function SignupPage() {
   const router = useRouter();
+
+  // 이름 관련
   const [name, setName] = useState("");
+
+  // 전화번호 관련
   const [phoneNumber, setPhoneNumber] = useState("");
+  const [phoneNumberContent, setPhoneNumberContent] = useState("");
+
+  // 아이디 관련
   const [username, setUsername] = useState("");
+  const [isUsernameValid, setIsUsernameValid] = useState(false);
+  const [isUsernameValidLength, setIsUsernameValidLength] = useState(false);
+  const [isUsernameDuplicate, setIsUsernameDuplicate] = useState(false);
+  const [isDuplicateCheckDisabled, setIsDuplicateCheckDisabled] =
+    useState(true);
+  const [isDuplicateCheckCompleted, setIsDuplicateCheckCompleted] =
+    useState(false);
+
+  // 비밀번호 관련
   const [password, setPassword] = useState("");
-  const [mismatch, setMismatch] = useState(false);
+  const [isPasswordValid, setIsPasswordValid] = useState(false);
+
+  // 전체 Form
   const [isEmpty, setIsEmpty] = useState(true);
 
   useEffect(() => {
@@ -23,15 +41,8 @@ export default function SignupPage() {
   }, [name, phoneNumber, username, password]);
 
   const signup = () => {
-    if (username && password) {
-      if (username === "username" && password === "password") {
-        setUsername("");
-        setPassword("");
-        router.push("/customer");
-      } else {
-        setMismatch(true);
-      }
-    } else {
+    if (username && phoneNumber && username && password) {
+      router.push("/");
     }
   };
 
@@ -42,10 +53,73 @@ export default function SignupPage() {
     signup();
   };
 
-  console.log("name", name);
-  console.log("phoneNumber", phoneNumber);
-  console.log("username", username);
-  console.log("password", password);
+  // 중복 확인 버튼 클릭
+  const duplicateCheckHandler = (e) => {
+    e.preventDefault();
+    console.log(e.target.value, username);
+    if (username === "username") {
+      setIsUsernameDuplicate(true);
+    } else {
+      setIsUsernameDuplicate(false);
+    }
+    setIsDuplicateCheckCompleted(true);
+  };
+
+  // 아이디는 영어 또는 숫자만 가능
+  const checkUsername = (str: string) => {
+    return /^[A-Za-z0-9][A-Za-z0-9]*$/.test(str);
+  };
+
+  // 아이디는 4글자 이상 12글자 이하
+  const checkUsernameLength = (str: string) => {
+    return str.length >= 4 && str.length <= 12;
+  };
+
+  // 비밀번호는 8글자 이상, 영문 대소문자, 숫자, 특수문자를 조합해야 함
+  const checkPassword = (str: string) => {
+    return /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,}$/.test(
+      str
+    );
+  };
+
+  // 아이디가 바뀌면 중복검사를 다시 해야함
+  useEffect(() => {
+    setIsDuplicateCheckCompleted(false);
+  }, [username]);
+
+  // 아이디 유효성 검사
+  useEffect(() => {
+    setIsUsernameValid(checkUsername(username));
+    setIsUsernameValidLength(checkUsernameLength(username));
+  }, [username]);
+
+  // 비밀번호 유효성 검사
+  useEffect(() => {
+    setIsPasswordValid(checkPassword(password));
+  }, [password]);
+
+  // 아이디 중복검사 버튼 비활성화
+  useEffect(() => {
+    setIsDuplicateCheckDisabled(!isUsernameValid || !isUsernameValidLength);
+  }, [isUsernameValid, isUsernameValidLength]);
+
+  // 전화번호 표시
+  useEffect(() => {
+    if (phoneNumber.length === 11) {
+      setPhoneNumberContent(
+        phoneNumber.replace(/(\d{3})(\d{4})(\d{4})/, "$1-$2-$3")
+      );
+    } else if (phoneNumber.length === 13) {
+      setPhoneNumberContent(
+        phoneNumber
+          .replace(/-/g, "")
+          .replace(/(\d{3})(\d{4})(\d{4})/, "$1-$2-$3")
+      );
+    } else {
+      setPhoneNumberContent(phoneNumber);
+    }
+  }, [phoneNumber]);
+
   return (
     <main className="flex h-screen">
       <MainPageContent />
@@ -62,6 +136,7 @@ export default function SignupPage() {
                   이름
                 </label>
                 <TextInput
+                  maxLength={20}
                   type="text"
                   id="name"
                   className="border rounded-xl p-3"
@@ -75,11 +150,17 @@ export default function SignupPage() {
                   전화번호
                 </label>
                 <TextInput
+                  maxLength={13}
                   type="text"
                   id="phone-number"
                   className="border rounded-xl p-3"
-                  value={phoneNumber}
-                  onValueChange={setPhoneNumber}
+                  value={phoneNumberContent}
+                  onValueChange={(value) => {
+                    const onlyNumbersAndHyphens = value.replace(/[^0-9-]/g, ""); // 숫자와 하이픈만 허용
+                    if (onlyNumbersAndHyphens.length <= 13) {
+                      setPhoneNumber(onlyNumbersAndHyphens);
+                    }
+                  }}
                   placeholder="전화번호를 입력하세요"
                 />
               </div>
@@ -87,17 +168,58 @@ export default function SignupPage() {
                 <label htmlFor="username" className="font-bold">
                   아이디
                 </label>
-                <TextInput
-                  type="text"
-                  id="username"
-                  className="border rounded-xl p-3"
-                  value={username}
-                  onValueChange={setUsername}
-                  placeholder="아이디를 입력하세요"
-                />
+                <div className="flex w-full">
+                  <TextInput
+                    maxLength={12}
+                    type="text"
+                    id="username"
+                    className="border rounded-xl rounded-tr-none rounded-br-none p-3"
+                    value={username}
+                    onValueChange={setUsername}
+                    placeholder="아이디를 입력하세요"
+                  />
+                  <button
+                    className={`w-1/3 flex justify-center items-center text-white border-[#8E8E8E] rounded-xl rounded-tl-none rounded-bl-none ${
+                      isDuplicateCheckDisabled
+                        ? `bg-[#D9D9D9] cursor-auto`
+                        : `bg-[#1FAB89] hover:brightness-90`
+                    }`}
+                    onClick={duplicateCheckHandler}
+                    disabled={isDuplicateCheckDisabled}
+                  >
+                    {!isUsernameDuplicate && isDuplicateCheckCompleted ? (
+                      <Image
+                        src={check}
+                        alt="check"
+                        width={40}
+                        height={40}
+                      ></Image>
+                    ) : (
+                      "중복검사"
+                    )}
+                  </button>
+                </div>
+                {!isUsernameDuplicate && isDuplicateCheckCompleted && (
+                  <p className="text-green-500">사용 가능한 아이디입니다.</p>
+                )}
+                {isUsernameDuplicate && isDuplicateCheckCompleted && (
+                  <p className="text-red-500">중복 아이디입니다.</p>
+                )}
+                {!isUsernameValid && username !== "" && (
+                  <p className="text-red-500">
+                    아이디는 영어 또는 숫자만 가능합니다.
+                  </p>
+                )}
+                {isUsernameValid &&
+                  !isUsernameValidLength &&
+                  username !== "" && (
+                    <p className="text-red-500">
+                      아이디는 4글자 이상 12글자 이하여야 합니다.
+                    </p>
+                  )}
               </div>
               <div className="flex flex-col gap-2 w-full">
-                <label htmlFor="password" className="font-bold">
+                <label htmlFor="username" className="font-bold">
                   비밀번호
                 </label>
                 <TextInput
@@ -108,6 +230,12 @@ export default function SignupPage() {
                   onValueChange={setPassword}
                   placeholder="비밀번호를 입력하세요"
                 />
+                {!isPasswordValid && password !== "" && (
+                  <p className="text-red-500">
+                    비밀번호는 8글자 이상으로, 영문 대소문자, 숫자, 특수문자를
+                    조합해서 사용하세요.
+                  </p>
+                )}
               </div>
               <button
                 onClick={clickHandler}
@@ -126,11 +254,3 @@ export default function SignupPage() {
     </main>
   );
 }
-// type?: 'text' | 'password' | 'number';
-// defaultValue?: string | number;
-// value?: string | number;
-// icon?: React.ElementType;
-// error?: boolean;
-// errorMessages?: string[];
-// disabled?: boolean;
-// onValueChange?: (value: string) => void;
