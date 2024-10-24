@@ -11,7 +11,7 @@ export default function InfoBar() {
   ];
 
   return (
-    <div className="bg-secondary">
+    <div className="bg-hwachang-green">
       <div className="flex space-x-5 items-center justify-center p-7">
         {infoData.map((info, index) => (
           <InfoContent key={index} status={info.status} count={info.count} />

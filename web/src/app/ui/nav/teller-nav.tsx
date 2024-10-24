@@ -8,7 +8,7 @@ import TellerNavLinks from "./teller-nav-link";
 
 export default function TellerNav() {
   return (
-    <div className="flex h-full flex-col bg-primary">
+    <div className="flex h-full flex-col bg-hwachang-darkgreen">
       <div className="flex h-36 justify-center items-center">
         {/* 로고 */}
         <Image src={Logo} alt="Logo" width={120} height={100} className="mt-10" />
@@ -24,7 +24,7 @@ export default function TellerNav() {
             alt="프로필 사진"
             className="object-cover w-64 h-64 rounded-full border-4 border-white shadow-lg"
           />
-          <div className="absolute right-16 transform translate-x-8 bottom-1 w-9 h-9 bg-active rounded-full border-4 border-white shadow-lg z-20"></div>
+          <div className="absolute right-16 transform translate-x-8 bottom-1 w-9 h-9 bg-hwachang-active rounded-full border-4 border-white shadow-lg z-20"></div>
         </div>
 
         {/* 상세 정보(Card) - 이름, 지점, 담당 카테고리, 상담 가능 상태 */}
@@ -37,16 +37,16 @@ export default function TellerNav() {
               </div>
             </div>
 
-            <p className="text-textBlack text-lg">성수역점</p>
-            <p className="text-textBlack text-lg">개인 금융 (대출 상담)</p>
+            <p className="text-hwachang-black text-lg">성수역점</p>
+            <p className="text-hwachang-black text-lg">개인 금융 (대출 상담)</p>
 
             <div className="flex items-center justify-center space-x-2">
-              <div className="w-3 h-3 bg-active rounded-full"></div>
-              <p className="text-textBlack text-lg">상담 가능</p>
+              <div className="w-3 h-3 bg-hwachang-active rounded-full"></div>
+              <p className="text-hwachang-black text-lg">상담 가능</p>
             </div>
 
             <div className="mt-6">
-              <AchromaticButton className="bg-secondary rounded-3xl font-medium text-xl w-full py-9 shadow-lg">
+              <AchromaticButton className="bg-hwachang-green rounded-3xl font-medium text-xl w-full py-9 shadow-lg">
                 상태 바꾸러 가기
               </AchromaticButton>
             </div>
