@@ -1,20 +1,20 @@
 "use client";
-import {
-  Card,
-  CardContent,
-  CardFooter,
-} from "./ui/component/molecule/card/card";
-import Form from "./ui/component/molecule/form/form-index";
-import Image from "next/image"; // next/image로 이미지 처리
-import Logo from "@/app/utils/public/Logo.png";
-import Teller from "./utils/public/Teller.svg";
-import Sun from "./utils/public/Sun.svg";
+// import {
+//   Card,
+//   CardContent,
+//   CardFooter,
+// } from "./ui/component/molecule/card/card";
+// import Form from "./ui/component/molecule/form/form-index";
+// import Image from "next/image"; // next/image로 이미지 처리
+// import Logo from "@/app/utils/public/Logo.png";
+// import Teller from "./utils/public/Teller.svg";
+// import Sun from "./utils/public/Sun.svg";
 import { useEffect, useState } from "react";
 import Link from "next/link";
-import { login } from "./business/login";
+// import { login } from "./business/login";
 import { useRouter } from "next/navigation";
 import MainPageContent from "./ui/component/organism/mainpage-content";
-import TextInput from "./ui/component/atom/text-input";
+import TextInput from "./ui/component/atom/text-input/text-input";
 
 export default function Home() {
   const router = useRouter();
@@ -43,7 +43,7 @@ export default function Home() {
   };
 
   // 버튼 클릭 핸들러
-  const clickHandler = (e) => {
+  const clickHandler = (e: { preventDefault: () => void; }) => {
     e.preventDefault();
     // 로그인 API 구현
     login();

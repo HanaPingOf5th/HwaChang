@@ -1,11 +1,12 @@
 "use client";
 
-import TextInput from "@/app/ui/component/atom/text-input";
+
 import MainPageContent from "@/app/ui/component/organism/mainpage-content";
 import { useRouter } from "next/navigation";
-import { useEffect, useState } from "react";
+import { FormEvent, useEffect, useState } from "react";
 import check from "@/app/utils/public/Check.svg";
 import Image from "next/image";
+import TextInput from "@/app/ui/component/atom/text-input/text-input";
 
 export default function SignupPage() {
   const router = useRouter();
@@ -47,16 +48,16 @@ export default function SignupPage() {
   };
 
   // 버튼 클릭 핸들러
-  const clickHandler = (e) => {
+  const clickHandler = (e: FormEvent) => {
     e.preventDefault();
     // 회원가입 API 구현
     signup();
   };
 
   // 중복 확인 버튼 클릭
-  const duplicateCheckHandler = (e) => {
+  const duplicateCheckHandler = (e: FormEvent) => {
     e.preventDefault();
-    console.log(e.target.value, username);
+    console.log(e.target, username);
     if (username === "username") {
       setIsUsernameDuplicate(true);
     } else {
