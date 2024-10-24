@@ -33,6 +33,12 @@ const config: Config = {
       colors: {
         background: "var(--background)",
         foreground: "var(--foreground)",
+        primary: "#1FAB89",
+        secondary: "#62D2A2",
+        active: "#39D72A",
+        green1: "#275247",
+        gray1: "#656565",
+        textBlack: "#4B4B4B",
       },
       fontSize: {
         'custom-inherit': ['inherit', { lineHeight: 'inherit' }],
