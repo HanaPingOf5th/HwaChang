@@ -47,6 +47,8 @@ const config: Config = {
           gray2: "#D6D6D6",
           gray3: "#BEBEBE",
           green1: "#275247",
+          black: "#4B4B4B",
+          active: "#39D72A",
         },
       },
       borderRadius: {
