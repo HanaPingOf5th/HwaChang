@@ -21,6 +21,8 @@ interface FormState {
 
 export default function Home() {
   function formAction(prevState: FormState, formData: FormData):FormState{
+    const value = formData.get('id');
+    console.log(value);
     return {
       isSuccess: true,
       isFailure: false,
