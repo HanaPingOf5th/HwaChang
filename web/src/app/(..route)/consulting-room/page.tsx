@@ -13,14 +13,18 @@ export default function Home() {
 
   return (
     <main>
-      <h1 className={` mb-4 text-xl md:text-2xl text-center`} >
-        consulting room page
-      </h1>
-      <div className="grid gap-6 grid-rows text-center">
-        {
-        key=='true'
-        ? <div></div>
-        :<Card className="grid gap-6 grid-cols-3 text-center px-3 py-3">
+      {
+      key=='true'
+      ? 
+      <div className="grid grid-row-1 gap-1">
+        <p className={`mb-6 text-4xl text-hwachang-green1`} >
+          <strong>상담 대기실</strong>
+        </p>
+        <p className={`mb-6 text-xl text-hwachang-green1`} >
+          상담사를 기다리고있습니다.
+        </p>
+      </div>
+      : <Card className="grid gap-6 grid-cols-3 text-center px-3 py-3">
           <Card>
             <></>
             <CardContent>
@@ -45,9 +49,9 @@ export default function Home() {
               </div>
             </CardContent>
           </Card>
-        </Card>
-        }
-
+    </Card>
+      }
+      <div className="grid gap-6 grid-rows text-center pt-4">
         {/* 은행원 화면 ToDo: 배경 이미지 대신 웹소켓으로 받은 실시간 데이터를 보여주기 */}
         <Card className="relative bg-cover bg-center" style={{ backgroundImage: `url(${Banker.src})` }}>
           <CardContent>
