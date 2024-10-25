@@ -22,34 +22,36 @@ export default function Home() {
     const Icon = value.icon;
     return(
       <>
-        <Card className="bg-hwachang-green text-white">
-          <CardHeader className="text-3xl">
-            <strong>{value.title}</strong>
-          </CardHeader>
-          <CardContent className="pt-8" />
-          <CardFooter className="items-end justify-end">
-            <Icon color="white" size={100}></Icon>
-          </CardFooter>
-        </Card>
+        <div className="p-2">
+          <Card className="bg-hwachang-darkgreen text-white">
+            <CardHeader className="text-xl">
+              <strong>{value.title}</strong>
+            </CardHeader>
+            <CardContent className="" />
+            <CardFooter className="items-end justify-end">
+              <Icon color="white" size={50}></Icon>
+            </CardFooter>
+          </Card>
+        </div>
       </>
     )
   })
   
   return (
     <main>
-      <h1 className={` mb-4 text-4xl md:text-4xl text-center`} >
-        <strong>{pageTitle}</strong>
-      </h1>
-      <div className="py-2">
-        <h1 className={` mb-4 text-xl md:text-2xl text-center`} >
-          <strong>어떤 업무를 원하시나요?</strong>
+      <div className="justify-items-center">
+        <h1 className={` mb-4 text-4xl md:text-4xl text-center`} >
+          <strong>{pageTitle}</strong>
         </h1>
-      </div>
-    
-      <div className="grid gap-6 sm:grid-rows-2 lg:grid-rows-4 text-center">
-        <div className={`grid gap-6 grid-cols-3 text-center`}>
-          {Categories}
+
+        <div className="">
+          <h1 className={` mb-2 text-xl md:text-xl text-center`} >
+            <strong>어떤 업무를 원하시나요?</strong>
+          </h1>
         </div>
+          <div className={`grid gap-3 grid-cols-3 text-center`}>
+            {Categories}
+          </div>
       </div>
     </main>
   );
