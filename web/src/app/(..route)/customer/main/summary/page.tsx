@@ -6,13 +6,9 @@ import { IoMdPause } from "react-icons/io";
 import { IoPlay } from "react-icons/io5";
 import { TbRewindForward5 } from "react-icons/tb";
 import { TbRewindBackward5 } from "react-icons/tb";
-import {
-  Card,
-  CardHeader,
-  CardTitle,
-  CardContent,
-} from "@/app/ui/component/molecule/card/card"; // Importing Card components
+import { Card, CardHeader, CardTitle, CardContent } from "@/app/ui/component/molecule/card/card";
 import { MyChat, OtherChat } from "@/app/ui/consulting-room/chat-box";
+import AchromaticButton from "@/app/ui/component/atom/button/achromatic-button";
 
 interface SttSummary {
   id: number;
@@ -22,6 +18,7 @@ interface SttSummary {
   mainTopics: string[];
 }
 
+// Todo : 네이버 클로바노트 api의 결과값에 따라 달라지는 부분
 interface AiSummary {
   id: number;
   title: string;
@@ -34,6 +31,7 @@ export default function SummaryPage() {
   const [selectedSpeaker, setSelectedSpeaker] = useState<string>("전체");
   const [isPlaying, setIsPlaying] = useState(false);
   const [progress, setProgress] = useState(0);
+  const [type, setType] = useState<string>("개인"); // 개인일지 기업일지 가져와야함
   const totalDuration = 30 * 60; // 총 30분을 초 단위로 설정
 
   const [sttSummaries] = useState<SttSummary[]>([
@@ -63,7 +61,7 @@ export default function SummaryPage() {
     },
   ]);
 
-  const [aiSummaries] = useState<AiSummary[]>([
+  const [aiSummaries, setAiSummaries] = useState<AiSummary[]>([
     {
       id: 1,
       title: "예금 및 적금 상담 요약",
@@ -75,6 +73,9 @@ export default function SummaryPage() {
       mainTopics: ["예금", "적금"],
     },
   ]);
+  const [isEditing, setIsEditing] = useState(false);
+  const [editedMainTopics, setEditedMainTopics] = useState<string[]>(aiSummaries[0].mainTopics);
+  const [editedContent, setEditedContent] = useState<string[]>(aiSummaries[0].content);
 
   const handleTextClick = (index: number) => {
     console.log(`텍스트 ${index + 1} 클릭됨. 음성 재생.`);
@@ -82,12 +83,6 @@ export default function SummaryPage() {
 
   const handlePlayPause = () => {
     setIsPlaying(!isPlaying);
-  };
-
-  // 발화자 필터링 로직
-  const filteredConversations = (line: { speaker: string }) => {
-    if (selectedSpeaker === "전체") return true;
-    return line.speaker === selectedSpeaker;
   };
 
   const renderChat = (line: { speaker: string; text: string }) => {
@@ -99,19 +94,10 @@ export default function SummaryPage() {
     }
   };
 
-  const getBackgroundColor = (speaker: string) => {
-    if (speaker === "발화자1") return "bg-blue-200";
-    if (speaker === "발화자2") return "bg-green-200";
-    return "bg-gray-200";
-  };
-
   const formatTime = (seconds: number) => {
     const minutes = Math.floor(seconds / 60);
     const secs = seconds % 60;
-    return `${String(minutes).padStart(2, "0")}:${String(secs).padStart(
-      2,
-      "0"
-    )}`;
+    return `${String(minutes).padStart(2, "0")}:${String(secs).padStart(2, "0")}`;
   };
 
   const handleBarClick = (e: React.MouseEvent<HTMLDivElement>) => {
@@ -121,153 +107,201 @@ export default function SummaryPage() {
     setProgress(newProgress);
   };
 
+  const handleEditClick = () => setIsEditing(true);
+
+  const handleSaveClick = () => {
+    setAiSummaries([
+      {
+        ...aiSummaries[0],
+        mainTopics: editedMainTopics,
+        content: editedContent,
+      },
+    ]);
+    setIsEditing(false);
+  };
+
   return (
     <main>
-      <div className="flex items-center justify-start">
-        <button className="px-4 py-2 bg-teal-600 text-white rounded-md hover:bg-teal-700 cursor-pointer">
-          ←
-        </button>
-        <span className="ml-4 text-lg text-gray-700">
-          {sttSummaries[0]?.date}
-        </span>
-      </div>
+      <h1 className="text-4xl font-bold text-gray-800 mt-4">상담 요약 페이지</h1>
 
-      <h1 className="text-4xl font-bold text-gray-800 mt-4">
-        상담 요약 페이지
-      </h1>
-
-      <div className="grid gap-6 grid-cols-2">
-        {/* STT 상담 원문 */}
-        <Card className="bg-[#62D2A2]">
-          <CardHeader className="flex justify-between">
-            <CardTitle className="flex items-center text-white text-2xl">
-              <IoDocumentTextSharp className="mr-2" size={28} /> 상담 원문
-            </CardTitle>
-
-            <select
-              className="ml-auto p-2 w-36 border border-teal-600 text-center rounded-md text-gray-800 focus:outline-none"
-              value={selectedSpeaker}
-              onChange={(e) => setSelectedSpeaker(e.target.value)}
+      {/* 상담 정보 */}
+      <div className="mt-6">
+        <div className="grid gap-4 text-lg text-gray-500 font-pretendard">
+          <div className="flex items-center">
+            <span className="w-40">유형:</span>
+            <span
+              className={`px-3 py-1 rounded-md ${
+                type === "개인" ? "bg-blue-100 text-blue-600" : "bg-red-100 text-red-600"
+              }`}
             >
-              <option value="전체">발화자 설정</option>
-              <option value="발화자1">발화자1</option>
-              <option value="발화자2">발화자2</option>
-            </select>
-          </CardHeader>
+              {type}
+            </span>
+          </div>
+          <div className="flex items-center">
+            <span className="w-40">카테고리:</span> <span className="text-black">대출</span>
+          </div>
+          <div className="flex items-center">
+            <span className="w-40">담당자:</span>
+            <span className="text-black">임수진 대리</span>
+          </div>
+          <div className="flex items-center">
+            <span className="w-40">화창 날짜:</span>{" "}
+            <span className="text-black">2024년 10월 23일</span>
+          </div>
+        </div>
+      </div>
 
-          <CardContent>
-            <div className="bg-gray-50 p-2 rounded-lg">
-              {sttSummaries.length > 0 ? (
-                sttSummaries[0].content.map((line, index) => (
-                  <div
-                    key={index}
-                    className="mb-4 cursor-pointer"
-                    onClick={() => handleTextClick(index)}
-                  >
-                    {renderChat(line)}
-                  </div>
-                ))
-              ) : (
-                <p className="text-center text-gray-500">
-                  아직 상담 기록이 없습니다.
-                </p>
-              )}
+      {/* 구분선 */}
+      <hr className="my-6 border-t-2 border-gray-300" />
+
+      {/* STT 상담 원문 */}
+      <Card className="bg-[#62D2A2]">
+        <CardHeader className="flex justify-between">
+          <CardTitle className="flex items-center text-white text-2xl">
+            <IoDocumentTextSharp className="mr-2" size={28} /> 상담 원문
+          </CardTitle>
+
+          <select
+            className="ml-auto p-2 w-36 border border-teal-600 text-center rounded-md text-gray-800 focus:outline-none"
+            value={selectedSpeaker}
+            onChange={(e) => setSelectedSpeaker(e.target.value)}
+          >
+            <option value="전체">발화자 설정</option>
+            <option value="발화자1">발화자1</option>
+            <option value="발화자2">발화자2</option>
+          </select>
+        </CardHeader>
+
+        <CardContent>
+          <div className="bg-gray-50 p-2 rounded-lg">
+            {sttSummaries.length > 0 ? (
+              sttSummaries[0].content.map((line, index) => (
+                <div
+                  key={index}
+                  className="mb-4 cursor-pointer"
+                  onClick={() => handleTextClick(index)}
+                >
+                  {renderChat(line)}
+                </div>
+              ))
+            ) : (
+              <p className="text-center text-gray-500">아직 상담 기록이 없습니다.</p>
+            )}
+          </div>
+
+          {/* 플레이어 바 */}
+          <div className="mt-4">
+            {/* 진행상태 바 */}
+            <div
+              className="relative w-full h-2 bg-gray-400 rounded-full overflow-hidden cursor-pointer"
+              onClick={handleBarClick}
+            >
+              <div
+                className="absolute top-0 left-0 h-full rounded-full"
+                style={{
+                  width: `${(progress / totalDuration) * 100}%`,
+                  background: "linear-gradient(90deg, #38b2ac, #319795)",
+                }}
+              />
             </div>
-          </CardContent>
-        </Card>
 
-        {/* AI 요약 내용 */}
-        <Card className="bg-[#62D2A2]">
-          <CardHeader>
-            <CardTitle className="flex items-center text-white text-2xl">
-              <MdSummarize className="mr-2" size={28} /> 상담 요약 내용
-            </CardTitle>
-          </CardHeader>
+            {/* 진행시간 */}
+            <div className="flex justify-between text-sm mt-2">
+              <span>00:00</span>
+              <span>{formatTime(progress)}</span>
+              <span>{formatTime(totalDuration)}</span>
+            </div>
 
-          {aiSummaries.length > 0 ? (
-            aiSummaries.map((summary) => (
-              <div key={summary.id} className="space-y-4">
-                <CardContent>
-                  <Card className="bg-white p-3 rounded-lg shadow-md">
-                    <CardTitle>주요 주제</CardTitle>
-                    <ul className="list-disc list-inside">
-                      {summary.mainTopics.map((topic, index) => (
-                        <li key={index}>{topic}</li>
-                      ))}
-                    </ul>
-                  </Card>
-                </CardContent>
+            {/* 플레이버튼 */}
+            <div className="flex items-center justify-center space-x-6 mt-4">
+              <TbRewindBackward5
+                className="cursor-pointer text-3xl hover:text-teal-300 transition-all transform hover:scale-110"
+                title="Rewind 5s"
+              />
+              {isPlaying ? (
+                <IoMdPause
+                  onClick={handlePlayPause}
+                  className="cursor-pointer text-4xl hover:text-teal-300 transition-all transform hover:scale-110"
+                  title="Pause"
+                />
+              ) : (
+                <IoPlay
+                  onClick={handlePlayPause}
+                  className="cursor-pointer text-4xl hover:text-teal-300 transition-all transform hover:scale-110"
+                  title="Play"
+                />
+              )}
+              <TbRewindForward5
+                className="cursor-pointer text-3xl hover:text-teal-300 transition-all transform hover:scale-110"
+                title="Forward 5s"
+              />
+            </div>
+          </div>
+        </CardContent>
+      </Card>
 
-                <CardContent>
-                  <Card className="bg-white p-3 rounded-lg shadow-md">
-                    <CardTitle>요약</CardTitle>
-                    <ul className="list-disc list-inside">
-                      {summary.content.map((item, index) => (
-                        <li key={index}>{item}</li>
-                      ))}
-                    </ul>
-                  </Card>
-                </CardContent>
-              </div>
-            ))
-          ) : (
-            <CardContent>
-              <p className="text-center text-gray-500">
-                아직 상담 요약이 없습니다.
-              </p>
+      <hr className="my-6 border-t-2 border-gray-300" />
+
+      {/* AI 요약 내용 */}
+      <Card className="bg-[#62D2A2] mt-6">
+        <CardHeader>
+          <CardTitle className="flex items-center text-white text-2xl">
+            <MdSummarize className="mr-2" size={28} /> 상담 요약 내용
+          </CardTitle>
+        </CardHeader>
+
+        {isEditing ? (
+          <>
+            <CardContent className="bg-white p-6 rounded-lg shadow-md max-w-3xl mx-auto mb-6">
+              <CardTitle className="text-xl font-semibold mb-4">주요 주제</CardTitle>
+              <input
+                type="text"
+                value={editedMainTopics.join(", ")}
+                onChange={(e) =>
+                  setEditedMainTopics(e.target.value.split(", ").map((topic) => topic.trim()))
+                }
+                className="w-full p-2 border rounded"
+              />
             </CardContent>
-          )}
-        </Card>
-      </div>
 
-      {/* 페이지 하단에 재생/일시정지, 앞으로 가기, 뒤로 가기 버튼 및 진행 바 */}
-      <div className="fixed bottom-0 left-64 right-0 bg-teal-600 text-white p-4 shadow-lg">
-        {/* Updated progress bar */}
-        <div
-          className="relative w-full h-2 bg-gray-400 rounded-full overflow-hidden cursor-pointer"
-          onClick={handleBarClick}
-        >
-          <div
-            className="absolute top-0 left-0 h-full rounded-full"
-            style={{
-              width: `${(progress / totalDuration) * 100}%`,
-              background: "linear-gradient(90deg, #38b2ac, #319795)",
-            }}
-          />
-        </div>
+            <CardContent className="bg-white p-6 rounded-lg shadow-md max-w-3xl mx-auto mb-6">
+              <CardTitle className="text-xl font-semibold mb-4">요약</CardTitle>
+              <textarea
+                value={editedContent.join("\n")}
+                onChange={(e) => setEditedContent(e.target.value.split("\n"))}
+                className="w-full p-2 border rounded h-24"
+              />
+            </CardContent>
 
-        {/* Time indicators */}
-        <div className="flex justify-between text-sm mt-2">
-          <span>00:00</span>
-          <span>{formatTime(progress)}</span>
-          <span>{formatTime(totalDuration)}</span>
-        </div>
+            <CardContent>
+              <AchromaticButton onClick={handleSaveClick}>저장하기</AchromaticButton>
+            </CardContent>
+          </>
+        ) : (
+          <>
+            <CardContent className="bg-white p-6 rounded-lg shadow-md max-w-3xl mx-auto mb-6">
+              <CardTitle className="text-xl font-semibold mb-4">주요 주제</CardTitle>
+              <ul className="list-disc list-inside space-y-2">
+                {aiSummaries[0].mainTopics.map((topic, index) => (
+                  <li key={index}>{topic}</li>
+                ))}
+              </ul>
+            </CardContent>
 
-        {/* Player control buttons */}
-        <div className="flex items-center justify-center space-x-6 mt-4">
-          <TbRewindBackward5
-            className="cursor-pointer text-3xl hover:text-teal-300 transition-all transform hover:scale-110"
-            title="Rewind 5s"
-          />
-          {isPlaying ? (
-            <IoMdPause
-              onClick={handlePlayPause}
-              className="cursor-pointer text-4xl hover:text-teal-300 transition-all transform hover:scale-110"
-              title="Pause"
-            />
-          ) : (
-            <IoPlay
-              onClick={handlePlayPause}
-              className="cursor-pointer text-4xl hover:text-teal-300 transition-all transform hover:scale-110"
-              title="Play"
-            />
-          )}
-          <TbRewindForward5
-            className="cursor-pointer text-3xl hover:text-teal-300 transition-all transform hover:scale-110"
-            title="Forward 5s"
-          />
-        </div>
-      </div>
+            <CardContent className="bg-white p-6 rounded-lg shadow-md max-w-3xl mx-auto mb-6">
+              <CardTitle className="text-xl font-semibold mb-4">요약</CardTitle>
+              <ul className="list-disc list-inside space-y-2">
+                {aiSummaries[0].content.map((text, index) => (
+                  <li key={index}>{text}</li>
+                ))}
+              </ul>
+            </CardContent>
+            <CardContent>
+              <AchromaticButton onClick={handleEditClick}>수정하기</AchromaticButton>
+            </CardContent>
+          </>
+        )}
+      </Card>
     </main>
   );
 }
