@@ -10,7 +10,7 @@ export default function Home() {
   // ToDo: userSearchParam 이용해서 isIndividual의 값에 따라 컴포넌트 내에서 다른 내용 보여주기
   const params = useSearchParams();
   const key = params.get('isWait');
-
+  
   return (
     <main>
       {
@@ -20,9 +20,17 @@ export default function Home() {
         <p className={`mb-6 text-4xl text-hwachang-green1`} >
           <strong>상담 대기실</strong>
         </p>
-        <p className={`mb-6 text-xl text-hwachang-green1`} >
-          상담사를 기다리고있습니다.
-        </p>
+        <div className="flex justify-between space-x-2">
+          <p className={`mb-6 text-2xl text-hwachang-green1 font-semibold`} >
+            상담사를 기다리는 중입니다...
+          </p>
+          <AchromaticButton 
+            className="bg-hwachang-brightgreen hover:bg-hwachang-lightgreen text-black"
+            onClick={()=>{}}
+          >
+            대기현황 보기
+          </AchromaticButton>
+        </div>
       </div>
       : <Card className="grid gap-6 grid-cols-3 text-center px-3 py-3">
           <Card>
