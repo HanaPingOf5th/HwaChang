@@ -40,7 +40,7 @@ export default function TellerNav({ tellerInfo }: TellerInfoProps) {
           <div className="absolute right-16 transform translate-x-8 bottom-1 w-9 h-9 bg-hwachang-active rounded-full border-4 border-white shadow-lg z-20"></div>
         </div>
 
-        {/* 상세 정보(Card) - 이름, 지점, 담당 카테고리, 상담 가능 상태 */}
+        {/* 상세 정보(Card) - 이름, 직급, 지점, 담당 카테고리, 상담 가능 상태 */}
         <Card className="relative bg-white shadow-lg rounded-3xl w-9/12">
           <div className="p-5 text-center">
             <div className="flex flex-col items-center mb-4">
@@ -58,14 +58,14 @@ export default function TellerNav({ tellerInfo }: TellerInfoProps) {
               <p className="text-hwachang-black text-lg">{tellerInfo.availability}</p>
             </div>
 
-            <AchromaticButton className="bg-hwachang-green rounded-3xl font-medium text-xl w-full py-9 shadow-lg">
+            <AchromaticButton className="bg-hwachang-green rounded-3xl font-medium text-xl w-full py-9 shadow-lg mt-4">
               상태 바꾸러 가기
             </AchromaticButton>
           </div>
         </Card>
       </div>
 
-      <div className="flex grow flex-row justify-end space-x-2 md:flex-col md:space-x-0 md:space-y-2 mt-10 md:mt-20 ml-10">
+      <div className="flex grow flex-row justify-end space-x-2 md:flex-col md:space-x-0 md:space-y-2 mt-10 ml-10">
         <TellerNavLinks />
         <div className="hidden h-auto w-full grow rounded-md bg-emerald-10 md:block"></div>
       </div>
