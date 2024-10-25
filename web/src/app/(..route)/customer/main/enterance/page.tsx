@@ -3,6 +3,7 @@
 import { Card, CardContent, CardFooter, CardHeader } from "@/app/ui/component/molecule/card/card";
 import { useSearchParams } from "next/navigation";
 import { customerCategories, enterpriseCategories } from "./categories";
+import Link from "next/link";
 
 export default function Home() {
   //To-Do: userSearchParam 이용해서 isIndividual의 값에 따라 컴포넌트 내에서 다른 내용 보여주기
@@ -23,15 +24,17 @@ export default function Home() {
     return(
       <>
         <div className="p-2">
-          <Card className="bg-hwachang-darkgreen text-white">
-            <CardHeader className="text-xl">
-              <strong>{value.title}</strong>
-            </CardHeader>
-            <CardContent className="" />
-            <CardFooter className="items-end justify-end">
-              <Icon color="white" size={50}></Icon>
-            </CardFooter>
-          </Card>
+          <Link href={"/consulting-room?isWait=true"}>
+            <Card className="bg-hwachang-darkgreen text-white">
+              <CardHeader className="text-xl">
+                <strong>{value.title}</strong>
+              </CardHeader>
+              <CardContent className="" />
+              <CardFooter className="items-end justify-end">
+                <Icon color="white" size={50}></Icon>
+              </CardFooter>
+            </Card>
+          </Link>
         </div>
       </>
     )
