@@ -10,7 +10,7 @@ import { FormTextInput } from "@/app/ui/component/molecule/form/form-textinput";
 import { Card, CardContent, CardFooter } from "@/app/ui/component/molecule/card/card";
 
 export default function Home() {
-  const [startDate, setStartDate] = useState(new Date().toISOString().slice(0, 10)); // 기본값을 오늘 날짜로 설정
+  const [startDate, setStartDate] = useState(new Date().toISOString().slice(0, 10));
   const [endDate, setEndDate] = useState(new Date().toISOString().slice(0, 10));
 
   const getTypeStyles = (type) => {
@@ -88,7 +88,7 @@ export default function Home() {
             background: "#F2F2F7",
             borderRadius: "50px",
             border: "none",
-            padding: "0 45px 0 20px", // 오른쪽 여백 추가
+            padding: "0 45px 0 20px",
             outline: "none",
           }}
         />
@@ -98,8 +98,8 @@ export default function Home() {
           style={{
             position: "absolute",
             top: "50%",
-            right: "15px", // input 내부의 오른쪽으로 15px 여백
-            transform: "translateY(-50%)", // 세로 중앙 정렬
+            right: "15px",
+            transform: "translateY(-50%)",
             background: "none",
             border: "none",
             padding: "0",
@@ -110,8 +110,8 @@ export default function Home() {
             src={Select}
             alt="Select icon"
             style={{
-              width: "20px", // 이미지 너비
-              height: "20px", // 이미지 높이
+              width: "20px",
+              height: "20px",
             }}
           />
         </button>
@@ -133,11 +133,12 @@ export default function Home() {
           기간
         </div>
 
-        <div style={{ display: "flex", alignItems: "center", justifyContent: "center", width: "100%" }}>
+        <div
+          style={{ display: "flex", alignItems: "center", justifyContent: "center", width: "100%" }}
+        >
           {/* 시작 날짜 입력창 및 캘린더 아이콘 */}
           <div style={{ position: "relative", flex: "0 1 200px" }}>
             {" "}
-            {/* 너비 조정 */}
             <input
               type="date"
               value={startDate}
@@ -162,7 +163,7 @@ export default function Home() {
                 border: "none",
                 cursor: "pointer",
               }}
-              onClick={() => document.querySelector('input[type="date"]').showPicker()} // 캘린더 표시
+              onClick={() => document.querySelector('input[type="date"]').showPicker()}
             ></button>
           </div>
 
@@ -172,7 +173,7 @@ export default function Home() {
               fontSize: "20px",
               lineHeight: "150%",
               color: "#8E8E8E",
-              margin: "0 15px", // 날짜 입력창과의 간격 조정
+              margin: "0 15px",
             }}
           >
             ~
@@ -181,7 +182,6 @@ export default function Home() {
           {/* 종료 날짜 입력창 및 캘린더 아이콘 */}
           <div style={{ position: "relative", flex: "0 1 200px" }}>
             {" "}
-            {/* 너비 조정 */}
             <input
               type="date"
               value={endDate}
@@ -264,7 +264,7 @@ export default function Home() {
                 alignItems: "center",
               }}
             >
-              {/* 각 항목의 정보 */}
+              {/* 각 항목 정보 */}
               <div style={{ display: "flex", gap: "20px", flex: 1, alignItems: "center" }}>
                 {/* 이미지 영역 */}
                 <div style={{ flex: 0.5, textAlign: "center" }}>
@@ -279,7 +279,7 @@ export default function Home() {
                   />
                 </div>
 
-                {/* 주제, 담당자, 기업/개인, 카테고리, 날짜 간격 조정 및 균등한 크기 설정 */}
+                {/* 주제, 담당자, 기업/개인, 카테고리, 날짜 간격 조정 */}
                 <div
                   style={{
                     flex: 2,
@@ -351,12 +351,7 @@ export default function Home() {
                   }}
                   onClick={() => console.log("Arrow button clicked!")} // 버튼 클릭 시 이벤트
                 >
-                  <Image
-                    src={Arrow}
-                    alt="Arrow icon"
-                    width={20} // 원하는 크기 설정
-                    height={20} // 원하는 크기 설정
-                  />
+                  <Image src={Arrow} alt="Arrow icon" width={20} height={20} />
                 </button>
               </div>
             </div>
