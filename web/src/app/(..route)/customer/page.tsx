@@ -21,6 +21,9 @@ interface FormState {
 
 export default function Home() {
   function formAction(prevState: FormState, formData: FormData): FormState {
+    const value = formData.get('id');
+    console.log(value);
+
     return {
       isSuccess: true,
       isFailure: false,
@@ -498,7 +501,7 @@ export default function Home() {
       <div className="text-center py-2">
         --------------------------------------- Form ----------------------------------------------
       </div>
-      <Form id={"form"} action={formAction} failMessageControl={"tsoast"}>
+      <Form id={"form"} action={formAction} failMessageControl={"toast"}>
         <Card>
           <CardHeader>Card Header: 제출 할 폼의 이름</CardHeader>
           <CardContent>
