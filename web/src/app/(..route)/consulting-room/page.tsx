@@ -11,9 +11,8 @@ import { Dialog, DialogContent, DialogTrigger } from "@/app/ui/component/molecul
 import { useEffect, useState } from "react";
 
 export default function Home() {
-  // ToDo: userSearchParam 이용해서 isIndividual의 값에 따라 컴포넌트 내에서 다른 내용 보여주기
   const params = useSearchParams();
-  const [key, setKey] = useState('false');
+  const [key, setKey] = useState<string | null>('true');
   const [isDialogMounted, setIsDialogMounted] = useState(false);
 
   useEffect(() => {
