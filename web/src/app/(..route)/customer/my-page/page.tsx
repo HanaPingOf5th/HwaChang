@@ -241,7 +241,7 @@ export default function Home() {
           <div style={{ flex: 0.2 }}></div>
           <div style={{ flex: 2 }}>주제</div>
           <div style={{ flex: 0.7 }}>담당자</div>
-          <div style={{ flex: 0.2 }}>유형</div>
+          <div style={{ flex: 0.3 }}>유형</div>
           <div style={{ flex: 1 }}>카테고리</div>
           <div style={{ flex: 1 }}>화창 날짜</div>
           <div style={{ flex: 0.2 }}></div>
@@ -279,7 +279,6 @@ export default function Home() {
                   />
                 </div>
 
-                {/* 주제, 담당자, 기업/개인, 카테고리, 날짜 간격 조정 */}
                 <div
                   style={{
                     flex: 2,
@@ -307,7 +306,7 @@ export default function Home() {
                 <div
                   style={{
                     ...getTypeStyles("기업"),
-                    flex: 0.2,
+                    flex: 0.3,
                     fontWeight: 400,
                     fontSize: "18px",
                     lineHeight: "150%",
@@ -340,7 +339,6 @@ export default function Home() {
                 >
                   2024년 10월 22일
                 </div>
-                {/* Arrow 버튼 추가 */}
                 <button
                   style={{
                     background: "none",
