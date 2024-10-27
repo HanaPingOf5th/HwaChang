@@ -20,7 +20,7 @@ export default function Layout({ children }: { children: React.ReactNode; }) {
         <EntrancePage />
       ) : (
         <div className="flex h-screen flex-col md:flex-row md:overflow-hidden">
-          <div className="flex-none w-1/2">
+          <div className="w-full flex-none md:w-1/4">
             <TellerNav tellerInfo={tellerInfo}></TellerNav>
           </div>
           <div className="flex-grow">{children}</div>
