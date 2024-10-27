@@ -1,10 +1,10 @@
 import React from "react";
-import TabMenu from "@/app/ui/component/molecule/tabmenu/tab";
+import SideBar from "@/app/ui/teller-room/side-bar";
 
 export default function EntrancePage() {
   return (
-    <div className="p-5">
-      <TabMenu />
+    <div>
+      <SideBar />
     </div>
   )
 }

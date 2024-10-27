@@ -9,8 +9,8 @@ import SelectedMain from "@/app/utils/public/selected-main.svg";
 import SelectedCounsel from "@/app/utils/public/selected-counsel.svg";
 
 interface navLinkType {
-  name: string,
-  href: string,
+  name: string;
+  href: string;
 }
 
 const links: navLinkType[] = [

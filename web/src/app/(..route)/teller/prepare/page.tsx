@@ -1,4 +1,4 @@
-import Content from "@/app/ui/teller-room/content";
+import Content from "@/app/ui/teller-room/consultation-start-content";
 import InfoBar from "@/app/ui/teller-room/info-bar";
 import React from "react";
 
