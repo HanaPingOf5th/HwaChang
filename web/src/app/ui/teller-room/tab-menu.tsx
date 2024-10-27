@@ -14,7 +14,7 @@ interface TabItem {
 
 export default function TabMenu() {
   const TabData: TabItem[] = [
-    { id: 1, button: "과거 상담 기록", content: <CounselHistory /> },
+    { id: 1, button: "과거 상담 기록", content: <CounselHistory name="유유정" /> },
     { id: 2, button: "문서 검색", content: <DocumentSearch /> },
     { id: 3, button: "자료실", content: <Library /> },
   ];

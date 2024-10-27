@@ -4,7 +4,11 @@ import HistoryCard from "./history-card";
 import FormSelect from "../component/molecule/form/form-select-index";
 import { FormSelectItem } from "../component/molecule/form/form-select-item";
 
-export default function ConsultationHistory() {
+interface CustomerProps {
+  name: string;
+}
+
+export default function ConsultationHistory({ name }: CustomerProps) {
   const historyData = [
     {
       title: "신용대출, 사회초년생 상품",
@@ -31,7 +35,7 @@ export default function ConsultationHistory() {
       {/* 고객 정보 */}
       <div className="items-center">
         <div className="flex items-end space-x-2">
-          <p className="font-semibold text-3xl">유유정</p>
+          <p className="font-semibold text-3xl">{name}</p>
           <p className="font-semibold text-lg">고객님</p>
         </div>
 
