@@ -18,7 +18,7 @@ export default function Home() {
   
 
   return (
-    <main className="p-10">
+    <main className="p-5">
       <div className={`grid grid-cols-2 text-center gap-20`}>
         <Link href="./main/enterance?isIndividual=true">
           <Card className="shadow-lg hover:bg-green-50" style={{ boxShadow: "0 0 10px 0 #1FAB89" }}>
