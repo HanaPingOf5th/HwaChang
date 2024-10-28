@@ -34,14 +34,14 @@ export default function ConsultationHistory({ name }: CustomerProps) {
     <div className="p-7 space-y-4">
       {/* 고객 정보 */}
       <div className="items-center">
-        <div className="flex items-end space-x-2">
-          <p className="font-semibold text-3xl">{name}</p>
-          <p className="font-semibold text-lg">고객님</p>
+        <div className="flex items-center space-x-1">
+          <p className="font-semibold text-xl">{name}</p>
+          <p className="font-semibold text-sm">고객님</p>
         </div>
 
         {/* 필터링 옵션 */}
         <div className="flex justify-end w-full">
-          <div className="w-44">
+          <div className="w-32">
             <FormSelect placeholder={"최신순"}>
               <FormSelectItem value={"최신순"} placeholder={"최신순"} />
               <FormSelectItem value={"오래된순"} placeholder={"오래된순"} />

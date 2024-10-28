@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React from "react";
 import AchromaticButton from "../component/atom/button/achromatic-button";
 import Image from "next/image";
 import Logo from "@/app/utils/public/Logo.png";
@@ -8,16 +8,16 @@ import ProfileImg from "@/app/utils/public/lalalping.png";
 import { Card } from "../component/molecule/card/card";
 import TellerNavLinks from "./teller-nav-link";
 
-interface TellerInfo {
-  name: string;
-  position: string;
-  branch: string;
-  department: string;
-  availability: string;
-}
+// interface TellerInfo {
+//   name: string;
+//   position: string;
+//   branch: string;
+//   department: string;
+//   availability: string;
+// }
 
 export default function TellerNav() {
-  const [tellerInfo, setTellerInfo] = useState<TellerInfo | null>(null);
+  // const [tellerInfo, setTellerInfo] = useState<TellerInfo | null>(null);
 
   return (
     <div className="flex flex-col h-full bg-hwachang-darkgreen">
@@ -29,21 +29,21 @@ export default function TellerNav() {
       {/* 행원 정보 */}
       <div className="relative flex flex-col items-center flex-grow justify-center">
         {/* 프로필 사진 */}
-        <div className="relative z-10 mb-[-16px]">
+        <div className="relative z-10 mb-[-32px] mt-2">
           <Image
             src={ProfileImg}
             alt="프로필 사진"
-            className="object-cover w-52 h-52 rounded-full border-4 border-white shadow-lg"
+            className="object-cover w-48 h-48 rounded-full border-4 border-white shadow-lg"
           />
           <div className="absolute right-16 transform translate-x-8 bottom-1 w-9 h-9 bg-hwachang-active rounded-full border-4 border-white shadow-lg z-20"></div>
         </div>
 
         {/* 상세 정보(Card) - 이름, 직급, 지점, 담당 카테고리, 상담 가능 상태 */}
-        <Card className="relative bg-white shadow-lg rounded-3xl w-9/12">
+        <Card className="relative bg-white shadow-lg rounded-3xl w-9/12 mt-5">
           <div className="p-5 text-center">
             <div className="flex flex-col items-center mb-4">
-              <div className="flex items-baseline space-x-2 p-2">
-                <p className="text-4xl font-semibold">임수진</p>
+              <div className="flex items-baseline space-x-2">
+                <p className="text-3xl font-semibold">임수진</p>
                 <p className="text-xl text-gray1">대리</p>
               </div>
             </div>
@@ -63,7 +63,7 @@ export default function TellerNav() {
         </Card>
       </div>
 
-      <div className="flex grow flex-row justify-end space-x-2 md:flex-col md:space-x-0 md:space-y-2 mt-5 ml-10">
+      <div className="flex grow flex-row justify-end space-x-2 md:flex-col md:space-x-0 md:space-y-2 ml-10 mt-7">
         <TellerNavLinks />
         <div className="hidden h-auto w-full grow rounded-md bg-emerald-10 md:block"></div>
       </div>

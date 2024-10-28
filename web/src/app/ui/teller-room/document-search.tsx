@@ -3,10 +3,10 @@
 import React, { useState } from "react";
 import TextInput from "../component/atom/text-input/text-input";
 import { IoSearch } from "react-icons/io5";
-import Form from "../component/molecule/form/form-index";
-import { FormState } from "../component/molecule/form/form-root";
-import { FormTextInput } from "../component/molecule/form/form-textinput";
-import { FormSubmitButton } from "../component/molecule/form/form-submit-button";
+// import Form from "../component/molecule/form/form-index";
+// import { FormState } from "../component/molecule/form/form-root";
+// import { FormTextInput } from "../component/molecule/form/form-textinput";
+// import { FormSubmitButton } from "../component/molecule/form/form-submit-button";
 
 type Document = {
   title: string;
@@ -41,27 +41,27 @@ export default function DocumentSearch() {
     setSearchText(value);
   };
 
-  function formAction(prevState: FormState, formData: FormData): FormState {
-    const value = formData.get('search');
+  // function formAction(prevState: FormState, formData: FormData): FormState {
+  //   const value = formData.get('search');
 
-    if (value == 'fail') {
-      return {
-        isSuccess: false,
-        isFailure: true,
-        message: "실패 !",
-        validationError: {},
-      };
-    } else {
-      console.log('검색 액션을 실행했습니다.');
-      console.log('검색어: ', value);
-      return {
-        isSuccess: true,
-        isFailure: false,
-        message: "",
-        validationError: {},
-      };
-    }
-  }
+  //   if (value == 'fail') {
+  //     return {
+  //       isSuccess: false,
+  //       isFailure: true,
+  //       message: "실패 !",
+  //       validationError: {},
+  //     };
+  //   } else {
+  //     console.log('검색 액션을 실행했습니다.');
+  //     console.log('검색어: ', value);
+  //     return {
+  //       isSuccess: true,
+  //       isFailure: false,
+  //       message: "",
+  //       validationError: {},
+  //     };
+  //   }
+  // }
 
   // 검색어 기반으로 필터링된 문서 반환
   const filteredDocuments = documents.filter(document =>
@@ -100,7 +100,7 @@ export default function DocumentSearch() {
           placeholder="찾고 싶은 문서를 검색해보세요."
           value={searchText}
           onValueChange={handleSearchChange}
-          className="flex-1 p-2 border rounded-l-lg border-gray-300"
+          className="flex-1 p-1 border rounded-l-lg border-gray-300"
         />
         <button className="px-5 py-2 bg-hwachang-darkgreen text-white rounded-lg">검색</button>
       </div>
@@ -109,7 +109,7 @@ export default function DocumentSearch() {
         {categories.map((category) => (
           <button
             key={category}
-            className="hover:underline"
+            className=" text-sm hover:underline"
           >
             {category}
           </button>
@@ -123,8 +123,8 @@ export default function DocumentSearch() {
             className="flex flex-col items-center p-4"
           >
             <button className="flex flex-col items-center">
-              <img src="https://raw.githubusercontent.com/Tarikul-Islam-Anik/Animated-Fluent-Emojis/master/Emojis/Objects/Page%20Facing%20Up.png" alt="Page Facing Up" width="150" height="150" />
-              <p className="text-left text-lg font-medium">{doc.title}</p>
+              <img src="https://raw.githubusercontent.com/Tarikul-Islam-Anik/Animated-Fluent-Emojis/master/Emojis/Objects/Page%20Facing%20Up.png" alt="Page Facing Up" width="80" height="80" />
+              <p className="text-left text-sm font-medium">{doc.title}</p>
             </button>
           </div>
         ))}
@@ -134,7 +134,7 @@ export default function DocumentSearch() {
         {currentPage > 1 && (
           <button
             onClick={handlePrevPage}
-            className="px-5 py-3 rounded-md border border-hwachang-darkgreen text-hwachang-darkgreen"
+            className="px-5 py-2 rounded-md border border-hwachang-darkgreen text-hwachang-darkgreen"
           >
             이전
           </button>
@@ -142,7 +142,7 @@ export default function DocumentSearch() {
         {currentPage < totalPages && (
           <button
             onClick={handleNextPage}
-            className="px-5 py-3 border rounded-md bg-hwachang-darkgreen text-white"
+            className="px-5 py-2 border rounded-md bg-hwachang-darkgreen text-white"
           >
             다음
           </button>
