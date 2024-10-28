@@ -41,7 +41,7 @@ export default function NavLinks() {
                 alt={`${link.name} Icon`}
                 width={20}
                 height={20}
-                className="ml-7 mr-5"
+                className="ml-7 mr-5 md:ml-8 lg:ml-10 xl:ml-12 2xl:ml-14" // ml-14에서 시작하고 줄어드는 마진 설정
               />
               <p>{link.name}</p>
             </Link>
