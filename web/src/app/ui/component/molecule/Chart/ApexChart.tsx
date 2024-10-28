@@ -1,54 +1,42 @@
 "use client";
+import dynamic from "next/dynamic";
+import { ApexOptions } from "apexcharts";
 
-import dynamic from 'next/dynamic';
-import { ApexOptions } from 'apexcharts'; // ApexOptions 타입 import
-
-const Chart = dynamic(() => import('react-apexcharts'), { ssr: false });
+const ReactApexChart = dynamic(() => import("react-apexcharts"), { ssr: false });
 
 interface ApexChartProps {
-  series: number[];
-  labels: string[];
-  totalLabel?: string;
-  totalValue?: number;
+  series: { name: string; data: number[] }[];
+  xaxisCategories: string[];
+  colors?: string[];
 }
 
-const ApexChart: React.FC<ApexChartProps> = ({
-  series,
-  labels,
-  totalLabel = 'Total',
-  totalValue = series.reduce((a, b) => a + b, 0),
-}) => {
-  // 객체에 ApexOptions 타입을 명시적으로 부여합니다.
+export default function ApexChart({ series, xaxisCategories, colors }: ApexChartProps) {
   const options: ApexOptions = {
     chart: {
-      height: 350,
-      type: 'radialBar', // 여기에서 정확한 리터럴 타입을 사용합니다.
-    },
-    plotOptions: {
-      radialBar: {
-        dataLabels: {
-          name: {
-            fontSize: '22px',
-          },
-          value: {
-            fontSize: '16px',
-          },
-          total: {
-            show: true,
-            label: totalLabel,
-            formatter: () => totalValue,
-          },
-        },
+      height: 300,
+      type: "area",
+      animations: {
+        enabled: true,
+        easing: 'linear',  
+        speed: 800,
+        animateGradually: { enabled: true, delay: 150 },
+        dynamicAnimation: { enabled: true, speed: 350 },
+      },
+      fontFamily: 'Pretendard',
+      toolbar: {
+        show: true,
+        offsetX: -510,
+        offsetY: -10,
+        tools: { download: true, zoom: true, pan: true, reset: true },
+        autoSelected: 'zoom',
       },
     },
-    labels,
+    dataLabels: { enabled: false },
+    stroke: { curve: "smooth" },
+    xaxis: { type: undefined, categories: xaxisCategories },
+    tooltip: { x: { format: "yyyy년 MM월 dd일  HH시" } },
+    colors: colors || ['#03BAE2', '#FF6F6F', '#546E7A'],
   };
 
-  return (
-    <div>
-      <Chart options={options} series={series} type="radialBar" height={350} />
-    </div>
-  );
-};
-
-export default ApexChart;
+  return <ReactApexChart options={options} series={series} type="area" height={250} />;
+}

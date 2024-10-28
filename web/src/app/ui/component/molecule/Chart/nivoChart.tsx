@@ -12,7 +12,7 @@ interface MyResponsiveRadialBarProps {
 }
 
 const MyResponsiveRadialBar: React.FC<MyResponsiveRadialBarProps> = ({ data }) => (
-  <div className='w-3/5'>
+  <div className='h-1/3'>
     <ResponsiveRadialBar
       data={data}
       valueFormat=">-.2%"
