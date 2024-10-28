@@ -21,11 +21,11 @@ export default function NavLinks() {
   const pathName = usePathname();
   return (
     <>
-      {links.map((link) => {
+      {links.map((link, index) => {
         const isSelected = pathName.startsWith(link.href);
 
         return (
-          <div key={link.name}>
+          <div key={index}>
             <Link
               key={link.name}
               href={link.href}
@@ -40,8 +40,8 @@ export default function NavLinks() {
               <Image
                 src={link.icon}
                 alt={`${link.name} Icon`}
-                width={22}
-                height={22}
+                width="22"
+                height="22"
                 className="ml-5"
               />
               <p className="text-xl">{link.name}</p>
