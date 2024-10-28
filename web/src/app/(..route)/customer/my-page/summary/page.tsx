@@ -207,7 +207,7 @@ export default function SummaryPage({ record }) {
           <div className="mt-4">
             {/* 진행상태 바 */}
             <div
-              className="relative w-full h-2 bg-gray-400 rounded-full overflow-hidden cursor-pointer"
+              className="relative w-full h-2 bg-gray-200 rounded-full overflow-hidden cursor-pointer"
               onClick={handleBarClick}
             >
               <div
@@ -220,8 +220,7 @@ export default function SummaryPage({ record }) {
             </div>
 
             {/* 진행시간 */}
-            <div className="flex justify-between text-sm mt-2">
-              <span>00:00</span>
+            <div className="flex justify-between text-sm mt-2 text-white">
               <span>{formatTime(progress)}</span>
               <span>{formatTime(totalDuration)}</span>
             </div>
