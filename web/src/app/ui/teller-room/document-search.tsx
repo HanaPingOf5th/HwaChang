@@ -3,6 +3,10 @@
 import React, { useState } from "react";
 import TextInput from "../component/atom/text-input/text-input";
 import { IoSearch } from "react-icons/io5";
+import Form from "../component/molecule/form/form-index";
+import { FormState } from "../component/molecule/form/form-root";
+import { FormTextInput } from "../component/molecule/form/form-textinput";
+import { FormSubmitButton } from "../component/molecule/form/form-submit-button";
 
 type Document = {
   title: string;
@@ -37,6 +41,28 @@ export default function DocumentSearch() {
     setSearchText(value);
   };
 
+  function formAction(prevState: FormState, formData: FormData): FormState {
+    const value = formData.get('search');
+
+    if (value == 'fail') {
+      return {
+        isSuccess: false,
+        isFailure: true,
+        message: "실패 !",
+        validationError: {},
+      };
+    } else {
+      console.log('검색 액션을 실행했습니다.');
+      console.log('검색어: ', value);
+      return {
+        isSuccess: true,
+        isFailure: false,
+        message: "",
+        validationError: {},
+      };
+    }
+  }
+
   // 검색어 기반으로 필터링된 문서 반환
   const filteredDocuments = documents.filter(document =>
     document.title.includes(searchText)
@@ -62,6 +88,12 @@ export default function DocumentSearch() {
   return (
     <div className="p-4 max-w-3xl mx-auto">
       <div className="mb-4 flex gap-3">
+        {/* <Form id={"search-form"} action={formAction} failMessageControl={"alert"}>
+          <div className="grid grid-rows-2">
+            <FormTextInput label={""} id={"search"} placeholder={"찾으시는 자료의 제목이나 내용을 입력하세요"} />
+            <FormSubmitButton label={"검색"} />
+          </div>
+        </Form> */}
         <TextInput
           type="text"
           icon={IoSearch}
