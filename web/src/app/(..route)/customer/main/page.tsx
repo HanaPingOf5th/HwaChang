@@ -6,27 +6,29 @@ import Link from "next/link";
 import red_eclipse from "@/app/utils/public/red_eclipse.svg";
 import green_eclipse from "@/app/utils/public/green_eclipse.svg";
 import Image from "next/image";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 export default function Home() {
   const [individualWaitTime, setIndividualWaitTime] = useState<number>(3);
   const [companyWaitTime, setCompanyWaitTime] = useState<number>(99);
 
-  // setIndividualWaitTime(3);
-  // setCompanyWaitTime(11);
+  useEffect(()=>{
+    setIndividualWaitTime(3);
+    setCompanyWaitTime(11);
+  }, [])
+  
 
   return (
-    <main>
-      <div className={`grid mx-8 pt-2 gap-28 grid-cols-2 text-center `}>
+    <main className="p-10">
+      <div className={`grid grid-cols-2 text-center gap-20`}>
         <Link href="./main/enterance?isIndividual=true">
           <Card className="shadow-lg hover:bg-green-50" style={{ boxShadow: "0 0 10px 0 #1FAB89" }}>
             <CardHeader>
-              {" "}
               <p className="text-4xl mt-8 mb-8" style={{ color: "#1FAB89" }}>
                 <strong>개인</strong>
               </p>
             </CardHeader>
             <CardContent>
-              <div className="flex flex-col justify-center items-center">
+              <div className="flex flex-col justify-center items-center py-20">
                 <HouseEmoji heignt={200} width={200} />
               </div>
               <div className="flex justify-center items-center pt-12 text-2xl">
@@ -66,7 +68,7 @@ export default function Home() {
               </p>{" "}
             </CardHeader>
             <CardContent>
-              <div className="flex flex-col justify-center items-center ">
+              <div className="flex flex-col justify-center items-center py-20">
                 <EnterPriseEmoji heignt={200} width={200} />
               </div>
               <div className="flex justify-center items-center pt-12 text-2xl">
