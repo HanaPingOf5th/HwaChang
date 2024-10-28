@@ -12,6 +12,7 @@ import { Dialog, DialogContent, DialogTrigger } from "@/app/ui/component/molecul
 import { useEffect, useState } from "react";
 import Image from "next/image";
 import Xemoji from "@/app/utils/public/Xemoji.svg";
+import { MatchingAlarm } from "@/app/ui/consulting-room/matching-alarm";
 
 
 export default function Home() {
@@ -73,8 +74,22 @@ export default function Home() {
               </DialogContent>
             }
           </Dialog>
-          
         </div>
+{/*삭제예정*/}
+        <Dialog>
+            <DialogTrigger asChild>
+              <AchromaticButton className="bg-hwachang-brightgreen hover:bg-hwachang-lightgreen text-black">
+                (삭제 예정) 매칭 알림
+              </AchromaticButton>
+            </DialogTrigger>
+            {
+              isDialogMounted &&
+              <DialogContent>
+                <MatchingAlarm/>
+              </DialogContent>
+            }
+          </Dialog>
+{/*삭제예정*/}
       </div>
       : <Card className="grid gap-6 grid-cols-3 text-center px-3 py-3">
           <Card>
