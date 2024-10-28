@@ -23,32 +23,32 @@ export default function HistoryCard({ cardItem }: HistoryCardProps) {
 
   return (
     <div
-      className={`border-2 border-hwachang-gray3 rounded-lg ${isOpen ? "rounded-b-none" : ""}`}
+      className={`rounded-lg shadow-md ${isOpen ? "rounded-b-none" : ""}`}
       onClick={toggleOpen}
     >
       <div className="flex justify-between items-center p-4">
         <div>
-          <div className="text-2xl font-semibold">{title}</div>
+          <div className="text-lg font-semibold">{title}</div>
           <div className="flex space-x-4 mt-3 items-center">
-            <Badge className="bg-hwachang-lightgreen1 rounded-sm px-8 text-lg font-normal text-black hover:bg-hwachang-lightgreen1">
+            <Badge className="bg-hwachang-lightgreen1 rounded-sm px-6 text-sm font-normal text-black hover:bg-hwachang-lightgreen1">
               {category}
             </Badge>
-            <div className="font-normal">{date}</div>
+            <div className="text-sm">{date}</div>
           </div>
         </div>
-        <div className="mr-5">
-          {isOpen ? <SlArrowUp size="40" color="gray" /> : <SlArrowDown size="40" color="gray" />}
+        <div className="mr-3">
+          {isOpen ? <SlArrowUp size="30" color="gray" /> : <SlArrowDown size="30" color="gray" />}
         </div>
       </div>
 
       {/* 구분선 */}
       {isOpen && (
-        <hr className="border-t-2 border-hwachang-gray3" />
+        <hr className="shadow-md" />
       )}
 
       {/* 카드를 펼쳤을 때 나타날 공간 */}
       {isOpen && (
-        <div className="p-4 text-xl font-medium">
+        <div className="p-4 font-medium">
           {content}
         </div>
       )}

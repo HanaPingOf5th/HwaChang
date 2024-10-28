@@ -27,7 +27,7 @@ export default function TabMenu() {
         <AchromaticButton
           className=
           {
-            `text-white rounded-t-3xl rounded-b-none px-10 py-6 text-lg 
+            `text-white rounded-t-3xl rounded-b-none px-8 py-6 text-sm
             ${selectedTab === tab.id ? "bg-hwachang-green" : "bg-hwachang-hanasilver"}`
           }
           key={tab.id}
@@ -37,7 +37,7 @@ export default function TabMenu() {
         </AchromaticButton>
       ))}
 
-      <Card className="rounded-none">
+      <Card className="rounded-b-none">
         {TabData.find((tab) => tab.id === selectedTab)?.content}
       </Card>
     </div>
