@@ -16,7 +16,7 @@ export default function Home() {
 
   return (
     <main>
-      <div className={`grid pt-24 gap-28 grid-cols-2 text-center `}>
+      <div className={`grid mx-8 pt-24 gap-28 grid-cols-2 text-center `}>
         <Link href='./main/enterance?isIndividual=true'>
           <Card className="shadow-lg hover:bg-green-50" style={{ boxShadow:'0 0 10px 0 #1FAB89' }}>
           <CardHeader> <p className="text-8xl mt-12 mb-16" style={{ color: '#1FAB89' }}>
@@ -49,7 +49,7 @@ export default function Home() {
         </Link>
 
         <Link href='./main/enterance?isIndividual=false'>
-          <Card className="hover:bg-green-50" style={{ boxShadow:'0 0 10px 0 #1FAB89', backgroundColor: '#1FAB89' }} >
+          <Card className="bg-hwachang-darkgreen hover:bg-hwachang-green" style={{ boxShadow:'0 0 10px 0 #1FAB89'}} >
             <CardHeader> <p className="text-8xl mt-12 mb-16 text-white"><strong>기업</strong></p> </CardHeader>
             <CardContent>
               <div className="flex flex-col justify-center items-center ">
