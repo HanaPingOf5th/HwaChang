@@ -7,7 +7,7 @@ export default function Layout({ children }: { children: React.ReactNode; }) {
       <div className="flex-none md:w-1/4">
         <TellerNav />
       </div>
-      <div className="flex-grow">{children}</div>
+      <div className="flex-grow overflow-auto">{children}</div>
     </div>
   );
 }

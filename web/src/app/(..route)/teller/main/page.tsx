@@ -12,7 +12,7 @@ const sampleData = [
   {
     id: '불만족 고객',
     data: [
-      { x: '만족 고객', y:0.3 },
+      { x: '불만족 고객', y:0.3 },
     ],
   },
   {
@@ -24,7 +24,7 @@ const sampleData = [
   {
     id: '만족 고객',
     data: [
-      { x: '불만족 고객', y: 0.5 },
+      { x: '만족 고객', y: 0.5 },
     ],
   },
 ];
@@ -64,19 +64,19 @@ export default function Main(){
     return(
         <main>
             
-            <div className={`grid gap-12 grid-cols-3 px-10`}>
+            <div className={`grid gap-12 grid-cols-3 px-10 py-5`}>
                 <div className={`grid gap-12 grid-rows-2 col-span-2`}>
-                    <Card className="border-none row-span-1 shadow-banker-card h-full">
+                    <Card className="border-none row-span-1 shadow-banker-card">
                         <CardHeader> <p className="text-3xl font-semibold text-hwachang-green1"> 최근 나의 화창 만족도 </p> </CardHeader>
                         <CardContent>
                             <div className="flex justify-items-center">
                             <RadialBarDynamic data={sampleData} />
                             <div className="m-auto ">
                                 <Card className="bg-hwachang-hwachangcolor mx-2 shadow-hwachang-hwachangcolor">
-                                    <CardHeader className="font-semibold text-2xl text-white text-center">
+                                    <CardHeader className="font-semibold text-3xl text-white text-center">
                                         <p className="font-bold mb-1">임수진 대리 </p> NPS 점수
                                     </CardHeader>
-                                    <CardContent className="font-black text-3xl text-white text-center pb-3">80점</CardContent>
+                                    <CardContent className="font-black text-5xl text-white text-center pb-5">80점</CardContent>
                                 </Card>
                                 <p className="text-xs text-hwachang-hwachangcolor font-semibold pt-2">NPS란 ?</p>
                                 <p className="text-xs text-hwachang-hwachangcolor">Net Promoter Score의 약자로, <br/>
