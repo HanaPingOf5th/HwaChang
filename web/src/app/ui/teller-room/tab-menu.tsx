@@ -37,7 +37,7 @@ export default function TabMenu() {
         </AchromaticButton>
       ))}
 
-      <Card className="rounded-b-none">
+      <Card className="rounded-lg rounded-tl-none">
         {TabData.find((tab) => tab.id === selectedTab)?.content}
       </Card>
     </div>

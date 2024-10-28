@@ -102,7 +102,7 @@ export default function DocumentSearch() {
           onValueChange={handleSearchChange}
           className="flex-1 p-1 border rounded-l-lg border-gray-300"
         />
-        <button className="px-5 py-1 bg-hwachang-darkgreen text-white rounded-lg">검색</button>
+        <button className="px-5 py-2 bg-hwachang-darkgreen text-white rounded-lg">검색</button>
       </div>
 
       <div className="p-2 flex flex-wrap gap-4">
