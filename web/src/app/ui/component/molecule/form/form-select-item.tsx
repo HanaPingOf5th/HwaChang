@@ -4,9 +4,10 @@ import { twMerge } from 'tailwind-merge';
 interface FormSelectItemProps {
   value: string;
   placeholder: string;
+  onSelect?: () => void;
 }
 
-export function FormSelectItem({ value, placeholder }: FormSelectItemProps) {
+export function FormSelectItem({ value, placeholder, onSelect }: FormSelectItemProps) {
   return (
     <Listbox.Option
       className={twMerge(
@@ -14,6 +15,7 @@ export function FormSelectItem({ value, placeholder }: FormSelectItemProps) {
         'text-gray-700 ui-selected:bg-gray-200 hover:bg-gray-100 ',
       )}
       value={value}
+      onClick={onSelect}
     >
       <span className="truncate whitespace-nowrap">{placeholder}</span>
     </Listbox.Option>

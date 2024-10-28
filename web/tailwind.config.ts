@@ -68,6 +68,10 @@ const config: Config = {
         sans: ['var(--font-sans)', ...fontFamily.sans],
         pretendard: ['var(--font-pretendard)'],
       },
+      boxShadow : {
+        'banker-card' : '0px 0px 10px 0px rgba(48,48,48,0.25)',
+        'score-board' : '0px 0px 10px 0px rgba(48,48,48,0.25)',
+      }
     },
   },
   safelist: [
