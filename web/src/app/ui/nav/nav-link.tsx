@@ -2,15 +2,19 @@
 import Link from "next/link";
 import clsx from "clsx";
 import { usePathname } from "next/navigation";
+import Image from "next/image";
+import Profile from "@/app/utils/public/Profile.png";
+import History from "@/app/utils/public/History.png";
 
 interface navLinkType {
   name: string;
   href: string;
+  icon: StaticImageData;
 }
 
 const links: navLinkType[] = [
-  { name: "화상 상담", href: "/customer/main" },
-  { name: "마이 페이지 - 히스토리", href: "/customer/main/my-page" },
+  { name: "화상 창구", href: "/customer/main", icon: Profile },
+  { name: "나의 화창 기록", href: "/customer/my-page", icon: History },
 ];
 
 export default function NavLinks() {
@@ -18,21 +22,27 @@ export default function NavLinks() {
   return (
     <>
       {links.map((link) => {
+        const isSelected = pathName.startsWith(link.href);
+
         return (
           <Link
             key={link.name}
             href={link.href}
             className={clsx(
-              `flex h-[48px] grow items-center
-              justify-center gap-2 rounded-md 
-              bg-white p-3 text-sm text-emerald-600
-              font-medium
-              hover:bg-emerald-200 hover:text-emerald-600
-              md:flex-none md:justify-start
-              md:p-2 md:px-3`,
-              { "bg-emerald-200 text-emerald-800": pathName === link.href }
+              `flex h-[80px] grow items-center justify-start gap-2 p-3 text-[20px] font-medium mt-5
+               md:flex-none md:justify-start md:p-2 md:px-5`,
+              isSelected
+                ? "bg-[#62D2A2] text-white rounded-3xl rounded-r-none"
+                : "bg-hwachang-darkgreen text-white rounded-md",
             )}
           >
+            <Image
+              src={link.icon}
+              alt={`${link.name} Icon`}
+              width={20}
+              height={20}
+              className="ml-5 mr-2"
+            />
             <p>{link.name}</p>
           </Link>
         );

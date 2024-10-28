@@ -35,6 +35,7 @@ const config: Config = {
           darkgreen: "#1FAB89",
           green: "#62D2A2",
           lightgreen: "#9DF3C4",
+          lightgreen1: "#B8F6D6",
           brightgreen: "#D7FBE8",
           hanagreen: "#008485",
           hanared: "#E90061",
@@ -47,6 +48,8 @@ const config: Config = {
           gray2: "#D6D6D6",
           gray3: "#BEBEBE",
           green1: "#275247",
+          black: "#4B4B4B",
+          active: "#39D72A",
         },
       },
       borderRadius: {
