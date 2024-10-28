@@ -82,13 +82,10 @@ export default function Home() {
                 (삭제 예정) 매칭 알림
               </AchromaticButton>
             </DialogTrigger>
-            {
-              isDialogMounted &&
-              <DialogContent>
-                <MatchingAlarm/>
-              </DialogContent>
-            }
-          </Dialog>
+            <DialogContent>
+              <MatchingAlarm/>
+            </DialogContent>    
+        </Dialog>
 {/*삭제예정*/}
       </div>
       : <Card className="grid gap-6 grid-cols-3 text-center px-3 py-3">
