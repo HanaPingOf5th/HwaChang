@@ -27,12 +27,29 @@ interface AiSummary {
   mainTopics: string[];
 }
 
-export default function SummaryPage() {
+export default function SummaryPage({ record }) {
   const [selectedSpeaker, setSelectedSpeaker] = useState<string>("전체");
   const [isPlaying, setIsPlaying] = useState(false);
   const [progress, setProgress] = useState(0);
   const [type, setType] = useState<string>("개인"); // 개인일지 기업일지 가져와야함
   const totalDuration = 30 * 60; // 총 30분을 초 단위로 설정
+
+  // my-page와 동일한 유형 스타일을 적용하는 함수
+  const getTypeStyles = (type) => {
+    return {
+      display: "flex",
+      flexDirection: "row",
+      justifyContent: "center",
+      alignItems: "center",
+      padding: "3px 8px",
+      gap: "10px",
+      width: "50px",
+      height: "31px",
+      background: type === "개인" ? "#CADCFF" : "#FFCACA",
+      borderRadius: "3px",
+      color: type === "개인" ? "#2C71F6" : "#F62C2C",
+    };
+  };
 
   const [sttSummaries] = useState<SttSummary[]>([
     {
@@ -120,6 +137,8 @@ export default function SummaryPage() {
     setIsEditing(false);
   };
 
+  if (!record) return null;
+
   return (
     <main>
       <h1 className="text-4xl font-bold text-gray-800 mt-4">상담 요약 페이지</h1>
@@ -129,24 +148,19 @@ export default function SummaryPage() {
         <div className="grid gap-4 text-lg text-gray-500 font-pretendard">
           <div className="flex items-center">
             <span className="w-40">유형:</span>
-            <span
-              className={`px-3 py-1 rounded-md ${
-                type === "개인" ? "bg-blue-100 text-blue-600" : "bg-red-100 text-red-600"
-              }`}
-            >
-              {type}
-            </span>
+            <span style={getTypeStyles(record.유형)}>{record.유형}</span>
           </div>
           <div className="flex items-center">
-            <span className="w-40">카테고리:</span> <span className="text-black">대출</span>
+            <span className="w-40">카테고리:</span>{" "}
+            <span className="text-black">{record.카테고리}</span>
           </div>
           <div className="flex items-center">
             <span className="w-40">담당자:</span>
-            <span className="text-black">임수진 대리</span>
+            <span className="text-black">{record.담당자}</span>
           </div>
           <div className="flex items-center">
             <span className="w-40">화창 날짜:</span>{" "}
-            <span className="text-black">2024년 10월 23일</span>
+            <span className="text-black">{record.날짜}</span>
           </div>
         </div>
       </div>
@@ -215,24 +229,24 @@ export default function SummaryPage() {
             {/* 플레이버튼 */}
             <div className="flex items-center justify-center space-x-6 mt-4">
               <TbRewindBackward5
-                className="cursor-pointer text-3xl hover:text-teal-300 transition-all transform hover:scale-110"
+                className="cursor-pointer text-3xl text-white hover:text-teal-300 transition-all transform hover:scale-110"
                 title="Rewind 5s"
               />
               {isPlaying ? (
                 <IoMdPause
                   onClick={handlePlayPause}
-                  className="cursor-pointer text-4xl hover:text-teal-300 transition-all transform hover:scale-110"
+                  className="cursor-pointer text-4xl text-white hover:text-teal-300 transition-all transform hover:scale-110"
                   title="Pause"
                 />
               ) : (
                 <IoPlay
                   onClick={handlePlayPause}
-                  className="cursor-pointer text-4xl hover:text-teal-300 transition-all transform hover:scale-110"
+                  className="cursor-pointer text-4xl text-white hover:text-teal-300 transition-all transform hover:scale-110"
                   title="Play"
                 />
               )}
               <TbRewindForward5
-                className="cursor-pointer text-3xl hover:text-teal-300 transition-all transform hover:scale-110"
+                className="cursor-pointer text-3xl text-white hover:text-teal-300 transition-all transform hover:scale-110"
                 title="Forward 5s"
               />
             </div>
@@ -252,7 +266,7 @@ export default function SummaryPage() {
 
         {isEditing ? (
           <>
-            <CardContent className="bg-white p-6 rounded-lg shadow-md max-w-3xl mx-auto mb-6">
+            <CardContent className="bg-gray-50 p-2 rounded-lg shadow-md mx-6 mb-6">
               <CardTitle className="text-xl font-semibold mb-4">주요 주제</CardTitle>
               <input
                 type="text"
@@ -264,7 +278,7 @@ export default function SummaryPage() {
               />
             </CardContent>
 
-            <CardContent className="bg-white p-6 rounded-lg shadow-md max-w-3xl mx-auto mb-6">
+            <CardContent className="bg-gray-50 p-2 rounded-lg shadow-md mx-6 mb-6">
               <CardTitle className="text-xl font-semibold mb-4">요약</CardTitle>
               <textarea
                 value={editedContent.join("\n")}
@@ -279,7 +293,7 @@ export default function SummaryPage() {
           </>
         ) : (
           <>
-            <CardContent className="bg-white p-6 rounded-lg shadow-md max-w-3xl mx-auto mb-6">
+            <CardContent className="bg-gray-50 p-2 rounded-lg shadow-md mx-6 mb-6">
               <CardTitle className="text-xl font-semibold mb-4">주요 주제</CardTitle>
               <ul className="list-disc list-inside space-y-2">
                 {aiSummaries[0].mainTopics.map((topic, index) => (
@@ -288,7 +302,7 @@ export default function SummaryPage() {
               </ul>
             </CardContent>
 
-            <CardContent className="bg-white p-6 rounded-lg shadow-md max-w-3xl mx-auto mb-6">
+            <CardContent className="bg-gray-50 p-2 rounded-lg shadow-md mx-6 mb-6">
               <CardTitle className="text-xl font-semibold mb-4">요약</CardTitle>
               <ul className="list-disc list-inside space-y-2">
                 {aiSummaries[0].content.map((text, index) => (
@@ -296,6 +310,7 @@ export default function SummaryPage() {
                 ))}
               </ul>
             </CardContent>
+
             <CardContent>
               <AchromaticButton onClick={handleEditClick}>수정하기</AchromaticButton>
             </CardContent>
