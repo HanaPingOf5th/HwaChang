@@ -21,9 +21,9 @@ export default function TellerNav() {
 
   return (
     <div className="flex flex-col h-full bg-hwachang-darkgreen">
-      <div className="flex h-24 justify-center items-center">
+      <div className="flex justify-center items-center">
         {/* 로고 */}
-        <Image src={Logo} alt="Logo" width={100} height={80} className="mt-5" />
+        <Image src={Logo} alt="Logo" width={80} height={60} className="mt-5" />
       </div>
 
       {/* 행원 정보 */}
