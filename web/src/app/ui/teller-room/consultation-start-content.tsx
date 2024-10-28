@@ -7,8 +7,8 @@ interface waitingCountProps {
 
 export default function ConsultationStartContent({ waitingCount }: waitingCountProps) {
   return (
-    <div className="flex flex-col justify-center items-center space-y-10 mt-[28vh]">
-      <div className="flex text-hwachang-green1 font-bold text-5xl mb-6">
+    <div className="flex flex-col items-center space-y-8 mt-[28vh]">
+      <div className="text-hwachang-green1 font-bold text-5xl mb-6">
         고객과의 화상 상담을 시작하세요
       </div>
       <div className="text-hwachang-green1 text-2xl">
