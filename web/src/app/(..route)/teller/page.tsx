@@ -1,10 +1,7 @@
-import DocumentSearch from '@/app/ui/teller-room/document-search'
-import React from 'react'
+import React from "react";
 
 export default function page() {
   return (
-    <div>
-      <DocumentSearch />
-    </div>
+    <div>행원 페이지입니다.</div>
   )
 }
