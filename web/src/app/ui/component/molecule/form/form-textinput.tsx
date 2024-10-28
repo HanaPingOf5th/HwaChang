@@ -4,25 +4,31 @@ import { useContext } from 'react';
 import { useFormStatus } from 'react-dom';
 
 interface FormTextInputProps {
-  label: string;
+  label?: string;
   id: string;
   placeholder: string;
   required?: boolean;
+  className?: string;
 }
 
-export function FormTextInput({ label, id, placeholder, required = false }: FormTextInputProps) {
+export function FormTextInput({ label, id, placeholder, required = false, className }: FormTextInputProps) {
   const { errors } = useContext(FormContext);
   const { pending } = useFormStatus();
 
   return (
     <div className="group">
-      <label
-        htmlFor={id}
-        className="mb-2 block text-sm font-medium group-has-[:required]:after:pl-1 group-has-[:required]:after:text-red-400 group-has-[:required]:after:content-['*']"
-      >
-        {label}
-      </label>
+      {
+        label?(
+          <label
+            htmlFor={id}
+            className="mb-2 block text-sm font-medium group-has-[:required]:after:pl-1 group-has-[:required]:after:text-red-400 group-has-[:required]:after:content-['*']"
+          >
+            {label}
+          </label>
+        ):null
+      }
       <TextInput
+        className={className}
         required={required}
         disabled={pending}
         error={errors[id] ? true : false}
