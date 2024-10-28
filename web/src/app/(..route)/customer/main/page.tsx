@@ -28,7 +28,7 @@ export default function Home() {
               </p>
             </CardHeader>
             <CardContent>
-              <div className="flex flex-col justify-center items-center py-20">
+              <div className="flex flex-col justify-center items-center py-10">
                 <HouseEmoji heignt={200} width={200} />
               </div>
               <div className="flex justify-center items-center pt-12 text-2xl">
@@ -68,7 +68,7 @@ export default function Home() {
               </p>{" "}
             </CardHeader>
             <CardContent>
-              <div className="flex flex-col justify-center items-center py-20">
+              <div className="flex flex-col justify-center items-center py-10">
                 <EnterPriseEmoji heignt={200} width={200} />
               </div>
               <div className="flex justify-center items-center pt-12 text-2xl">
