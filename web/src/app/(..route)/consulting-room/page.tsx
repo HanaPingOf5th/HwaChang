@@ -1,14 +1,18 @@
 'use client'
 import AchromaticButton from "@/app/ui/component/atom/button/achromatic-button";
-import { FineEmoji } from "@/app/ui/component/atom/fluent-emoji";
+import { FineEmoji, GestureXEmoji } from "@/app/ui/component/atom/fluent-emoji";
 import { Card, CardContent, CardFooter} from "@/app/ui/component/molecule/card/card";
 import { useSearchParams } from "next/navigation";
 import Banker from '@/app/utils/public/banker.png';
 import { NameTag } from "@/app/ui/component/atom/name-tag";
 import { AiOutlineAudio } from "react-icons/ai";
-import { IoShareSocialOutline, IoSettingsOutline, IoVideocamOutline  } from "react-icons/io5";
+import { HiInformationCircle } from "react-icons/hi";
+import { IoRefresh, IoShareSocialOutline, IoSettingsOutline, IoVideocamOutline  } from "react-icons/io5";
 import { Dialog, DialogContent, DialogTrigger } from "@/app/ui/component/molecule/dialog/dialog";
 import { useEffect, useState } from "react";
+import Image from "next/image";
+import Xemoji from "@/app/utils/public/Xemoji.svg";
+
 
 export default function Home() {
   const params = useSearchParams();
@@ -43,9 +47,28 @@ export default function Home() {
             </DialogTrigger>
             {
               isDialogMounted &&
-              <DialogContent title="대기현황" titleClassName="text-center">
-                <div className="flex justify-center p-10">
-                  <FineEmoji width={200} heignt={200}/>
+              <DialogContent>
+                <div className="flex flex-col items-center">
+                  <div className="w-full flex justify-end">
+                    <Image src={Xemoji} alt="xemoji" width={20} height={20} />
+                  </div>
+                  <div className="flex justify-center p-10">
+                    <GestureXEmoji width={200} heignt={200} />
+                  </div>
+                  <p className="text-center text-lg font-semibold">현재 접속량이 많아</p>
+                  <p className="text-center text-lg font-semibold text-green-600">상담 대기 중입니다.</p>
+                  <p className="text-center text-sm text-gray-500 pt-3">조금만 기다려 주세요.</p>
+                  <div className="w-full mt-6">
+                    <div className="flex items-center justify-center space-x-2">
+                      <p className="text-lg font-medium">대기 인원</p>
+                      <IoRefresh className="mt-1" width={16} height={16} color="gray" />
+                      <p className="text-lg font-semibold">154,721명</p>
+                    </div>
+                    <div className="flex items-center justify-center mt-4 text-sm text-gray-500">
+                      <HiInformationCircle className="mr-1" width={16} height={16} color="gray" />
+                      <p className="pt-5">화상 상담 전 채팅을 통해 상담할 내용을 적어주시면<br/> 빠른 상담이 가능합니다.</p>
+                    </div>
+                  </div>
                 </div>
               </DialogContent>
             }
