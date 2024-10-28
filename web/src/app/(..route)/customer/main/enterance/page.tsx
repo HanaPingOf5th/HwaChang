@@ -26,12 +26,12 @@ export default function Home() {
         <div className="p-2">
           <Link href={"/consulting-room?isWait=true"}>
             <Card className="bg-hwachang-darkgreen text-white">
-              <CardHeader className="text-xl">
+              <CardHeader className="text-2xl">
                 <strong>{value.title}</strong>
               </CardHeader>
               <CardContent className="" />
               <CardFooter className="items-end justify-end">
-                <Icon color="white" size='50'></Icon>
+                <Icon color="white" size='60'></Icon>
               </CardFooter>
             </Card>
           </Link>
@@ -42,7 +42,7 @@ export default function Home() {
   
   return (
     <main>
-      <div className="">
+      <div className="px-20">
         <h1 className={` mb-4 text-4xl md:text-4xl text-center`} >
           <strong>{pageTitle}</strong>
         </h1>
