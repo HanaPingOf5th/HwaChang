@@ -5,7 +5,7 @@ interface waitingCountProps {
   waitingCount: number;
 }
 
-export default function Content({ waitingCount }: waitingCountProps) {
+export default function ConsultationStartContent({ waitingCount }: waitingCountProps) {
   return (
     <div className="flex flex-col justify-center items-center h-screen space-y-10">
       <div className="flex text-hwachang-green1 font-bold text-6xl mb-10">

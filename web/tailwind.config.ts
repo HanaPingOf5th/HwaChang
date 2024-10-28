@@ -35,6 +35,7 @@ const config: Config = {
           darkgreen: "#1FAB89",
           green: "#62D2A2",
           lightgreen: "#9DF3C4",
+          lightgreen1: "#B8F6D6",
           brightgreen: "#D7FBE8",
           hanagreen: "#008485",
           hanared: "#E90061",
