@@ -39,7 +39,6 @@ export default function Home() {
       </main>
     )
   })
-  
   return (
     <main>
       <div className="px-20">
