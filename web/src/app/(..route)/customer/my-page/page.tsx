@@ -78,7 +78,7 @@ export default function Home() {
         </div>
       </Form> */}
 
-      <div style={{ position: "relative", width: "100%", maxWidth: "653px", marginBottom: "16px" }}>
+      <div style={{ position: "relative", width: "100%", maxWidth: "640px", marginBottom: "16px" }}>
         <input
           type="text"
           placeholder="화창 기록을 검색해보세요."
@@ -137,7 +137,14 @@ export default function Home() {
           style={{ display: "flex", alignItems: "center", justifyContent: "center", width: "100%" }}
         >
           {/* 시작 날짜 입력창 및 캘린더 아이콘 */}
-          <div style={{ position: "relative", flex: "0 1 200px" }}>
+          <div
+            style={{
+              position: "relative",
+              flex: "0 1 200px",
+              display: "flex",
+              alignItems: "center",
+            }}
+          >
             {" "}
             <input
               type="date"
@@ -149,8 +156,9 @@ export default function Home() {
                 background: "#F2F2F7",
                 borderRadius: "50px",
                 border: "none",
-                padding: "0 50px 0 20px",
+                padding: "0 50px 0 50px",
                 outline: "none",
+                textAlign: "center",
               }}
             />
             <button
@@ -193,7 +201,7 @@ export default function Home() {
                 borderRadius: "50px",
                 border: "none",
                 paddingLeft: "45px",
-                padding: "0 50px 0 20px",
+                padding: "0 50px 0 50px",
                 outline: "none",
               }}
             />

@@ -25,26 +25,27 @@ export default function NavLinks() {
         const isSelected = pathName.startsWith(link.href);
 
         return (
-          <Link
-            key={link.name}
-            href={link.href}
-            className={clsx(
-              `flex h-[80px] grow items-center justify-start gap-2 p-3 text-[20px] font-medium mt-5
-               md:flex-none md:justify-start md:p-2 md:px-5`,
-              isSelected
-                ? "bg-[#62D2A2] text-white rounded-3xl rounded-r-none"
-                : "bg-hwachang-darkgreen text-white rounded-md",
-            )}
-          >
-            <Image
-              src={link.icon}
-              alt={`${link.name} Icon`}
-              width={20}
-              height={20}
-              className="ml-5 mr-2"
-            />
-            <p>{link.name}</p>
-          </Link>
+          <div key={link.name}>
+            <Link
+              key={link.name}
+              href={link.href}
+              className={clsx(
+                `flex h-[80px] grow items-center justify-start gap-2 p-3 text-[20px] font-medium mt-3 md:flex-none md:justify-start md:p-2 md:px-5`,
+                isSelected
+                  ? "bg-[#62D2A2] text-white rounded-full rounded-r-none ml-8"
+                  : "bg-hwachang-darkgreen text-white rounded-md ml-8",
+              )}
+            >
+              <Image
+                src={link.icon}
+                alt={`${link.name} Icon`}
+                width={20}
+                height={20}
+                className="ml-7 mr-5"
+              />
+              <p>{link.name}</p>
+            </Link>
+          </div>
         );
       })}
     </>
