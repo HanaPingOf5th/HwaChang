@@ -1,19 +1,94 @@
 "use client";
+
 import React, { useState } from "react";
 import Arrow from "@/app/utils/public/Arrow.png";
 import Select from "@/app/utils/public/Select.png";
 import Image from "next/image";
-import Form from "@/app/ui/component/molecule/form/form-index";
-import { FormState } from "@/app/ui/component/molecule/form/form-root";
-import { FormSubmitButton } from "@/app/ui/component/molecule/form/form-submit-button";
-import { FormTextInput } from "@/app/ui/component/molecule/form/form-textinput";
-import { Card, CardContent, CardFooter } from "@/app/ui/component/molecule/card/card";
+import SummaryPage from "./summary/page";
 
 export default function Home() {
   const [startDate, setStartDate] = useState(new Date().toISOString().slice(0, 10));
   const [endDate, setEndDate] = useState(new Date().toISOString().slice(0, 10));
+  const [isSummaryVisible, setIsSummaryVisible] = useState(false);
+  const [isFullScreen, setIsFullScreen] = useState(false);
+  const [selectedRecord, setSelectedRecord] = useState(null);
 
-  const getTypeStyles = (type) => {
+  //상담 기록 데이터
+  const records = [
+    {
+      id: 1,
+      title: "주제주제주제주제주제",
+      담당자: "김동은",
+      유형: "기업",
+      카테고리: "예금 관리",
+      날짜: "2024년 10월 22일",
+    },
+    {
+      id: 2,
+      title: "다른 주제1",
+      담당자: "임수진",
+      유형: "개인",
+      카테고리: "대출 상담",
+      날짜: "2024년 10월 23일",
+    },
+    {
+      id: 3,
+      title: "다른 주제2",
+      담당자: "김인영",
+      유형: "기업",
+      카테고리: "방카슈랑스",
+      날짜: "2024년 10월 23일",
+    },
+    {
+      id: 4,
+      title: "다른 주제3",
+      담당자: "유유정",
+      유형: "개인",
+      카테고리: "이체",
+      날짜: "2024년 10월 24일",
+    },
+  ];
+
+  // 시작 날짜 설정 함수
+  const handleStartDateChange = (e) => {
+    const newStartDate = e.target.value;
+    // 시작 날짜가 종료 날짜보다 뒤인 경우 경고창 표시
+    if (endDate && new Date(newStartDate) > new Date(endDate)) {
+      alert("시작 날짜는 종료 날짜보다 앞서야 합니다.");
+    } else {
+      setStartDate(newStartDate);
+    }
+  };
+
+  // 종료 날짜 설정 함수
+  const handleEndDateChange = (e) => {
+    const newEndDate = e.target.value;
+    // 종료 날짜가 시작 날짜보다 앞인 경우 경고창 표시
+    if (startDate && new Date(newEndDate) < new Date(startDate)) {
+      alert("종료 날짜는 시작 날짜보다 뒤에 있어야 합니다.");
+    } else {
+      setEndDate(newEndDate);
+    }
+  };
+
+  const handleRecordClick = (record) => {
+    setSelectedRecord(record);
+    setIsSummaryVisible(true); // SummaryPage 열기
+  };
+
+  const handleArrowClick = () => {
+    setIsSummaryVisible(!isSummaryVisible); //버튼 클릭 시 슬라이드 패널 보임/숨김 토글
+  };
+
+  const handleCloseClick = () => {
+    setIsSummaryVisible(false); // SummaryPage 닫기
+  };
+
+  const handleToggleFullScreen = () => {
+    setIsFullScreen((prev) => !prev); //전체화면 토글
+  };
+
+  const getTypeStyles = (type: string) => {
     return {
       display: "flex",
       flexDirection: "row",
@@ -29,26 +104,6 @@ export default function Home() {
     };
   };
 
-  function formAction(prevState: FormState, formData: FormData): FormState {
-    const value = formData.get("search");
-    if (value === "fail") {
-      return {
-        isSuccess: false,
-        isFailure: true,
-        message: "의도된 실패입니다.",
-        validationError: {},
-      };
-    } else {
-      console.log(value);
-      return {
-        isSuccess: true,
-        isFailure: false,
-        message: "",
-        validationError: {},
-      };
-    }
-  }
-
   return (
     <div
       style={{
@@ -58,27 +113,19 @@ export default function Home() {
         justifyContent: "flex-start",
         height: "100vh",
         boxSizing: "border-box",
+        overflow: "hidden", // 슬라이드 밖의 스크롤 방지
       }}
     >
-      {/* 검색 입력창 */}
-
-      {/* <Form id={"form"} action={formAction} onSuccess={() => {}} failMessageControl={"alert"}>
-        <div className="space-x-2">
-          <div>
-            <FormTextInput
-              // label={"나의 화창 검색"}
-              id={"search"}
-              placeholder={"화창 기록을 검색해보세요."}
-              required={false} // 필수 입력 설정이 필요한 경우
-            />
-          </div>
-          <div>
-            <FormSubmitButton label={""} className="bg-white hover:bg-slate-50" />
-          </div>
-        </div>
-      </Form> */}
-
-      <div style={{ position: "relative", width: "100%", maxWidth: "640px", marginBottom: "16px" }}>
+      <div
+        style={{
+          position: "relative",
+          width: "100%",
+          maxWidth: "653px",
+          marginBottom: "16px",
+          marginTop: "3px",
+          marginLeft: "3px",
+        }}
+      >
         <input
           type="text"
           placeholder="화창 기록을 검색해보세요."
@@ -122,7 +169,7 @@ export default function Home() {
         {/* 기간 텍스트 */}
         <div
           style={{
-            width: "65px",
+            width: "50px",
             height: "28px",
             fontWeight: 500,
             fontSize: "20px",
@@ -149,14 +196,14 @@ export default function Home() {
             <input
               type="date"
               value={startDate}
-              onChange={(e) => setStartDate(e.target.value)}
+              onChange={handleStartDateChange}
               style={{
                 width: "100%",
                 height: "45px",
                 background: "#F2F2F7",
                 borderRadius: "50px",
                 border: "none",
-                padding: "0 50px 0 50px",
+                padding: "0 30px 0 30px",
                 outline: "none",
                 textAlign: "center",
               }}
@@ -193,7 +240,7 @@ export default function Home() {
             <input
               type="date"
               value={endDate}
-              onChange={(e) => setEndDate(e.target.value)}
+              onChange={handleEndDateChange}
               style={{
                 width: "100%",
                 height: "45px",
@@ -201,7 +248,7 @@ export default function Home() {
                 borderRadius: "50px",
                 border: "none",
                 paddingLeft: "45px",
-                padding: "0 50px 0 50px",
+                padding: "0 30px 0 30px",
                 outline: "none",
               }}
             />
@@ -257,9 +304,9 @@ export default function Home() {
 
         {/* 상담 기록 항목 */}
         <div style={{ display: "flex", flexDirection: "column", gap: "10px" }}>
-          {[...Array(5)].map((_, index) => (
+          {records.map((record) => (
             <div
-              key={index}
+              key={record.id}
               style={{
                 background: "#F2F2F7",
                 borderRadius: "8px",
@@ -297,7 +344,7 @@ export default function Home() {
                     textAlign: "center",
                   }}
                 >
-                  주제주제주제주제주제
+                  {record.title}
                 </div>
                 <div
                   style={{
@@ -309,11 +356,11 @@ export default function Home() {
                     textAlign: "center",
                   }}
                 >
-                  김동은
+                  {record.담당자}
                 </div>
                 <div
                   style={{
-                    ...getTypeStyles("기업"),
+                    ...getTypeStyles(record.유형),
                     flex: 0.3,
                     fontWeight: 400,
                     fontSize: "18px",
@@ -321,7 +368,7 @@ export default function Home() {
                     textAlign: "center",
                   }}
                 >
-                  기업
+                  {record.유형}
                 </div>
                 <div
                   style={{
@@ -333,7 +380,7 @@ export default function Home() {
                     textAlign: "center",
                   }}
                 >
-                  예금 관리
+                  {record.카테고리}
                 </div>
                 <div
                   style={{
@@ -345,7 +392,7 @@ export default function Home() {
                     textAlign: "center",
                   }}
                 >
-                  2024년 10월 22일
+                  {record.날짜}
                 </div>
                 <button
                   style={{
@@ -355,7 +402,7 @@ export default function Home() {
                     marginLeft: "20px",
                     marginRight: "10px",
                   }}
-                  onClick={() => console.log("Arrow button clicked!")} // 버튼 클릭 시 이벤트
+                  onClick={() => handleRecordClick(record)} // 클릭 시 summary 패널 열기
                 >
                   <Image src={Arrow} alt="Arrow icon" width={20} height={20} />
                 </button>
@@ -363,6 +410,69 @@ export default function Home() {
             </div>
           ))}
         </div>
+        {/* SummaryPage 슬라이드 패널 */}
+        {isSummaryVisible && (
+          <div
+            style={{
+              position: "fixed",
+              top: 0,
+              right: 0,
+              height: "100%",
+              width: isFullScreen ? "100vw" : "50vw",
+              backgroundColor: "white",
+              boxShadow: "-2px 0 5px rgba(0, 0, 0, 0.3)",
+              transition: "width 0.3s ease",
+              zIndex: 1000,
+              overflowY: "auto",
+              paddingTop: "40px", // 버튼 영역에 맞는 여백 추가
+              padding: isFullScreen ? "40px" : "30px 35px",
+            }}
+          >
+            {/* 고정된 상단 버튼 박스 */}
+            <div
+              style={{
+                position: "fixed", // 고정 위치 설정
+                top: 0,
+                right: 0,
+                width: isFullScreen ? "100vw" : "50vw",
+                backgroundColor: "white",
+                padding: "10px",
+                display: "flex",
+                justifyContent: "flex-start",
+                gap: "10px",
+                zIndex: 1001, // 본문보다 위로 설정
+              }}
+            >
+              <button
+                onClick={handleCloseClick}
+                style={{
+                  padding: "5px 8px",
+                  border: "none",
+                  background: "none",
+                  cursor: "pointer",
+                  fontSize: "14px",
+                }}
+              >
+                &gt;&gt; {/* 닫기 버튼 */}
+              </button>
+              <button
+                onClick={handleToggleFullScreen}
+                style={{
+                  padding: "5px 8px",
+                  border: "none",
+                  background: "none",
+                  cursor: "pointer",
+                  fontSize: "14px",
+                }}
+              >
+                &lt;&gt; {/* 전체 화면 토글 버튼 */}
+              </button>
+            </div>
+
+            {/* SummaryPage 내용 */}
+            <SummaryPage record={selectedRecord} />
+          </div>
+        )}
       </div>
     </div>
   );

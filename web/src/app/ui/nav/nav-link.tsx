@@ -30,20 +30,21 @@ export default function NavLinks() {
               key={link.name}
               href={link.href}
               className={clsx(
-                `flex h-[80px] grow items-center justify-start gap-2 p-3 text-[20px] font-medium mt-3 md:flex-none md:justify-start md:p-2 md:px-5`,
+                `flex h-[48px] grow items-center
+              gap-7 text-lg md:flex-none md:justify-start p-10`,
                 isSelected
-                  ? "bg-[#62D2A2] text-white rounded-full rounded-r-none ml-8"
-                  : "bg-hwachang-darkgreen text-white rounded-md ml-8",
+                  ? "bg-[#62D2A2] text-white md:rounded-l-full rounded-r-none ml-8"
+                  : "bg-hwachang-darkgreen text-white md:rounded-l-full ml-8",
               )}
             >
               <Image
                 src={link.icon}
                 alt={`${link.name} Icon`}
-                width={20}
-                height={20}
-                className="ml-7 mr-5 md:ml-8 lg:ml-10 xl:ml-12 2xl:ml-14" // ml-14에서 시작하고 줄어드는 마진 설정
+                width={22}
+                height={22}
+                className="ml-5"
               />
-              <p>{link.name}</p>
+              <p className="text-xl">{link.name}</p>
             </Link>
           </div>
         );

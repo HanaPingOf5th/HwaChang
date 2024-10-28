@@ -20,21 +20,20 @@ export default function TellerNav() {
   const [tellerInfo, setTellerInfo] = useState<TellerInfo | null>(null);
 
   return (
-    <div className="flex h-full flex-col bg-hwachang-darkgreen">
-      <div className="flex h-32 justify-center items-center">
+    <div className="flex flex-col h-full bg-hwachang-darkgreen">
+      <div className="flex justify-center items-center">
         {/* 로고 */}
-        <Image src={Logo} alt="Logo" width={120} height={100} className="mt-10" />
+        <Image src={Logo} alt="Logo" width={80} height={60} className="mt-5" />
       </div>
 
       {/* 행원 정보 */}
       <div className="relative flex flex-col items-center flex-grow justify-center">
-
         {/* 프로필 사진 */}
         <div className="relative z-10 mb-[-16px]">
           <Image
             src={ProfileImg}
             alt="프로필 사진"
-            className="object-cover w-64 h-64 rounded-full border-4 border-white shadow-lg"
+            className="object-cover w-52 h-52 rounded-full border-4 border-white shadow-lg"
           />
           <div className="absolute right-16 transform translate-x-8 bottom-1 w-9 h-9 bg-hwachang-active rounded-full border-4 border-white shadow-lg z-20"></div>
         </div>
@@ -57,14 +56,14 @@ export default function TellerNav() {
               <p className="text-hwachang-black text-lg">상담 가능</p>
             </div>
 
-            <AchromaticButton className="bg-hwachang-green rounded-3xl font-medium text-xl w-full py-9 shadow-lg mt-4">
+            <AchromaticButton className="bg-hwachang-green rounded-3xl font-medium text-xl w-full py-8 shadow-lg mt-4">
               상태 바꾸러 가기
             </AchromaticButton>
           </div>
         </Card>
       </div>
 
-      <div className="flex grow flex-row justify-end space-x-2 md:flex-col md:space-x-0 md:space-y-2 mt-10 ml-10">
+      <div className="flex grow flex-row justify-end space-x-2 md:flex-col md:space-x-0 md:space-y-2 mt-5 ml-10">
         <TellerNavLinks />
         <div className="hidden h-auto w-full grow rounded-md bg-emerald-10 md:block"></div>
       </div>
