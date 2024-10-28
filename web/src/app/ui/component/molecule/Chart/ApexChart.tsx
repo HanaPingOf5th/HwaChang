@@ -25,7 +25,7 @@ export default function ApexChart({ series, xaxisCategories, colors }: ApexChart
       fontFamily: 'Pretendard',
       toolbar: {
         show: true,
-        offsetX: -510,
+        offsetX: -470,
         offsetY: -10,
         tools: { download: true, zoom: true, pan: true, reset: true },
         autoSelected: 'zoom',

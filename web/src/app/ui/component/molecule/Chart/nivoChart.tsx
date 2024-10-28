@@ -1,4 +1,4 @@
-'use client'; // Ensure this runs only on the client side
+'use client'; 
 
 import { ResponsiveRadialBar } from '@nivo/radial-bar';
 
@@ -12,47 +12,52 @@ interface MyResponsiveRadialBarProps {
 }
 
 const MyResponsiveRadialBar: React.FC<MyResponsiveRadialBarProps> = ({ data }) => (
-  <div className='h-1/3'>
+  <div style={{ height: 300, width: 400}} >
     <ResponsiveRadialBar
-      data={data}
-      valueFormat=">-.2%"
-      maxValue={1}
-      endAngle={-360}
-      innerRadius={0.25}
-      padding={0.3}
-      cornerRadius={45}
-      margin={{ top: 20, right: 130, bottom: 40, left: 40 }}
-      colors={{ scheme: 'yellow_green' }}
-      borderWidth={1}
-      borderColor={{ theme: 'background' }}
-      tracksColor="#f2f2f2"
-      enableRadialGrid={false}
-      radialAxisStart={null}
-      circularAxisOuter={null}
-      motionConfig="gentle"
-      label="category"
-      transitionMode="startAngle"
-      legends={[
-        {
-          anchor: 'right',
-          direction: 'column',
-          translateX: 120,
-          itemsSpacing: 6,
-          itemWidth: 100,
-          itemHeight: 18,
-          itemTextColor: '#000',
-          symbolSize: 18,
-          symbolShape: 'square',
-          effects: [
+        data={data}
+        valueFormat=" >-.2%"
+        maxValue={1}
+        endAngle={-360}
+        innerRadius={0.25}
+        padding={0.3}
+        cornerRadius={45}
+        margin={{ top: 20, right: 120, bottom: 20, left: 20 }}
+        colors={['#FF5555', '#FFD95B', '#5B8FFF']}
+        borderColor={{ theme: 'background' }}
+        
+        tracksColor="#e8e8e8"
+        enableRadialGrid={false}
+        enableCircularGrid={false}
+        radialAxisStart={null}
+        circularAxisOuter={null}
+        motionConfig="slow"
+        transitionMode="innerRadius"
+
+        legends={[
             {
-              on: 'hover',
-              style: {
-                itemTextColor: '#000',
-              },
-            },
-          ],
-        },
-      ]}
+                anchor: 'right',
+                direction: 'column',
+                justify: false,
+                translateX: 120,
+                translateY: 0,
+                itemsSpacing: 6,
+                itemDirection: 'left-to-right',
+                itemWidth: 100,
+                itemHeight: 18,
+                itemTextColor: '#999',
+                symbolSize: 18,
+                symbolShape: 'square',
+                effects: [
+                    {
+                        on: 'hover',
+                        style: {
+                            itemTextColor: '#000'
+                        }
+                    }
+                ]
+
+            }
+        ]}
     />
   </div>
 );
