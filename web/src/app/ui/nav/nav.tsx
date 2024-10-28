@@ -9,7 +9,7 @@ export default function Nav() {
     <div className="flex h-full flex-col bg-hwachang-darkgreen">
       <div className="flex h-32 justify-center items-center">
         {/* 로고 */}
-        <Image src={Logo} alt="Logo" width={120} height={100} className="mt-10" />
+        <Image src={Logo} alt="Logo" width={120} height={100} className="mt-5" />
       </div>
 
       <div className="flex grow flex-row justify-between space-x-2 md:flex-col md:space-x-0 md:space-y-2">

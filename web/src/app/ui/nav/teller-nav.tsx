@@ -28,7 +28,6 @@ export default function TellerNav() {
 
       {/* 행원 정보 */}
       <div className="relative flex flex-col items-center flex-grow justify-center">
-
         {/* 프로필 사진 */}
         <div className="relative z-10 mb-[-16px]">
           <Image

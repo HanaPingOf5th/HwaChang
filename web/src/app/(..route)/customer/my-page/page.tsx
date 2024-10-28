@@ -49,6 +49,28 @@ export default function Home() {
     },
   ];
 
+  // 시작 날짜 설정 함수
+  const handleStartDateChange = (e) => {
+    const newStartDate = e.target.value;
+    // 시작 날짜가 종료 날짜보다 뒤인 경우 경고창 표시
+    if (endDate && new Date(newStartDate) > new Date(endDate)) {
+      alert("시작 날짜는 종료 날짜보다 앞서야 합니다.");
+    } else {
+      setStartDate(newStartDate);
+    }
+  };
+
+  // 종료 날짜 설정 함수
+  const handleEndDateChange = (e) => {
+    const newEndDate = e.target.value;
+    // 종료 날짜가 시작 날짜보다 앞인 경우 경고창 표시
+    if (startDate && new Date(newEndDate) < new Date(startDate)) {
+      alert("종료 날짜는 시작 날짜보다 뒤에 있어야 합니다.");
+    } else {
+      setEndDate(newEndDate);
+    }
+  };
+
   const handleRecordClick = (record) => {
     setSelectedRecord(record);
     setIsSummaryVisible(true); // SummaryPage 열기
@@ -94,7 +116,16 @@ export default function Home() {
         overflow: "hidden", // 슬라이드 밖의 스크롤 방지
       }}
     >
-      <div style={{ position: "relative", width: "100%", maxWidth: "653px", marginBottom: "16px" }}>
+      <div
+        style={{
+          position: "relative",
+          width: "100%",
+          maxWidth: "653px",
+          marginBottom: "16px",
+          marginTop: "3px",
+          marginLeft: "3px",
+        }}
+      >
         <input
           type="text"
           placeholder="화창 기록을 검색해보세요."
@@ -138,7 +169,7 @@ export default function Home() {
         {/* 기간 텍스트 */}
         <div
           style={{
-            width: "65px",
+            width: "50px",
             height: "28px",
             fontWeight: 500,
             fontSize: "20px",
@@ -153,20 +184,28 @@ export default function Home() {
           style={{ display: "flex", alignItems: "center", justifyContent: "center", width: "100%" }}
         >
           {/* 시작 날짜 입력창 및 캘린더 아이콘 */}
-          <div style={{ position: "relative", flex: "0 1 200px" }}>
+          <div
+            style={{
+              position: "relative",
+              flex: "0 1 200px",
+              display: "flex",
+              alignItems: "center",
+            }}
+          >
             {" "}
             <input
               type="date"
               value={startDate}
-              onChange={(e) => setStartDate(e.target.value)}
+              onChange={handleStartDateChange}
               style={{
                 width: "100%",
                 height: "45px",
                 background: "#F2F2F7",
                 borderRadius: "50px",
                 border: "none",
-                padding: "0 50px 0 20px",
+                padding: "0 30px 0 30px",
                 outline: "none",
+                textAlign: "center",
               }}
             />
             <button
@@ -201,7 +240,7 @@ export default function Home() {
             <input
               type="date"
               value={endDate}
-              onChange={(e) => setEndDate(e.target.value)}
+              onChange={handleEndDateChange}
               style={{
                 width: "100%",
                 height: "45px",
@@ -209,7 +248,7 @@ export default function Home() {
                 borderRadius: "50px",
                 border: "none",
                 paddingLeft: "45px",
-                padding: "0 50px 0 20px",
+                padding: "0 30px 0 30px",
                 outline: "none",
               }}
             />
