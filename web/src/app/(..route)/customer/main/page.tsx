@@ -10,6 +10,7 @@ import { useEffect, useState } from "react";
 export default function Home() {
   const [individualWaitTime, setIndividualWaitTime] = useState<number>(3);
   const [companyWaitTime, setCompanyWaitTime] = useState<number>(99);
+  const congestionTime: number = 10;
 
   useEffect(()=>{
     setIndividualWaitTime(3);
@@ -19,23 +20,26 @@ export default function Home() {
 
   return (
     <main className="p-5">
-      <div className={`grid grid-cols-2 text-center gap-20`}>
+      <div className={`grid sm:grid-cols-1 lg:grid-cols-2 text-center gap-20 mt-16`}>
         <Link href="./main/enterance?isIndividual=true">
-          <Card className="shadow-lg hover:bg-green-50" style={{ boxShadow: "0 0 10px 0 #1FAB89" }}>
+          <Card
+            className="hover:bg-hwachang-brightgreen"
+            style={{ boxShadow: "0 0 10px 0 #1FAB89" }}
+          >
             <CardHeader>
-              <p className="text-4xl mt-8 mb-8" style={{ color: "#1FAB89" }}>
+              <p className="text-6xl mt-8 mb-8" style={{ color: "#1FAB89" }}>
                 <strong>개인</strong>
               </p>
             </CardHeader>
             <CardContent>
-              <div className="flex flex-col justify-center items-center py-10">
-                <HouseEmoji heignt={200} width={200} />
+              <div className="flex flex-col justify-center items-center py-5">
+                <HouseEmoji heignt={300} width={300} />
               </div>
               <div className="flex justify-center items-center pt-12 text-2xl">
                 <p className="text-black font-semibold mr-2">
-                  <strong>예상 대기 시간 :</strong>
+                  예상 대기 시간 :
                 </p>
-                <p className={individualWaitTime > 10 ? "text-red-500" : "text-blue-400"}>
+                <p className={individualWaitTime > congestionTime ? "text-red-500" : "text-blue-400"}>
                   <strong>{individualWaitTime}분</strong>
                 </p>
               </div>
@@ -43,12 +47,12 @@ export default function Home() {
             <CardFooter className="flex gap-2 justify-center mb-16">
               {individualWaitTime > 10 ? (
                 <>
-                  <p className="text-2xl font-semibold">혼잡 상태</p>
+                  <p className="text-xl">혼잡 상태</p>
                   <Image src={red_eclipse} alt="red_eclipse" width={20} height={20} />
                 </>
               ) : (
                 <>
-                  <p className="text-2xl font-semibold">원활 상태</p>
+                  <p className="text-xl">원활 상태</p>
                   <Image src={green_eclipse} alt="green_eclipse" width={20} height={20} />
                 </>
               )}
@@ -58,22 +62,22 @@ export default function Home() {
 
         <Link href="./main/enterance?isIndividual=false">
           <Card
-            className="bg-hwachang-darkgreen hover:bg-hwachang-green"
+            className="hover:bg-hwachang-brightgreen"
             style={{ boxShadow: "0 0 10px 0 #1FAB89" }}
           >
             <CardHeader>
               {" "}
-              <p className="text-4xl mt-8 mb-8 text-white">
+              <p className="text-6xl mt-8 mb-8 text-hwachang-darkgreen">
                 <strong>기업</strong>
               </p>{" "}
             </CardHeader>
             <CardContent>
-              <div className="flex flex-col justify-center items-center py-10">
-                <EnterPriseEmoji heignt={200} width={200} />
+              <div className="flex flex-col justify-center items-center py-5">
+                <EnterPriseEmoji heignt={300} width={300} />
               </div>
               <div className="flex justify-center items-center pt-12 text-2xl">
-                <p className="text-white mr-2 font-semibold">
-                  <strong>예상 대기 시간 :</strong>
+                <p className="text-black mr-2 font-semibold">
+                  예상 대기 시간 :
                 </p>
                 <p className={companyWaitTime > 10 ? "text-red-500" : "text-blue-300"}>
                   <strong>{companyWaitTime}분</strong>
@@ -83,12 +87,12 @@ export default function Home() {
             <CardFooter className="justify-center mb-16 flex gap-2">
               {companyWaitTime > 10 ? (
                 <>
-                  <p className="text-2xl font-semibold">혼잡 상태</p>
+                  <p className="text-xl text-black">혼잡 상태</p>
                   <Image src={red_eclipse} alt="red_eclipse" width={20} height={20} />
                 </>
               ) : (
                 <>
-                  <p className="text-2xl font-semibold">원활 상태</p>
+                  <p className="text-xl">원활 상태</p>
                   <Image src={green_eclipse} alt="green_eclipse" width={20} height={20} />
                 </>
               )}

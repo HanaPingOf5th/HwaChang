@@ -2,7 +2,7 @@
 import Link from "next/link";
 import clsx from "clsx";
 import { usePathname } from "next/navigation";
-import Image from "next/image";
+import Image, { StaticImageData } from "next/image";
 import Profile from "@/app/utils/public/Profile.png";
 import History from "@/app/utils/public/History.png";
 
@@ -33,7 +33,7 @@ export default function NavLinks() {
                 `flex h-[48px] grow items-center
               gap-7 text-lg md:flex-none md:justify-start p-10`,
                 isSelected
-                  ? "bg-[#62D2A2] text-white md:rounded-l-full rounded-r-none ml-8"
+                  ? "bg-[#62D2A2] text-white rounded-l-full rounded-r-none ml-8"
                   : "bg-hwachang-darkgreen text-white md:rounded-l-full ml-8",
               )}
             >
