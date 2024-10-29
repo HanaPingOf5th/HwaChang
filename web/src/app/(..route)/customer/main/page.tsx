@@ -76,7 +76,7 @@ export default function Home() {
                 <EnterPriseEmoji heignt={300} width={300} />
               </div>
               <div className="flex justify-center items-center pt-12 text-2xl">
-                <p className="text-black mr-2 font-semibold text-white">
+                <p className="text-black mr-2 font-semibold">
                   예상 대기 시간 :
                 </p>
                 <p className={companyWaitTime > 10 ? "text-red-500" : "text-blue-300"}>
