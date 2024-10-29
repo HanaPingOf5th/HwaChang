@@ -1,7 +1,7 @@
 "use client";
 import AchromaticButton from "@/app/ui/component/atom/button/achromatic-button";
 import { HouseEmoji, EnterPriseEmoji } from "@/app/ui/component/atom/fluent-emoji";
-import { NameTag } from "@/app/ui/component/atom/name-tag";
+import { NameTag } from "@/app/ui/component/atom/tag/name-tag";
 import { Card, CardContent, CardFooter, CardHeader } from "@/app/ui/component/molecule/card/card";
 import Form from "@/app/ui/component/molecule/form/form-index";
 import { FormNumberInput } from "@/app/ui/component/molecule/form/form-number-input";

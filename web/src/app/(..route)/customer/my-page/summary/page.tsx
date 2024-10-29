@@ -13,7 +13,9 @@ import { ConsultingRecord } from "../mock-records";
 import { AISummaryData, SummaryData } from "./mock-summary";
 import FormSelect from "@/app/ui/component/molecule/form/form-select-index";
 import { FormSelectItem } from "@/app/ui/component/molecule/form/form-select-item";
-import { Tag } from "@/app/ui/component/atom/Tag";
+import { Tag } from "@/app/ui/component/atom/tag/name-tag";
+import { AudioPlayer } from "./components/audio-player";
+
 
 interface SSTContent{
   speaker: string;
@@ -41,11 +43,6 @@ export default function SummaryPage({ record }: {record:ConsultingRecord}) {
   // 발화자 선택 관련 상태
   const [selectedSpeaker, setSelectedSpeaker] = useState<string>("전체");
 
-  // 오디오 관련 상태
-  const [isPlaying, setIsPlaying] = useState(false);
-  const [progress, setProgress] = useState(0);
-  const totalDuration = 30 * 60;
-
   // 요약 데이터 관련 상태: 전달받은 record props 객체에 있는 id로 api fetching
   const [sttSummaries] = useState<SttSummary | null>(SummaryData);
   const [aiSummaries] = useState<AISummary | null>(AISummaryData);
@@ -54,14 +51,6 @@ export default function SummaryPage({ record }: {record:ConsultingRecord}) {
     const className = `flex flex-row justify-center items-center p-1 gap-2.5 w-[50px] h-[31px] ${type === '개인' ? 'bg-[#CADCFF] text-[#2C71F6]' : 'bg-[#FFCACA] text-[#F62C2C]'} rounded-sm`;
     return className;
   };
-
-  // const handleTextClick = (index: number) => {
-  //   console.log(`텍스트 ${index + 1} 클릭됨. 음성 재생.`);
-  // };
-
-  // const handlePlayPause = () => {
-  //   setIsPlaying(!isPlaying);
-  // };
 
   const renderChat = (chat: { speaker: string; text: string }) => {
     if (chat.speaker === selectedSpeaker) {
@@ -77,12 +66,6 @@ export default function SummaryPage({ record }: {record:ConsultingRecord}) {
     return `${String(minutes).padStart(2, "0")}:${String(secs).padStart(2, "0")}`;
   };
 
-  // const handleBarClick = (e: React.MouseEvent<HTMLDivElement>) => {
-  //   const rect = e.currentTarget.getBoundingClientRect();
-  //   const clickX = e.clientX - rect.left;
-  //   const newProgress = Math.floor((clickX / rect.width) * totalDuration);
-  //   setProgress(newProgress);
-  // };
 
   if (!record) return null;
 
@@ -148,54 +131,9 @@ export default function SummaryPage({ record }: {record:ConsultingRecord}) {
               <p className="text-center text-gray-500">아직 상담 기록이 없습니다.</p>
             )}
           </div>
-
-          {/* 플레이어 바 */}
-          <div className="mt-4">
-            {/* 진행상태 바 */}
-            <div
-              className="relative w-full h-2 bg-gray-200 rounded-full overflow-hidden cursor-pointer"
-              // onClick={handleBarClick}
-            >
-              <div
-                className="absolute top-0 left-0 h-full rounded-full"
-                style={{
-                  width: `${(progress / totalDuration) * 100}%`,
-                  background: "linear-gradient(90deg, #38b2ac, #319795)",
-                }}
-              />
-            </div>
-
-            {/* 진행시간 */}
-            <div className="flex justify-between text-sm mt-2 text-white">
-              <span>{formatTime(progress)}</span>
-              <span>{formatTime(totalDuration)}</span>
-            </div>
-
-            {/* 플레이버튼 */}
-            <div className="flex items-center justify-center space-x-6 mt-4">
-              <TbRewindBackward5
-                className="cursor-pointer text-3xl text-white hover:text-teal-300 transition-all transform hover:scale-110"
-                title="Rewind 5s"
-              />
-              {isPlaying ? (
-                <IoMdPause
-                  // onClick={handlePlayPause}
-                  className="cursor-pointer text-4xl text-white hover:text-teal-300 transition-all transform hover:scale-110"
-                  title="Pause"
-                />
-              ) : (
-                <IoPlay
-                  // onClick={handlePlayPause}
-                  className="cursor-pointer text-4xl text-white hover:text-teal-300 transition-all transform hover:scale-110"
-                  title="Play"
-                />
-              )}
-              <TbRewindForward5
-                className="cursor-pointer text-3xl text-white hover:text-teal-300 transition-all transform hover:scale-110"
-                title="Forward 5s"
-              />
-            </div>
-          </div>
+        </CardContent>
+        <CardContent>
+          <AudioPlayer/>
         </CardContent>
       </Card>
 

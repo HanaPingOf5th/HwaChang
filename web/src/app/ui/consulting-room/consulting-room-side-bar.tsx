@@ -2,7 +2,7 @@
 
 import { useState } from "react"
 import AchromaticButton from "../component/atom/button/achromatic-button"
-import { NameTag } from "../component/atom/name-tag"
+import { NameTag } from "../component/atom/tag/name-tag"
 import { Card, CardContent, CardHeader } from "../component/molecule/card/card"
 import { MyChat, OtherChat } from "./chat-box"
 import Form from "../component/molecule/form/form-index"

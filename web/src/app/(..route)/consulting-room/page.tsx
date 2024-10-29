@@ -4,7 +4,7 @@ import { FineEmoji, GestureXEmoji } from "@/app/ui/component/atom/fluent-emoji";
 import { Card, CardContent, CardFooter} from "@/app/ui/component/molecule/card/card";
 import { useSearchParams } from "next/navigation";
 import Banker from '@/app/utils/public/banker.png';
-import { NameTag } from "@/app/ui/component/atom/name-tag";
+import { NameTag } from "@/app/ui/component/atom/tag/name-tag";
 import { AiOutlineAudio } from "react-icons/ai";
 import { HiInformationCircle } from "react-icons/hi";
 import { IoRefresh, IoShareSocialOutline, IoSettingsOutline, IoVideocamOutline  } from "react-icons/io5";
