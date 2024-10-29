@@ -34,7 +34,7 @@ export default function Home() {
       if (username === "username" && password === "password") {
         setUsername("");
         setPassword("");
-        router.push("/customer");
+        router.push("/customer/main");
       } else {
         setMismatch(true);
       }
