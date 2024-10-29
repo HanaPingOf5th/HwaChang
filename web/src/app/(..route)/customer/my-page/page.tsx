@@ -106,7 +106,7 @@ export default function Home() {
               &lt;&gt;
             </button>
           </div>
-          <SummaryPage record={selectedRecord} />
+          <SummaryPage record={selectedRecord as ConsultingRecord} />
         </div>
       )}
       </div>

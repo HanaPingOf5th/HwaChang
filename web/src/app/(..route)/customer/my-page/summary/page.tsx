@@ -9,105 +9,64 @@ import { TbRewindBackward5 } from "react-icons/tb";
 import { Card, CardHeader, CardTitle, CardContent } from "@/app/ui/component/molecule/card/card";
 import { MyChat, OtherChat } from "@/app/ui/consulting-room/chat-box";
 import AchromaticButton from "@/app/ui/component/atom/button/achromatic-button";
+import { ConsultingRecord } from "../mock-records";
+import { AISummaryData, SummaryData } from "./mock-summary";
+import FormSelect from "@/app/ui/component/molecule/form/form-select-index";
+import { FormSelectItem } from "@/app/ui/component/molecule/form/form-select-item";
 
+interface SSTContent{
+  speaker: string;
+  text: string;
+  time: string;
+}
 interface SttSummary {
   id: number;
   title: string;
-  content: { speaker: string; text: string; time: string }[];
+  speakers: string[];
+  contents: SSTContent[];
   date: string;
   mainTopics: string[];
 }
-
-// Todo : 네이버 클로바노트 api의 결과값에 따라 달라지는 부분
-interface AiSummary {
+// Todo : 네이버 클로바 노트 api 응답값에 따라 변동 가능
+interface AISummary {
   id: number;
   title: string;
-  content: string[];
+  contents: string[];
   date: string;
   mainTopics: string[];
 }
 
-export default function SummaryPage({ record }) {
+export default function SummaryPage({ record }: {record:ConsultingRecord}) {
+  // 발화자 선택 관련 상태
   const [selectedSpeaker, setSelectedSpeaker] = useState<string>("전체");
+
+  // 오디오 관련 상태
   const [isPlaying, setIsPlaying] = useState(false);
   const [progress, setProgress] = useState(0);
-  const [type, setType] = useState<string>("개인"); // 개인일지 기업일지 가져와야함
-  const totalDuration = 30 * 60; // 총 30분을 초 단위로 설정
+  const totalDuration = 30 * 60;
 
-  // my-page와 동일한 유형 스타일을 적용하는 함수
-  const getTypeStyles = (type) => {
-    return {
-      display: "flex",
-      flexDirection: "row",
-      justifyContent: "center",
-      alignItems: "center",
-      padding: "3px 8px",
-      gap: "10px",
-      width: "50px",
-      height: "31px",
-      background: type === "개인" ? "#CADCFF" : "#FFCACA",
-      borderRadius: "3px",
-      color: type === "개인" ? "#2C71F6" : "#F62C2C",
-    };
+  // 요약 데이터 관련 상태: 전달받은 record props 객체에 있는 id로 api fetching
+  const [sttSummaries] = useState<SttSummary | null>(SummaryData);
+  const [aiSummaries] = useState<AISummary | null>(AISummaryData);
+
+  const filterStyles = (type: '기업'|'개인') => {
+    const className = `flex flex-row justify-center items-center p-1 gap-2.5 w-[50px] h-[31px] ${type === '개인' ? 'bg-[#CADCFF] text-[#2C71F6]' : 'bg-[#FFCACA] text-[#F62C2C]'} rounded-sm`;
+    return className;
   };
 
-  const [sttSummaries] = useState<SttSummary[]>([
-    {
-      id: 1,
-      title: "상담 기록 예시",
-      content: [
-        { speaker: "발화자1", text: "예금에 대해 알고 싶어요.", time: "00:01" },
-        {
-          speaker: "발화자2",
-          text: "안녕하십니까 고객님. 예금은 크게 '자유입출금식예금'과 '정기예금'으로 나뉩니다.",
-          time: "00:05",
-        },
-        {
-          speaker: "발화자1",
-          text: "감사합니다. 대출 상품도 설명해주세요.",
-          time: "00:10",
-        },
-        {
-          speaker: "발화자2",
-          text: "대출 상품은 금융시장의 핵심 상품 중 하나로 볼 수 있습니다.",
-          time: "00:15",
-        },
-      ],
-      date: "2024-10-23",
-      mainTopics: ["예금", "적금"],
-    },
-  ]);
+  // const handleTextClick = (index: number) => {
+  //   console.log(`텍스트 ${index + 1} 클릭됨. 음성 재생.`);
+  // };
 
-  const [aiSummaries, setAiSummaries] = useState<AiSummary[]>([
-    {
-      id: 1,
-      title: "예금 및 적금 상담 요약",
-      content: [
-        "고객1은 예금 상품에 대한 정보를 요청하였고, 상담사는 자유입출금식예금과 정기예금을 설명하였습니다.",
-        "상담사는 대출 상품의 역할에 대해서도 설명하였습니다.",
-      ],
-      date: "2024-10-23",
-      mainTopics: ["예금", "적금"],
-    },
-  ]);
-  const [isEditing, setIsEditing] = useState(false);
-  const [editedMainTopics, setEditedMainTopics] = useState<string[]>(aiSummaries[0].mainTopics);
-  const [editedContent, setEditedContent] = useState<string[]>(aiSummaries[0].content);
+  // const handlePlayPause = () => {
+  //   setIsPlaying(!isPlaying);
+  // };
 
-  const handleTextClick = (index: number) => {
-    console.log(`텍스트 ${index + 1} 클릭됨. 음성 재생.`);
-  };
-
-  const handlePlayPause = () => {
-    setIsPlaying(!isPlaying);
-  };
-
-  const renderChat = (line: { speaker: string; text: string }) => {
-    // 선택한 발화자는 MyChat으로 렌더링하고, 나머지는 OtherChat으로 렌더링
-    if (line.speaker === selectedSpeaker) {
-      return <MyChat chat={line.text} />;
+  const renderChat = (chat: { speaker: string; text: string }) => {
+    if (chat.speaker === selectedSpeaker) {
+      return <MyChat chat={chat.text} />;
     } else {
-      return <OtherChat name={line.speaker} chat={line.text} />;
+      return <OtherChat name={chat.speaker} chat={chat.text} />;
     }
   };
 
@@ -117,25 +76,12 @@ export default function SummaryPage({ record }) {
     return `${String(minutes).padStart(2, "0")}:${String(secs).padStart(2, "0")}`;
   };
 
-  const handleBarClick = (e: React.MouseEvent<HTMLDivElement>) => {
-    const rect = e.currentTarget.getBoundingClientRect();
-    const clickX = e.clientX - rect.left;
-    const newProgress = Math.floor((clickX / rect.width) * totalDuration);
-    setProgress(newProgress);
-  };
-
-  const handleEditClick = () => setIsEditing(true);
-
-  const handleSaveClick = () => {
-    setAiSummaries([
-      {
-        ...aiSummaries[0],
-        mainTopics: editedMainTopics,
-        content: editedContent,
-      },
-    ]);
-    setIsEditing(false);
-  };
+  // const handleBarClick = (e: React.MouseEvent<HTMLDivElement>) => {
+  //   const rect = e.currentTarget.getBoundingClientRect();
+  //   const clickX = e.clientX - rect.left;
+  //   const newProgress = Math.floor((clickX / rect.width) * totalDuration);
+  //   setProgress(newProgress);
+  // };
 
   if (!record) return null;
 
@@ -143,39 +89,36 @@ export default function SummaryPage({ record }) {
     <main>
       <h1 className="text-4xl font-bold text-gray-800 mt-4">상담 요약 페이지</h1>
 
-      {/* 상담 정보 */}
       <div className="mt-6">
         <div className="grid gap-4 text-lg text-gray-500 font-pretendard">
           <div className="flex items-center">
             <span className="w-40">유형:</span>
-            <span style={getTypeStyles(record.유형)}>{record.유형}</span>
+            <span className={filterStyles(record.cartegoryType)}>{record.cartegoryType}</span>
           </div>
           <div className="flex items-center">
             <span className="w-40">카테고리:</span>{" "}
-            <span className="text-black">{record.카테고리}</span>
+            <span className="text-black">{record.cartegory}</span>
           </div>
           <div className="flex items-center">
             <span className="w-40">담당자:</span>
-            <span className="text-black">{record.담당자}</span>
+            <span className="text-black">{record.consultant}</span>
           </div>
           <div className="flex items-center">
             <span className="w-40">화창 날짜:</span>{" "}
-            <span className="text-black">{record.날짜}</span>
+            <span className="text-black">{record.date}</span>
           </div>
         </div>
       </div>
 
-      {/* 구분선 */}
       <hr className="my-6 border-t-2 border-gray-300" />
 
-      {/* STT 상담 원문 */}
-      <Card className="bg-[#62D2A2]">
+      <Card className="bg-hwachang-green">
         <CardHeader className="flex justify-between">
           <CardTitle className="flex items-center text-white text-2xl">
             <IoDocumentTextSharp className="mr-2" size={28} /> 상담 원문
           </CardTitle>
 
-          <select
+          {/* <select
             className="ml-auto p-2 w-36 border border-teal-600 text-center rounded-md text-gray-800 focus:outline-none"
             value={selectedSpeaker}
             onChange={(e) => setSelectedSpeaker(e.target.value)}
@@ -183,19 +126,33 @@ export default function SummaryPage({ record }) {
             <option value="전체">발화자 설정</option>
             <option value="발화자1">발화자1</option>
             <option value="발화자2">발화자2</option>
-          </select>
+          </select> */}
         </CardHeader>
 
         <CardContent>
+          <FormSelect placeholder={"발화자 선택"}>
+            <div className="">
+            {sttSummaries?.speakers.map((value, index)=>{
+              return(
+                <div key={index}>
+                  <FormSelectItem value={value} placeholder={value} onSelect={()=>setSelectedSpeaker(value)}></FormSelectItem>
+                </div>
+            )
+            })}
+            </div>
+          </FormSelect>
+        </CardContent>
+
+        <CardContent>
           <div className="bg-gray-50 p-2 rounded-lg">
-            {sttSummaries.length > 0 ? (
-              sttSummaries[0].content.map((line, index) => (
+            {(sttSummaries as SttSummary) ? (
+              (sttSummaries as SttSummary).contents.map((value, index) => (
                 <div
                   key={index}
                   className="mb-4 cursor-pointer"
-                  onClick={() => handleTextClick(index)}
+                  // onClick={() => handleTextClick(index)}
                 >
-                  {renderChat(line)}
+                  {renderChat(value)}
                 </div>
               ))
             ) : (
@@ -208,7 +165,7 @@ export default function SummaryPage({ record }) {
             {/* 진행상태 바 */}
             <div
               className="relative w-full h-2 bg-gray-200 rounded-full overflow-hidden cursor-pointer"
-              onClick={handleBarClick}
+              // onClick={handleBarClick}
             >
               <div
                 className="absolute top-0 left-0 h-full rounded-full"
@@ -233,13 +190,13 @@ export default function SummaryPage({ record }) {
               />
               {isPlaying ? (
                 <IoMdPause
-                  onClick={handlePlayPause}
+                  // onClick={handlePlayPause}
                   className="cursor-pointer text-4xl text-white hover:text-teal-300 transition-all transform hover:scale-110"
                   title="Pause"
                 />
               ) : (
                 <IoPlay
-                  onClick={handlePlayPause}
+                  // onClick={handlePlayPause}
                   className="cursor-pointer text-4xl text-white hover:text-teal-300 transition-all transform hover:scale-110"
                   title="Play"
                 />
@@ -256,65 +213,29 @@ export default function SummaryPage({ record }) {
       <hr className="my-6 border-t-2 border-gray-300" />
 
       {/* AI 요약 내용 */}
-      <Card className="bg-[#62D2A2] mt-6">
+      <Card className="bg-hwachang-green mt-6">
         <CardHeader>
           <CardTitle className="flex items-center text-white text-2xl">
             <MdSummarize className="mr-2" size={28} /> 상담 요약 내용
           </CardTitle>
         </CardHeader>
-
-        {isEditing ? (
-          <>
-            <CardContent className="bg-gray-50 p-2 rounded-lg shadow-md mx-6 mb-6">
-              <CardTitle className="text-xl font-semibold mb-4">주요 주제</CardTitle>
-              <input
-                type="text"
-                value={editedMainTopics.join(", ")}
-                onChange={(e) =>
-                  setEditedMainTopics(e.target.value.split(", ").map((topic) => topic.trim()))
-                }
-                className="w-full p-2 border rounded"
-              />
-            </CardContent>
-
-            <CardContent className="bg-gray-50 p-2 rounded-lg shadow-md mx-6 mb-6">
-              <CardTitle className="text-xl font-semibold mb-4">요약</CardTitle>
-              <textarea
-                value={editedContent.join("\n")}
-                onChange={(e) => setEditedContent(e.target.value.split("\n"))}
-                className="w-full p-2 border rounded h-24"
-              />
-            </CardContent>
-
-            <CardContent>
-              <AchromaticButton onClick={handleSaveClick}>저장하기</AchromaticButton>
-            </CardContent>
-          </>
-        ) : (
-          <>
-            <CardContent className="bg-gray-50 p-2 rounded-lg shadow-md mx-6 mb-6">
-              <CardTitle className="text-xl font-semibold mb-4">주요 주제</CardTitle>
-              <ul className="list-disc list-inside space-y-2">
-                {aiSummaries[0].mainTopics.map((topic, index) => (
-                  <li key={index}>{topic}</li>
+        <CardContent className="bg-gray-50 p-2 rounded-lg shadow-md mx-6 mb-6">
+          <CardTitle className="text-xl font-semibold mb-4">주요 주제</CardTitle>
+            <ul className="list-demical-none list-inside space-y-2">
+              {(aiSummaries as AISummary).mainTopics.map((topic, index) => (
+              <li key={index}>{topic}</li>
                 ))}
-              </ul>
-            </CardContent>
+            </ul>
+        </CardContent>
 
-            <CardContent className="bg-gray-50 p-2 rounded-lg shadow-md mx-6 mb-6">
-              <CardTitle className="text-xl font-semibold mb-4">요약</CardTitle>
-              <ul className="list-disc list-inside space-y-2">
-                {aiSummaries[0].content.map((text, index) => (
-                  <li key={index}>{text}</li>
-                ))}
-              </ul>
-            </CardContent>
-
-            <CardContent>
-              <AchromaticButton onClick={handleEditClick}>수정하기</AchromaticButton>
-            </CardContent>
-          </>
-        )}
+        <CardContent className="bg-gray-50 p-2 rounded-lg shadow-md mx-6 mb-6">
+          <CardTitle className="text-xl font-semibold mb-4">요약</CardTitle>
+          <ul className="list-decimal-none list-inside space-y-2">
+            {(aiSummaries as AISummary).contents.map((text, index) => (
+              <li key={index}>{text}</li>
+            ))}
+          </ul>
+        </CardContent>
       </Card>
     </main>
   );
