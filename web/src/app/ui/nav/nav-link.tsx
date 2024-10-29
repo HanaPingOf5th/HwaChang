@@ -14,7 +14,7 @@ interface navLinkType {
 
 const links: navLinkType[] = [
   { name: "화상 창구", href: "/customer/main", icon: Profile },
-  { name: "나의 화창 기록", href: "/customer/my-page", icon: History },
+  { name: "화창 기록", href: "/customer/my-page", icon: History },
 ];
 
 export default function NavLinks() {
@@ -44,7 +44,7 @@ export default function NavLinks() {
                 height="22"
                 className="ml-5"
               />
-              <p className="text-xl">{link.name}</p>
+              <p className="md:hidden lg:block text-xl">{link.name}</p>
             </Link>
           </div>
         );

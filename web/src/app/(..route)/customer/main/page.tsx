@@ -62,12 +62,12 @@ export default function Home() {
 
         <Link href="./main/enterance?isIndividual=false">
           <Card
-            className="hover:bg-hwachang-brightgreen"
+            className="bg-hwachang-darkgreen hover:bg-hwachang-green"
             style={{ boxShadow: "0 0 10px 0 #1FAB89" }}
           >
             <CardHeader>
               {" "}
-              <p className="text-6xl mt-8 mb-8 text-hwachang-darkgreen">
+              <p className="text-6xl mt-8 mb-8 text-white">
                 <strong>기업</strong>
               </p>{" "}
             </CardHeader>
@@ -76,7 +76,7 @@ export default function Home() {
                 <EnterPriseEmoji heignt={300} width={300} />
               </div>
               <div className="flex justify-center items-center pt-12 text-2xl">
-                <p className="text-black mr-2 font-semibold">
+                <p className="text-black mr-2 font-semibold text-white">
                   예상 대기 시간 :
                 </p>
                 <p className={companyWaitTime > 10 ? "text-red-500" : "text-blue-300"}>
@@ -87,12 +87,12 @@ export default function Home() {
             <CardFooter className="justify-center mb-16 flex gap-2">
               {companyWaitTime > 10 ? (
                 <>
-                  <p className="text-xl text-black">혼잡 상태</p>
+                  <p className="text-xl text-white">혼잡 상태</p>
                   <Image src={red_eclipse} alt="red_eclipse" width={20} height={20} />
                 </>
               ) : (
                 <>
-                  <p className="text-xl">원활 상태</p>
+                  <p className="text-xl text-white">원활 상태</p>
                   <Image src={green_eclipse} alt="green_eclipse" width={20} height={20} />
                 </>
               )}

@@ -25,7 +25,7 @@ export default function Home() {
       <main key={index}>
         <div className="p-2">
           <Link href={"/consulting-room?isWait=true"}>
-            <Card className="bg-hwachang-darkgreen text-white">
+            <Card className="bg-hwachang-darkgreen hover:bg-hwachang-green text-white">
               <CardHeader className="text-2xl">
                 <strong>{value.title}</strong>
               </CardHeader>

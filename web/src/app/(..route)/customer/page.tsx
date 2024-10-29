@@ -259,8 +259,8 @@ export default function Home() {
         </Card>
         <Card>
           <CardHeader>
-            {" "}
-            <p className="text-xl">기업 상담</p>{" "}
+
+            <p className="text-xl">기업 상담</p>
           </CardHeader>
           <CardContent>
             <div className="flex flex-col justify-center items-center ">
