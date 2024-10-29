@@ -76,12 +76,9 @@ export default function Home() {
     setIsSummaryVisible(true); // SummaryPage 열기
   };
 
-  const handleArrowClick = () => {
-    setIsSummaryVisible(!isSummaryVisible); //버튼 클릭 시 슬라이드 패널 보임/숨김 토글
-  };
-
   const handleCloseClick = () => {
     setIsSummaryVisible(false); // SummaryPage 닫기
+    setIsFullScreen(false);
   };
 
   const handleToggleFullScreen = () => {
