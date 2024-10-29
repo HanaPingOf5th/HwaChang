@@ -1,14 +1,14 @@
 "use client";
 
 import React, { useState } from "react";
-import SummaryPage from "./summary/page";
+import Summary from "./components/summary";
 import Form from "@/app/ui/component/molecule/form/form-index";
 import { FormState } from "@/app/ui/component/molecule/form/form-root";
 import { FormTextInput } from "@/app/ui/component/molecule/form/form-textinput";
 import { FormSubmitButton } from "@/app/ui/component/molecule/form/form-submit-button";
 import { DateSelector } from "./components/date-selector";
-import { Card, CardContent } from "@/app/ui/component/molecule/card/card";
-import { ConsultingRecord, records } from "./mock-records";
+import { Card } from "@/app/ui/component/molecule/card/card";
+import { ConsultingRecord, records } from "./mock/mock-records";
 
 export default function Home() {
   const [isSummaryVisible, setIsSummaryVisible] = useState(false);
@@ -33,13 +33,13 @@ export default function Home() {
     return (
       <main key={index}>
       <Card className="grid grid-cols-7 gap-3">
-        <CardContent className="py-5">image</CardContent>
-        <CardContent className="py-5">{value.title}</CardContent>
-        <CardContent className="py-5">{value.consultant}</CardContent>
-        <CardContent className="py-5">{value.cartegoryType}</CardContent>
-        <CardContent className="py-5">{value.cartegory}</CardContent>
-        <CardContent className="py-5">{value.date}</CardContent>
-        <CardContent className="py-5"><button onClick={() => handleOpenSummary(value)}>{'->'}</button></CardContent>
+        <div className="mb-5 mt-5 text-sm md:text-sm lg:text-xl">image</div>
+        <div className="mb-5 mt-5 text-sm md:text-sm lg:text-xl">{value.title}</div>
+        <div className="mb-5 mt-5 text-sm md:text-sm lg:text-xl">{value.consultant}</div>
+        <div className="mb-5 mt-5 text-sm md:text-sm lg:text-xl">{value.cartegoryType}</div>
+        <div className="mb-5 mt-5 text-sm md:text-sm lg:text-xl">{value.cartegory}</div>
+        <div className="mb-5 mt-5 text-sm md:text-sm lg:text-xl">{value.date}</div>
+        <div className="mb-5 mt-5 text-sm md:text-sm lg:text-xl"><button onClick={() => handleOpenSummary(value)}>{'->'}</button></div>
       </Card>
       </main>
     )
@@ -60,7 +60,7 @@ export default function Home() {
     <div className="flex flex-col">
       <div className="mb-5">
         <Form id={"search-form"} action={searchAction} failMessageControl={"alert"}>
-          <div className="grid grid-cols-[5fr_1fr] items-center gap-2">
+          <div className="grid grid-cols-[8fr_1fr] gap-2">
             <FormTextInput id={"search"} placeholder={"화창 기록을 검색해보세요"} className="rounded-full bg-slate-100"/>
             <FormSubmitButton label={"검색"}/>
           </div>
@@ -70,7 +70,7 @@ export default function Home() {
 
       <div style={{ fontSize: "30px", fontWeight: "Bold" }}>화창기록</div>
       <div className="grid grid-rows-1 gap-3 text-hwachang-hwachanggray text-lg text-center">
-        <Card className="grid grid-cols-7 gap-3 shadow-none border-white">
+        <Card className="grid grid-cols-7 gap-3 shadow-none border-white font-semibold text-sm md:text-sm lg:text-xl">
           <div></div>
           <div>주제</div>
           <div>담당자</div>
@@ -106,7 +106,7 @@ export default function Home() {
               &lt;&gt;
             </button>
           </div>
-          <SummaryPage record={selectedRecord as ConsultingRecord} />
+          <Summary record={selectedRecord as ConsultingRecord} />
         </div>
       )}
       </div>

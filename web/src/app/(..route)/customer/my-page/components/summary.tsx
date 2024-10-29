@@ -9,12 +9,12 @@ import { TbRewindBackward5 } from "react-icons/tb";
 import { Card, CardHeader, CardTitle, CardContent } from "@/app/ui/component/molecule/card/card";
 import { MyChat, OtherChat } from "@/app/ui/consulting-room/chat-box";
 import AchromaticButton from "@/app/ui/component/atom/button/achromatic-button";
-import { ConsultingRecord } from "../mock-records";
-import { AISummaryData, SummaryData } from "./mock-summary";
+import { ConsultingRecord } from "../mock/mock-records";
+import { AISummaryData, SummaryData } from "../mock/mock-summary";
 import FormSelect from "@/app/ui/component/molecule/form/form-select-index";
 import { FormSelectItem } from "@/app/ui/component/molecule/form/form-select-item";
 import { Tag } from "@/app/ui/component/atom/tag/name-tag";
-import { AudioPlayer } from "./components/audio-player";
+import { AudioPlayer } from "./audio-player";
 
 
 interface SSTContent{
@@ -39,11 +39,8 @@ interface AISummary {
   mainTopics: string[];
 }
 
-export default function SummaryPage({ record }: {record:ConsultingRecord}) {
-  // 발화자 선택 관련 상태
+export default function Summary({ record }: {record:ConsultingRecord}) {
   const [selectedSpeaker, setSelectedSpeaker] = useState<string>("전체");
-
-  // 요약 데이터 관련 상태: 전달받은 record props 객체에 있는 id로 api fetching
   const [sttSummaries] = useState<SttSummary | null>(SummaryData);
   const [aiSummaries] = useState<AISummary | null>(AISummaryData);
 
@@ -59,13 +56,6 @@ export default function SummaryPage({ record }: {record:ConsultingRecord}) {
       return <OtherChat name={chat.speaker} chat={chat.text} />;
     }
   };
-
-  const formatTime = (seconds: number) => {
-    const minutes = Math.floor(seconds / 60);
-    const secs = seconds % 60;
-    return `${String(minutes).padStart(2, "0")}:${String(secs).padStart(2, "0")}`;
-  };
-
 
   if (!record) return null;
 
@@ -122,7 +112,6 @@ export default function SummaryPage({ record }: {record:ConsultingRecord}) {
                 <div
                   key={index}
                   className="mb-4 cursor-pointer"
-                  // onClick={() => handleTextClick(index)}
                 >
                   {renderChat(value)}
                 </div>
