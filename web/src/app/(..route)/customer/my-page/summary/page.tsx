@@ -13,6 +13,7 @@ import { ConsultingRecord } from "../mock-records";
 import { AISummaryData, SummaryData } from "./mock-summary";
 import FormSelect from "@/app/ui/component/molecule/form/form-select-index";
 import { FormSelectItem } from "@/app/ui/component/molecule/form/form-select-item";
+import { Tag } from "@/app/ui/component/atom/Tag";
 
 interface SSTContent{
   speaker: string;
@@ -96,7 +97,7 @@ export default function SummaryPage({ record }: {record:ConsultingRecord}) {
             <span className={filterStyles(record.cartegoryType)}>{record.cartegoryType}</span>
           </div>
           <div className="flex items-center">
-            <span className="w-40">카테고리:</span>{" "}
+            <span className="w-40">카테고리:</span>
             <span className="text-black">{record.cartegory}</span>
           </div>
           <div className="flex items-center">
@@ -104,7 +105,7 @@ export default function SummaryPage({ record }: {record:ConsultingRecord}) {
             <span className="text-black">{record.consultant}</span>
           </div>
           <div className="flex items-center">
-            <span className="w-40">화창 날짜:</span>{" "}
+            <span className="w-40">화창 날짜:</span>
             <span className="text-black">{record.date}</span>
           </div>
         </div>
@@ -117,30 +118,18 @@ export default function SummaryPage({ record }: {record:ConsultingRecord}) {
           <CardTitle className="flex items-center text-white text-2xl">
             <IoDocumentTextSharp className="mr-2" size={28} /> 상담 원문
           </CardTitle>
-
-          {/* <select
-            className="ml-auto p-2 w-36 border border-teal-600 text-center rounded-md text-gray-800 focus:outline-none"
-            value={selectedSpeaker}
-            onChange={(e) => setSelectedSpeaker(e.target.value)}
-          >
-            <option value="전체">발화자 설정</option>
-            <option value="발화자1">발화자1</option>
-            <option value="발화자2">발화자2</option>
-          </select> */}
         </CardHeader>
 
-        <CardContent>
-          <FormSelect placeholder={"발화자 선택"}>
-            <div className="">
-            {sttSummaries?.speakers.map((value, index)=>{
-              return(
-                <div key={index}>
-                  <FormSelectItem value={value} placeholder={value} onSelect={()=>setSelectedSpeaker(value)}></FormSelectItem>
-                </div>
-            )
-            })}
-            </div>
-          </FormSelect>
+        <CardContent className="flex justify-end">
+          <div className="w-1/4">
+            <FormSelect placeholder={"발화자 선택"}>
+              {sttSummaries?.speakers.map((value, index)=>{
+                return(
+                  <FormSelectItem key={index} value={value} placeholder={value} onSelect={()=>setSelectedSpeaker(value)}/>
+              )
+              })}
+            </FormSelect>
+          </div>
         </CardContent>
 
         <CardContent>
@@ -212,7 +201,6 @@ export default function SummaryPage({ record }: {record:ConsultingRecord}) {
 
       <hr className="my-6 border-t-2 border-gray-300" />
 
-      {/* AI 요약 내용 */}
       <Card className="bg-hwachang-green mt-6">
         <CardHeader>
           <CardTitle className="flex items-center text-white text-2xl">
@@ -221,20 +209,28 @@ export default function SummaryPage({ record }: {record:ConsultingRecord}) {
         </CardHeader>
         <CardContent className="bg-gray-50 p-2 rounded-lg shadow-md mx-6 mb-6">
           <CardTitle className="text-xl font-semibold mb-4">주요 주제</CardTitle>
-            <ul className="list-demical-none list-inside space-y-2">
-              {(aiSummaries as AISummary).mainTopics.map((topic, index) => (
-              <li key={index}>{topic}</li>
-                ))}
-            </ul>
+          <div className="grid grid-cols-7">
+          {
+            (aiSummaries as AISummary).mainTopics.map((topic, index)=>{
+              return(
+                <div key={index}>
+                  <Tag content={topic}/>
+                </div>
+              )
+            })
+          }
+          </div>
         </CardContent>
 
         <CardContent className="bg-gray-50 p-2 rounded-lg shadow-md mx-6 mb-6">
           <CardTitle className="text-xl font-semibold mb-4">요약</CardTitle>
-          <ul className="list-decimal-none list-inside space-y-2">
-            {(aiSummaries as AISummary).contents.map((text, index) => (
-              <li key={index}>{text}</li>
-            ))}
-          </ul>
+          {(aiSummaries as AISummary).contents.map((value, index)=>{
+            return(
+              <div key={index}>
+                {value}
+              </div>
+            )
+          })}
         </CardContent>
       </Card>
     </main>

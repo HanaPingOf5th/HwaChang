@@ -1,5 +1,5 @@
 export function MyChat({ chat }: { chat: string }) {
-  const formattedChat = chat.length > 15 ? chat.match(/.{1,15}/g)?.join('\n') : chat;
+  const formattedChat = chat.length > 30 ? chat.match(/.{1,15}/g)?.join('\n') : chat;
 
   return (
     <>
@@ -13,7 +13,7 @@ export function MyChat({ chat }: { chat: string }) {
 }
 
 export function OtherChat({ name, chat }: { name: string; chat: string }) {
-  const formattedChat = chat.length > 15 ? chat.match(/.{1,15}/g)?.join('\n') : chat;
+  const formattedChat = chat.length > 30 ? chat.match(/.{1,15}/g)?.join('\n') : chat;
 
   return (
     <>
