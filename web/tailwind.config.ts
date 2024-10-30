@@ -50,6 +50,7 @@ const config: Config = {
           gray4: "#E6E6E6",
           gray5: "#D9D9D9",
           gray6: "#E5E5EA",
+          gray7: "#F0F0F0",
           green1: "#275247",
           black: "#4B4B4B",
           active: "#39D72A",
