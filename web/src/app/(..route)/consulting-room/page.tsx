@@ -1,10 +1,8 @@
 'use client'
 import AchromaticButton from "@/app/ui/component/atom/button/achromatic-button";
-import { FineEmoji, GestureXEmoji } from "@/app/ui/component/atom/fluent-emoji";
-import { Card, CardContent, CardFooter} from "@/app/ui/component/molecule/card/card";
+import { GestureXEmoji } from "@/app/ui/component/atom/fluent-emoji";
+import { Card} from "@/app/ui/component/molecule/card/card";
 import { useSearchParams } from "next/navigation";
-import Banker from '@/app/utils/public/banker.png';
-import { NameTag } from "@/app/ui/component/atom/tag/name-tag";
 import { AiOutlineAudio } from "react-icons/ai";
 import { HiInformationCircle } from "react-icons/hi";
 import { IoRefresh, IoShareSocialOutline, IoSettingsOutline, IoVideocamOutline  } from "react-icons/io5";
@@ -12,7 +10,6 @@ import { Dialog, DialogContent, DialogTrigger } from "@/app/ui/component/molecul
 import { useEffect, useState } from "react";
 import Image from "next/image";
 import Xemoji from "@/app/utils/public/Xemoji.svg";
-import { MatchingAlarm } from "@/app/ui/consulting-room/matching-alarm";
 import { MainView } from "./components/main-view";
 
 
@@ -27,8 +24,6 @@ export default function Home() {
   }, [params]);
 
   const buttonStatus = key === 'true' ? '대기중' : '상담 종료';
-
-  const participants = [];
 
   return (
     <main>
@@ -123,16 +118,16 @@ export default function Home() {
       </Card>
       <div className="grid gap-6 grid-rows text-center pt-4">
         <MainView/>
-        <div className="flex justify-center space-x-4">
-          <AchromaticButton className="rounded-full bg-hwachang-gray2 hover:bg-hwachang-gray3"><div className="p-2"><AiOutlineAudio color="black" size={20}/></div></AchromaticButton>
-          <AchromaticButton className="rounded-full  bg-hwachang-gray2 hover:bg-hwachang-gray3"><div className="p-2"><IoVideocamOutline color="black" size={20}/></div></AchromaticButton>
-          <AchromaticButton className="rounded-full bg-hwachang-gray2 hover:bg-hwachang-gray3 text-black"><div className="p-2">{'대기중'}</div></AchromaticButton>
-          <AchromaticButton className="rounded-full bg-hwachang-gray2 hover:bg-hwachang-gray3"><div className="p-2"><IoShareSocialOutline color="black" size={20}/></div></AchromaticButton>
-          <AchromaticButton className="rounded-full bg-hwachang-gray2 hover:bg-hwachang-gray3"><div className="p-2"><IoSettingsOutline color="black" size={20}/></div></AchromaticButton>
-        </div>
       </div>
     </div>
     }
+      <div className="flex justify-center space-x-4 mt-4">
+        <AchromaticButton className="rounded-full bg-hwachang-gray2 hover:bg-hwachang-gray3"><div className="p-2"><AiOutlineAudio color="black" size={20}/></div></AchromaticButton>
+        <AchromaticButton className="rounded-full  bg-hwachang-gray2 hover:bg-hwachang-gray3"><div className="p-2"><IoVideocamOutline color="black" size={20}/></div></AchromaticButton>
+        <AchromaticButton className="rounded-full bg-hwachang-gray2 hover:bg-hwachang-gray3 text-black"><div className="p-2">{buttonStatus}</div></AchromaticButton>
+        <AchromaticButton className="rounded-full bg-hwachang-gray2 hover:bg-hwachang-gray3"><div className="p-2"><IoShareSocialOutline color="black" size={20}/></div></AchromaticButton>
+        <AchromaticButton className="rounded-full bg-hwachang-gray2 hover:bg-hwachang-gray3"><div className="p-2"><IoSettingsOutline color="black" size={20}/></div></AchromaticButton>
+      </div>
     </main>
   );
 }
