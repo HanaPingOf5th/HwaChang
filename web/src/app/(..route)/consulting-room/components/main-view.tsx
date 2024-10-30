@@ -13,7 +13,7 @@ export function MainView({isTop = false}:ViewProps){
       {/* 은행원 화면 ToDo: 배경 이미지 대신 웹소켓으로 받은 실시간 데이터를 보여주기 */}
       <Card className={cn(`bg-cover bg-center`, isTop?'h-44':'h-[520px]')} style={{ backgroundImage: `url(${Banker.src})` }}>
         <CardContent>
-          <div className={cn(isTop?'p-14':'p-60')}/>
+          <div className={cn(isTop?'p-14':'p-56')}/>
         </CardContent>
         <CardFooter>
           <NameTag name="이수민"/>
