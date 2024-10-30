@@ -1,3 +1,4 @@
+ import ProfileImg from "@/app/utils/public/lalalping.png";
  export interface ConsultingRecord{
   id: number,
   title: string,
@@ -5,8 +6,9 @@
   cartegoryType: '기업'|'개인',
   cartegory: string,
   date: string,
-
+  image:JSX.Element
  }
+
  export const records:  ConsultingRecord[] = [
   {
     id: 1,
@@ -15,6 +17,7 @@
     cartegoryType: "기업",
     cartegory: "예금 관리",
     date: "2024.10.22",
+    image: ProfileImg,
   },
   {
     id: 2,
@@ -23,6 +26,7 @@
     cartegoryType: "기업",
     cartegory: "예금 관리",
     date: "2024.10.22",
+    image: ProfileImg,
   },
   {
     id: 3,
@@ -31,6 +35,7 @@
     cartegoryType: "기업",
     cartegory: "예금 관리",
     date: "2024.10.22",
+    image: ProfileImg,
   },
   {
     id: 4,
@@ -39,6 +44,7 @@
     cartegoryType: "기업",
     cartegory: "예금 관리",
     date: "2024.10.22",
+    image: ProfileImg,
   },
-  
+
 ];

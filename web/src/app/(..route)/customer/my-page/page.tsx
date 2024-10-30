@@ -9,6 +9,7 @@ import { FormSubmitButton } from "@/app/ui/component/molecule/form/form-submit-b
 import { DateSelector } from "./components/date-selector";
 import { Card } from "@/app/ui/component/molecule/card/card";
 import { ConsultingRecord, records } from "./mock/mock-records";
+import Image from "next/image";
 
 export default function Home() {
   const [isSummaryVisible, setIsSummaryVisible] = useState(false);
@@ -33,13 +34,20 @@ export default function Home() {
     return (
       <main key={index}>
       <Card className="grid grid-cols-7 gap-3">
-        <div className="mb-5 mt-5 text-sm md:text-sm lg:text-xl">image</div>
-        <div className="mb-5 mt-5 text-sm md:text-sm lg:text-xl">{value.title}</div>
-        <div className="mb-5 mt-5 text-sm md:text-sm lg:text-xl">{value.consultant}</div>
-        <div className="mb-5 mt-5 text-sm md:text-sm lg:text-xl">{value.cartegoryType}</div>
-        <div className="mb-5 mt-5 text-sm md:text-sm lg:text-xl">{value.cartegory}</div>
-        <div className="mb-5 mt-5 text-sm md:text-sm lg:text-xl">{value.date}</div>
-        <div className="mb-5 mt-5 text-sm md:text-sm lg:text-xl"><button onClick={() => handleOpenSummary(value)}>{'->'}</button></div>
+
+        <div className="flex items-center justify-center mb-2 mt-2 text-sm md:text-sm lg:text-xl">
+          <Image
+            src={value.image}
+            alt="프로필 사진"
+            className="object-cover w-10 h-10 rounded-full border-1 border-white shadow-lg"
+          />
+        </div>
+        <div className="flex items-center justify-center text-sm md:text-sm lg:text-xl">{value.title}</div>
+        <div className="flex items-center justify-center text-sm md:text-sm lg:text-xl">{value.consultant}</div>
+        <div className="flex items-center justify-center text-sm md:text-sm lg:text-xl">{value.cartegoryType}</div>
+        <div className="flex items-center justify-center text-sm md:text-sm lg:text-xl">{value.cartegory}</div>
+        <div className="flex items-center justify-center text-sm md:text-sm lg:text-xl">{value.date}</div>
+        <div className="flex items-center justify-center text-sm md:text-sm lg:text-xl"><button onClick={() => handleOpenSummary(value)}>{'->'}</button></div>
       </Card>
       </main>
     )
