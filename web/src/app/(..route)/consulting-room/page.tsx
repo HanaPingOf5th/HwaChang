@@ -11,12 +11,16 @@ import { useEffect, useState } from "react";
 import Image from "next/image";
 import Xemoji from "@/app/utils/public/Xemoji.svg";
 import { MainView } from "./components/main-view";
+import { ApplicationForm } from "./components/application-form";
+import { MatchingAlarm } from "@/app/ui/consulting-room/matching-alarm";
 
 
 export default function Home() {
   const params = useSearchParams();
   const [key, setKey] = useState<string | null>('true');
   const [isDialogMounted, setIsDialogMounted] = useState(false);
+
+  const [isForm, setIsForm] = useState<boolean>(false);
 
   useEffect(() => {
     setKey(params.get('isWait') as string);
@@ -74,7 +78,7 @@ export default function Home() {
           </Dialog>
         </div>
         <MainView isTop={false}/>
-        {/* <Dialog>
+        <Dialog>
             <DialogTrigger asChild>
               <AchromaticButton className="bg-hwachang-brightgreen hover:bg-hwachang-lightgreen text-black">
                 (삭제 예정) 매칭 알림
@@ -83,7 +87,7 @@ export default function Home() {
             <DialogContent>
               <MatchingAlarm/>
             </DialogContent>    
-        </Dialog> */}
+        </Dialog>
       </div>
       :
       <div>
@@ -91,35 +95,13 @@ export default function Home() {
           <MainView isTop={true}/>
           <MainView isTop={true}/>
           <MainView isTop={true}/>
-            {/* <Card>
-              <></>
-              <CardContent>
-                <div className="flex flex-col justify-center items-center">
-                  <FineEmoji heignt={150} width={150}/>
-                </div>
-              </CardContent>
-            </Card>
-            <Card>
-              <></>
-              <CardContent>
-                <div className="flex flex-col justify-center items-center">
-                  <FineEmoji heignt={150} width={150}/>
-                </div>
-              </CardContent>
-            </Card>
-            <Card>
-              <></>
-              <CardContent>
-                <div className="flex flex-col justify-center items-center">
-                  <FineEmoji heignt={150} width={150}/>
-                </div>
-              </CardContent>
-            </Card> */}
-      </Card>
-      <div className="grid gap-6 grid-rows text-center pt-4">
-        <MainView/>
+        </Card>
+        <AchromaticButton onClick={()=>{setIsForm(true)}}>mock form</AchromaticButton>
+        <AchromaticButton onClick={()=>{setIsForm(false)}}>mock view</AchromaticButton>
+        <div className="pt-4">
+          {isForm?<ApplicationForm/>:<MainView/>}
+        </div>
       </div>
-    </div>
     }
       <div className="flex justify-center space-x-4 mt-4">
         <AchromaticButton className="rounded-full bg-hwachang-gray2 hover:bg-hwachang-gray3"><div className="p-2"><AiOutlineAudio color="black" size={20}/></div></AchromaticButton>
