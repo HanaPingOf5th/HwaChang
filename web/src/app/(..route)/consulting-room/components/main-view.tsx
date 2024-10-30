@@ -1,0 +1,27 @@
+'use client'
+import AchromaticButton from "@/app/ui/component/atom/button/achromatic-button";
+import { Card, CardContent, CardFooter} from "@/app/ui/component/molecule/card/card";
+import Banker from '@/app/utils/public/banker.png';
+import { NameTag } from "@/app/ui/component/atom/tag/name-tag";
+import { AiOutlineAudio } from "react-icons/ai";
+import { IoShareSocialOutline, IoSettingsOutline, IoVideocamOutline  } from "react-icons/io5";
+import { cn } from "@/app/utils/style";
+
+interface ViewProps{
+  isTop?: boolean;
+}
+export function MainView({isTop = false}:ViewProps){
+  return(
+    <>
+      {/* 은행원 화면 ToDo: 배경 이미지 대신 웹소켓으로 받은 실시간 데이터를 보여주기 */}
+      <Card className={cn(`bg-cover bg-center`, isTop?'h-44':'')} style={{ backgroundImage: `url(${Banker.src})` }}>
+        <CardContent>
+          <div className={cn(isTop?'p-14':'p-60')}/>
+        </CardContent>
+        <CardFooter>
+          <NameTag name="이수민"/>
+        </CardFooter>
+      </Card>
+    </>
+  )
+}
