@@ -27,7 +27,7 @@ export default function TabMenu() {
         <AchromaticButton
           className=
           {
-            `text-white rounded-t-3xl rounded-b-none px-8 py-6 text-sm
+            `text-white rounded-t-3xl rounded-b-none px-6 py-6 text-sm
             ${selectedTab === tab.id ? "bg-hwachang-green" : "bg-hwachang-hanasilver"}`
           }
           key={tab.id}

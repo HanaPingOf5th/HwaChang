@@ -47,6 +47,9 @@ const config: Config = {
           mute: "#E91313",
           gray2: "#D6D6D6",
           gray3: "#BEBEBE",
+          gray4: "#E6E6E6",
+          gray5: "#D9D9D9",
+          gray6: "#E5E5EA",
           green1: "#275247",
           black: "#4B4B4B",
           active: "#39D72A",
@@ -68,9 +71,9 @@ const config: Config = {
         sans: ['var(--font-sans)', ...fontFamily.sans],
         pretendard: ['var(--font-pretendard)'],
       },
-      boxShadow : {
-        'banker-card' : '0px 0px 10px 0px rgba(48,48,48,0.25)',
-        'score-board' : '0px 0px 10px 0px rgba(48,48,48,0.25)',
+      boxShadow: {
+        'banker-card': '0px 0px 10px 0px rgba(48,48,48,0.25)',
+        'score-board': '0px 0px 10px 0px rgba(48,48,48,0.25)',
       }
     },
   },
