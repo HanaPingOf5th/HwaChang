@@ -17,7 +17,6 @@ import {
   SlArrowLeft,
   SlArrowRight
 } from "react-icons/sl";
-import { GiCardExchange } from "react-icons/gi";
 import { MdChangeCircle } from "react-icons/md";
 
 export default function Home() {
@@ -56,7 +55,6 @@ export default function Home() {
         <div
           className={`${isChanged ? "grid grid-rows-[3fr_7fr]" : "grid grid-cols-[3fr_7fr]"} gap-6 h-full`}
         >
-          {/* 좌측 카드 */}
           <Card className={`${isChanged ? "grid-rows-1" : "grid-cols-1"} grid p-5 rounded-none bg-hwachang-gray7`}>
             <div className={`${isChanged ? "w-[20%]" : "w-[80%]"} bg-hwachang-darkgreen text-white text-center text-sm rounded-sm font-extralight h-6`}>
               함께 참여하고 있는 고객
@@ -95,7 +93,6 @@ export default function Home() {
             )}
           </Card>
 
-          {/* 우측 카드 */}
           <Card className={`${isChanged ? "grid grid-rows-1" : "grid grid-rows-2"} gap-4 p-5 h-full border-white rounded-none shadow-none`}
           >
             {isChanged ?
