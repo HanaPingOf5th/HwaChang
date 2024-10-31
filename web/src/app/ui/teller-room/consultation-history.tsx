@@ -31,27 +31,17 @@ export default function ConsultationHistory({ name }: CustomerProps) {
   ];
 
   return (
-    <div className="p-7 space-y-4">
+    <div className="p-5 space-y-4">
       {/* 고객 정보 */}
       <div className="items-center">
         <div className="flex items-center space-x-1">
           <p className="font-semibold text-xl">{name}</p>
           <p className="font-semibold text-sm">고객님</p>
         </div>
-
-        {/* 필터링 옵션 */}
-        <div className="flex justify-end w-full">
-          <div className="w-32">
-            <FormSelect placeholder={"최신순"}>
-              <FormSelectItem value={"최신순"} placeholder={"최신순"} />
-              <FormSelectItem value={"오래된순"} placeholder={"오래된순"} />
-            </FormSelect>
-          </div>
-        </div>
       </div>
 
       {/* 카드 목록 */}
-      <div className="space-y-4">
+      <div className="space-y-3">
         {historyData.map((history, index) => (
           <HistoryCard
             key={index}

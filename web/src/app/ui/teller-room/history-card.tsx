@@ -26,9 +26,9 @@ export default function HistoryCard({ cardItem }: HistoryCardProps) {
       className={`rounded-lg shadow-md ${isOpen ? "rounded-b-none" : ""}`}
       onClick={toggleOpen}
     >
-      <div className="flex justify-between items-center p-4">
+      <div className="flex justify-between items-center p-5">
         <div>
-          <div className="text-lg font-semibold">{title}</div>
+          <div className="text-lg font-medium">{title}</div>
           <div className="flex space-x-4 mt-3 items-center">
             <Badge className="bg-hwachang-lightgreen1 rounded-sm px-6 text-sm font-normal text-black hover:bg-hwachang-lightgreen1">
               {category}
@@ -37,7 +37,7 @@ export default function HistoryCard({ cardItem }: HistoryCardProps) {
           </div>
         </div>
         <div className="mr-3">
-          {isOpen ? <SlArrowUp size="30" color="gray" /> : <SlArrowDown size="30" color="gray" />}
+          {isOpen ? <SlArrowUp size="27" color="gray" /> : <SlArrowDown size="27" color="gray" />}
         </div>
       </div>
 
