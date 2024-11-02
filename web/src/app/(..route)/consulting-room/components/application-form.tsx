@@ -1,12 +1,10 @@
 'use client'
-import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/app/ui/component/molecule/card/card";
+import { Card, CardContent, CardHeader } from "@/app/ui/component/molecule/card/card";
 import Form from "@/app/ui/component/molecule/form/form-index";
 import { FormState } from "@/app/ui/component/molecule/form/form-root";
 import { FormSubmitButton } from "@/app/ui/component/molecule/form/form-submit-button";
 import { FormTextInput } from "@/app/ui/component/molecule/form/form-textinput";
-import { cn } from "@/app/utils/style";
 import { application } from "../mock/mock-application";
-import { FormCheckBoxInput } from "@/app/ui/component/molecule/form/form-ckeckbox-input";
 
 interface Customer{
   name: string;
@@ -31,7 +29,7 @@ export interface ApplicationProps{
 export function ApplicationForm(){
   // mockData
   const mockApplication = application;
-  const {title, customerInfo, subjects} = mockApplication;
+  const {title} = mockApplication;
 
   return(
     <>
@@ -59,7 +57,7 @@ function submit(prevState:FormState, formData:FormData):FormState{
 };
 
 function getForms(application: ApplicationProps){
-  const {title, customerInfo, subjects} = application;
+  const {subjects} = application;
 
   return (
     <>

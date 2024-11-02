@@ -10,6 +10,7 @@ import { DateSelector } from "./components/date-selector";
 import { Card } from "@/app/ui/component/molecule/card/card";
 import { ConsultingRecord, records } from "./mock/mock-records";
 import Image from "next/image";
+import { StaticImport } from "next/dist/shared/lib/get-img-props";
 
 export default function Home() {
   const [isSummaryVisible, setIsSummaryVisible] = useState(false);
@@ -41,7 +42,7 @@ export default function Home() {
       <Card className="grid grid-cols-7 gap-3">
         <div className="flex items-center justify-center mb-2 mt-2 text-sm md:text-sm lg:text-xl">
           <Image
-            src={value.image}
+            src={value.image as unknown as StaticImport}
             alt="프로필 사진"
             className="object-cover w-10 h-10 rounded-full border-1 border-white shadow-lg"
           />
