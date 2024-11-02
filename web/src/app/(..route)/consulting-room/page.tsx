@@ -18,7 +18,8 @@ import { CheckIcon, CopyIcon, MicIcon, MicOffIcon, SettingsIcon, Share2Icon, Vid
 // import {HeadphonesIcon, Volume2Icon } from "lucide-react";
 import TextInput from "@/app/ui/component/atom/text-input/text-input";
 // import { BsPersonVideo } from "react-icons/bs";
-import { Video } from "./components/webcam";
+import { Video, VideoView } from "./components/video-view";
+import { NameTag } from "@/app/ui/component/atom/tag/name-tag";
 
 export default function Home() {
   const params = useSearchParams();
@@ -220,12 +221,12 @@ export default function Home() {
               ?  
               <ApplicationForm />
               :
-              <Card className="relative -z-10">
+              <VideoView>
                 <Video ref={videoRef as LegacyRef<HTMLVideoElement> | undefined}/>
-                <CardFooter className="absolute top-32 right-52 w-full h-full flex items-center justify-center text-white">
-                  {/* <NameTag name="이수민"/> */}
-                </CardFooter>
-              </Card>}
+                <div className="absolute top-100 bottom-0 left-0 text-white">
+                  <NameTag name="이수민"/>
+                </div>
+              </VideoView>}
           </div>
         </div>
       )}
@@ -358,57 +359,51 @@ export default function Home() {
           </div>
         )}
 
-      <div className="flex justify-center gap-4">
-        {/* 마이크 제어 버튼 */}
-        <AchromaticButton
-          onClick={toggleAudio}
-          className="rounded-full bg-hwachang-gray2 hover:bg-hwachang-gray3"
-        >
-          <div className="p-2">
-            {isAudioEnabled ? (
-              <MicIcon color="black" size={20} />
-            ) : (
-              <MicOffIcon color="black" size={20} />
-            )}
-          </div>
-        </AchromaticButton>
-        {/* 카메라 제어 버튼 */}
-        <AchromaticButton
-          onClick={toggleVideo}
-          className="rounded-full bg-hwachang-gray2 hover:bg-hwachang-gray3"
-        >
-          <div className="p-2">
-            {isVideoEnabled ? (
-              <VideoIcon color="black" size={20} />
-            ) : (
-              <VideoOffIcon color="black" size={20} />
-            )}
-          </div>
-        </AchromaticButton>
-        {/* 대기중, 상담 종료 버튼 */}
-        <AchromaticButton className="rounded-full bg-hwachang-gray2 hover:bg-hwachang-gray3 text-black">
-          <div className="p-2">대기중</div>
-        </AchromaticButton>
-        {/* 링크 공유 모달 토글 버튼 */}
-        <AchromaticButton
-          className="rounded-full bg-hwachang-gray2 hover:bg-hwachang-gray3"
-          onClick={toggleLink}
-        >
-          <div className="p-2">
-            <Share2Icon color="black" size={20} />
-          </div>
-        </AchromaticButton>
-        {/* 설정 모달 토글 버튼 */}
-        <AchromaticButton
-          className="rounded-full bg-hwachang-gray2 hover:bg-hwachang-gray3"
-          onClick={toggleSettings}
-        >
-          <div className="p-2">
-            <SettingsIcon color="black" size={20} />
-          </div>
-        </AchromaticButton>
-      </div>
-
+        <div className="flex justify-center gap-4">
+          <AchromaticButton
+            onClick={toggleAudio}
+            className="rounded-full bg-hwachang-gray2 hover:bg-hwachang-gray3"
+          >
+            <div className="p-2">
+              {isAudioEnabled ? (
+                <MicIcon color="black" size={20} />
+              ) : (
+                <MicOffIcon color="black" size={20} />
+              )}
+            </div>
+          </AchromaticButton>
+          <AchromaticButton
+            onClick={toggleVideo}
+            className="rounded-full bg-hwachang-gray2 hover:bg-hwachang-gray3"
+          >
+            <div className="p-2">
+              {isVideoEnabled ? (
+                <VideoIcon color="black" size={20} />
+              ) : (
+                <VideoOffIcon color="black" size={20} />
+              )}
+            </div>
+          </AchromaticButton>
+          <AchromaticButton className="rounded-full bg-hwachang-gray2 hover:bg-hwachang-gray3 text-black">
+            <div className="p-2">대기중</div>
+          </AchromaticButton>
+          <AchromaticButton
+            className="rounded-full bg-hwachang-gray2 hover:bg-hwachang-gray3"
+            onClick={toggleLink}
+          >
+            <div className="p-2">
+              <Share2Icon color="black" size={20} />
+            </div>
+          </AchromaticButton>
+          <AchromaticButton
+            className="rounded-full bg-hwachang-gray2 hover:bg-hwachang-gray3"
+            onClick={toggleSettings}
+          >
+            <div className="p-2">
+              <SettingsIcon color="black" size={20} />
+            </div>
+          </AchromaticButton>
+        </div>
       </div>
     </main>
   );

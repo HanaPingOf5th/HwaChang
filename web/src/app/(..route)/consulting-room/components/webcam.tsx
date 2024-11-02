@@ -13,26 +13,9 @@ import {
   VideoOffIcon,
   Volume2Icon,
 } from "lucide-react";
-import React, { forwardRef, LegacyRef, useEffect, useRef, useState } from "react";
+import React, { LegacyRef, useEffect, useRef, useState } from "react";
 import { Card, CardFooter } from "@/app/ui/component/molecule/card/card";
-import { cn } from "@/app/utils/style";
 // import { NameTag } from "@/app/ui/component/atom/tag/name-tag";
-
-export const Video = forwardRef<HTMLVideoElement, React.HTMLAttributes<HTMLVideoElement>>(({ className, ...props }, ref)=>(
-  <video
-    className={cn("rounded-xl aspect-[16/9] object-cover", className)}
-    ref={ref}
-    autoPlay
-    playsInline
-    muted
-    width="100%"
-    height="auto"
-    {...props}
-  />
-));
-
-Video.displayName = 'Video';
-
 
 const Webcam = () => {
   // 웹캠 관련
