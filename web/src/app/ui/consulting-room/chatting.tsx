@@ -37,12 +37,12 @@ export default function Chatting({isCustomer}:ChattingRoomProps) {
 
   return (
     <div className="flex justify-center bg-hwachang-darkgreen">
-      <div className="flex justify-center flex-col space-x-0">
+      <div className="flex justify-center flex-col">
         <div className="flex bg-hwachang-green rounded-xl rounded-b-none p-3 gap-2">
           <BsChatDots size="25" color="white" />
           <p className="text-lg font-medium text-white">채팅</p>
         </div>
-        <Card className="rounded">
+        <Card className="rounded-none rounded-b-lg">
           <CardHeader className="space-y-5">
             <div className="bg-hwachang-gray6 rounded-3xl px-10 py-4 font-medium text-xs text-center text-slate-800">
               {
