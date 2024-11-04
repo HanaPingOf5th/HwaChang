@@ -18,15 +18,13 @@ import { CheckIcon, CopyIcon, MicIcon, MicOffIcon, SettingsIcon, Share2Icon, Vid
 // import {HeadphonesIcon, Volume2Icon } from "lucide-react";
 import TextInput from "@/app/ui/component/atom/text-input/text-input";
 // import { BsPersonVideo } from "react-icons/bs";
-import { Video, VideoView } from "./components/video-view";
-import { NameTag } from "@/app/ui/component/atom/tag/name-tag";
+import { Profile, Video, VideoView } from "./components/video-view";
 
 export default function Home() {
   const params = useSearchParams();
   const [key, setKey] = useState<string | null>("true");
   const [isDialogMounted, setIsDialogMounted] = useState(false);
 
-  // 하단 네브 바
   const videoRef = useRef<HTMLVideoElement | undefined | null>(null);
   const [videoStream, setVideoStream] = useState<MediaStream | null>(null);
   const [isVideoEnabled, setIsVideoEnabled] = useState<boolean>(true);
@@ -46,8 +44,12 @@ export default function Home() {
   const [isSettingsModalOpen, setIsSettingsModalOpen] = useState<boolean>(false);
   // const [currentSetting, setCurrentSetting] = useState<string>("audio");
 
-  // Form 관련
   const [isForm, setIsForm] = useState<boolean>(false);
+
+  const mockProfile: Profile ={
+    picture: <div>이수민 행원의 사진이 들어갈 곳</div>,
+    name: "이수민",
+  } 
   
   useEffect(()=>{
     const getMedia = async () => {
@@ -76,9 +78,14 @@ export default function Home() {
         audioContext.current.close();
       }
     }
-  }, [])
+  }, [isForm, isVideoEnabled])
 
-  const toggleVideo = ()=>{
+  useEffect(() => {
+    setKey(params.get("isWait") as string);
+    setIsDialogMounted(true);
+  }, [params]);
+
+  const toggleVideo = () => {
     if(videoStream){
       videoStream.getVideoTracks().forEach((track)=>(track.enabled = !track.enabled));
       setIsVideoEnabled(!isVideoEnabled);
@@ -122,11 +129,6 @@ export default function Home() {
   //     videoRef.current.volume = volume;
   //   }
   // };
-
-  useEffect(() => {
-    setKey(params.get("isWait") as string);
-    setIsDialogMounted(true);
-  }, [params]);
 
   return (
     <main>
@@ -221,12 +223,12 @@ export default function Home() {
               ?  
               <ApplicationForm />
               :
-              <VideoView>
-                <Video ref={videoRef as LegacyRef<HTMLVideoElement> | undefined}/>
-                <div className="absolute top-100 bottom-0 left-0 text-white">
-                  <NameTag name="이수민"/>
-                </div>
-              </VideoView>}
+              <VideoView
+                video={<Video ref={videoRef as LegacyRef<HTMLVideoElement>}/>}
+                isCam={isVideoEnabled}
+                profile={mockProfile}
+                />
+              }
           </div>
         </div>
       )}
