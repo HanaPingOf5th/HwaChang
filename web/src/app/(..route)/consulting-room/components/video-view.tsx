@@ -32,7 +32,7 @@ export const Video = forwardRef<HTMLVideoElement, React.HTMLAttributes<HTMLVideo
 Video.displayName = 'Video';
 
 export const VideoView = ({className, video, onCam, profile, isTop }:VideoView)=>(
-  <main className="px-6">
+  <main className={cn(isTop?"px-6":null)}>
     <Card className={cn('relative -z-10', className)}>
     {
       onCam

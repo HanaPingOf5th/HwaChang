@@ -253,7 +253,7 @@ export default function Home() {
           >
             mock view
           </AchromaticButton>
-          <div className="pt-4">
+          <div className="pt-4 px-6">
             {isForm
               ?  
               <ApplicationForm />

@@ -32,15 +32,15 @@ export function ApplicationForm(){
   const {title} = mockApplication;
 
   return(
-    <>
+    <main>
       {/* 은행원 화면 ToDo: 배경 이미지 대신 웹소켓으로 받은 실시간 데이터를 보여주기 */}
-      <Card className="h-[520px] overflow-y-auto">
+      <Card className="aspect-[16/9] overflow-y-auto px-6">
         <CardHeader className="text-center font-semibold">{title}</CardHeader>
         <CardContent className="text-start">
           {getForms(mockApplication)}
         </CardContent>
       </Card>
-    </>
+    </main>
   )
 }
 
