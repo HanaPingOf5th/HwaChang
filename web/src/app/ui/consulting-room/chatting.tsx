@@ -8,7 +8,7 @@ import Form from "../component/molecule/form/form-index"
 import { FormState } from "../component/molecule/form/form-root"
 import { FormTextInput } from "../component/molecule/form/form-textinput"
 import { LuSendHorizonal } from "react-icons/lu";
-import { MyChat, OtherChat } from "../consulting-room/chat-box";
+import { MyChat, OtherChat } from "./chat-box";
 import { BsChatDots } from "react-icons/bs";
 
 

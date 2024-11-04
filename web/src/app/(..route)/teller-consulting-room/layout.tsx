@@ -1,4 +1,4 @@
-import SideBar from "@/app/ui/teller-room/side-bar";
+import SideBar from "@/app/ui/consulting-room/teller-consulting-room-side-bar";
 
 export default function Layout({ children }: { children: React.ReactNode; }) {
   return (

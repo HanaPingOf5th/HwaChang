@@ -1,4 +1,4 @@
-import ConsultingRoomSideBar from "@/app/ui/consulting-room/consulting-room-side-bar";
+import ConsultingRoomSideBar from "@/app/ui/consulting-room/customer-consulting-room-side-bar";
 
 export default function Layout({ children }:{ children: React.ReactNode; }) {
   return (

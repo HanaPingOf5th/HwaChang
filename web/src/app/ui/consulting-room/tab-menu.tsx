@@ -2,9 +2,10 @@
 import React, { useState } from "react";
 import { Card } from "../component/molecule/card/card";
 import AchromaticButton from "../component/atom/button/achromatic-button";
-import CounselHistory from "@/app/ui/teller-room/consultation-history";
-import DocumentSearch from "@/app/ui/teller-room/document-search";
-import Library from "@/app/ui/teller-room/library";
+import Library from "./library";
+import DocumentSearch from "./document-search";
+import ConsultationHistory from "./consultation-history";
+
 
 interface TabItem {
   id: number;
@@ -14,7 +15,7 @@ interface TabItem {
 
 export default function TabMenu() {
   const TabData: TabItem[] = [
-    { id: 1, button: "과거 상담 기록", content: <CounselHistory name="유유정" /> },
+    { id: 1, button: "과거 상담 기록", content: <ConsultationHistory name="유유정" /> },
     { id: 2, button: "문서 검색", content: <DocumentSearch /> },
     { id: 3, button: "자료실", content: <Library /> },
   ];
