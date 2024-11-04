@@ -183,7 +183,7 @@ export default function Home() {
             )}
           </div>
           
-          <div className="pt-4">
+          <div className="pt-4 px-6">
             <VideoView
               video={<Video ref={videoRef as LegacyRef<HTMLVideoElement>}/>}
               onCam={isVideoEnabled}

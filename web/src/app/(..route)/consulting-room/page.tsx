@@ -239,6 +239,7 @@ export default function Home() {
               </button>
             )}
           </div>
+          {/* API 연동 후, 삭제 예정 */}
           <AchromaticButton
             onClick={() => {
               setIsForm(true);
