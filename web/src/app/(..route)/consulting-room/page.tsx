@@ -1,17 +1,13 @@
 "use client";
 import AchromaticButton from "@/app/ui/component/atom/button/achromatic-button";
 import { GestureXEmoji } from "@/app/ui/component/atom/fluent-emoji";
-import { Card, CardFooter } from "@/app/ui/component/molecule/card/card";
 import { useSearchParams } from "next/navigation";
 import { HiInformationCircle } from "react-icons/hi";
-import {
-  IoRefresh,
-} from "react-icons/io5";
+import { IoRefresh } from "react-icons/io5";
 import { Dialog, DialogContent, DialogTrigger } from "@/app/ui/component/molecule/dialog/dialog";
 import { LegacyRef, useEffect, useRef, useState } from "react";
 import Image from "next/image";
 import Xemoji from "@/app/utils/public/Xemoji.svg";
-import { MainView } from "./components/main-view";
 import { ApplicationForm } from "./components/application-form";
 import { MatchingAlarm } from "@/app/ui/consulting-room/matching-alarm";
 import { CheckIcon, CopyIcon, MicIcon, MicOffIcon, SettingsIcon, Share2Icon, VideoIcon, VideoOffIcon } from "lucide-react";
@@ -19,6 +15,7 @@ import { CheckIcon, CopyIcon, MicIcon, MicOffIcon, SettingsIcon, Share2Icon, Vid
 import TextInput from "@/app/ui/component/atom/text-input/text-input";
 // import { BsPersonVideo } from "react-icons/bs";
 import { Profile, Video, VideoView } from "./components/video-view";
+import { SlArrowDown, SlArrowUp, SlArrowLeft, SlArrowRight } from "react-icons/sl";
 
 export default function Home() {
   const params = useSearchParams();
@@ -43,13 +40,33 @@ export default function Home() {
 
   const [isSettingsModalOpen, setIsSettingsModalOpen] = useState<boolean>(false);
   // const [currentSetting, setCurrentSetting] = useState<string>("audio");
-
   const [isForm, setIsForm] = useState<boolean>(false);
+
+  const [slideIndex, setSlideIndex] = useState(0);
+
+  const handlePrev = () => {
+    if (slideIndex > 0) {
+      setSlideIndex(slideIndex - 1);
+    }
+  };
+
+  const handleNext = () => {
+    if (slideIndex < videoViews.length - 3) {
+      setSlideIndex(slideIndex + 1);
+    }
+  };
 
   const mockProfile: Profile ={
     picture: <div>이수민 행원의 사진이 들어갈 곳</div>,
     name: "이수민",
   } 
+
+  const mockOtherProfile: Profile ={
+    picture: <div>상담 참여자들의 사진이 들어갈 자리</div>,
+    name: "참여자",
+  } 
+
+  const videoViews = Array(5).fill(<VideoView isTop={true} video={<Video ref={videoRef as LegacyRef<HTMLVideoElement>}/>} onCam={false} profile={mockOtherProfile}/>);
   
   useEffect(()=>{
     const getMedia = async () => {
@@ -85,6 +102,7 @@ export default function Home() {
     setIsDialogMounted(true);
   }, [params]);
 
+  // To-Do: 내가 비디오를 끌 경우, 나의 비디오 상태를 상대방에게 보내는 api 추가: isCam: false
   const toggleVideo = () => {
     if(videoStream){
       videoStream.getVideoTracks().forEach((track)=>(track.enabled = !track.enabled));
@@ -92,6 +110,7 @@ export default function Home() {
     }
   }
 
+  // To-Do: 내가 오디오를 끌 경우, 나의 오디오 상태를 상대방에게 보내는 api 추가: isCam: false
   const toggleAudio = () => {
     if (videoStream) {
       videoStream.getAudioTracks().forEach((track) => (track.enabled = !track.enabled));
@@ -190,20 +209,36 @@ export default function Home() {
               <MatchingAlarm />
             </DialogContent>
           </Dialog>
-          <Card className="relative -z-10">
-            <Video ref={videoRef as LegacyRef<HTMLVideoElement> | undefined}/>
-            <CardFooter className="absolute top-32 right-52 w-full h-full flex items-center justify-center text-white">
-              {/* <NameTag name="이수민"/> */}
-            </CardFooter>
-          </Card>
+          <VideoView
+            video={<Video ref={videoRef as LegacyRef<HTMLVideoElement>}/>}
+            onCam={isVideoEnabled}
+            profile={mockProfile}
+          />
         </div>
       ) : (
         <div>
-          <Card className="grid gap-6 grid-cols-3 text-center px-3 py-3 h-52">
-            <MainView isTop={true} />
-            <MainView isTop={true} />
-            <MainView isTop={true} />
-          </Card>
+          <div className="relative w-full overflow-hidden h-1/6 p-6">
+            <div
+              className="flex transition-transform duration-300"
+              style={{ transform: `translateX(-${slideIndex * 100 / 3}%)` }}
+            >
+              {videoViews.map((videoView, index) => (
+                <div key={index} className="w-1/3 flex-shrink-0">
+                  {videoView}
+                </div>
+              ))}
+            </div>
+            {slideIndex > 0 && (
+              <button onClick={handlePrev} className="absolute left-0 top-1/2 transform -translate-y-1/2 px-3">
+                <SlArrowLeft/>
+              </button>
+            )}
+            {slideIndex < videoViews.length - 3 && (
+              <button onClick={handleNext} className="absolute right-0 top-1/2 transform -translate-y-1/2 px-3">
+                <SlArrowRight/>
+              </button>
+            )}
+          </div>
           <AchromaticButton
             onClick={() => {
               setIsForm(true);
@@ -225,7 +260,7 @@ export default function Home() {
               :
               <VideoView
                 video={<Video ref={videoRef as LegacyRef<HTMLVideoElement>}/>}
-                isCam={isVideoEnabled}
+                onCam={isVideoEnabled}
                 profile={mockProfile}
                 />
               }

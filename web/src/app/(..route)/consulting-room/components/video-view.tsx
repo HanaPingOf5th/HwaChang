@@ -10,9 +10,10 @@ export interface Profile {
 interface VideoView {
   className?: string;
   video: React.ReactNode;
-  isCam: boolean;
+  onCam: boolean;
   onMike?: boolean;
-  profile?: Profile
+  profile?: Profile;
+  isTop?: boolean;
 }
 
 export const Video = forwardRef<HTMLVideoElement, React.HTMLAttributes<HTMLVideoElement>>(({ className, ...props }, ref)=>(
@@ -30,14 +31,14 @@ export const Video = forwardRef<HTMLVideoElement, React.HTMLAttributes<HTMLVideo
   
 Video.displayName = 'Video';
 
-export const VideoView = ({className, video, isCam, profile}:VideoView)=>(
-  <main>
+export const VideoView = ({className, video, onCam, profile, isTop }:VideoView)=>(
+  <main className="px-6">
     <Card className={cn('relative -z-10', className)}>
     {
-      isCam
+      onCam
       ?
       (<>
-        <Card className="rounded-xl aspect-[16/9] object-cover">
+        <Card className={cn("rounded-xl object-cover", isTop?'h-40 w-auto':'aspect-[16/9]')}>
           {video}
         </Card>
         <div className="absolute top-100 bottom-0 left-0 text-white">
@@ -45,7 +46,7 @@ export const VideoView = ({className, video, isCam, profile}:VideoView)=>(
         </div>
       </>
       )
-      :<Card className="rounded-xl aspect-[16/9] object-cover">{profile?.picture}</Card>}
+      :<Card className={cn("rounded-xl object-cover", isTop?'h-40 w-auto':'aspect-[16/9]')}>{profile?.picture}</Card>}
     </Card>
   </main>
 )
