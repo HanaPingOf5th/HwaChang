@@ -8,7 +8,7 @@ export default function SideBar() {
   return (
     <div className="bg-hwachang-darkgreen p-7 space-y-8">
       <TabMenu />
-      <Chatting />
+      <Chatting isCustomer={false} />
       <div className="flex justify-end">
         <Image src={Logo} alt="Logo" width={80} height={60} />
       </div>
