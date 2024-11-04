@@ -3,8 +3,8 @@ import CustomerConsultingRoomSideBar from "@/app/ui/consulting-room/customer-con
 export default function Layout({ children }:{ children: React.ReactNode; }) {
   return (
     <div className="flex h-screen flex-row overflow-hidden">
-      <div className="flex-grow md:overflow-y-auto p-6">{children}</div>
-      <div className="w-2/4 md:w-2/5 lg:w-2/5 overflow-x-auto">
+      <div className="w-[70%] overflow-y-auto">{children}</div>
+      <div className="w-[30%] overflow-x-auto bg-hwachang-darkgreen">
         <CustomerConsultingRoomSideBar/>
       </div>
     </div>

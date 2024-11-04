@@ -4,9 +4,9 @@ import Chatting from "../consulting-room/chatting";
 import Image from "next/image";
 import Logo from "@/app/utils/public/Logo.png";
 
-export default function SideBar() {
+export default function TellerConsultingRoomSideBar() {
   return (
-    <div className="bg-hwachang-darkgreen p-7 space-y-8">
+    <div className="grid grid-cols-1 gap-10 h-full p-7">
       <TabMenu />
       <Chatting isCustomer={false} />
       <div className="flex justify-end">

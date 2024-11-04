@@ -51,7 +51,7 @@ export default function Chatting({isCustomer}:ChattingRoomProps) {
                 :'채팅을 통해 고객님께 필요한 정보를 먼저 제공하거나 돕기 위해 다음 안내를 준비해주세요.'
               }
             </div>
-            {!isCustomer&&(<div>
+            {!isCustomer&&(<div className="space-y-5">
             <div className="px-2 space-y-1 text-xs">
               <div>
                 • 연결 상태를 확인하고, 고객님께 화상 재시도를 요청합니다.

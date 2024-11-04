@@ -152,7 +152,7 @@ export default function Home() {
   return (
     <main>
       {key == "true" ? (
-        <div className="grid grid-row-1 gap-1">
+        <div className="grid grid-row-1 gap-1 px-10 py-6">
           <p className={`mb-6 text-4xl text-hwachang-green1`}>
             <strong>상담 대기실</strong>
           </p>
@@ -217,7 +217,7 @@ export default function Home() {
         </div>
       ) : (
         <div>
-          <div className="relative w-full overflow-hidden h-1/6 p-6">
+          <div className="relative w-full overflow-hidden h-1/6 p-6 bg-slate-100">
             <div
               className="flex transition-transform duration-300"
               style={{ transform: `translateX(-${slideIndex * 100 / 3}%)` }}
