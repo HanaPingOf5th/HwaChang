@@ -3,12 +3,15 @@ import NavLinks from "./nav-link";
 import Image from "next/image";
 import Logo from "@/app/utils/public/Logo.png";
 import People from "@/app/utils/public/People.png";
+import Link from "next/link";
 
 export default function Nav() {
   return (
     <div className="flex h-full flex-col bg-hwachang-darkgreen">
       <div className="flex h-32 justify-center items-center">
-        <Image src={Logo} alt="Logo" width={120} height={100} className="mt-5" />
+        <Link href="/customer/main">
+          <Image src={Logo} alt="Logo" width={120} height={100} className="mt-5" />
+        </Link>
       </div>
 
       <div className="flex grow justify-between flex-col space-x-0 md:space-y-2">

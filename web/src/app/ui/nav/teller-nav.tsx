@@ -7,6 +7,7 @@ import Logo from "@/app/utils/public/Logo.png";
 import ProfileImg from "@/app/utils/public/lalalping.png";
 import { Card } from "../component/molecule/card/card";
 import TellerNavLinks from "./teller-nav-link";
+import Link from "next/link";
 
 // interface TellerInfo {
 //   name: string;
@@ -23,7 +24,9 @@ export default function TellerNav() {
     <div className="flex flex-col h-full bg-hwachang-darkgreen">
       <div className="flex justify-center items-center">
         {/* 로고 */}
-        <Image src={Logo} alt="Logo" width={80} height={60} className="mt-5" />
+        <Link href="/teller/main">
+          <Image src={Logo} alt="Logo" width={80} height={60} className="mt-5" />
+        </Link>
       </div>
 
       {/* 행원 정보 */}
