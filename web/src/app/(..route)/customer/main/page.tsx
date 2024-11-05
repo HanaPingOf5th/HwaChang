@@ -12,11 +12,10 @@ export default function Home() {
   const [companyWaitTime, setCompanyWaitTime] = useState<number>(99);
   const congestionTime: number = 10;
 
-  useEffect(()=>{
+  useEffect(() => {
     setIndividualWaitTime(3);
     setCompanyWaitTime(11);
-  }, [])
-  
+  }, []);
 
   return (
     <main className="p-5">
@@ -36,10 +35,10 @@ export default function Home() {
                 <HouseEmoji heignt={300} width={300} />
               </div>
               <div className="flex justify-center items-center pt-12 text-2xl">
-                <p className="text-black font-semibold mr-2">
-                  예상 대기 시간 :
-                </p>
-                <p className={individualWaitTime > congestionTime ? "text-red-500" : "text-blue-400"}>
+                <p className="text-black font-semibold mr-2">예상 대기 시간 :</p>
+                <p
+                  className={individualWaitTime > congestionTime ? "text-red-500" : "text-blue-400"}
+                >
                   <strong>{individualWaitTime}분</strong>
                 </p>
               </div>
@@ -76,9 +75,7 @@ export default function Home() {
                 <EnterPriseEmoji heignt={300} width={300} />
               </div>
               <div className="flex justify-center items-center pt-12 text-2xl">
-                <p className="text-black mr-2 font-semibold">
-                  예상 대기 시간 :
-                </p>
+                <p className="text-white mr-2 font-semibold">예상 대기 시간 :</p>
                 <p className={companyWaitTime > 10 ? "text-red-500" : "text-blue-300"}>
                   <strong>{companyWaitTime}분</strong>
                 </p>
