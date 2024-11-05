@@ -1,8 +1,6 @@
 "use client";
 import React from "react";
 import HistoryCard from "./history-card";
-import FormSelect from "../component/molecule/form/form-select-index";
-import { FormSelectItem } from "../component/molecule/form/form-select-item";
 
 interface CustomerProps {
   name: string;
