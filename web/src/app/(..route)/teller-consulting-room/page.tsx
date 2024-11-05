@@ -7,7 +7,7 @@ import { CheckIcon, CopyIcon, MicIcon, MicOffIcon, SettingsIcon, Share2Icon, Vid
 // import {HeadphonesIcon, Volume2Icon } from "lucide-react";
 import TextInput from "@/app/ui/component/atom/text-input/text-input";
 // import { BsPersonVideo } from "react-icons/bs";
-import { SlArrowDown, SlArrowUp, SlArrowLeft, SlArrowRight } from "react-icons/sl";
+import { SlArrowLeft, SlArrowRight } from "react-icons/sl";
 import { Profile, Video, VideoView } from "../consulting-room/components/video-view";
 
 export default function Home() {
@@ -32,7 +32,6 @@ export default function Home() {
 
   const [isSettingsModalOpen, setIsSettingsModalOpen] = useState<boolean>(false);
   // const [currentSetting, setCurrentSetting] = useState<string>("audio");
-  const [isForm, setIsForm] = useState<boolean>(false);
 
   const [slideIndex, setSlideIndex] = useState(0);
 
@@ -51,6 +50,11 @@ export default function Home() {
   const mockProfile: Profile ={
     picture: <div>이수민 행원의 사진이 들어갈 곳</div>,
     name: "이수민",
+  }
+
+  const mockMyProfile: Profile ={
+    picture: <div>계정 주인의 사진이 들어갈 곳</div>,
+    name: "나나나",
   } 
 
   const mockOtherProfile: Profile ={
@@ -87,7 +91,7 @@ export default function Home() {
         audioContext.current.close();
       }
     }
-  }, [isForm, isVideoEnabled])
+  }, [isVideoEnabled])
 
   useEffect(() => {
     setKey(params.get("isWait") as string);
@@ -165,6 +169,14 @@ export default function Home() {
               className="flex transition-transform duration-300"
               style={{ transform: `translateX(-${slideIndex * 100 / 3}%)` }}
             >
+              <div className="w-1/3 flex-shrink-0">
+                <VideoView
+                  video={<Video ref={videoRef as LegacyRef<HTMLVideoElement>} isTop={true}/>}
+                  onCam={isVideoEnabled}
+                  isTop={true}
+                  profile={mockMyProfile}
+                  />
+              </div>
               {videoViews.map((videoView, index) => (
                 <div key={index} className="w-1/3 flex-shrink-0">
                   {videoView}
@@ -186,7 +198,7 @@ export default function Home() {
           <div className="pt-4 px-6">
             <VideoView
               video={<Video ref={videoRef as LegacyRef<HTMLVideoElement>}/>}
-              onCam={isVideoEnabled}
+              onCam={false}
               profile={mockProfile}
             />
           </div>

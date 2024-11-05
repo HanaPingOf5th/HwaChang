@@ -7,7 +7,7 @@ export interface Profile {
  picture: React.ReactNode;
  name: string;
 }
-interface VideoView {
+interface VideoViewProps {
   className?: string;
   video: React.ReactNode;
   onCam: boolean;
@@ -16,9 +16,13 @@ interface VideoView {
   isTop?: boolean;
 }
 
-export const Video = forwardRef<HTMLVideoElement, React.HTMLAttributes<HTMLVideoElement>>(({ className, ...props }, ref)=>(
+interface VideoProps extends React.HTMLAttributes<HTMLVideoElement>{
+  isTop?: boolean
+}
+
+export const Video = forwardRef<HTMLVideoElement, VideoProps>(({ className, isTop, ...props }, ref)=>(
   <video
-    className={cn("rounded-xl aspect-[16/9] object-cover", className)}
+    className={cn("rounded-xl aspect-[16/9] object-cover", className, isTop?"h-40 w-auto":"aspect-[16/9]")}
     ref={ref}
     autoPlay
     playsInline
@@ -31,7 +35,7 @@ export const Video = forwardRef<HTMLVideoElement, React.HTMLAttributes<HTMLVideo
   
 Video.displayName = 'Video';
 
-export const VideoView = ({className, video, onCam, profile, isTop }:VideoView)=>(
+export const VideoView = ({className, video, onCam, profile, isTop }:VideoViewProps)=>(
   <main className={cn(isTop?"px-6":null)}>
     <Card className={cn('relative -z-10', className)}>
     {
