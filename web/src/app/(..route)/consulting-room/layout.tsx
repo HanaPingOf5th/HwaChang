@@ -1,11 +1,11 @@
-import ConsultingRoomSideBar from "@/app/ui/consulting-room/consulting-room-side-bar";
+import CustomerConsultingRoomSideBar from "@/app/ui/consulting-room/customer-consulting-room-side-bar";
 
 export default function Layout({ children }:{ children: React.ReactNode; }) {
   return (
     <div className="flex h-screen flex-row overflow-hidden">
-      <div className="flex-grow md:overflow-y-auto p-12">{children}</div>
-      <div className="w-1/4">
-        <ConsultingRoomSideBar/>
+      <div className="w-[70%] overflow-y-auto">{children}</div>
+      <div className="w-[30%] overflow-x-auto bg-hwachang-darkgreen">
+        <CustomerConsultingRoomSideBar/>
       </div>
     </div>
   );

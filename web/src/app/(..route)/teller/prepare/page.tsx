@@ -1,5 +1,5 @@
-import Content from "@/app/ui/teller-room/consultation-start-content";
-import InfoBar from "@/app/ui/teller-room/info-bar";
+import ConsultationStartContent from "@/app/ui/consulting-room/consultation-start-content";
+import InfoBar from "@/app/ui/consulting-room/info-bar";
 import React from "react";
 
 export default function PrepareCounsel() {
@@ -7,7 +7,7 @@ export default function PrepareCounsel() {
   return (
     <div>
       <InfoBar />
-      <Content waitingCount={waitingCount} />
+      <ConsultationStartContent waitingCount={waitingCount} />
     </div>
   )
 }

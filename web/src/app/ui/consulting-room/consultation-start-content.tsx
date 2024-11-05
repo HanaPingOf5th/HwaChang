@@ -1,5 +1,4 @@
 "use client";
-
 import React from "react";
 import AchromaticButton from "../component/atom/button/achromatic-button";
 import { useRouter } from "next/navigation";

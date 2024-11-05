@@ -1,4 +1,3 @@
-// components/Webcam.js
 import AchromaticButton from "@/app/ui/component/atom/button/achromatic-button";
 import TextInput from "@/app/ui/component/atom/text-input/text-input";
 import { BsPersonVideo } from "react-icons/bs";
@@ -14,7 +13,9 @@ import {
   VideoOffIcon,
   Volume2Icon,
 } from "lucide-react";
-import { useEffect, useRef, useState } from "react";
+import React, { LegacyRef, useEffect, useRef, useState } from "react";
+import { Card, CardFooter } from "@/app/ui/component/molecule/card/card";
+// import { NameTag } from "@/app/ui/component/atom/tag/name-tag";
 
 const Webcam = () => {
   // 웹캠 관련
@@ -254,15 +255,21 @@ const Webcam = () => {
           )}
         </div>
       )}
-      <video
-        className="rounded-xl aspect-[16/9]"
-        ref={videoRef}
-        autoPlay
-        playsInline
-        muted
-        width="100%"
-        height="auto"
-      />
+
+      <Card className="relative -z-10">
+          <video
+            className="rounded-xl aspect-[16/9] object-cover"
+            ref={videoRef as LegacyRef<HTMLVideoElement> | undefined}
+            autoPlay
+            playsInline
+            muted
+            width="100%"
+            height="auto"
+          />
+          <CardFooter className="absolute top-32 right-52 w-full h-full flex items-center justify-center text-white">
+            {/* <NameTag name="이수민"/> */}
+          </CardFooter>
+      </Card>
 
       <div className="flex justify-center gap-4">
         {/* 마이크 제어 버튼 */}

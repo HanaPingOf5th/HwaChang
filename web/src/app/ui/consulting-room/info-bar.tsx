@@ -1,5 +1,6 @@
 import React from "react";
-import InfoContent from "@/app/ui/teller-room/info-content";
+import InfoContent from "./info-content";
+
 
 export default function InfoBar() {
   const infoData = [
