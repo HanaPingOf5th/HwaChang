@@ -7,7 +7,7 @@ import { CheckIcon, CopyIcon, MicIcon, MicOffIcon, SettingsIcon, Share2Icon, Vid
 // import {HeadphonesIcon, Volume2Icon } from "lucide-react";
 import TextInput from "@/app/ui/component/atom/text-input/text-input";
 // import { BsPersonVideo } from "react-icons/bs";
-import { SlArrowDown, SlArrowUp, SlArrowLeft, SlArrowRight } from "react-icons/sl";
+import { SlArrowLeft, SlArrowRight } from "react-icons/sl";
 import { Profile, Video, VideoView } from "../consulting-room/components/video-view";
 
 export default function Home() {
@@ -32,7 +32,6 @@ export default function Home() {
 
   const [isSettingsModalOpen, setIsSettingsModalOpen] = useState<boolean>(false);
   // const [currentSetting, setCurrentSetting] = useState<string>("audio");
-  const [isForm, setIsForm] = useState<boolean>(false);
 
   const [slideIndex, setSlideIndex] = useState(0);
 
@@ -87,7 +86,7 @@ export default function Home() {
         audioContext.current.close();
       }
     }
-  }, [isForm, isVideoEnabled])
+  }, [isVideoEnabled])
 
   useEffect(() => {
     setKey(params.get("isWait") as string);
