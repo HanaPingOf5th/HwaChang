@@ -15,7 +15,7 @@ import { CheckIcon, CopyIcon, MicIcon, MicOffIcon, SettingsIcon, Share2Icon, Vid
 import TextInput from "@/app/ui/component/atom/text-input/text-input";
 // import { BsPersonVideo } from "react-icons/bs";
 import { Profile, Video, VideoView } from "./components/video-view";
-import { SlArrowDown, SlArrowUp, SlArrowLeft, SlArrowRight } from "react-icons/sl";
+import { SlArrowLeft, SlArrowRight } from "react-icons/sl";
 
 export default function Home() {
   const params = useSearchParams();
