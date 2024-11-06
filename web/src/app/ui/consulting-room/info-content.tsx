@@ -16,6 +16,6 @@ export default function InfoContent({ status, count }: PropInfo) {
           <span className="text-xl font-semibold mx-2">명</span>
         </Card>
       </div>
-    </div >
+    </div>
   );
 }
