@@ -3,7 +3,7 @@
 import React, { useEffect, useState } from "react";
 import TextInput from "../component/atom/text-input/text-input";
 import { IoSearch, IoChevronBack, IoChevronForward } from "react-icons/io5";
-import { documents } from "../../(..route)/consulting-room/mock/mock-documents";
+import { documents } from "./mock/mock-documents";
 // import Form from "../component/molecule/form/form-index";
 // import { FormState } from "../component/molecule/form/form-root";
 // import { FormTextInput } from "../component/molecule/form/form-textinput";
@@ -89,7 +89,7 @@ export default function DocumentSearch() {
   };
 
   return (
-    <div className="p-4 max-w-3xl mx-auto">
+    <div className="p-4 max-w-3xl mx-auto h-full">
       <div className="mb-4 flex gap-3">
         {/* <Form id={"search-form"} action={formAction} failMessageControl={"alert"}>
           <div className="grid grid-rows-2">
@@ -105,7 +105,7 @@ export default function DocumentSearch() {
           onValueChange={handleSearchChange}
           className="flex-1 p-1 border rounded-l-lg h-10 border-gray-300"
         />
-        <button className="px-4 bg-hwachang-darkgreen text-white rounded-lg text-sm">검색</button>
+        <button className="px-4 bg-hwachang-darkgreen text-white rounded-md text-sm">검색</button>
       </div>
 
       <div className="p-2 flex flex-wrap gap-4">
@@ -124,7 +124,8 @@ export default function DocumentSearch() {
         ))}
       </div>
 
-      <div className="grid grid-cols-3 h-[30vh] overflow-y-auto">
+      <div className="grid grid-cols-3">
+
         {currentDocuments.map((doc, index) => (
           <div key={index} className="flex flex-col items-center p-3">
             <button
