@@ -1,12 +1,11 @@
-// import WebCam from "@/app/utils/web-socket/rtc-test";
-import WebCamVer2 from "@/app/utils/web-socket/trc-test-v1";
+import WebCamTest from "@/app/utils/web-socket/trc-test";
 
 
 export default function WebCamEx(){
   return(
   <>
     {/* <WebCam/> */}
-    <WebCamVer2/>
+    <WebCamTest/>
   </>
   )
 }
