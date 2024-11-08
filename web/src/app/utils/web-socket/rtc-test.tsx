@@ -9,21 +9,29 @@ import AchromaticButton from "@/app/ui/component/atom/button/achromatic-button";
 
 export default function WebCam() {
   const videoRef = useRef<HTMLVideoElement | undefined | null>(null);
-  const remoteVideoRef = useRef<HTMLVideoElement | null>(null); 
   const [videoStream, setVideoStream] = useState<MediaStream | null>(null);
 
   const [isVideoEnabled, setIsVideoEnabled] = useState<boolean>(false);
   const audioContext = useRef<AudioContext | null>(null);
   const gainNode = useRef<GainNode | null>(null);
 
-  const stompClientRef = useRef<Client | null>(null);
   const myKey:string = Math.random().toString(36).substring(2, 11);
+  const socket = new SockJS("http://ec2-3-35-49-10.ap-northeast-2.compute.amazonaws.com:8080/consulting-room");
+  const stompClient = Stomp.over(socket);
+  const roomId = 1234;
+  const pcListMap = new Map();
+  const otherKeyList:string[] = [];
+
+  // TO-DO:토큰 전역으로 관리하면서, 웹 소켓 연결 시 헤더에 전달
+  const access:string ='@@@mockToekn@@@';
+
 
   async function startCam(){
     const mediaStream: MediaStream = await navigator.mediaDevices.getUserMedia(
         {video: {width: 800, height: 450, facingMode: "user"}, audio: true}
       )
-      setVideoStream(videoStream);
+    setVideoStream(mediaStream);
+    connectSocket();
   }
 
   useEffect(()=>{
@@ -39,8 +47,6 @@ export default function WebCam() {
         
         audioContext.current = new window.AudioContext();
         gainNode.current = audioContext.current.createGain();
-        console.log("===========mediaStream============")
-        connectSocket();
       } catch (error){
         throw new Error(error as string);
       }
@@ -58,10 +64,13 @@ export default function WebCam() {
   }, [isVideoEnabled])
 
   // 스트림 버튼 클릭시 , 다른 웹 key들 웹소켓을 가져 온뒤에 offer -> answer -> iceCandidate 통신
-  const handleStreamStart = async () => {
-    await stompClientRef.current?.send(`/app/call/key`, {}, {});
+  const handleStreamStart = () => {
+    console.log(stompClient);
+    // 지금 여기서 타입 에러가 발생합니다...
+    stompClient.send(`/app/call/key`, {priority: 9}, "Hello, STOMP");
   
     setTimeout(() => {
+      console.log(otherKeyList);
         otherKeyList.map((key) => {
           if (!pcListMap.has(key)) {
             pcListMap.set(key, createPeerConnection(key));
@@ -76,18 +85,9 @@ export default function WebCam() {
     name: "이수민",
   }
 
-    const socket = new SockJS("http://ec2-3-35-49-10.ap-northeast-2.compute.amazonaws.com:8080/consulting-room");
-    const stompClient = Stomp.over(socket);
-    const roomId = 1234;
-    const pcListMap = new Map();
-    const otherKeyList:string[] = [];
-
-    // TO-DO:토큰 전역으로 관리하면서, 웹 소켓 연결 시 헤더에 전달
-    const access:string ='@@@mockToekn@@@';
-
-    // RTC pipe-line
-    const connectSocket = async () => {
-    stompClient.connect(
+  // RTC pipe-line
+  const connectSocket = async () => {
+  stompClient.connect(
         {
         Authorization: `Bearer ${access}`,
         'Content-Type': 'application/json'
@@ -123,22 +123,16 @@ export default function WebCam() {
             const message = JSON.parse(offer.body).body;
             console.log('---------offer 메세지 파싱 완료----------');
             
-            // 해당 키에 새로운 피어 커넥션을 생성해준 후 pcListMap 저장
             pcListMap.set(key, createPeerConnection(key));
             console.log(key, ": ",pcListMap);
 
-            // 생성한 peer 에 offer정보를 setRemoteDescription 해준다.
-            console.log('---------pcListGet----------');
-            console.log(pcListMap.get(key)); // undefined
             pcListMap.get(key).setRemoteDescription(
                 new RTCSessionDescription({ type: message.type, sdp: message.sdp })
             );
-            //sendAnswer 함수를 호출해준다.
             sendAnswer(pcListMap.get(key), key);
             },
         );
 
-        //answer peer 교환을 위한 subscribe
         stompClient.subscribe(
             `/topic/peer/answer/${myKey}/${roomId}`,
             (answer)=>{
@@ -146,12 +140,10 @@ export default function WebCam() {
             console.log(answer.body);
             const key = JSON.parse(answer.body).key;
             const message = JSON.parse(answer.body).body;
-            // 해당 key에 해당되는 Peer 에 받은 정보를 setRemoteDescription 해준다.
             pcListMap.get(key).setRemoteDescription(new RTCSessionDescription(message));
             }
         );
 
-        // iceCandidate
         stompClient.subscribe(
             `/topic/peer/iceCandidate/${myKey}/${roomId}`,
             (candidate)=>{
@@ -175,8 +167,8 @@ export default function WebCam() {
     }
 
     const createPeerConnection = (otherKey: string)=>{
-    const pc = new RTCPeerConnection();
-    try{
+      const pc = new RTCPeerConnection();
+      try{
         pc.addEventListener("icecandidate", (event)=>{
           onIceCandidate(event, otherKey)
         });
@@ -204,67 +196,69 @@ export default function WebCam() {
     } catch(error){
         throw Error(error as string)
     }
-    return pc;
+      return pc;
     }
 
     const onIceCandidate = (event: RTCPeerConnectionIceEvent, otherKey: string)=>{
-        if(event.candidate){
-            console.log("on ICE Candidate")
-            stompClient.send(
-            `/app/peer/iceCandidate/${otherKey}/${roomId}`,
-            {},
-            JSON.stringify({key:myKey, body: event.candidate})
-            )
-        }
+      if(event.candidate){
+        console.log("on ICE Candidate")
+        stompClient.send(
+          `/app/peer/iceCandidate/${otherKey}/${roomId}`,
+          {},
+          JSON.stringify({key:myKey, body: event.candidate})
+        )
+      }
     }
 
     function sendOffer(pc:RTCPeerConnection, otherKey:string){
-    pc.createOffer().then((offer)=>{
+      pc.createOffer().then((offer)=>{
         stompClient.send(
-        `/app/peer/offer/${otherKey}/${roomId}`,
-        {},
-        JSON.stringify({
+          `/app/peer/offer/${otherKey}/${roomId}`,
+          {},
+          JSON.stringify({
             key: myKey,
             body: offer,
-        })
+          })
         )
-    })
+      })
     };
 
     function sendAnswer(pc:RTCPeerConnection, otherKey:string){
-    pc.createAnswer().then((answer)=>{
+      pc.createAnswer().then((answer)=>{  
         setLocalAndSendMessage(pc, answer);
         stompClient.send(
         `/app/peer/answer/${otherKey}/${roomId}`,
         {},
         JSON.stringify({
-            key: myKey,
-            body: answer,
-        })
-        )
-    })
+          key: myKey,
+          body: answer,
+        }))
+      })
     };
 
     const onTrack = (event: RTCTrackEvent, otherKey: string) => {
-        if (document.getElementById(`${otherKey}`) === null) {
-            const video = document.createElement("video");
+      if (document.getElementById(`${otherKey}`) === null) {
+        const video = document.createElement("video");
+      
+        video.autoplay = true;
+        video.controls = true;
+        video.id = otherKey;
+        video.srcObject = event.streams[0];
+        // To-Do: video Element 생성을 Documnet가 아닌 React.ReactNode를 생성하고 videoRef를 참조할 수 있도록 설계
+        // const videoView = (<VideoView video={video as unknown as React.ReactNode} onCam={false}></VideoView>)
         
-            video.autoplay = true;
-            video.controls = true;
-            video.id = otherKey;
-            video.srcObject = event.streams[0];
-        
-            document.getElementById("remoteStreamDiv")?.appendChild(video);
-          }
+        document.getElementById("remoteStreamDiv")?.appendChild(video);
+      }
     }
+
     const setLocalAndSendMessage = (pc:RTCPeerConnection, sessionDescription: RTCLocalSessionDescriptionInit | undefined) => {
-    pc.setLocalDescription(sessionDescription);
+      pc.setLocalDescription(sessionDescription);
     };
 
   return (
     <div>
-      <AchromaticButton type="button" onClick={()=>{startCam()}}>캠 상태 전역 On이게 맞나..?</AchromaticButton>
-      <AchromaticButton type="button" onClick={handleStreamStart}>Stream Start</AchromaticButton>
+      <AchromaticButton type="button" onClick={()=>{startCam()}}>캠 상태 전역 On + 커넥션 연결 (캠상태 관리해주고 커넥션이랑 로직 분리 반드시 필요..)</AchromaticButton>
+      <AchromaticButton type="button" onClick={async ()=>{handleStreamStart();}}>Stream Start</AchromaticButton>
       
       <VideoView
         video={<Video ref={videoRef as LegacyRef<HTMLVideoElement>} />}
@@ -272,16 +266,7 @@ export default function WebCam() {
         profile={mockProfile}
       />
       
-      {/* <VideoView
-        video={<Video ref={remoteVideoRef as LegacyRef<HTMLVideoElement>} />}
-        onCam={true}
-        profile={{ name: "Remote User", picture: <div>👤</div> }}
-      /> */}
       <div id="remoteStreamDiv" style={{ transform: 'rotateY(180deg)', WebkitTransform: 'rotateY(180deg)' }}/>
     </div>
   );
 }
-
-
-
-
