@@ -1,4 +1,4 @@
-import { FormState } from "../ui/component/molecule/form/form-root";
+import { FormState } from "../../ui/component/molecule/form/form-root";
 
 export async function login(
   prevState: FormState,
@@ -10,6 +10,6 @@ export async function login(
     isSuccess: true,
     isFailure: false,
     message: "login",
-    validationError: ["string"],
+    validationError: {},
   };
 }
