@@ -17,7 +17,7 @@ export default function Home() {
   const videoRef = useRef<HTMLVideoElement | undefined | null>(null);
   const [videoStream, setVideoStream] = useState<MediaStream | null>(null);
   const [isVideoEnabled, setIsVideoEnabled] = useState<boolean>(true);
-  const [isAudioEnabled, setIsAudioEnabled] = useState<boolean>(true);
+  const [isMikeEnabled, setIsMikeEnabled] = useState<boolean>(true);
 
   // const [inputVolume, setInputVolume] = useState<number>(0.5);
   // const [outputVolume, setOutputVolume] = useState<number>(0.5);
@@ -67,8 +67,8 @@ export default function Home() {
   useEffect(()=>{
     const getMedia = async () => {
       try{
-        const mediaStream = await navigator.mediaDevices.getUserMedia(
-          {video: {width: 800, height: 450, facingMode: "user"}}
+        const mediaStream: MediaStream = await navigator.mediaDevices.getUserMedia(
+          {video: {width: 800, height: 450, facingMode: "user"}, audio: true}
         )
         setVideoStream(mediaStream);
         if (videoRef.current){
@@ -80,7 +80,7 @@ export default function Home() {
         throw new Error(error as string);
       }
     };
-
+    
     getMedia();
 
     return () => {
@@ -109,7 +109,7 @@ export default function Home() {
   const toggleAudio = () => {
     if (videoStream) {
       videoStream.getAudioTracks().forEach((track) => (track.enabled = !track.enabled));
-      setIsAudioEnabled(!isAudioEnabled);
+      setIsMikeEnabled(!isMikeEnabled);
     }
   };
 
@@ -175,7 +175,7 @@ export default function Home() {
                   onCam={isVideoEnabled}
                   isTop={true}
                   profile={mockMyProfile}
-                  />
+                />
               </div>
               {videoViews.map((videoView, index) => (
                 <div key={index} className="w-1/3 flex-shrink-0">
@@ -339,7 +339,7 @@ export default function Home() {
             className="rounded-full bg-hwachang-gray2 hover:bg-hwachang-gray3"
           >
             <div className="p-2">
-              {isAudioEnabled ? (
+              {isMikeEnabled ? (
                 <MicIcon color="black" size={20} />
               ) : (
                 <MicOffIcon color="black" size={20} />
