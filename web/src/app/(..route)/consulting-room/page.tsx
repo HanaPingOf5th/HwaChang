@@ -20,7 +20,7 @@ import { SlArrowLeft, SlArrowRight } from "react-icons/sl";
 export default function Home() {
   const params = useSearchParams();
   const [key, setKey] = useState<string | null>("true");
-  const [isDialogMounted, setIsDialogMounted] = useState(false);
+  const [isWaitingDialogMounted, setIsWaitingDialogMounted] = useState(false);
 
   const videoRef = useRef<HTMLVideoElement | undefined | null>(null);
   const [videoStream, setVideoStream] = useState<MediaStream | null>(null);
@@ -104,7 +104,7 @@ export default function Home() {
 
   useEffect(() => {
     setKey(params.get("isWait") as string);
-    setIsDialogMounted(true);
+    setIsWaitingDialogMounted(true);
   }, [params]);
 
   // To-Do: 내가 비디오를 끌 경우, 나의 비디오 상태를 상대방에게 보내는 api 추가: isCam: false
@@ -171,7 +171,7 @@ export default function Home() {
                   대기현황 보기
                 </AchromaticButton>
               </DialogTrigger>
-              {isDialogMounted && (
+              {isWaitingDialogMounted && (
                 <DialogContent>
                   <div className="flex flex-col items-center">
                     <div className="w-full flex justify-end">

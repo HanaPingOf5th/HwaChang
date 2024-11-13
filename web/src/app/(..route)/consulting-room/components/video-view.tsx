@@ -22,7 +22,7 @@ interface VideoProps extends React.HTMLAttributes<HTMLVideoElement>{
 
 export const Video = forwardRef<HTMLVideoElement, VideoProps>(({ className, isTop, ...props }, ref)=>(
   <video
-    className={cn("rounded-xl aspect-[16/9] object-cover", className, isTop?"h-40 w-auto":"aspect-[16/9]")}
+    className={cn("rounded-xl aspect-[16/9] object-cover", className, isTop?"h-40 aspect-[16/9]":"aspect-[16/9]")}
     ref={ref}
     autoPlay
     playsInline

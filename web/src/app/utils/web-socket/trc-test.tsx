@@ -36,6 +36,7 @@ export default function WebCamTest() {
         throw new Error(error as string);
       }
     };
+    
     getMedia();
 
     return () => {
