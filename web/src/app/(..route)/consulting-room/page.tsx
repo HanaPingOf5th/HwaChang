@@ -1,26 +1,22 @@
 "use client";
 import AchromaticButton from "@/app/ui/component/atom/button/achromatic-button";
-import { GestureXEmoji } from "@/app/ui/component/atom/fluent-emoji";
 import { useSearchParams } from "next/navigation";
-import { HiInformationCircle } from "react-icons/hi";
-import { IoRefresh } from "react-icons/io5";
 import { Dialog, DialogContent, DialogTrigger } from "@/app/ui/component/molecule/dialog/dialog";
 import { LegacyRef, useEffect, useRef, useState } from "react";
-import Image from "next/image";
-import Xemoji from "@/app/utils/public/Xemoji.svg";
 import { ApplicationForm } from "./components/application-form";
-import { MatchingAlarm } from "@/app/ui/consulting-room/matching-alarm";
+import { MatchingAlarm } from "@/app/ui/consulting-room/modal/matching-alarm";
 import { CheckIcon, CopyIcon, MicIcon, MicOffIcon, SettingsIcon, Share2Icon, VideoIcon, VideoOffIcon } from "lucide-react";
 // import {HeadphonesIcon, Volume2Icon } from "lucide-react";
 import TextInput from "@/app/ui/component/atom/text-input/text-input";
 // import { BsPersonVideo } from "react-icons/bs";
 import { Profile, Video, VideoView } from "./components/video-view";
 import { SlArrowLeft, SlArrowRight } from "react-icons/sl";
+import { WaitingModal } from "@/app/ui/consulting-room/modal/waiting";
 
 export default function Home() {
   const params = useSearchParams();
   const [key, setKey] = useState<string | null>("true");
-  const [isDialogMounted, setIsDialogMounted] = useState(false);
+  const [isWaitingDialogMounted, setIsWaitingDialogMounted] = useState(false);
 
   const videoRef = useRef<HTMLVideoElement | undefined | null>(null);
   const [videoStream, setVideoStream] = useState<MediaStream | null>(null);
@@ -104,7 +100,7 @@ export default function Home() {
 
   useEffect(() => {
     setKey(params.get("isWait") as string);
-    setIsDialogMounted(true);
+    setIsWaitingDialogMounted(true);
   }, [params]);
 
   // To-Do: 내가 비디오를 끌 경우, 나의 비디오 상태를 상대방에게 보내는 api 추가: isCam: false
@@ -171,35 +167,9 @@ export default function Home() {
                   대기현황 보기
                 </AchromaticButton>
               </DialogTrigger>
-              {isDialogMounted && (
+              {isWaitingDialogMounted && (
                 <DialogContent>
-                  <div className="flex flex-col items-center">
-                    <div className="w-full flex justify-end">
-                      <Image src={Xemoji} alt="xemoji" width={20} height={20} />
-                    </div>
-                    <div className="flex justify-center p-10">
-                      <GestureXEmoji width={200} heignt={200} />
-                    </div>
-                    <p className="text-center text-lg font-semibold">현재 접속량이 많아</p>
-                    <p className="text-center text-lg font-semibold text-green-600">
-                      상담 대기 중입니다.
-                    </p>
-                    <p className="text-center text-sm text-gray-500 pt-3">조금만 기다려 주세요.</p>
-                    <div className="w-full mt-6">
-                      <div className="flex items-center justify-center space-x-2">
-                        <p className="text-lg font-medium">대기 인원</p>
-                        <IoRefresh className="mt-1" width={16} height={16} color="gray" />
-                        <p className="text-lg font-semibold">154,721명</p>
-                      </div>
-                      <div className="flex items-center justify-center mt-4 text-sm text-gray-500">
-                        <HiInformationCircle className="mr-1" width={16} height={16} color="gray" />
-                        <p className="pt-5">
-                          화상 상담 전 채팅을 통해 상담할 내용을 적어주시면
-                          <br /> 빠른 상담이 가능합니다.
-                        </p>
-                      </div>
-                    </div>
-                  </div>
+                  <WaitingModal/>
                 </DialogContent>
               )}
             </Dialog>
