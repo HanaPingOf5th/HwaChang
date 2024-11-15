@@ -6,7 +6,6 @@ import Library from "./library";
 import DocumentSearch from "./document-search";
 import ConsultationHistory from "./consultation-history";
 
-
 interface TabItem {
   id: number;
   button: string;
@@ -23,20 +22,19 @@ export default function TabMenu() {
   const [selectedTab, setSelectedTab] = useState(TabData[0].id);
 
   return (
-    <div>
-      {TabData.map((tab) => (
-        <AchromaticButton
-          className=
-          {
-            `text-white rounded-t-3xl rounded-b-none px-6 py-6 text-sm
-            ${selectedTab === tab.id ? "bg-hwachang-green" : "bg-hwachang-hanasilver"}`
-          }
-          key={tab.id}
-          onClick={() => setSelectedTab(tab.id)}
-        >
-          {tab.button}
-        </AchromaticButton>
-      ))}
+    <div className="min-w-[311.6px]">
+      <div>
+        {TabData.map((tab) => (
+          <AchromaticButton
+            className={`text-white rounded-t-3xl rounded-b-none px-6 py-6 text-sm
+            ${selectedTab === tab.id ? "bg-hwachang-green" : "bg-hwachang-hanasilver"}`}
+            key={tab.id}
+            onClick={() => setSelectedTab(tab.id)}
+          >
+            {tab.button}
+          </AchromaticButton>
+        ))}
+      </div>
 
       <Card className="rounded-lg rounded-tl-none h-[65vh] overflow-y-scroll">
         {TabData.find((tab) => tab.id === selectedTab)?.content}
