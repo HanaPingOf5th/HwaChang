@@ -1,15 +1,16 @@
 'use client'
 
 import { Card, CardContent, CardFooter, CardHeader } from "@/app/ui/component/molecule/card/card";
-import { useSearchParams } from "next/navigation";
+import { useSearchParams, useRouter } from "next/navigation";
 import { customerCategories, enterpriseCategories } from "./categories";
-import Link from "next/link";
+
 
 export default function Home() {
-  //To-Do: userSearchParam 이용해서 isIndividual의 값에 따라 컴포넌트 내에서 다른 내용 보여주기
   const params = useSearchParams();
   const key = params.get('isIndividual');
-  let pageTitle;
+  const router = useRouter();
+
+  let pageTitle: string;
   let pageCategory;
   if(key==='true'){
     pageTitle = '개인 금융'
@@ -21,11 +22,12 @@ export default function Home() {
 
   const Categories:JSX.Element[] = pageCategory.map((value, index)=>{
     const Icon = value.icon;
+  
     return(
       <main key={index}>
         <div className="p-2">
-          <Link href={"/consulting-room?isWait=true"}>
-            <Card className="bg-hwachang-darkgreen hover:bg-hwachang-green text-white">
+          
+            <Card className="bg-hwachang-darkgreen hover:bg-hwachang-green text-white" onClick={()=>{router.push("/consulting-room?isWait=true")}} >
               <CardHeader className="text-2xl">
                 <strong>{value.title}</strong>
               </CardHeader>
@@ -34,7 +36,7 @@ export default function Home() {
                 <Icon color="white" size='60'></Icon>
               </CardFooter>
             </Card>
-          </Link>
+          
         </div>
       </main>
     )

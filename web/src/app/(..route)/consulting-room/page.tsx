@@ -96,7 +96,7 @@ export default function Home() {
         audioContext.current.close();
       }
     }
-  }, [isForm, isVideoEnabled])
+  }, [isForm, isVideoEnabled, key])
 
   useEffect(() => {
     setKey(params.get("isWait") as string);
