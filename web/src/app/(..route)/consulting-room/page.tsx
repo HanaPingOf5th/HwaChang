@@ -5,12 +5,13 @@ import { Dialog, DialogContent, DialogTrigger } from "@/app/ui/component/molecul
 import { LegacyRef, useEffect, useRef, useState } from "react";
 import { ApplicationForm } from "./components/application-form";
 import { MatchingAlarm } from "@/app/ui/consulting-room/modal/matching-alarm";
-import { CheckIcon, CopyIcon, MicIcon, MicOffIcon, SettingsIcon, Share2Icon, VideoIcon, VideoOffIcon } from "lucide-react";
-import TextInput from "@/app/ui/component/atom/text-input/text-input";
-import { Profile, Video, VideoView } from "./components/video-view";
+import { Video, VideoView } from "./components/video-view";
 import { SlArrowLeft, SlArrowRight } from "react-icons/sl";
 import { WaitingModal } from "@/app/ui/consulting-room/modal/waiting";
 import { VideoSettingModal } from "@/app/ui/consulting-room/modal/video-setting";
+import { SharingLinkModal } from "@/app/ui/consulting-room/modal/sharing-link";
+import { MicIcon, MicOffIcon, SettingsIcon, Share2Icon, VideoIcon, VideoOffIcon } from "lucide-react";
+import { mockMyProfile, mockOtherProfile, mockProfile } from "./mock/mock-profiles";
 
 export default function Home() {
   const params = useSearchParams();
@@ -29,7 +30,6 @@ export default function Home() {
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
 
   const [isLinkModalOpen, setIsLinkModalOpen] = useState<boolean>(false);
-  const [isCopied, setIsCopied] = useState<boolean>(false);
 
   const [isSettingsModalOpen, setIsSettingsModalOpen] = useState<boolean>(false);
   const [isForm, setIsForm] = useState<boolean>(false);
@@ -47,21 +47,6 @@ export default function Home() {
       setSlideIndex(slideIndex + 1);
     }
   };
-
-  const mockProfile: Profile ={
-    picture: <div>이수민 행원의 사진이 들어갈 곳</div>,
-    name: "이수민",
-  }
-
-  const mockMyProfile: Profile ={
-    picture: <div>계정 주인의 사진이 들어갈 곳</div>,
-    name: "나나나",
-  } 
-
-  const mockOtherProfile: Profile ={
-    picture: <div>상담 참여자들의 사진이 들어갈 자리</div>,
-    name: "참여자",
-  } 
 
   const videoViews :JSX.Element[] = Array(5).fill(<VideoView isTop={true} video={<Video ref={videoRef as LegacyRef<HTMLVideoElement>}/>} onCam={false} profile={mockOtherProfile}/>);
   
@@ -118,11 +103,6 @@ export default function Home() {
   const toggleLink = () => {
     setIsModalOpen(!isModalOpen);
     setIsLinkModalOpen(!isLinkModalOpen);
-  };
-
-  const handleCopyButtonClick = () => {
-    window.navigator.clipboard.writeText(window.location.href);
-    setIsCopied(true);
   };
 
   const toggleSettings = () => {
@@ -247,30 +227,9 @@ export default function Home() {
             }}
           >
             {/* 링크 모달 */}
-            {isLinkModalOpen && (
-              <div className="bg-white rounded-xl w-1/2 h-1/3 flex flex-col justify-center items-center z-20 gap-5">
-                <Share2Icon className="stroke-hwachang-darkgreen" size={60} />
-                <p className="text-xl font-bold">초대 링크 복사하기</p>
-                <div className="w-4/5 flex">
-                  <TextInput
-                    value={window.location.href}
-                    disabled
-                    className="rounded-tr-none rounded-br-none text-hwachang-hwachanggray border-r-0"
-                  />
-                  <AchromaticButton
-                    onClick={handleCopyButtonClick}
-                    className="border-l-0 rounded-tl-none rounded-bl-none"
-                  >
-                    {isCopied ? <CheckIcon size={20} /> : <CopyIcon size={20} />}
-                  </AchromaticButton>
-                </div>
-              </div>
-            )}
-
+            {isLinkModalOpen && (<SharingLinkModal/>)}
             {/* 설정 모달 */}
-            {isSettingsModalOpen &&
-              (<VideoSettingModal videoRef={videoRef} />)
-          }
+            {isSettingsModalOpen && (<VideoSettingModal videoRef={videoRef} />)}
           </div>
         )}
 
