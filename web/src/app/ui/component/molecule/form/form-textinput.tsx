@@ -5,13 +5,14 @@ import { useFormStatus } from 'react-dom';
 
 interface FormTextInputProps {
   label?: string;
+  value?: string;
   id: string;
   placeholder: string;
   required?: boolean;
   className?: string;
 }
 
-export function FormTextInput({ label, id, placeholder, required = false, className }: FormTextInputProps) {
+export function FormTextInput({ label, value=null, id, placeholder, required = false, className }: FormTextInputProps) {
   const { errors } = useContext(FormContext);
   const { pending } = useFormStatus();
 
@@ -34,6 +35,7 @@ export function FormTextInput({ label, id, placeholder, required = false, classN
         error={errors[id] ? true : false}
         errorMessages={errors[id]}
         type={'text'}
+        value={value}
         id={id}
         name={id}
         placeholder={placeholder}
