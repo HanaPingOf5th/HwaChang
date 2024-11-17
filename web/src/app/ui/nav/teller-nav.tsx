@@ -1,6 +1,6 @@
 "use client";
 
-import React from "react";
+import React, { useState } from "react";
 import AchromaticButton from "../component/atom/button/achromatic-button";
 import Image from "next/image";
 import Logo from "@/app/utils/public/Logo.png";
@@ -9,16 +9,34 @@ import { Card } from "../component/molecule/card/card";
 import TellerNavLinks from "./teller-nav-link";
 import Link from "next/link";
 
-// interface TellerInfo {
-//   name: string;
-//   position: string;
-//   branch: string;
-//   department: string;
-//   availability: string;
-// }
+const statusOptions = [
+  { name: "상담 가능", color: "bg-hwachang-active" },
+  { name: "다른 업무중", color: "bg-[#FFFB01]" },
+  { name: "상담 불가", color: "bg-[#FF2500]" },
+  { name: "업무 종료", color: "bg-[#8D8D8D]" },
+];
 
 export default function TellerNav() {
-  // const [tellerInfo, setTellerInfo] = useState<TellerInfo | null>(null);
+  const [currentStatus, setCurrentStatus] = useState("상담 가능");
+  const [currentColor, setCurrentColor] = useState("bg-hwachang-active");
+  const [isEditing, setIsEditing] = useState(false);
+  const [selectedStatus, setSelectedStatus] = useState(currentStatus);
+  const [selectedColor, setSelectedColor] = useState(currentColor);
+
+  const handleStatusChange = () => {
+    setIsEditing(!isEditing);
+  };
+
+  const handleStatusSelect = (status: string, color: string) => {
+    setSelectedStatus(status);
+    setSelectedColor(color);
+  };
+
+  const handleStatusConfirm = () => {
+    setCurrentStatus(selectedStatus);
+    setCurrentColor(selectedColor);
+    setIsEditing(false);
+  };
 
   return (
     <div className="flex flex-col h-full bg-hwachang-darkgreen">
@@ -38,10 +56,12 @@ export default function TellerNav() {
             alt="프로필 사진"
             className="object-cover w-48 h-48 rounded-full border-4 border-white shadow-lg"
           />
-          <div className="absolute right-16 transform translate-x-8 bottom-1 w-9 h-9 bg-hwachang-active rounded-full border-4 border-white shadow-lg z-20"></div>
+          <div
+            className={`absolute right-16 transform translate-x-8 bottom-1 w-9 h-9 rounded-full border-4 border-white shadow-lg z-20 ${currentColor}`}
+          ></div>
         </div>
 
-        {/* 상세 정보(Card) - 이름, 직급, 지점, 담당 카테고리, 상담 가능 상태 */}
+        {/* 상세 정보(Card) */}
         <Card className="relative bg-white shadow-lg rounded-3xl w-9/12 mt-5">
           <div className="p-5 text-center">
             <div className="flex flex-col items-center mb-4">
@@ -51,16 +71,41 @@ export default function TellerNav() {
               </div>
             </div>
 
-            <p className="text-hwachang-black text-lg">성수역점</p>
-            <p className="text-hwachang-black text-lg">개인 금융 (대출 상담)</p>
+            {/* 상태 변경 모드가 아닐 때만 표시 */}
+            {!isEditing && (
+              <>
+                <p className="text-hwachang-black text-lg">성수역점</p>
+                <p className="text-hwachang-black text-lg">개인 금융 (대출 상담)</p>
+                <div className="flex items-center justify-center space-x-2">
+                  <div className={`w-3 h-3 rounded-full ${currentColor}`}></div>
+                  <p className="text-hwachang-black text-lg">{currentStatus}</p>
+                </div>
+              </>
+            )}
 
-            <div className="flex items-center justify-center space-x-2">
-              <div className="w-3 h-3 bg-hwachang-active rounded-full"></div>
-              <p className="text-hwachang-black text-lg">상담 가능</p>
-            </div>
+            {/* 상태 변경 모드일 때 */}
+            {isEditing && (
+              <div className="flex flex-col items-center space-y-2">
+                {statusOptions.map((status) => (
+                  <button
+                    key={status.name}
+                    onClick={() => handleStatusSelect(status.name, status.color)}
+                    className={`flex items-center justify-center w-full px-4 rounded-lg ${
+                      selectedStatus === status.name ? "font-bold" : "font-normal"
+                    }`}
+                  >
+                    <div className={`w-3 h-3 rounded-full mr-2 ${status.color}`}></div>
+                    <span>{status.name}</span>
+                  </button>
+                ))}
+              </div>
+            )}
 
-            <AchromaticButton className="bg-hwachang-green rounded-3xl font-medium text-xl w-full py-8 shadow-lg mt-4">
-              상태 바꾸러 가기
+            <AchromaticButton
+              onClick={isEditing ? handleStatusConfirm : handleStatusChange}
+              className="bg-hwachang-green rounded-3xl font-medium text-xl w-full py-8 shadow-lg mt-4"
+            >
+              {isEditing ? "상태 변경 완료" : "상태 바꾸러 가기"}
             </AchromaticButton>
           </div>
         </Card>
