@@ -129,7 +129,6 @@ export default function Home() {
   return (
     <main>
       <Suspense fallback={<div>로딩 중...</div>}>
-      <div>
       {key == "true" ? (
         <div className="grid grid-row-1 gap-1 px-10 py-6">
           <p className={`mb-6 text-4xl text-hwachang-green1`}>
@@ -229,6 +228,7 @@ export default function Home() {
           </div>
         </div>
       )}
+      </Suspense>
 
       <div className="flex justify-center space-x-4 mt-4">
         {/* 모달 영역 */}
@@ -277,7 +277,7 @@ export default function Home() {
             </div>
           </AchromaticButton>
           <AchromaticButton className="rounded-full bg-hwachang-gray2 hover:bg-hwachang-gray3 text-black">
-            <div className="p-2">{key=='true'?'대기중':'상담 종료'}</div>
+            <div className="p-2">대기중</div>
           </AchromaticButton>
           <AchromaticButton
             className="rounded-full bg-hwachang-gray2 hover:bg-hwachang-gray3"
@@ -297,8 +297,6 @@ export default function Home() {
           </AchromaticButton>
         </div>
       </div>
-      </div>
-      </Suspense>
     </main>
   );
 }
