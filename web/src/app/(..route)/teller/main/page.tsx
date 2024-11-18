@@ -151,12 +151,12 @@ export default function Main() {
             </CardHeader>
             <CardContent>
               <div className="overflow-y-auto p-2 h-[450px]">
-                <MyChat chat="친절하세요 ~ "> </MyChat>
-                <MyChat chat="당신은 나의 별, 나의 태양, 나의 하늘, 나의 바다입니다. "> </MyChat>
-                <MyChat chat="친절하세요 ~ "> </MyChat>
-                <MyChat chat="당신은 나의 별, 나의 태양, 나의 하늘, 나의 바다입니다. "> </MyChat>
-                <MyChat chat="친절하세요 ~ "> </MyChat>
-                <MyChat chat="당신은 나의 별, 나의 태양, 나의 하늘, 나의 바다입니다. "> </MyChat>
+                <MyChat chat="친절하세요 ~ "/>
+                <MyChat chat="당신은 나의 별, 나의 태양, 나의 하늘, 나의 바다입니다. "/>
+                <MyChat chat="친절하세요 ~ "/>
+                <MyChat chat="당신은 나의 별, 나의 태양, 나의 하늘, 나의 바다입니다. "/>
+                <MyChat chat="친절하세요 ~ "/>
+                <MyChat chat="당신은 나의 별, 나의 태양, 나의 하늘, 나의 바다입니다. "/>
               </div>
             </CardContent>
           </Card>
