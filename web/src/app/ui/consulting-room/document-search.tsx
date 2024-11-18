@@ -4,15 +4,8 @@ import React, { useEffect, useState } from "react";
 import TextInput from "../component/atom/text-input/text-input";
 import { IoSearch, IoChevronBack, IoChevronForward } from "react-icons/io5";
 import { documents } from "./mock/mock-documents";
-// import Form from "../component/molecule/form/form-index";
-// import { FormState } from "../component/molecule/form/form-root";
-// import { FormTextInput } from "../component/molecule/form/form-textinput";
-// import { FormSubmitButton } from "../component/molecule/form/form-submit-button";
-
-type Document = {
-  title: string;
-  fileLink: string;
-};
+import Image from "next/image"
+import Document from "@/app/utils/public/Document.png";
 
 const categories = [
   '예금', '대출', '주택청약', '펀드/신탁', '인터넷/스마트뱅킹', '전자금융사기',
@@ -26,32 +19,9 @@ export default function DocumentSearch() {
   const [selectedCategory, setSelectedCategory] = useState<string>(categories[0]);
   const documentsPerPage = 6;
 
-
   const handleSearchChange = (value: string) => {
     setSearchText(value);
   };
-
-  // function formAction(prevState: FormState, formData: FormData): FormState {
-  //   const value = formData.get('search');
-
-  //   if (value == 'fail') {
-  //     return {
-  //       isSuccess: false,
-  //       isFailure: true,
-  //       message: "실패 !",
-  //       validationError: {},
-  //     };
-  //   } else {
-  //     console.log('검색 액션을 실행했습니다.');
-  //     console.log('검색어: ', value);
-  //     return {
-  //       isSuccess: true,
-  //       isFailure: false,
-  //       message: "",
-  //       validationError: {},
-  //     };
-  //   }
-  // }
 
   const filterDocuments = () => {
     const result = documents.filter((document) => {
@@ -91,12 +61,6 @@ export default function DocumentSearch() {
   return (
     <div className="p-4 max-w-3xl mx-auto h-full">
       <div className="mb-4 flex gap-3">
-        {/* <Form id={"search-form"} action={formAction} failMessageControl={"alert"}>
-          <div className="grid grid-rows-2">
-            <FormTextInput label={""} id={"search"} placeholder={"찾으시는 자료의 제목이나 내용을 입력하세요"} />
-            <FormSubmitButton label={"검색"} />
-          </div>
-        </Form> */}
         <TextInput
           type="text"
           icon={IoSearch}
@@ -132,11 +96,11 @@ export default function DocumentSearch() {
               className="flex flex-col items-center"
               onClick={() => openPDF(doc.fileLink)}
             >
-              <img
-                src="https://raw.githubusercontent.com/Tarikul-Islam-Anik/Animated-Fluent-Emojis/master/Emojis/Objects/Page%20Facing%20Up.png"
+              <Image
+                src={Document}
                 alt="Page Facing Up"
-                width="80"
-                height="80"
+                width={80}
+                height={80}
               />
               <p className="text-left text-sm font-medium">{doc.title}</p>
             </button>
