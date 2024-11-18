@@ -17,7 +17,7 @@
     cartegoryType: "기업",
     cartegory: "예금 관리",
     date: "2024.10.22",
-    image: ProfileImg,
+    image: ProfileImg as unknown as JSX.Element,
   },
   {
     id: 2,
@@ -26,7 +26,7 @@
     cartegoryType: "기업",
     cartegory: "예금 관리",
     date: "2024.10.22",
-    image: ProfileImg,
+    image: ProfileImg as unknown as JSX.Element,
   },
   {
     id: 3,
@@ -35,7 +35,7 @@
     cartegoryType: "기업",
     cartegory: "예금 관리",
     date: "2024.10.22",
-    image: ProfileImg,
+    image: ProfileImg as unknown as JSX.Element,
   },
   {
     id: 4,
@@ -44,7 +44,7 @@
     cartegoryType: "기업",
     cartegory: "예금 관리",
     date: "2024.10.22",
-    image: ProfileImg,
+    image: ProfileImg as unknown as JSX.Element,
   },
 
 ];
