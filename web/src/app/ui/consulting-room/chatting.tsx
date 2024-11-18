@@ -18,14 +18,18 @@ export default function Chatting({ isCustomer }: ChattingRoomProps) {
   const userName = "윤영헌";
   const tellerName = "김하나 행원";
   const [myMessages, setMyMessages] = useState<string[]>([]);
-
+  const [inputValue, setInputValue] = useState<string>("");
   const chatContainerRef = useRef<HTMLDivElement | null>(null);
 
-  // To-Do: 실제 채팅 기능 구현 시, 해당 컴포넌트만 렌더링하는 방식으로 구현 -> 채팅 데이터는 전역으로 상태관리 (may be zustand ?)
   function sendMessage(prevState: FormState, formData: FormData) {
     const value: string = formData.get("chat") as string;
-    setMyMessages((prevMessages) => [...prevMessages, value]);
-    formData.set("chat", "");
+
+    if (value.trim() !== "") {
+      // 메시지 전송
+      setMyMessages((prevMessages) => [...prevMessages, value]);
+      setInputValue("");
+    }
+
     return {
       isSuccess: true,
       isFailure: false,
@@ -39,7 +43,6 @@ export default function Chatting({ isCustomer }: ChattingRoomProps) {
       chatContainerRef.current.scrollTop = chatContainerRef.current.scrollHeight;
     }
   }, [myMessages]);
-
 
   return (
     <div className="flex justify-center min-w-[311.6px] bg-hwachang-darkgreen">
@@ -75,26 +78,22 @@ export default function Chatting({ isCustomer }: ChattingRoomProps) {
           <CardContent className="flex-grow overflow-y-auto h-80 p-4" ref={chatContainerRef}>
             <div className="flex flex-col space-y-2">
               <OtherChat name={`${tellerName}`} chat="반갑습니다 고객님 ^^"></OtherChat>
-              {myMessages.map((value, index) => {
-                return (
-                  <main key={index}>
-                    <MyChat chat={value}></MyChat>
-                  </main>
-                );
-              })}
+              {myMessages.map((value, index) => (
+                <main key={index}>
+                  <MyChat chat={value}></MyChat>
+                </main>
+              ))}
             </div>
           </CardContent>
           <hr className="bg-hwachang-gray4"></hr>
-          <Form
-            id={"chatMessage"}
-            action={sendMessage}
-            failMessageControl={"alert"}
-          >
+          <Form id={"chatMessage"} action={sendMessage} failMessageControl={"alert"}>
             <CardContent className="grid grid-cols-[5fr_1fr] items-center gap-2 p-2">
               <FormTextInput
                 placeholder="메시지를 입력해주세요."
                 id={"chat"}
                 className="w-full border-none"
+                value={inputValue}
+                onValueChange={(value) => setInputValue(value)}
               />
               <AchromaticButton className="w-full bg-hwachang-gray4">
                 <LuSendHorizonal size="20" />

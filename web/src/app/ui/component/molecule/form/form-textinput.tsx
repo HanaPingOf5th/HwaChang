@@ -9,34 +9,44 @@ interface FormTextInputProps {
   placeholder: string;
   required?: boolean;
   className?: string;
+  value?: string;
+  onValueChange?: (value: string) => void;
 }
 
-export function FormTextInput({ label, id, placeholder, required = false, className }: FormTextInputProps) {
+export function FormTextInput({
+  label,
+  id,
+  placeholder,
+  required = false,
+  className,
+  value,
+  onValueChange,
+}: FormTextInputProps) {
   const { errors } = useContext(FormContext);
   const { pending } = useFormStatus();
 
   return (
     <div className="group">
-      {
-        label?(
-          <label
-            htmlFor={id}
-            className="mb-2 block text-sm font-medium group-has-[:required]:after:pl-1 group-has-[:required]:after:text-red-400 group-has-[:required]:after:content-['*']"
-          >
-            {label}
-          </label>
-        ):null
-      }
+      {label ? (
+        <label
+          htmlFor={id}
+          className="mb-2 block text-sm font-medium group-has-[:required]:after:pl-1 group-has-[:required]:after:text-red-400 group-has-[:required]:after:content-['*']"
+        >
+          {label}
+        </label>
+      ) : null}
       <TextInput
         className={className}
         required={required}
         disabled={pending}
-        error={errors[id] ? true : false}
+        error={!!errors[id]}
         errorMessages={errors[id]}
-        type={'text'}
+        type="text"
         id={id}
         name={id}
         placeholder={placeholder}
+        value={value}
+        onValueChange={onValueChange}
       />
     </div>
   );

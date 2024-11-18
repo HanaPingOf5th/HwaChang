@@ -35,7 +35,6 @@ export default function WebCamTest() {
 
   useEffect(() => {
     if (client) {
-      // client.activate();
       connectSocket();
     } else{
       console.log("웹소켓 클라이언트 로딩에 실패했습니다.")

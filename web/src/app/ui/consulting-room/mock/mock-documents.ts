@@ -32,3 +32,28 @@ export const documents = [
   { title: "자동이체 신청 및 취소 방법", category: "자동이체", fileLink: "/documents/required-documents.pdf" },
   { title: "자동이체 서비스 수수료 안내", category: "자동이체", fileLink: "/documents/required-documents.pdf" },
 ];
+
+export const formDocuments = [
+  { title: "주택청약 가입 신청서", category: "주택청약", fileLink: "/documents/required-documents.pdf" },
+  { title: "청년 주택청약 가입 신청서", category: "주택청약", fileLink: "/documents/required-documents.pdf" },
+  { title: "주택청약 해지 신청서", category: "주택청약", fileLink: "/documents/required-documents.pdf" },
+  { title: "예금 신청서", category: "예금", fileLink: "/documents/required-documents.pdf" },
+  { title: "입출금 통장 신청서", category: "예금", fileLink: "/documents/required-documents.pdf" },
+  { title: "대출 신청서", category: "대출", fileLink: "/documents/required-documents.pdf" },
+  { title: "주택담보대출 신청서", category: "대출", fileLink: "/documents/required-documents.pdf" },
+  { title: "신탁 신청서", category: "펀드/신탁", fileLink: "/documents/required-documents.pdf" },
+  { title: "펀드 투자 신청서", category: "펀드/신탁", fileLink: "/documents/required-documents.pdf" },
+  { title: "인터넷 뱅킹 가입 신청서", category: "인터넷/스마트뱅킹", fileLink: "/documents/required-documents.pdf" },
+  { title: "스마트뱅킹 가입 신청서", category: "인터넷/스마트뱅킹", fileLink: "/documents/required-documents.pdf" },
+  { title: "전자금융사기 피해 보상 신청서", category: "전자금융사기", fileLink: "/documents/required-documents.pdf" },
+  { title: "피싱 사기 예방 교육 신청서", category: "전자금융사기", fileLink: "/documents/required-documents.pdf" },
+  { title: "신용카드 신청서", category: "카드", fileLink: "/documents/required-documents.pdf" },
+  { title: "체크카드 신청서", category: "카드", fileLink: "/documents/required-documents.pdf" },
+  { title: "공인인증서 발급 신청서", category: "인증서/간편로그인", fileLink: "/documents/required-documents.pdf" },
+  { title: "간편로그인 신청서", category: "인증서/간편로그인", fileLink: "/documents/required-documents.pdf" },
+  { title: "입출금 알림 서비스 신청서", category: "입출금 알림", fileLink: "/documents/required-documents.pdf" },
+  { title: "입출금 알림 서비스 해지 신청서", category: "입출금 알림", fileLink: "/documents/required-documents.pdf" },
+  { title: "외환 송금 신청서", category: "외환", fileLink: "/documents/required-documents.pdf" },
+  { title: "외환 거래 시 신청서", category: "외환", fileLink: "/documents/required-documents.pdf" },
+  { title: "자동이체 신청서", category: "자동이체", fileLink: "/documents/required-documents.pdf" },
+];
