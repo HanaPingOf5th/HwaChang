@@ -1,5 +1,5 @@
 'use client'
-import { LegacyRef, useEffect, useRef } from "react";
+import { LegacyRef, useEffect, useRef,} from "react";
 import AchromaticButton from "@/app/ui/component/atom/button/achromatic-button";
 import { useSocket } from "./useSocket";
 import { Video, VideoView } from "@/app/(..route)/consulting-room/components/video-view";
@@ -36,11 +36,18 @@ export default function WebCamTest() {
   useEffect(() => {
     if (client) {
       client.activate();
-      console.log("-----------after activate ----------")
-      console.log(otherKeyList);
-      console.log(pcListMap)
+    } else{
+      console.log("웹소켓 클라이언트 로딩에 실패했습니다.")
     }
   }, []);
+
+  useEffect(() => {
+    console.log("Other Key List Updated:", otherKeyList);
+  }, [otherKeyList]);
+  
+  useEffect(() => {
+    console.log("PC List Map Updated:", pcListMap);
+  }, [pcListMap]);
 
   const handleStartStream = () => {
     if (client.connected) {

@@ -1,5 +1,4 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
-import { useRef, useState } from "react";
+import { useState } from "react";
 import SockJS from "sockjs-client";
 import { Client  } from "@stomp/stompjs";
 
@@ -20,7 +19,7 @@ export function useSocket(){
     reconnectDelay: 5000,
     heartbeatIncoming: 4000,
     heartbeatOutgoing: 4000,
-    onConnect: ()=>{
+    onConnect: async ()=>{
       client.subscribe(`/topic/call/key`, ()=>{
         client.publish({
           destination: `/app/send/key`,
@@ -31,34 +30,33 @@ export function useSocket(){
 
       client.subscribe(`/topic/send/key`, (message)=>{
         const key: string = JSON.parse(message.body);
-        if(myKey !== key && !otherKeyList.includes(key)){
-          otherKeyList.push(key);
-          setOtherKeyList(otherKeyList);
-          console.log("------------전달받은 키 목록-----------\n", otherKeyList);
-        }
+        setOtherKeyList((prevList)=>{
+          if(!prevList.includes(key) && myKey !== key){
+            return [...prevList, key];
+          }
+          return prevList;
+        })
       })
 
-      client.subscribe(
-        `/topic/peer/offer/${myKey}/${roomId}`,
-        (offer)=>{
+      client.subscribe( `/topic/peer/offer/${myKey}/${roomId}`, async (offer)=>{
           console.log('offer')
           const key = JSON.parse(offer.body).key;
           const message = JSON.parse(offer.body).body;
   
           pcListMap.set(key, createPeerConnection(key));
-          setPcListMap(pcListMap);
+          console.log("만들어진 피어커넥션", createPeerConnection(key))
+          setPcListMap(new Map(pcListMap));
           pcListMap.get(key).setRemoteDescription(
             new RTCSessionDescription({type: message.type, sdp: message.sdp})
           );
+          console.log("sendAnswer 메서드에 담아서 보낼 pcList: ", pcListMap.get(key), 'key: ', key);
           sendAnswer(pcListMap.get(key), key);
         }
       )
 
-      client.subscribe(
-        `/topic/peer/answer/${myKey}/${roomId}`,
-        (answer)=>{
-          console.log('answer')
-          console.log(answer)
+      client.subscribe(`/topic/peer/answer/${myKey}/${roomId}`, (answer)=>{
+          console.log('-------answer가 안온다 슈벌 ... ------')
+          console.log(answer.body)
           const key = JSON.parse(answer.body).key;
           const message = JSON.parse(answer.body).body;
           pcListMap.get(key).setRemoteDescription(new RTCSessionDescription(message));
@@ -92,45 +90,72 @@ export function useSocket(){
     console.log("-------------------")
 
     setTimeout(() => {
-      otherKeyList.map((key) => {
-        if (!pcListMap.has(key)) {
-          pcListMap.set(key, createPeerConnection(key));
-          sendOffer(pcListMap.get(key), key);
-        }
+      setOtherKeyList((currentKeys) => {
+        currentKeys.forEach((key) => {
+          if (!pcListMap.has(key)) {
+            const newPc = createPeerConnection(key);
+            updatePcListMap(key, newPc);
+            sendOffer(newPc, key);
+          }
+        });
+        return currentKeys;
       });
     }, 1000);
+    
+  }
+
+  const updatePcListMap = (key: string, pc: RTCPeerConnection) => {
+    setPcListMap((prevMap)=>{
+      const newMap = new Map(prevMap);
+      newMap.set(key, pc);
+      return newMap;
+    })
   }
 
   const createPeerConnection = (otherKey: string)=>{
     const pc = new RTCPeerConnection();
-
-    pc.addEventListener("icecandidate", (event)=>{
-      onIceCandidate(event, otherKey);
-    });
+    console.log("만들어지기 전 피어커넥션", pc)
+    try{
+      pc.addEventListener("icecandidate", (event)=>{
+        console.log("iceCandidate 이벤트 발생")
+        onIceCandidate(event, otherKey);
+      });
+    
+      pc.addEventListener("track", (event)=>{
+        console.log("track 이벤트 발생")
+        onTrack(event, otherKey);
+      });
   
-    pc.addEventListener("track", (event)=>{
-      onTrack(event, otherKey);
-    });
-
-    navigator.mediaDevices.getUserMedia({ video: { width: 800, height: 450, facingMode: "user" }, audio: true })
-      .then((localStream)=>{
-        localStream.getTracks().forEach((track)=>{
-          pc.addTrack(track, localStream)
+      navigator.mediaDevices.getUserMedia({ video: { width: 800, height: 450, facingMode: "user" }, audio: true })
+        .then((localStream)=>{
+          localStream.getTracks().forEach((track)=>{
+            console.log("---------------------");
+            console.log("보낼 트랙 확인", track);
+            console.log("보낼 로컬 스트림 확인", track);
+            pc.addTrack(track, localStream)
+            console.log(pc)
+            console.log(pc.getSenders())
+            console.log("---------------------");
+          })
+          console.log("송출완료")
         })
-        console.log("송출완료")
-      })
-  
-     pc.onconnectionstatechange = ()=> {
-      if(["disconnected", "failed", "closed"].includes(pc.iceConnectionState)){
-        console.log("연결이 끊어졌습니다.")
+    
+       pc.onconnectionstatechange = ()=> {
+        if(["disconnected", "failed", "closed"].includes(pc.iceConnectionState)){
+          console.log("연결이 끊어졌습니다.")
+        }
       }
+    }catch(e){
+      console.log(e)
     }
+    console.log("만들어진 후 피어커넥션", pc)
     return pc;
   }
 
   const onTrack = (event: RTCTrackEvent, otherKey: string)=>{
     const newVideoElement = (
       <video
+        className="rounded-xl aspect-[16/9] object-cover"
         key={otherKey}
         autoPlay
         playsInline
@@ -150,12 +175,12 @@ export function useSocket(){
       client.publish({
         destination: `/app/peer/iceCandidate/${otherKey}/${roomId}`,
         body: JSON.stringify({ key: myKey, body: event.candidate }),
-        skipContentLengthHeader: true,
       });
     }
   };
 
   const sendAnswer = (pc:RTCPeerConnection, otherKey:string)=>{
+    console.log(otherKey, "로 answer를 보냅니다 !: ", pc)
     pc.createAnswer().then((answer)=>{
       setLocalAndSendMessage(pc, answer);
       client.publish({
@@ -163,7 +188,6 @@ export function useSocket(){
         body: JSON.stringify({ key: myKey, body: answer}),
         skipContentLengthHeader: true,
       })
-      console.log("send answer!")
     })
   }
 
@@ -187,5 +211,6 @@ export function useSocket(){
     video: videoElements,
     otherKeyList: otherKeyList, 
     pcListMap: pcListMap,
-    startStream: startStream};
+    startStream: startStream
+  };
 }

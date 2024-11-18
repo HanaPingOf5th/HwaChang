@@ -12,6 +12,7 @@ import { VideoSettingModal } from "@/app/ui/consulting-room/modal/video-setting"
 import { SharingLinkModal } from "@/app/ui/consulting-room/modal/sharing-link";
 import { MicIcon, MicOffIcon, SettingsIcon, Share2Icon, VideoIcon, VideoOffIcon } from "lucide-react";
 import { mockMyProfile, mockOtherProfile, mockProfile } from "./mock/mock-profiles";
+import { useSocket } from "@/app/utils/web-socket/useSocket";
 
 export default function Home() {
   const params = useSearchParams();
@@ -35,6 +36,8 @@ export default function Home() {
   const [isForm, setIsForm] = useState<boolean>(false);
 
   const [slideIndex, setSlideIndex] = useState(0);
+
+  const { client, video } = useSocket();
 
   const handlePrev = () => {
     if (slideIndex > 0) {
@@ -83,6 +86,14 @@ export default function Home() {
     setKey(params.get("isWait") as string);
     setIsWaitingDialogMounted(true);
   }, [params]);
+
+  useEffect(() => {
+    if (client) {
+      client.activate();
+    } else{
+      console.log("웹소켓 클라이언트 로딩에 실패했습니다.")
+    }
+  }, []);
 
   // To-Do: 내가 비디오를 끌 경우, 나의 비디오 상태를 상대방에게 보내는 api 추가: isCam: false
   const toggleVideo = () => {
@@ -203,8 +214,8 @@ export default function Home() {
               <ApplicationForm />
               :
               <VideoView
-                video={<Video ref={videoRef as LegacyRef<HTMLVideoElement>}/>}
-                onCam={false}
+                video={video[0]}
+                onCam={true}
                 profile={mockProfile}
                 />
               }
