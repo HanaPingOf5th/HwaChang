@@ -1,7 +1,7 @@
 "use client";
 import AchromaticButton from "@/app/ui/component/atom/button/achromatic-button";
 import { useSearchParams } from "next/navigation";
-import { LegacyRef, useEffect, useRef, useState } from "react";
+import { LegacyRef, Suspense, useEffect, useRef, useState } from "react";
 
 import { MicIcon, MicOffIcon, SettingsIcon, Share2Icon, VideoIcon, VideoOffIcon } from "lucide-react";
 import { SlArrowLeft, SlArrowRight } from "react-icons/sl";
@@ -119,6 +119,7 @@ export default function Home() {
 
   return (
     <main>
+      <Suspense fallback={<div>로딩 중...</div>}>
       {key == "true" ? (
         <div className="grid grid-row-1 gap-1 px-10 py-6">
           <p className={`mb-6 text-4xl text-hwachang-green1`}>
@@ -246,6 +247,7 @@ export default function Home() {
           </AchromaticButton>
         </div>
       </div>
+      </Suspense>
     </main>
   );
 }
