@@ -178,7 +178,6 @@ export default function Home() {
           </div>
         </div>
       )}
-
       <div className="flex justify-center space-x-4 mt-4">
         {/* 모달 영역 */}
         {isModalOpen && (

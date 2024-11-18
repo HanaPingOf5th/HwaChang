@@ -276,7 +276,7 @@ export default function Home() {
             </div>
           </AchromaticButton>
           <AchromaticButton className="rounded-full bg-hwachang-gray2 hover:bg-hwachang-gray3 text-black">
-            <div className="p-2">{key=='true'?'대기중':'상담 종료'}</div>
+            <div className="p-2">대기중</div>
           </AchromaticButton>
           <AchromaticButton
             className="rounded-full bg-hwachang-gray2 hover:bg-hwachang-gray3"
