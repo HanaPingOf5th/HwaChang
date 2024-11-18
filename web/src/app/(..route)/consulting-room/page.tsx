@@ -2,7 +2,7 @@
 import AchromaticButton from "@/app/ui/component/atom/button/achromatic-button";
 import { useSearchParams } from "next/navigation";
 import { Dialog, DialogContent, DialogTrigger } from "@/app/ui/component/molecule/dialog/dialog";
-import { LegacyRef, useEffect, useRef, useState } from "react";
+import { LegacyRef, Suspense, useEffect, useRef, useState } from "react";
 import { ApplicationForm } from "./components/application-form";
 import { MatchingAlarm } from "@/app/ui/consulting-room/modal/matching-alarm";
 import { Video, VideoView } from "./components/video-view";
@@ -128,6 +128,7 @@ export default function Home() {
 
   return (
     <main>
+      <Suspense fallback={<div>로딩 중...</div>}>
       {key == "true" ? (
         <div className="grid grid-row-1 gap-1 px-10 py-6">
           <p className={`mb-6 text-4xl text-hwachang-green1`}>
@@ -295,6 +296,7 @@ export default function Home() {
           </AchromaticButton>
         </div>
       </div>
+      </Suspense>
     </main>
   );
 }
