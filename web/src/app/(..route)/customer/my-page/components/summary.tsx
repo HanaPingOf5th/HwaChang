@@ -2,13 +2,8 @@
 import { useState } from "react";
 import { MdSummarize } from "react-icons/md";
 import { IoDocumentTextSharp } from "react-icons/io5";
-import { IoMdPause } from "react-icons/io";
-import { IoPlay } from "react-icons/io5";
-import { TbRewindForward5 } from "react-icons/tb";
-import { TbRewindBackward5 } from "react-icons/tb";
 import { Card, CardHeader, CardTitle, CardContent } from "@/app/ui/component/molecule/card/card";
 import { MyChat, OtherChat } from "@/app/ui/consulting-room/chat-box";
-import AchromaticButton from "@/app/ui/component/atom/button/achromatic-button";
 import { ConsultingRecord } from "../mock/mock-records";
 import { AISummaryData, SummaryData } from "../mock/mock-summary";
 import FormSelect from "@/app/ui/component/molecule/form/form-select-index";

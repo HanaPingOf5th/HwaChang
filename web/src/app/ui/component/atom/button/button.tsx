@@ -30,7 +30,6 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(function Button(
   const buttonProportionsStyle = getButtonProportions(variant);
   const buttonColorStyle = getButtonColors(variant, color);
 
-  iconSizes[size].height;
   return (
     <button
       disabled={disabled}
