@@ -1,10 +1,9 @@
 import { useEffect, useState } from "react";
-import AchromaticButton from "../component/atom/button/achromatic-button";
-import { Card, CardContent, CardFooter, CardHeader } from "../component/molecule/card/card";
-import Form from "../component/molecule/form/form-index";
-import { FormState } from "../component/molecule/form/form-root";
-import { FormSubmitButton } from "../component/molecule/form/form-submit-button";
-// import { FormTextInput } from "../component/molecule/form/form-textinput";
+import AchromaticButton from "../../component/atom/button/achromatic-button";
+import { Card, CardContent, CardFooter, CardHeader } from "../../component/molecule/card/card";
+import Form from "../../component/molecule/form/form-index";
+import { FormState } from "../../component/molecule/form/form-root";
+import { FormSubmitButton } from "../../component/molecule/form/form-submit-button";
 import Link from "next/link";
 
 export function ReviewModal(){
@@ -13,12 +12,10 @@ export function ReviewModal(){
   const [isSubmitted, setIsSubmitted] = useState<boolean>(false);
 
   useEffect(() => {
-    // isSubmitted가 true일 때 메인 페이지로 이동
     if (isSubmitted) {
-      window.location.href = "/customer/main"; // 메인 페이지로 리다이렉션
+      window.location.href = "/customer/main";
     }
   }, [isSubmitted]);
-  // 제출 버튼 클릭 함수
   function reviewAction(prevState: FormState, formData: FormData): FormState {
     const textValue = formData.get('ss');
 
@@ -32,7 +29,6 @@ export function ReviewModal(){
       validationError: {},
     };
   }
-  // 1~10 버튼 구현
   const scores:JSX.Element[] = numbers.map((num, index)=>{
     return (
     <div key={index}>
@@ -56,15 +52,12 @@ export function ReviewModal(){
         </CardHeader>
         
         <Form id={"review"} action={reviewAction} failMessageControl={"alert"}>
-        <CardContent>
-            <div className="grid grid-cols-2 sm:grid-cols-5 lg:grid-cols-10 gap-4">
-            {scores}
-            </div>
-        </CardContent>
           <CardContent>
-          {/* FormTextInput 대신 textarea 사용
-          <FormTextInput className="w-96" id="textValue" placeholder={"해당 점수를 준 사유를 자세히 작성해주세요."}/>
-          */}
+              <div className="grid grid-cols-2 sm:grid-cols-5 lg:grid-cols-10 gap-4">
+              {scores}
+              </div>
+          </CardContent>
+          <CardContent>
           
           <textarea 
             name='ss'
