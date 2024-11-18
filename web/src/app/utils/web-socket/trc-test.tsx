@@ -6,7 +6,7 @@ import { Video, VideoView } from "@/app/(..route)/consulting-room/components/vid
 
 export default function WebCamTest() {
   const videoRef = useRef<HTMLVideoElement | null>(null);
-  const { client, video, otherKeyList, pcListMap, startStream } = useSocket();
+  const { client, video, startStream, connectSocket} = useSocket();
 
   useEffect(() => {
     const getMedia = async () => {
@@ -35,19 +35,12 @@ export default function WebCamTest() {
 
   useEffect(() => {
     if (client) {
-      client.activate();
+      // client.activate();
+      connectSocket();
     } else{
       console.log("웹소켓 클라이언트 로딩에 실패했습니다.")
     }
   }, []);
-
-  useEffect(() => {
-    console.log("Other Key List Updated:", otherKeyList);
-  }, [otherKeyList]);
-  
-  useEffect(() => {
-    console.log("PC List Map Updated:", pcListMap);
-  }, [pcListMap]);
 
   const handleStartStream = () => {
     if (client.connected) {

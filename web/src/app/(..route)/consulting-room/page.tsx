@@ -72,15 +72,20 @@ export default function Home() {
 
     getMedia();
 
-    return () => {
-      if(videoStream){
-        videoStream.getTracks().forEach((track)=>track.stop());
-      }
+    return ()=>{
       if (audioContext.current) {
         audioContext.current.close();
       }
     }
   }, [isVideoEnabled, key])
+
+  useEffect(() => {
+    return () => {
+      if(videoStream){
+        videoStream.getTracks().forEach((track)=>track.stop());
+      }
+    }
+  }, [videoStream]);
 
   useEffect(() => {
     setKey(params.get("isWait") as string);
@@ -174,7 +179,7 @@ export default function Home() {
                   onCam={isVideoEnabled}
                   isTop={true}
                   profile={mockMyProfile}
-                  />
+                />
               </div>
               {videoViews.map((videoView, index) => (
                 <div key={index} className="w-1/3 flex-shrink-0">

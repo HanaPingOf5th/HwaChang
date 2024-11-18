@@ -2,42 +2,56 @@ import { useState } from "react";
 import SockJS from "sockjs-client";
 import { Client  } from "@stomp/stompjs";
 
+/*
+  ... 미완성 현재 송신 상태만 가능
+  연결 확인하려면 레퍼런스 코드에서 확인해야함
+*/
+
+// 전역으로 관리해줘도 좋을것 같은 데이터
+const roomId = 11;
+const myKey:string = Math.random().toString(36).substring(2, 11);
+//const access:string ='@@@mockToekn@@@';
+
 export function useSocket(){
-  const access:string ='@@@mockToekn@@@';
   const socket = new SockJS("http://ec2-3-35-49-10.ap-northeast-2.compute.amazonaws.com:8080/consulting-room");
-  const [otherKeyList, setOtherKeyList] = useState<string[]>([]);
+  const otherKeyList: string[] = [];
 
-  const [pcListMap, setPcListMap] = useState(new Map<string, RTCPeerConnection>());
-  const myKey:string = Math.random().toString(36).substring(2, 11);
-  const roomId = 1231;
+  const pcListMap = new Map<string, RTCPeerConnection>();
   const [videoElements, setVideoElements] = useState<React.ReactNode[]>([]);
-
+  
   const client = new Client({
     webSocketFactory: () => socket,
-    connectHeaders:{Authorization: `Bearer ${access}`},
+    // connectHeaders:{Authorization: `Bearer ${access}`},
     debug: (str:string) => {console.log(str)},
     reconnectDelay: 5000,
     heartbeatIncoming: 4000,
     heartbeatOutgoing: 4000,
-    onConnect: async ()=>{
-      client.subscribe(`/topic/call/key`, ()=>{
+    
+    onConnect: () => {
+      // 서버가 클라이언트에 보내는 응답
+       // app/call/key와 매핑됨(startStream을 누를 경우 해당 end point로 응답값이 옴.)
+      client.subscribe(`/topic/call/key`, (message)=>{
+        console.log('서버에서 topic/call/key 응답 값을 받음', message);
+        // 해당 응답값을 받을 경우 바디값에 자신의 키(cam key)를 보냄
         client.publish({
           destination: `/app/send/key`,
           body: JSON.stringify(myKey),
-          skipContentLengthHeader: true,
         })
       })
 
+      // 서버가 클라이언트에게 보내는 응답값(참여중인 모든 참여자들의 키)
       client.subscribe(`/topic/send/key`, (message)=>{
+        console.log(message.body);
         const key: string = JSON.parse(message.body);
-        setOtherKeyList((prevList)=>{
-          if(!prevList.includes(key) && myKey !== key){
-            return [...prevList, key];
-          }
-          return prevList;
-        })
+        console.log(key);
+        if (
+          myKey !== key &&
+          otherKeyList.find((mapKey) => mapKey === myKey) === undefined
+        ) {
+          otherKeyList.push(key);
+        }
       })
-
+      
       client.subscribe( `/topic/peer/offer/${myKey}/${roomId}`, async (offer)=>{
           console.log('offer')
           const key = JSON.parse(offer.body).key;
@@ -45,7 +59,6 @@ export function useSocket(){
   
           pcListMap.set(key, createPeerConnection(key));
           console.log("만들어진 피어커넥션", createPeerConnection(key))
-          setPcListMap(new Map(pcListMap));
           pcListMap.get(key).setRemoteDescription(
             new RTCSessionDescription({type: message.type, sdp: message.sdp})
           );
@@ -55,7 +68,7 @@ export function useSocket(){
       )
 
       client.subscribe(`/topic/peer/answer/${myKey}/${roomId}`, (answer)=>{
-          console.log('-------answer가 안온다 슈벌 ... ------')
+          console.log('answer')
           console.log(answer.body)
           const key = JSON.parse(answer.body).key;
           const message = JSON.parse(answer.body).body;
@@ -79,37 +92,37 @@ export function useSocket(){
     } 
   });
 
-  const startStream = ()=>{
-    console.log("start steam ... ")
-    client.publish({destination:`/app/call/key`});
+  const startStream = async ()=>{
+    if(client.connected){
+      console.log("start steam ... ")
+      setTimeout(() => {
+        if(client.connected){
+          // app/call/key: 서버에 브로드 캐스트 해야함 - 현재 먹통 ... 
+          client.publish({ destination: `/app/call/key` });
+          /*
+          app/call/key -> topic/call/key
+          -> app/send/key(를 통해 내 키 전송) -> topic/call/key(모든 키를 otherList에 담아버림)
+          */
+          setTimeout(()=>{
+            console.log("스트림 누른 후 비동기 처리 후 키 리스트: ", otherKeyList)
+            otherKeyList.map((key)=>{
+            if(!pcListMap.has(key)){
+              pcListMap.set(key, createPeerConnection(key));
+              sendOffer(pcListMap.get(key), key);
+              }
+            })
+          }, 1000)
 
-    console.log("-------------------")
-    console.log(client)
-    console.log(otherKeyList)
-    console.log(pcListMap)
-    console.log("-------------------")
-
-    setTimeout(() => {
-      setOtherKeyList((currentKeys) => {
-        currentKeys.forEach((key) => {
-          if (!pcListMap.has(key)) {
-            const newPc = createPeerConnection(key);
-            updatePcListMap(key, newPc);
-            sendOffer(newPc, key);
-          }
-        });
-        return currentKeys;
-      });
-    }, 1000);
-    
+        }
+      }, 1000);
+    }
   }
 
-  const updatePcListMap = (key: string, pc: RTCPeerConnection) => {
-    setPcListMap((prevMap)=>{
-      const newMap = new Map(prevMap);
-      newMap.set(key, pc);
-      return newMap;
-    })
+  const connectSocket = ()=>{
+    client.activate();
+    setTimeout(()=>{
+      startStream();
+    }, 1000)
   }
 
   const createPeerConnection = (otherKey: string)=>{
@@ -211,6 +224,7 @@ export function useSocket(){
     video: videoElements,
     otherKeyList: otherKeyList, 
     pcListMap: pcListMap,
-    startStream: startStream
+    startStream: startStream,
+    connectSocket: connectSocket
   };
 }
