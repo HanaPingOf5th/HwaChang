@@ -3,7 +3,7 @@ import SockJS from "sockjs-client";
 import { Stomp  } from "@stomp/stompjs";
 
 export function useSocket(){
-  const socket = new SockJS("http://ec2-3-35-49-10.ap-northeast-2.compute.amazonaws.com:8080/consulting-room");
+  const socket = new SockJS("https://ec2-3-35-49-10.ap-northeast-2.compute.amazonaws.com:8080/consulting-room");
   // const socket = new SockJS("http://localhost:8080/consulting-room");
   const otherKeyList: string[] = [];
 
