@@ -84,13 +84,13 @@ export default function Library() {
         ))}
       </div>
 
-      <div className="grid grid-cols-3">
+      <div className="grid grid-cols-3 overflow-y-scroll h-2/4">
 
         {currentDocuments.map((doc, index) => (
           <div key={index} className="flex flex-col items-center p-3">
             <button
               className="flex flex-col items-center"
-              onClick={() => {alert(`${doc.title}가 고객님게 보내졌습니다.`)}}
+              onClick={() => { alert(`${doc.title}가 고객님게 보내졌습니다.`) }}
             >
               <Image
                 src={Pen}
