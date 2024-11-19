@@ -11,7 +11,7 @@ export default function ConsultationStartContent({ waitingCount }: waitingCountP
   const router = useRouter();
 
   const handleEntrance = () => {
-    router.push("/teller-consulting-room");
+    router.push("/teller-consulting-room?isWait=true");
   }
 
   return (
