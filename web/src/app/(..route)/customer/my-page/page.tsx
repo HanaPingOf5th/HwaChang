@@ -39,7 +39,7 @@ export default function Home() {
 
   const RecordCards = records.map((value, index) => (
     <main key={index}>
-      <Card className="grid grid-cols-7 gap-3">
+      <Card className="grid grid-cols-7 gap-3 h-20">
         <div className="flex items-center justify-center mb-2 mt-2 text-sm md:text-sm lg:text-xl">
           <Image
             src={value.image as unknown as StaticImport}
@@ -84,7 +84,7 @@ export default function Home() {
     <div className="flex flex-col">
       <div className="mb-5">
         <Form id={"search-form"} action={searchAction} failMessageControl={"alert"}>
-          <div className="grid grid-cols-[8fr_1fr] gap-2">
+          <div className="grid grid-cols-[12fr_1fr] gap-2">
             <FormTextInput
               id={"search"}
               placeholder={"화창 기록을 검색해보세요"}
