@@ -59,7 +59,7 @@ export default function DocumentSearch() {
   };
 
   return (
-    <div className="p-4 max-w-3xl mx-auto h-full">
+    <div className="p-4 max-w-3xl mx-auto h-full ">
       <div className="mb-4 flex gap-3">
         <TextInput
           type="text"
@@ -88,7 +88,7 @@ export default function DocumentSearch() {
         ))}
       </div>
 
-      <div className="grid grid-cols-3">
+      <div className="grid grid-cols-3 overflow-y-scroll h-2/4">
 
         {currentDocuments.map((doc, index) => (
           <div key={index} className="flex flex-col items-center p-3">

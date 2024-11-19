@@ -36,7 +36,7 @@ export default function TabMenu() {
         ))}
       </div>
 
-      <Card className="rounded-lg rounded-tl-none h-[65vh] overflow-y-scroll">
+      <Card className="rounded-lg rounded-tl-none h-[55vh] overflow-y-scroll">
         {TabData.find((tab) => tab.id === selectedTab)?.content}
       </Card>
     </div>
