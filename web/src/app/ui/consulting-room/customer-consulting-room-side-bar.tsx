@@ -1,5 +1,6 @@
-'use client'
-import Chatting from "./chatting"
+"use client";
+
+import Chatting from "./chatting";
 
 export default function CustomerConsultingRoomSideBar() {
   return (

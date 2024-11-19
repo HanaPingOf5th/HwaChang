@@ -75,7 +75,7 @@ export default function Chatting({ isCustomer }: ChattingRoomProps) {
               </div>
             )}
           </CardHeader>
-          <CardContent className="flex-grow overflow-y-auto h-80 p-4" ref={chatContainerRef}>
+          <CardContent className="flex-grow overflow-y-auto h-96 p-4" ref={chatContainerRef}>
             <div className="flex flex-col space-y-2">
               <OtherChat name={`${tellerName}`} chat="반갑습니다 고객님 ^^"></OtherChat>
               {myMessages.map((value, index) => (
@@ -95,7 +95,7 @@ export default function Chatting({ isCustomer }: ChattingRoomProps) {
                 value={inputValue}
                 onValueChange={(value) => setInputValue(value)}
               />
-              <AchromaticButton className="w-full bg-hwachang-gray4">
+              <AchromaticButton className={`w-full ${inputValue.trim() !== "" ? "bg-hwachang-hwachangcolor" : "bg-hwachang-gray4"}`}>
                 <LuSendHorizonal size="20" />
               </AchromaticButton>
             </CardContent>
