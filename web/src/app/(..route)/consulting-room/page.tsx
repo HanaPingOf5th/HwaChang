@@ -47,7 +47,7 @@ export default function Home() {
 
   const [slideIndex, setSlideIndex] = useState(0);
 
-  const { client } = useSocket();
+  const { client, video } = useSocket();
 
   const handlePrev = () => {
     if (slideIndex > 0) {
@@ -244,8 +244,8 @@ export default function Home() {
                 <ApplicationForm />
               ) : (
                 <VideoView
-                  video={<Video ref={videoRef as LegacyRef<HTMLVideoElement>} />}
-                  onCam={false}
+                  video={video[0]}
+                  onCam={true}
                   profile={mockProfile}
                 />
               )}
