@@ -1,6 +1,6 @@
 "use client";
 import AchromaticButton from "@/app/ui/component/atom/button/achromatic-button";
-import { useSearchParams } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { LegacyRef, Suspense, useEffect, useRef, useState } from "react";
 
 import {
@@ -22,6 +22,7 @@ import Ping from "@/app/utils/public/Ping.webp";
 
 export default function Home() {
   const params = useSearchParams();
+  const route = useRouter();
   const [key, setKey] = useState<string | null>("true");
 
   const videoRef = useRef<HTMLVideoElement | undefined | null>(null);
@@ -265,8 +266,11 @@ export default function Home() {
                 )}
               </div>
             </AchromaticButton>
-            <AchromaticButton className="rounded-full bg-hwachang-gray2 hover:bg-hwachang-gray3 text-black">
-              <div className="p-2">대기중</div>
+            <AchromaticButton
+              className="rounded-full bg-hwachang-gray2 hover:bg-hwachang-gray3 text-black"
+              onClick={()=>{if(key!=='true'){route.push("teller/main")}}}
+            >
+              <div className="p-2">{key==='true'?'대기중':'상담종료'}</div>
             </AchromaticButton>
             <AchromaticButton
               className="rounded-full bg-hwachang-gray2 hover:bg-hwachang-gray3"
