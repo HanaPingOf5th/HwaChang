@@ -21,6 +21,7 @@ import {
 import { createMockMyProfile, mockOtherProfile, mockProfile } from "./mock/mock-profiles";
 import { useSocket } from "@/app/utils/web-socket/useSocket";
 import { useRouter } from "next/navigation";
+import { ReviewModal } from "@/app/ui/consulting-room/modal/review-modal";
 
 export default function Home() {
   const params = useSearchParams();
@@ -299,12 +300,27 @@ export default function Home() {
                 )}
               </div>
             </AchromaticButton>
-            <AchromaticButton
+
+            {key!=='true'?(<>
+              <Dialog>
+              <DialogTrigger asChild>
+                <AchromaticButton className="rounded-full bg-hwachang-gray2 hover:bg-hwachang-gray3 text-black">
+                  상담종료
+                </AchromaticButton>
+              </DialogTrigger>
+              <DialogContent>
+                <ReviewModal />
+              </DialogContent>
+            </Dialog>
+            </>):(<>
+              <AchromaticButton
               className="rounded-full bg-hwachang-gray2 hover:bg-hwachang-gray3 text-black"
               onClick={()=>{if(key!=='true'){route.push("customer/main")}}}
-            >
+              >
               <div className="p-2">{key==='true'?'대기중':'상담종료'}</div>
-            </AchromaticButton>
+              </AchromaticButton>
+            </>)}
+        
             <AchromaticButton
               className="rounded-full bg-hwachang-gray2 hover:bg-hwachang-gray3"
               onClick={toggleLink}
