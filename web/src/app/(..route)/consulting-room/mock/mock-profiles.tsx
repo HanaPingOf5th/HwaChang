@@ -1,5 +1,4 @@
 import { Profile } from "../components/video-view";
-import Ping from "@/app/utils/public/Ping.png";
 import Minji from "@/app/utils/public/Minji.jpeg";
 import Cameraoff from "@/app/utils/public/Cameraoff.svg";
 import Image from "next/image";

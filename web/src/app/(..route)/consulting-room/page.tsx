@@ -44,7 +44,7 @@ export default function Home() {
 
   const [slideIndex, setSlideIndex] = useState(0);
 
-  const { client, video } = useSocket();
+  const { client } = useSocket();
 
   const handlePrev = () => {
     if (slideIndex > 0) {
