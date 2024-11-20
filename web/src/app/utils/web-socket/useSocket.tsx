@@ -13,7 +13,7 @@ const myKey:string = Math.random().toString(36).substring(2, 11);
 //const access:string ='@@@mockToekn@@@';
 
 export function useSocket(){
-  const socket = new SockJS("https://ec2-3-35-49-10.ap-northeast-2.compute.amazonaws.com:8080/consulting-room");
+  const socket = new SockJS("https://hwachang.site/consulting-room");
   const otherKeyList: string[] = [];
 
   const pcListMap = new Map<string, RTCPeerConnection>();
