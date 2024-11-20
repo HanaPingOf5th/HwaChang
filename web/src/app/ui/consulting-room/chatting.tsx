@@ -55,7 +55,7 @@ export default function Chatting({ isCustomer }: ChattingRoomProps) {
           <CardHeader className="space-y-5">
             <div className="bg-hwachang-gray6 rounded-3xl px-10 py-3 font-medium text-xs text-center text-slate-800">
               {isCustomer
-                ? `상담 대기 채팅방에 입장하셨습니다.`
+                ? `${userName}님 반갑습니다. 상담원과 매칭되기전 궁금하신 정보를 미리 입력해주세요.`
                 : "채팅을 통해 고객님께 필요한 정보를 먼저 제공하거나 돕기 위해 다음 안내를 준비해주세요."}
             </div>
             {isCustomer ?
