@@ -183,10 +183,7 @@ export default function Home() {
         ) : (
           <div>
             <div className="relative w-full overflow-hidden h-1/6 p-6 bg-slate-100">
-              <div
-                className="flex transition-transform duration-300"
-                style={{ transform: `translateX(-${(slideIndex * 100) / 3}%)` }}
-              >
+              <div className="flex transition-transform duration-300" style={{ transform: `translateX(-${(slideIndex * 100) / 3}%)` }} >
                 <div className="w-1/3 flex-shrink-0">
                   <VideoView
                     video={<Video ref={videoRef as LegacyRef<HTMLVideoElement>} isTop={true} />}
@@ -202,18 +199,12 @@ export default function Home() {
                 ))}
               </div>
               {slideIndex > 0 && (
-                <button
-                  onClick={handlePrev}
-                  className="absolute left-0 top-1/2 transform -translate-y-1/2 px-3"
-                >
+                <button onClick={handlePrev} className="absolute left-0 top-1/2 transform -translate-y-1/2 px-3" >
                   <SlArrowLeft />
                 </button>
               )}
               {slideIndex < videoViews.length - 3 && (
-                <button
-                  onClick={handleNext}
-                  className="absolute right-0 top-1/2 transform -translate-y-1/2 px-3"
-                  <SlArrowRight />
+                <button onClick={handleNext} className="absolute right-0 top-1/2 transform -translate-y-1/2 px-3"> <SlArrowRight />
                 </button>
               )}
             </div>
