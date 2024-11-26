@@ -13,7 +13,7 @@ const myKey:string = Math.random().toString(36).substring(2, 11);
 //const access:string ='@@@mockToekn@@@';
 
 export function useSocket(){
-  const socket = new SockJS("https://hwachang.site/consulting-room");
+  const socket = new SockJS("http://52.78.117.221:8080/consulting-room");
   const otherKeyList: string[] = [];
 
   const pcListMap = new Map<string, RTCPeerConnection>();
@@ -52,7 +52,8 @@ export function useSocket(){
         }
       })
       
-      client.subscribe( `/topic/peer/offer/${myKey}/${roomId}`, async (offer)=>{
+      client.subscribe( `/topic/peer/offer/${myKey}/${roomId}`, 
+        async (offer)=>{
           console.log('offer')
           const key = JSON.parse(offer.body).key;
           const message = JSON.parse(offer.body).body;
@@ -98,7 +99,7 @@ export function useSocket(){
       setTimeout(() => {
         if(client.connected){
           // app/call/key: 서버에 브로드 캐스트 해야함 - 현재 먹통 ... 
-          client.publish({ destination: `/app/call/key` });
+          client.publish({ destination: `/app/call/key`, body:"publish: call/key" });
           /*
           app/call/key -> topic/call/key
           -> app/send/key(를 통해 내 키 전송) -> topic/call/key(모든 키를 otherList에 담아버림)
@@ -120,9 +121,6 @@ export function useSocket(){
 
   const connectSocket = ()=>{
     client.activate();
-    setTimeout(()=>{
-      startStream();
-    }, 1000)
   }
 
   const createPeerConnection = (otherKey: string)=>{
