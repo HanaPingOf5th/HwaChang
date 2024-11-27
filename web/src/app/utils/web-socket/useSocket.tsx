@@ -58,7 +58,7 @@ export function useSocket(){
           const key = JSON.parse(offer.body).key;
           const message = JSON.parse(offer.body).body;
   
-          pcListMap.set(key, createPeerConnection(key));
+          pcListMap.set(key, await createPeerConnection(key));
           console.log("만들어진 피어커넥션", createPeerConnection(key))
           pcListMap.get(key).setRemoteDescription(
             new RTCSessionDescription({type: message.type, sdp: message.sdp})
@@ -99,11 +99,11 @@ export function useSocket(){
       setTimeout(() => {
         if(client.connected){ 
           client.publish({ destination: `/app/call/key`, body:"publish: call/key" });
-          
+
           setTimeout(()=>{
-            otherKeyList.map((key)=>{
+            otherKeyList.map(async (key)=>{
             if(!pcListMap.has(key)){
-              pcListMap.set(key, createPeerConnection(key));
+              pcListMap.set(key, await createPeerConnection(key));
               sendOffer(pcListMap.get(key), key);
               }
             })
@@ -118,7 +118,7 @@ export function useSocket(){
     client.activate();
   }
 
-  const createPeerConnection = (otherKey: string)=>{
+  const createPeerConnection = async (otherKey: string)=>{
     const pc = new RTCPeerConnection();
     try{
       pc.addEventListener("icecandidate", (event)=>{
@@ -131,7 +131,7 @@ export function useSocket(){
         onTrack(event, otherKey);
       });
   
-      navigator.mediaDevices.getUserMedia({ video: { width: 800, height: 450, facingMode: "user" }, audio: true })
+      await navigator.mediaDevices.getUserMedia({ video: { width: 800, height: 450, facingMode: "user" }, audio: true })
         .then((localStream)=>{
           localStream.getTracks().forEach((track)=>{
             pc.addTrack(track, localStream)
