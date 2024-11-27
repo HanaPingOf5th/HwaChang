@@ -97,15 +97,10 @@ export function useSocket(){
     if(client.connected){
       console.log("start steam ... ")
       setTimeout(() => {
-        if(client.connected){
-          // app/call/key: 서버에 브로드 캐스트 해야함 - 현재 먹통 ... 
+        if(client.connected){ 
           client.publish({ destination: `/app/call/key`, body:"publish: call/key" });
-          /*
-          app/call/key -> topic/call/key
-          -> app/send/key(를 통해 내 키 전송) -> topic/call/key(모든 키를 otherList에 담아버림)
-          */
+          
           setTimeout(()=>{
-            console.log("스트림 누른 후 비동기 처리 후 키 리스트: ", otherKeyList)
             otherKeyList.map((key)=>{
             if(!pcListMap.has(key)){
               pcListMap.set(key, createPeerConnection(key));
@@ -125,7 +120,6 @@ export function useSocket(){
 
   const createPeerConnection = (otherKey: string)=>{
     const pc = new RTCPeerConnection();
-    console.log("만들어지기 전 피어커넥션", pc)
     try{
       pc.addEventListener("icecandidate", (event)=>{
         console.log("iceCandidate 이벤트 발생")
@@ -140,13 +134,7 @@ export function useSocket(){
       navigator.mediaDevices.getUserMedia({ video: { width: 800, height: 450, facingMode: "user" }, audio: true })
         .then((localStream)=>{
           localStream.getTracks().forEach((track)=>{
-            console.log("---------------------");
-            console.log("보낼 트랙 확인", track);
-            console.log("보낼 로컬 스트림 확인", track);
             pc.addTrack(track, localStream)
-            console.log(pc)
-            console.log(pc.getSenders())
-            console.log("---------------------");
           })
           console.log("송출완료")
         })
