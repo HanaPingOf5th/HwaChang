@@ -14,10 +14,10 @@ const myKey:string = Math.random().toString(36).substring(2, 11);
 
 export function useSocket(){
   const socket = new SockJS("http://52.78.117.221:8080/consulting-room");
-  const otherKeyList: string[] = [];
-
-  const pcListMap = new Map<string, RTCPeerConnection>();
+  const [otherKeyList, setOtherKeyList] = useState<string[]>([]);
+  const [pcListMap, setPcListMap] = useState<Map<string,RTCPeerConnection>>(new Map<string, RTCPeerConnection>());
   const [videoElements, setVideoElements] = useState<React.ReactNode[]>([]);
+  
   
   const client = new Client({
     webSocketFactory: () => socket,
@@ -49,6 +49,7 @@ export function useSocket(){
           otherKeyList.find((mapKey) => mapKey === myKey) === undefined
         ) {
           otherKeyList.push(key);
+          setOtherKeyList(otherKeyList);
         }
       })
       
@@ -59,11 +60,10 @@ export function useSocket(){
           const message = JSON.parse(offer.body).body;
   
           pcListMap.set(key, await createPeerConnection(key));
-          console.log("만들어진 피어커넥션", createPeerConnection(key))
           pcListMap.get(key).setRemoteDescription(
             new RTCSessionDescription({type: message.type, sdp: message.sdp})
           );
-          console.log("sendAnswer 메서드에 담아서 보낼 pcList: ", pcListMap.get(key), 'key: ', key);
+          setPcListMap(pcListMap);
           sendAnswer(pcListMap.get(key), key);
         }
       )
@@ -74,6 +74,7 @@ export function useSocket(){
           const key = JSON.parse(answer.body).key;
           const message = JSON.parse(answer.body).body;
           pcListMap.get(key).setRemoteDescription(new RTCSessionDescription(message));
+          setPcListMap(pcListMap);
         }
       )
   
@@ -88,6 +89,7 @@ export function useSocket(){
               sdpMid: message.sdpMid,
             })
           )
+          setPcListMap(pcListMap);
         }
       )
     } 
@@ -104,6 +106,7 @@ export function useSocket(){
             otherKeyList.map(async (key)=>{
             if(!pcListMap.has(key)){
               pcListMap.set(key, await createPeerConnection(key));
+              setPcListMap(pcListMap);
               sendOffer(pcListMap.get(key), key);
               }
             })
@@ -112,10 +115,6 @@ export function useSocket(){
         }
       }, 1000);
     }
-  }
-
-  const connectSocket = ()=>{
-    client.activate();
   }
 
   const createPeerConnection = async (otherKey: string)=>{
@@ -179,7 +178,6 @@ export function useSocket(){
   };
 
   const sendAnswer = (pc:RTCPeerConnection, otherKey:string)=>{
-    console.log(otherKey, "로 answer를 보냅니다 !: ", pc)
     pc.createAnswer().then((answer)=>{
       setLocalAndSendMessage(pc, answer);
       client.publish({
@@ -208,9 +206,6 @@ export function useSocket(){
   return {
     client: client, 
     video: videoElements,
-    otherKeyList: otherKeyList, 
-    pcListMap: pcListMap,
-    startStream: startStream,
-    connectSocket: connectSocket
+    startStream: startStream
   };
 }

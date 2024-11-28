@@ -6,7 +6,7 @@ import { Video, VideoView } from "@/app/(..route)/consulting-room/components/vid
 
 export default function WebCamTest() {
   const videoRef = useRef<HTMLVideoElement | null>(null);
-  const { client, video, connectSocket, startStream} = useSocket();
+  const { client, video, startStream} = useSocket();
 
   useEffect(() => {
     const getMedia = async () => {
@@ -35,7 +35,7 @@ export default function WebCamTest() {
 
   useEffect(() => {
     if (client) {
-      connectSocket();
+      client.activate();
     } else{
       console.log("웹소켓 클라이언트 로딩에 실패했습니다.")
     }
