@@ -16,6 +16,7 @@ export function ReviewModal(){
       window.location.href = "/customer/main";
     }
   }, [isSubmitted]);
+  
   function reviewAction(prevState: FormState, formData: FormData): FormState {
     const textValue = formData.get('ss');
 
