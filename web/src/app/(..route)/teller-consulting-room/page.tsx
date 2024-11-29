@@ -12,7 +12,7 @@ import {
   VideoOffIcon,
 } from "lucide-react";
 import { SlArrowLeft, SlArrowRight } from "react-icons/sl";
-import { Profile, Video, VideoView } from "../consulting-room/components/video-view";
+import { Profile, Video, VideoView } from "../customer-room/components/video-view";
 import { VideoSettingModal } from "@/app/ui/consulting-room/modal/video-setting";
 import { SharingLinkModal } from "@/app/ui/consulting-room/modal/sharing-link";
 import Minji from "@/app/utils/public/Minji.jpeg";

@@ -2,7 +2,7 @@
 import { LegacyRef, useEffect, useRef,} from "react";
 import AchromaticButton from "@/app/ui/component/atom/button/achromatic-button";
 import { useSocket } from "./useSocket";
-import { Video, VideoView } from "@/app/(..route)/consulting-room/components/video-view";
+import { Video, VideoView } from "@/app/(..route)/customer-room/components/video-view";
 
 export default function WebCamTest() {
   const videoRef = useRef<HTMLVideoElement | null>(null);
