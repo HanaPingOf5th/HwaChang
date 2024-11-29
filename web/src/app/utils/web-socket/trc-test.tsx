@@ -6,7 +6,7 @@ import { Video, VideoView } from "@/app/(..route)/consulting-room/components/vid
 
 export default function WebCamTest() {
   const videoRef = useRef<HTMLVideoElement | null>(null);
-  const { client, video, startStream} = useSocket();
+  const { client, video, startStream } = useSocket();
 
   useEffect(() => {
     const getMedia = async () => {
