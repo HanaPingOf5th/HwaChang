@@ -1,7 +1,7 @@
 "use client";
 import AchromaticButton from "@/app/ui/component/atom/button/achromatic-button";
 import { useRouter, useSearchParams } from "next/navigation";
-import { LegacyRef, Suspense, useEffect, useRef, useState } from "react";
+import { LegacyRef, useEffect, useRef, useState } from "react";
 
 import {
   MicIcon,
@@ -19,13 +19,12 @@ import Minji from "@/app/utils/public/Minji.jpeg";
 import Cameraoff from "@/app/utils/public/Cameraoff.svg";
 import Image from "next/image";
 import Ping from "@/app/utils/public/Ping.webp";
+import { useSocket } from "@/app/utils/web-socket/useSocket";
 
 export default function Home() {
   const params = useSearchParams();
   const route = useRouter();
   const [key, setKey] = useState<string | null>("true");
-
-  const videoRef = useRef<HTMLVideoElement | undefined | null>(null);
   const [videoStream, setVideoStream] = useState<MediaStream | null>(null);
   const [isVideoEnabled, setIsVideoEnabled] = useState<boolean>(true);
   const [isMikeEnabled, setIsMikeEnabled] = useState<boolean>(true);
@@ -40,6 +39,9 @@ export default function Home() {
   const [isSettingsModalOpen, setIsSettingsModalOpen] = useState<boolean>(false);
 
   const [slideIndex, setSlideIndex] = useState(0);
+
+  const videoRef = useRef<HTMLVideoElement | null>(null);
+  const { client, video, startStream } = useSocket();
 
   const handlePrev = () => {
     if (slideIndex > 0) {
@@ -74,15 +76,6 @@ export default function Home() {
     ),
     name: "나나나",
   });
-
-  // const mockOtherProfile: Profile = {
-  //   picture: (
-  //     <div className="flex justify-center items-center h-[160px] bg-gray-200 rounded-xl ">
-  //       <Image src={Cameraoff} alt="Cameraoff" width={50} height={50} />
-  //     </div>
-  //   ),
-  //   name: "참여자",
-  // };
 
   const mockOtherProfile: Profile = {
     picture: (
@@ -136,6 +129,22 @@ export default function Home() {
     setKey(params.get("isWait") as string);
   }, [params]);
 
+  useEffect(()=>{
+    if(client){
+      client.activate();
+    }else{
+      console.log("웹소켓 클라이언트 로딩에 실패했습니다.")
+    }
+  },[])
+
+  const handleStartStream = () => {
+    if (client.connected) {
+      startStream();
+    } else {
+      console.log("WebSocket 연결이 아직 완료되지 않았습니다.");
+    }
+  };
+
   // To-Do: 내가 비디오를 끌 경우, 나의 비디오 상태를 상대방에게 보내는 api 추가: isCam: false
   const toggleVideo = () => {
     if (videoStream) {
@@ -164,7 +173,6 @@ export default function Home() {
 
   return (
     <main>
-      <Suspense fallback={<div>로딩 중...</div>}>
         {key == "true" ? (
           <div className="grid grid-row-1 gap-1 px-10 py-6">
             <p className={`mb-6 text-4xl text-hwachang-green1`}>
@@ -209,13 +217,14 @@ export default function Home() {
                 </button>
               )}
             </div>
+            <AchromaticButton type="button" onClick={()=>{handleStartStream()}}>스트림 시작</AchromaticButton>
 
             <div className="pt-4 px-6">
               <VideoView
-                video={<Video ref={videoRef as LegacyRef<HTMLVideoElement>} />}
-                onCam={false}
-                profile={mockProfile}
-              />
+                  video={video[0]}
+                  onCam={true}
+                  profile={mockProfile}
+                />
             </div>
           </div>
         )}
@@ -290,7 +299,6 @@ export default function Home() {
             </AchromaticButton>
           </div>
         </div>
-      </Suspense>
     </main>
   );
 }

@@ -14,11 +14,10 @@ const myKey:string = Math.random().toString(36).substring(2, 11);
 
 export function useSocket(){
   const socket = new SockJS("http://52.78.117.221:8080/consulting-room");
-  const [otherKeyList, setOtherKeyList] = useState<string[]>([]);
-  const [pcListMap, setPcListMap] = useState<Map<string,RTCPeerConnection>>(new Map<string, RTCPeerConnection>());
+  const [otherKeyList] = useState<string[]>([]);
+  const [pcListMap] = useState<Map<string,RTCPeerConnection>>(new Map<string, RTCPeerConnection>());
   const [videoElements, setVideoElements] = useState<React.ReactNode[]>([]);
-  
-  
+
   const client = new Client({
     webSocketFactory: () => socket,
     // connectHeaders:{Authorization: `Bearer ${access}`},
@@ -49,7 +48,6 @@ export function useSocket(){
           otherKeyList.find((mapKey) => mapKey === myKey) === undefined
         ) {
           otherKeyList.push(key);
-          setOtherKeyList(otherKeyList);
         }
       })
       
@@ -63,7 +61,6 @@ export function useSocket(){
           pcListMap.get(key).setRemoteDescription(
             new RTCSessionDescription({type: message.type, sdp: message.sdp})
           );
-          setPcListMap(pcListMap);
           sendAnswer(pcListMap.get(key), key);
         }
       )
@@ -74,7 +71,6 @@ export function useSocket(){
           const key = JSON.parse(answer.body).key;
           const message = JSON.parse(answer.body).body;
           pcListMap.get(key).setRemoteDescription(new RTCSessionDescription(message));
-          setPcListMap(pcListMap);
         }
       )
   
@@ -89,7 +85,6 @@ export function useSocket(){
               sdpMid: message.sdpMid,
             })
           )
-          setPcListMap(pcListMap);
         }
       )
     } 
@@ -106,7 +101,6 @@ export function useSocket(){
             otherKeyList.map(async (key)=>{
             if(!pcListMap.has(key)){
               pcListMap.set(key, await createPeerConnection(key));
-              setPcListMap(pcListMap);
               sendOffer(pcListMap.get(key), key);
               }
             })
