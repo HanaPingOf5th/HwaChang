@@ -9,8 +9,8 @@ import { Client  } from "@stomp/stompjs";
 
 // 전역으로 관리해줘도 좋을것 같은 데이터
 const roomId = 11;
+// 고객의 UUID
 const myKey:string = Math.random().toString(36).substring(2, 11);
-//const access:string ='@@@mockToekn@@@';
 
 export function useSocket(){
   const socket = new SockJS("http://localhost:8080/consulting-room");
@@ -20,7 +20,6 @@ export function useSocket(){
 
   const client = new Client({
     webSocketFactory: () => socket,
-    // connectHeaders:{Authorization: `Bearer ${access}`},
     debug: (str:string) => {console.log(str)},
     reconnectDelay: 5000,
     heartbeatIncoming: 4000,
@@ -66,7 +65,7 @@ export function useSocket(){
 
       client.subscribe(`/topic/peer/answer/${myKey}/${roomId}`, (answer)=>{
           console.log('answer')
-          console.log(answer.body)
+
           const key = JSON.parse(answer.body).key;
           const message = JSON.parse(answer.body).body;
           pcListMap.get(key).setRemoteDescription(new RTCSessionDescription(message));
@@ -170,8 +169,8 @@ export function useSocket(){
     }
   };
 
-  const sendAnswer = (pc:RTCPeerConnection, otherKey:string)=>{
-    pc.createAnswer().then((answer)=>{
+  const sendAnswer = async (pc:RTCPeerConnection, otherKey:string)=>{
+    await pc.createAnswer().then((answer)=>{
       setLocalAndSendMessage(pc, answer);
       client.publish({
         destination: `/app/peer/answer/${otherKey}/${roomId}`,
@@ -181,8 +180,8 @@ export function useSocket(){
     })
   }
 
-  const sendOffer = (pc:RTCPeerConnection, otherKey:string)=>{
-    pc.createOffer().then((offer)=>{
+  const sendOffer = async (pc:RTCPeerConnection, otherKey:string)=>{
+    await pc.createOffer().then((offer)=>{
       setLocalAndSendMessage(pc, offer);
       client.publish({
         destination:`/app/peer/offer/${otherKey}/${roomId}`,

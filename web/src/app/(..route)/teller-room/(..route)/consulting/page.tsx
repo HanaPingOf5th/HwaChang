@@ -1,22 +1,19 @@
 "use client";
 import AchromaticButton from "@/app/ui/component/atom/button/achromatic-button";
-import { Dialog, DialogContent, DialogTrigger } from "@/app/ui/component/molecule/dialog/dialog";
 import { LegacyRef, useEffect, useRef, useState } from "react";
 import { SlArrowLeft, SlArrowRight } from "react-icons/sl";
-import { VideoSettingModal } from "@/app/ui/consulting-room/modal/video-setting";
-import { SharingLinkModal } from "@/app/ui/consulting-room/modal/sharing-link";
+import { VideoSettingDialog } from "@/app/ui/consulting-room/modal/video-setting";
 import {
   MicIcon,
   MicOffIcon,
-  SettingsIcon,
-  Share2Icon,
   VideoIcon,
   VideoOffIcon,
 } from "lucide-react";
 import { useSocket } from "@/app/utils/web-socket/useSocket";
-import { ReviewModal } from "@/app/ui/consulting-room/modal/review-modal";
 import { Video, VideoView } from "@/app/(..route)/customer-room/components/video-view";
 import { createMockMyProfile, mockOtherProfile, mockProfile } from "@/app/(..route)/customer-room/mock/mock-profiles";
+import { ReviewDialog } from "@/app/ui/consulting-room/modal/review-dialog";
+import { SharingLinkDialog } from "@/app/ui/consulting-room/modal/share-link-dialog";
 
 export default function Home() {
   const [videoStream, setVideoStream] = useState<MediaStream | null>(null);
@@ -26,10 +23,6 @@ export default function Home() {
   const audioContext = useRef<AudioContext | null>(null);
   const gainNode = useRef<GainNode | null>(null);
 
-  const modalBackground = useRef<HTMLDivElement | null>(null);
-  const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
-  const [isLinkModalOpen, setIsLinkModalOpen] = useState<boolean>(false);
-  const [isSettingsModalOpen, setIsSettingsModalOpen] = useState<boolean>(false);
   const [slideIndex, setSlideIndex] = useState(0);
 
   const { client, video, startStream } = useSocket();
@@ -106,25 +99,25 @@ export default function Home() {
     }
   };
 
-  const toggleLink = () => {
-    setIsModalOpen(!isModalOpen);
-    setIsLinkModalOpen(!isLinkModalOpen);
-  };
+  useEffect(() => {
+    if (client) {
+      client.activate();
+      console.log("Activating STOMP client...");
+  
+      return () => {
+        console.log("Deactivating STOMP client...");
+        client.deactivate();
+      };
+    }
+  }, [client]);
+  
 
-  const toggleSettings = () => {
-    setIsModalOpen(!isModalOpen);
-    setIsSettingsModalOpen(!isSettingsModalOpen);
-  };
-
-  const handleStartStream = () => {
-    client.activate();
-    setTimeout(()=>{
-      if (client.connected) {
-        startStream();
-      } else {
-        console.log("WebSocket 연결이 아직 완료되지 않았습니다.");
-      }
-    }, 1000)
+  const handleStartStream = async () => {
+    console.log(client.active)
+    console.log(client.connected)
+    if(client.connected){
+      await startStream();
+    }
   };
 
   return (
@@ -163,35 +156,13 @@ export default function Home() {
             </button>
           )}
         </div>
-        {/* 상대 화면이 송출되는 부분 */}
         <div className="pt-4 px-6">
           <VideoView video={video[0]} onCam={true} profile={mockProfile}/>
         </div>
       </div>
 
       <div className="flex justify-center space-x-4 mt-4">
-        <AchromaticButton type="button" onClick={()=>{handleStartStream()}}>상담 시작</AchromaticButton>
-
-        {/* 모달 영역 */}
-        {isModalOpen && (
-          <div
-            ref={modalBackground}
-            className="w-screen h-screen fixed top-0 left-0 flex justify-center items-center bg-black bg-opacity-20 z-10"
-            onClick={(e) => {
-              if (e.target === modalBackground.current) {
-                setIsModalOpen(false);
-                setIsLinkModalOpen(false);
-                setIsSettingsModalOpen(false);
-              }
-            }}
-          >
-            {/* 링크 모달 */}
-            {isLinkModalOpen && <SharingLinkModal />}
-            {/* 설정 모달 */}
-            {isSettingsModalOpen && <VideoSettingModal videoRef={videoRef} />}
-          </div>
-        )}
-
+        <AchromaticButton type="button" onClick={async ()=>{await handleStartStream()}}>상담 시작</AchromaticButton>
         <div className="flex justify-center gap-4">
           <AchromaticButton
             onClick={toggleAudio}
@@ -213,34 +184,9 @@ export default function Home() {
               )}
             </div>
           </AchromaticButton>
-
-          <Dialog>
-            <DialogTrigger asChild>
-              <AchromaticButton className="rounded-full bg-hwachang-gray2 hover:bg-hwachang-gray3 text-black">
-                상담종료
-              </AchromaticButton>
-            </DialogTrigger>
-            <DialogContent>
-              <ReviewModal />
-            </DialogContent>
-          </Dialog>
-
-          <AchromaticButton
-            className="rounded-full bg-hwachang-gray2 hover:bg-hwachang-gray3"
-            onClick={toggleLink}
-          >
-            <div className="p-2">
-              <Share2Icon color="black" size={20} />
-            </div>
-          </AchromaticButton>
-          <AchromaticButton
-            className="rounded-full bg-hwachang-gray2 hover:bg-hwachang-gray3"
-            onClick={toggleSettings}
-          >
-            <div className="p-2">
-              <SettingsIcon color="black" size={20} />
-            </div>
-          </AchromaticButton>
+          <ReviewDialog/>
+          <SharingLinkDialog/>
+          <VideoSettingDialog videoRef={videoRef}/>
         </div>
       </div>
     </main>

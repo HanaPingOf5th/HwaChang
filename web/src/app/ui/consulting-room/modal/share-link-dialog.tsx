@@ -2,9 +2,27 @@
 import { CheckIcon, CopyIcon, Share2Icon } from "lucide-react";
 import TextInput from "../../component/atom/text-input/text-input";
 import AchromaticButton from "../../component/atom/button/achromatic-button";
+import { Dialog, DialogContent, DialogTrigger } from "@/app/ui/component/molecule/dialog/dialog";
 import { useState } from "react";
 
-export function SharingLinkModal(){
+export function SharingLinkDialog(){
+    return(
+        <Dialog>
+        <DialogTrigger asChild>
+          <AchromaticButton className="rounded-full bg-hwachang-gray2 hover:bg-hwachang-gray3 text-black">
+            <div className="p-2">
+              <Share2Icon color="black" size={20} />
+            </div>
+          </AchromaticButton>
+        </DialogTrigger>
+        <DialogContent>
+          <SharingLink />
+        </DialogContent>
+        </Dialog>
+    )
+}
+
+function SharingLink(){
   const [isCopied, setIsCopied] = useState<boolean>(false);
   
   const handleCopyButtonClick = () => {
