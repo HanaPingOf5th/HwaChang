@@ -1,39 +1,35 @@
 "use client";
 import AchromaticButton from "@/app/ui/component/atom/button/achromatic-button";
-import { Dialog, DialogContent, DialogTrigger } from "@/app/ui/component/molecule/dialog/dialog";
 import { LegacyRef, useEffect, useRef, useState } from "react";
 import { SlArrowLeft, SlArrowRight } from "react-icons/sl";
-import { VideoSettingModal } from "@/app/ui/consulting-room/modal/video-setting";
-import { SharingLinkModal } from "@/app/ui/consulting-room/modal/sharing-link";
+import { VideoSettingDialog } from "@/app/ui/consulting-room/modal/video-setting";
 import {
   MicIcon,
   MicOffIcon,
-  SettingsIcon,
-  Share2Icon,
   VideoIcon,
   VideoOffIcon,
 } from "lucide-react";
 import { useSocket } from "@/app/utils/web-socket/useSocket";
-import { ReviewModal } from "@/app/ui/consulting-room/modal/review-modal";
 import { Video, VideoView } from "../../components/video-view";
 import { createMockMyProfile, mockOtherProfile, mockProfile } from "../../mock/mock-profiles";
 import { ApplicationForm } from "../../components/application-form";
+import { ReviewDialog } from "@/app/ui/consulting-room/modal/review-dialog";
+import { SharingLinkDialog } from "@/app/ui/consulting-room/modal/share-link-dialog";
 
 export default function Home() {
+  // 현재 내 모습을 보여주는 MediaStram
   const [videoStream, setVideoStream] = useState<MediaStream | null>(null);
   const [isVideoEnabled, setIsVideoEnabled] = useState<boolean>(true);
   const [isAudioEnabled, setIsAudioEnabled] = useState<boolean>(true);
-
   const audioContext = useRef<AudioContext | null>(null);
   const gainNode = useRef<GainNode | null>(null);
 
-  const modalBackground = useRef<HTMLDivElement | null>(null);
-  const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
-  const [isLinkModalOpen, setIsLinkModalOpen] = useState<boolean>(false);
-  const [isSettingsModalOpen, setIsSettingsModalOpen] = useState<boolean>(false);
+  // application form
   const [isForm, setIsForm] = useState<boolean>(false);
+  // 상단 인덱싱
   const [slideIndex, setSlideIndex] = useState(0);
 
+  // rtc
   const { client, video } = useSocket();
   const videoRef = useRef<HTMLVideoElement | null>(null);
 
@@ -95,11 +91,15 @@ export default function Home() {
   useEffect(() => {
     if (client) {
       client.activate();
-    } else {
-      console.log("웹소켓 클라이언트 로딩에 실패했습니다.");
+      console.log("Activating STOMP client...");
+  
+      return () => {
+        console.log("Deactivating STOMP client...");
+        client.deactivate();
+      };
     }
-  }, []);
-
+  }, [client]);
+  
   // To-Do: 내가 비디오를 끌 경우, 나의 비디오 상태를 상대방에게 보내는 api 추가: isCam: false
   const toggleVideo = () => {
     if (videoStream) {
@@ -114,16 +114,6 @@ export default function Home() {
       videoStream.getAudioTracks().forEach((track) => (track.enabled = !track.enabled));
       setIsAudioEnabled(!isAudioEnabled);
     }
-  };
-
-  const toggleLink = () => {
-    setIsModalOpen(!isModalOpen);
-    setIsLinkModalOpen(!isLinkModalOpen);
-  };
-
-  const toggleSettings = () => {
-    setIsModalOpen(!isModalOpen);
-    setIsSettingsModalOpen(!isSettingsModalOpen);
   };
 
   return (
@@ -177,27 +167,6 @@ export default function Home() {
       </div>
 
       <div className="flex justify-center space-x-4 mt-4">
-
-        {/* 모달 영역 */}
-        {isModalOpen && (
-          <div
-            ref={modalBackground}
-            className="w-screen h-screen fixed top-0 left-0 flex justify-center items-center bg-black bg-opacity-20 z-10"
-            onClick={(e) => {
-              if (e.target === modalBackground.current) {
-                setIsModalOpen(false);
-                setIsLinkModalOpen(false);
-                setIsSettingsModalOpen(false);
-              }
-            }}
-          >
-            {/* 링크 모달 */}
-            {isLinkModalOpen && <SharingLinkModal />}
-            {/* 설정 모달 */}
-            {isSettingsModalOpen && <VideoSettingModal videoRef={videoRef} />}
-          </div>
-        )}
-
         <div className="flex justify-center gap-4">
           <AchromaticButton
             onClick={toggleAudio}
@@ -219,35 +188,9 @@ export default function Home() {
               )}
             </div>
           </AchromaticButton>
-
-          <Dialog>
-            <DialogTrigger asChild>
-              <AchromaticButton className="rounded-full bg-hwachang-gray2 hover:bg-hwachang-gray3 text-black">
-                상담종료
-              </AchromaticButton>
-            </DialogTrigger>
-            <DialogContent>
-              <ReviewModal />
-            </DialogContent>
-          </Dialog>
-
-        
-          <AchromaticButton
-            className="rounded-full bg-hwachang-gray2 hover:bg-hwachang-gray3"
-            onClick={toggleLink}
-          >
-            <div className="p-2">
-              <Share2Icon color="black" size={20} />
-            </div>
-          </AchromaticButton>
-          <AchromaticButton
-            className="rounded-full bg-hwachang-gray2 hover:bg-hwachang-gray3"
-            onClick={toggleSettings}
-          >
-            <div className="p-2">
-              <SettingsIcon color="black" size={20} />
-            </div>
-          </AchromaticButton>
+          <ReviewDialog/>
+          <SharingLinkDialog/>
+          <VideoSettingDialog videoRef={videoRef}/>
         </div>
       </div>
     </main>

@@ -1,9 +1,28 @@
 'use client'
-import { HeadphonesIcon, MicIcon, VideoIcon, Volume2Icon } from "lucide-react";
+import { HeadphonesIcon, MicIcon, SettingsIcon, VideoIcon, Volume2Icon } from "lucide-react";
+import { Dialog, DialogContent, DialogTrigger } from "@/app/ui/component/molecule/dialog/dialog";
 import { MutableRefObject, useRef, useState } from "react";
 import { BsPersonVideo } from "react-icons/bs";
+import AchromaticButton from "../../component/atom/button/achromatic-button";
 
-export function VideoSettingModal({videoRef}:{videoRef: MutableRefObject<HTMLVideoElement>}){
+export function VideoSettingDialog({videoRef}:{videoRef: MutableRefObject<HTMLVideoElement>}){
+  return(
+  <Dialog>
+  <DialogTrigger asChild>
+    <AchromaticButton className="rounded-full bg-hwachang-gray2 hover:bg-hwachang-gray3 text-black">
+      <div className="p-2">
+        <SettingsIcon color="black" size={20} />
+      </div>
+    </AchromaticButton>
+  </DialogTrigger>
+  <DialogContent>
+    <VideoSetting videoRef={videoRef} />
+  </DialogContent>
+  </Dialog>
+  )
+}
+
+function VideoSetting({videoRef}:{videoRef: MutableRefObject<HTMLVideoElement>}){
   
   const [currentSetting, setCurrentSetting] = useState<string>("audio");
   const [inputVolume, setInputVolume] = useState<number>(0.5);

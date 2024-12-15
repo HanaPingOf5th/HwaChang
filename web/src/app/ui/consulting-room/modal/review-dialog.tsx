@@ -4,9 +4,25 @@ import { Card, CardContent, CardFooter, CardHeader } from "../../component/molec
 import Form from "../../component/molecule/form/form-index";
 import { FormState } from "../../component/molecule/form/form-root";
 import { FormSubmitButton } from "../../component/molecule/form/form-submit-button";
+import { Dialog, DialogContent, DialogTrigger } from "@/app/ui/component/molecule/dialog/dialog";
 import Link from "next/link";
 
-export function ReviewModal(){
+export function ReviewDialog(){
+  return(
+    <Dialog>
+    <DialogTrigger asChild>
+      <AchromaticButton className="rounded-full bg-hwachang-gray2 hover:bg-hwachang-gray3 text-black">
+        상담종료
+      </AchromaticButton>
+    </DialogTrigger>
+    <DialogContent>
+      <Review />
+    </DialogContent>
+    </Dialog>
+  )
+}
+
+function Review(){
   const numbers:number[] = [1,2,3,4,5,6,7,8,9,10];
   const [currentScore, setCurrentScore] = useState<number>(0);
   const [isSubmitted, setIsSubmitted] = useState<boolean>(false);
