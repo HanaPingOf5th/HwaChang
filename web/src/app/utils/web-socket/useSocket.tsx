@@ -13,7 +13,7 @@ const myKey:string = Math.random().toString(36).substring(2, 11);
 //const access:string ='@@@mockToekn@@@';
 
 export function useSocket(){
-  const socket = new SockJS("http://52.78.117.221:8080/consulting-room");
+  const socket = new SockJS("http://localhost:8080/consulting-room");
   const [otherKeyList] = useState<string[]>([]);
   const [pcListMap] = useState<Map<string,RTCPeerConnection>>(new Map<string, RTCPeerConnection>());
   const [videoElements, setVideoElements] = useState<React.ReactNode[]>([]);
@@ -40,7 +40,6 @@ export function useSocket(){
 
       // 서버가 클라이언트에게 보내는 응답값(참여중인 모든 참여자들의 키)
       client.subscribe(`/topic/send/key`, (message)=>{
-        console.log(message.body);
         const key: string = JSON.parse(message.body);
         console.log(key);
         if (
