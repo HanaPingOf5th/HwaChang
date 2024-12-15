@@ -35,6 +35,7 @@ export default function TellerLoginPage() {
   const clickHandler = (e: { preventDefault: () => void }) => {
     e.preventDefault();
     // 로그인 API 구현
+
     login();
   };
 
