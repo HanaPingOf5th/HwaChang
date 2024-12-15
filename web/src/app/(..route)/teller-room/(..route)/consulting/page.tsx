@@ -19,8 +19,6 @@ import { Video, VideoView } from "@/app/(..route)/customer-room/components/video
 import { createMockMyProfile, mockOtherProfile, mockProfile } from "@/app/(..route)/customer-room/mock/mock-profiles";
 
 export default function Home() {
-
-  const videoRef = useRef<HTMLVideoElement | null>(null);
   const [videoStream, setVideoStream] = useState<MediaStream | null>(null);
   const [isVideoEnabled, setIsVideoEnabled] = useState<boolean>(true);
   const [isAudioEnabled, setIsAudioEnabled] = useState<boolean>(true);
@@ -30,15 +28,12 @@ export default function Home() {
 
   const modalBackground = useRef<HTMLDivElement | null>(null);
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
-
   const [isLinkModalOpen, setIsLinkModalOpen] = useState<boolean>(false);
-
   const [isSettingsModalOpen, setIsSettingsModalOpen] = useState<boolean>(false);
-
-
   const [slideIndex, setSlideIndex] = useState(0);
 
-  const { client, video } = useSocket();
+  const { client, video, startStream } = useSocket();
+  const videoRef = useRef<HTMLVideoElement | null>(null);
 
   const handlePrev = () => {
     if (slideIndex > 0) {
@@ -95,14 +90,6 @@ export default function Home() {
     };
   }, [videoStream]);
 
-  useEffect(() => {
-    if (client) {
-      client.activate();
-    } else {
-      console.log("웹소켓 클라이언트 로딩에 실패했습니다.");
-    }
-  }, []);
-
   // To-Do: 내가 비디오를 끌 경우, 나의 비디오 상태를 상대방에게 보내는 api 추가: isCam: false
   const toggleVideo = () => {
     if (videoStream) {
@@ -127,6 +114,17 @@ export default function Home() {
   const toggleSettings = () => {
     setIsModalOpen(!isModalOpen);
     setIsSettingsModalOpen(!isSettingsModalOpen);
+  };
+
+  const handleStartStream = () => {
+    client.activate();
+    setTimeout(()=>{
+      if (client.connected) {
+        startStream();
+      } else {
+        console.log("WebSocket 연결이 아직 완료되지 않았습니다.");
+      }
+    }, 1000)
   };
 
   return (
@@ -165,13 +163,14 @@ export default function Home() {
             </button>
           )}
         </div>
-        {/* API 연동 후, 삭제 예정 */}
+        {/* 상대 화면이 송출되는 부분 */}
         <div className="pt-4 px-6">
           <VideoView video={video[0]} onCam={true} profile={mockProfile}/>
         </div>
       </div>
 
       <div className="flex justify-center space-x-4 mt-4">
+        <AchromaticButton type="button" onClick={()=>{handleStartStream()}}>상담 시작</AchromaticButton>
 
         {/* 모달 영역 */}
         {isModalOpen && (
@@ -226,7 +225,6 @@ export default function Home() {
             </DialogContent>
           </Dialog>
 
-        
           <AchromaticButton
             className="rounded-full bg-hwachang-gray2 hover:bg-hwachang-gray3"
             onClick={toggleLink}

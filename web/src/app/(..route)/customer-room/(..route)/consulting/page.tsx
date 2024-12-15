@@ -20,8 +20,6 @@ import { createMockMyProfile, mockOtherProfile, mockProfile } from "../../mock/m
 import { ApplicationForm } from "../../components/application-form";
 
 export default function Home() {
-
-  const videoRef = useRef<HTMLVideoElement | null>(null);
   const [videoStream, setVideoStream] = useState<MediaStream | null>(null);
   const [isVideoEnabled, setIsVideoEnabled] = useState<boolean>(true);
   const [isAudioEnabled, setIsAudioEnabled] = useState<boolean>(true);
@@ -31,15 +29,13 @@ export default function Home() {
 
   const modalBackground = useRef<HTMLDivElement | null>(null);
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
-
   const [isLinkModalOpen, setIsLinkModalOpen] = useState<boolean>(false);
-
   const [isSettingsModalOpen, setIsSettingsModalOpen] = useState<boolean>(false);
   const [isForm, setIsForm] = useState<boolean>(false);
-
   const [slideIndex, setSlideIndex] = useState(0);
 
   const { client, video } = useSocket();
+  const videoRef = useRef<HTMLVideoElement | null>(null);
 
   const handlePrev = () => {
     if (slideIndex > 0) {
