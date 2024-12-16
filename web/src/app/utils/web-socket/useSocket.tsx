@@ -13,7 +13,7 @@ const roomId = 11;
 const myKey:string = Math.random().toString(36).substring(2, 11);
 
 export function useSocket(){
-  const socket = new SockJS("http://localhost:8080/consulting-room");
+  const socket = new SockJS("http://localhost:8080/ws/consulting-room");
   const [otherKeyList] = useState<string[]>([]);
   const [pcListMap] = useState<Map<string,RTCPeerConnection>>(new Map<string, RTCPeerConnection>());
   const [videoElements, setVideoElements] = useState<React.ReactNode[]>([]);

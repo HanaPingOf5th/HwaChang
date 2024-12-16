@@ -2,10 +2,9 @@ import { useEffect, useState } from "react";
 import AchromaticButton from "../../component/atom/button/achromatic-button";
 import { Card, CardContent, CardFooter, CardHeader } from "../../component/molecule/card/card";
 import Form from "../../component/molecule/form/form-index";
-import { FormState } from "../../component/molecule/form/form-root";
 import { FormSubmitButton } from "../../component/molecule/form/form-submit-button";
 import { Dialog, DialogContent, DialogTrigger } from "@/app/ui/component/molecule/dialog/dialog";
-import Link from "next/link";
+import { sendReview } from "@/app/business/consulting-room/review";
 
 export function ReviewDialog(){
   return(
@@ -33,19 +32,19 @@ function Review(){
     }
   }, [isSubmitted]);
   
-  function reviewAction(prevState: FormState, formData: FormData): FormState {
-    const textValue = formData.get('ss');
+  // function reviewAction(prevState: FormState, formData: FormData): FormState {
+  //   const textValue = formData.get('ss');
 
-    console.log('입력한 점수:',currentScore, '리뷰내용:',textValue);
-    alert(`${currentScore} and ${textValue}`);
-    setIsSubmitted(true);
-    return {
-      isSuccess: true,
-      isFailure: false,
-      message: "",
-      validationError: {},
-    };
-  }
+  //   console.log('입력한 점수:',currentScore, '리뷰내용:',textValue);
+  //   alert(`${currentScore} and ${textValue}`);
+  //   setIsSubmitted(true);
+  //   return {
+  //     isSuccess: true,
+  //     isFailure: false,
+  //     message: "",
+  //     validationError: {},
+  //   };
+  // }
   const scores:JSX.Element[] = numbers.map((num, index)=>{
     return (
     <div key={index}>
@@ -68,7 +67,7 @@ function Review(){
         <p className="text-center font-semibold text-l ">추천 정도를 1~10점으로 선택해주세요.</p>
         </CardHeader>
         
-        <Form id={"review"} action={reviewAction} failMessageControl={"alert"}>
+        <Form id={"review"} action={sendReview} onSuccess={()=>setIsSubmitted(true)} failMessageControl={"alert"}>
           <CardContent>
               <div className="grid grid-cols-2 sm:grid-cols-5 lg:grid-cols-10 gap-4">
               {scores}
@@ -77,7 +76,7 @@ function Review(){
           <CardContent>
           
           <textarea 
-            name='ss'
+            name='review-content'
             className="w-full h-56 p-4 text-gray-600 bg-hwachang-brightgreen border-none rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-green-300 resize-none"
             placeholder="해당 점수를 준 사유를 자유롭게 입력해 주세요."
           >
@@ -86,9 +85,7 @@ function Review(){
 
           <CardFooter className="justify-center">
             <div className="grid grid-cols-2 gap-6 items-center">
-              <Link href='/customer/main'>
-                <AchromaticButton className="bg-hwachang-hanasilver text-md hover:bg-hwachang-hwachanggray lg:w-40 h-6 size-auto w-24 rounded-2xl " type="button">건너뛰기</AchromaticButton>
-              </Link>
+              <AchromaticButton className="bg-hwachang-hanasilver text-md hover:bg-hwachang-hwachanggray lg:w-40 h-6 size-auto w-24 rounded-2xl " type="button">건너뛰기</AchromaticButton>
               <FormSubmitButton className="bg-hwachang-darkgreen text-md lg:w-40 size-auto w-24 rounded-2xl" label={"제출하기"} position="center"/>
             </div>
           </CardFooter>

@@ -27,6 +27,7 @@
     "@tailwindcss/forms": "^0.5.9",
     "@types/stompjs": "^2.3.9",
     "apexcharts": "^3.54.1",
+    "axios": "^1.7.9",
     "class-variance-authority": "^0.7.0",
     "clsx": "^2.1.1",
     "js-cookie": "^3.0.5",

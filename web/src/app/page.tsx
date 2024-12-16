@@ -15,7 +15,6 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import MainPageContent from "./ui/component/organism/mainpage-content";
 import TextInput from "./ui/component/atom/text-input/text-input";
-import { cookies } from "next/headers";
 
 export default function Home() {
   const router = useRouter();
