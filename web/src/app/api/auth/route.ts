@@ -5,7 +5,7 @@ export async function POST(request: Request) {
   try {
     const body = await request.json();
 
-    const response = await fetch("Spring 서버 로그인 API 주소", {
+    const response = await fetch("/api/customer/login", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",

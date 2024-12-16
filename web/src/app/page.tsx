@@ -15,6 +15,7 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import MainPageContent from "./ui/component/organism/mainpage-content";
 import TextInput from "./ui/component/atom/text-input/text-input";
+import { cookies } from "next/headers";
 
 export default function Home() {
   const router = useRouter();
@@ -29,21 +30,36 @@ export default function Home() {
   }, [username, password]);
 
   // 로그인 함수
-  const login = () => {
-    if (username && password) {
-      if (username === "username" && password === "password") {
-        setUsername("");
-        setPassword("");
-        router.push("/customer/main");
-      } else {
+  const login = async () => {
+    try {
+      const response = await fetch("/api/customer/login", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ username, password }),
+        credentials: "include",
+      });
+      const data = await response.json();
+      const token = data.token;
+      const refreshToken = data.refreshToken;
+      console.log("token : ", token);
+      console.log("refreshToken : ", refreshToken);
+      if (token === undefined || refreshToken === undefined) {
         setMismatch(true);
+      } else {
+        setMismatch(false);
+        sessionStorage.setItem("accessToken", token);
+        sessionStorage.setItem("refreshToken", refreshToken);
+        router.push("/customer/main");
       }
-    } else {
+    } catch (error) {
+      console.error(error);
     }
   };
 
   // 버튼 클릭 핸들러
-  const clickHandler = (e: { preventDefault: () => void; }) => {
+  const clickHandler = (e: { preventDefault: () => void }) => {
     e.preventDefault();
     // 로그인 API 구현
     login();
@@ -90,17 +106,14 @@ export default function Home() {
                   value={password}
                   onValueChange={setPassword}
                 />
-                {mismatch && (
-                  <p className="text-red-500">비밀번호가 일치하지 않습니다.</p>
-                )}
+                {mismatch && <p className="text-red-500">비밀번호가 일치하지 않습니다.</p>}
               </div>
               <button
                 onClick={clickHandler}
                 className={`text-white w-1/2 py-4 rounded-lg ${
-                  isEmpty
-                    ? "bg-[#D9D9D9] cursor-auto"
-                    : "bg-[#1FAB89] hover:brightness-90"
+                  isEmpty ? "bg-[#D9D9D9] cursor-auto" : "bg-[#1FAB89] hover:brightness-90"
                 }`}
+                disabled={isEmpty ? true : false}
               >
                 로그인
               </button>
