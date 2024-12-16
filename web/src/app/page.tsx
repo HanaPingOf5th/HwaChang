@@ -172,7 +172,7 @@
 import Link from "next/link";
 import MainPageContent from "./ui/component/organism/mainpage-content";
 import Form from "./ui/component/molecule/form/form-index";
-import { authenticateTeller } from "./business/auth/login";
+import { authenticateCustomer } from "./business/auth/customer/customer-login";
 
 export default function Home() {
   // 지금은 teller 로그인만 구현한 상태
@@ -189,15 +189,15 @@ export default function Home() {
           </p>
           {/* 로그인 Form 영역 */}
           <div className="w-full space-y-10">
-            <Form action={authenticateTeller} id={"log-in"} failMessageControl={"alert"} >
+            <Form action={authenticateCustomer} id={"log-in"} failMessageControl={"alert"} >
                 {/* className="flex flex-col gap-4 items-center"> */}
               {/* 아이디 input */}
               <div className="flex flex-col gap-2 w-full">
-                <label htmlFor="tellerNumber" className="font-bold">
+                <label htmlFor="username" className="font-bold">
                   아이디
                 </label>
                 <Form.TextInput
-                  id="tellerNumber"
+                  id="username"
                   className="border rounded-xl p-3"
                   placeholder="아이디를 입력하세요"
                 />

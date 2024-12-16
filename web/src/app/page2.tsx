@@ -2,7 +2,7 @@
 import Link from "next/link";
 import MainPageContent from "./ui/component/organism/mainpage-content";
 import Form from "./ui/component/molecule/form/form-index";
-import { authenticate } from "./business/auth/login";
+import { authenticate } from "./business/auth/teller/teller-login";
 
 export default function Home() {
 

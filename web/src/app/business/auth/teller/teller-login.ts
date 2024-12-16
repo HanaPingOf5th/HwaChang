@@ -1,7 +1,7 @@
 "use server";
 import { cookies } from "next/headers";
 import { FormState } from "@/app/ui/component/molecule/form/form-root";
-import { LogInFormSchema, LogInRequestBody } from "./auth-validation";
+import { LogInFormSchema, LogInRequestBody } from "./teller-auth-validation";
 import { HttpError } from "@/app/utils/http/http-error";
 
 export async function authenticateTeller(prevState: FormState, formData: FormData): Promise<FormState> {
