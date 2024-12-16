@@ -8,26 +8,42 @@ import { useEffect, useState } from "react";
 export default function TellerLoginPage() {
   const router = useRouter();
 
-  const [employeeNumber, setemployeeNumber] = useState("");
+  const [tellerNumber, settellerNumber] = useState("");
   const [password, setPassword] = useState("");
   const [mismatch, setMismatch] = useState(false);
   const [isEmpty, setIsEmpty] = useState(true);
 
   useEffect(() => {
-    setIsEmpty(employeeNumber === "" || password === "");
-  }, [employeeNumber, password]);
+    setIsEmpty(tellerNumber === "" || password === "");
+  }, [tellerNumber, password]);
 
   // 로그인 함수
-  const login = () => {
-    if (employeeNumber && password) {
-      if (employeeNumber === "hana_0001" && password === "password") {
-        setemployeeNumber("");
-        setPassword("");
-        router.push("/teller/main");
-      } else {
+  const login = async () => {
+    try {
+      const response = await fetch("/api/teller/login", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ tellerNumber, password }),
+        credentials: "include",
+      });
+      const data = await response.json();
+      const token = data.token;
+      const refreshToken = data.refreshToken;
+      console.log("token : ", token);
+      console.log("refreshToken : ", refreshToken);
+
+      if (token === undefined || refreshToken === undefined) {
         setMismatch(true);
+      } else {
+        setMismatch(false);
+        sessionStorage.setItem("accessToken", token);
+        sessionStorage.setItem("refreshToken", refreshToken);
+        router.push("/teller/main");
       }
-    } else {
+    } catch (error) {
+      console.error(error);
     }
   };
 
@@ -54,16 +70,16 @@ export default function TellerLoginPage() {
             <form action="submit" className="flex flex-col gap-4 items-center">
               {/* 아이디 input */}
               <div className="flex flex-col gap-2 w-full">
-                <label htmlFor="employeeNumber" className="font-bold">
+                <label htmlFor="tellerNumber" className="font-bold">
                   사원번호
                 </label>
                 <TextInput
-                  id="employeeNumber"
+                  id="tellerNumber"
                   className="border rounded-xl p-3"
                   type="text"
                   placeholder="사원번호를 입력하세요"
-                  value={employeeNumber}
-                  onValueChange={setemployeeNumber}
+                  value={tellerNumber}
+                  onValueChange={settellerNumber}
                 />
               </div>
               {/* 비밀번호 input */}
@@ -86,6 +102,7 @@ export default function TellerLoginPage() {
                 className={`text-white w-1/2 py-4 rounded-lg ${
                   isEmpty ? "bg-[#D9D9D9] cursor-auto" : "bg-[#1FAB89] hover:brightness-90"
                 }`}
+                disabled={isEmpty ? true : false}
               >
                 로그인
               </button>

@@ -6,6 +6,14 @@ import People from "@/app/utils/public/People.png";
 import Link from "next/link";
 
 export default function Nav() {
+  const logout = () => {
+
+  }
+
+  const logoutHandler = () => {
+    
+  }
+
   return (
     <div className="flex h-full flex-col bg-hwachang-darkgreen">
       <div className="flex h-32 justify-center items-center">

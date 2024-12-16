@@ -1,6 +1,5 @@
 "use client";
 
-
 import MainPageContent from "@/app/ui/component/organism/mainpage-content";
 import { useRouter } from "next/navigation";
 import { FormEvent, useEffect, useState } from "react";
@@ -23,10 +22,8 @@ export default function SignupPage() {
   const [isUsernameValid, setIsUsernameValid] = useState(false);
   const [isUsernameValidLength, setIsUsernameValidLength] = useState(false);
   const [isUsernameDuplicate, setIsUsernameDuplicate] = useState(false);
-  const [isDuplicateCheckDisabled, setIsDuplicateCheckDisabled] =
-    useState(true);
-  const [isDuplicateCheckCompleted, setIsDuplicateCheckCompleted] =
-    useState(false);
+  const [isDuplicateCheckDisabled, setIsDuplicateCheckDisabled] = useState(true);
+  const [isDuplicateCheckCompleted, setIsDuplicateCheckCompleted] = useState(false);
 
   // 비밀번호 관련
   const [password, setPassword] = useState("");
@@ -36,34 +33,57 @@ export default function SignupPage() {
   const [isEmpty, setIsEmpty] = useState(true);
 
   useEffect(() => {
-    setIsEmpty(
-      name === "" || phoneNumber === "" || username === "" || password === ""
-    );
+    setIsEmpty(name === "" || phoneNumber === "" || username === "" || password === "");
   }, [name, phoneNumber, username, password]);
 
-  const signup = () => {
-    if (username && phoneNumber && username && password) {
+  const signup = async () => {
+    try {
+      const response = fetch("/api/customer/signup", {
+        method: "POST",
+        body: JSON.stringify({ name, phoneNumber, username, password }),
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
       router.push("/");
+    } catch (error) {
+      console.log("요청 중 에러 발생");
     }
   };
 
   // 버튼 클릭 핸들러
   const clickHandler = (e: FormEvent) => {
     e.preventDefault();
-    // 회원가입 API 구현
     signup();
+  };
+
+  const duplicateCheck = async () => {
+    try {
+      const response = await fetch("/api/customer/signup", {
+        method: "POST",
+        body: JSON.stringify({ username }),
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+      const data = await response.json();
+      console.log(data);
+      if (data.message === "이미 존재하는 사용자 이름입니다.") {
+        setIsUsernameDuplicate(true);
+        setIsDuplicateCheckCompleted(true);
+      } else {
+        setIsUsernameDuplicate(false);
+        setIsDuplicateCheckCompleted(true);
+      }
+    } catch (error) {
+      console.log("요청 중 에러 발생");
+    }
   };
 
   // 중복 확인 버튼 클릭
   const duplicateCheckHandler = (e: FormEvent) => {
     e.preventDefault();
-    console.log(e.target, username);
-    if (username === "username") {
-      setIsUsernameDuplicate(true);
-    } else {
-      setIsUsernameDuplicate(false);
-    }
-    setIsDuplicateCheckCompleted(true);
+    duplicateCheck();
   };
 
   // 아이디는 영어 또는 숫자만 가능
@@ -78,9 +98,7 @@ export default function SignupPage() {
 
   // 비밀번호는 8글자 이상, 영문 대소문자, 숫자, 특수문자를 조합해야 함
   const checkPassword = (str: string) => {
-    return /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,}$/.test(
-      str
-    );
+    return /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,}$/.test(str);
   };
 
   // 아이디가 바뀌면 중복검사를 다시 해야함
@@ -107,14 +125,10 @@ export default function SignupPage() {
   // 전화번호 표시
   useEffect(() => {
     if (phoneNumber.length === 11) {
-      setPhoneNumberContent(
-        phoneNumber.replace(/(\d{3})(\d{4})(\d{4})/, "$1-$2-$3")
-      );
+      setPhoneNumberContent(phoneNumber.replace(/(\d{3})(\d{4})(\d{4})/, "$1-$2-$3"));
     } else if (phoneNumber.length === 13) {
       setPhoneNumberContent(
-        phoneNumber
-          .replace(/-/g, "")
-          .replace(/(\d{3})(\d{4})(\d{4})/, "$1-$2-$3")
+        phoneNumber.replace(/-/g, "").replace(/(\d{3})(\d{4})(\d{4})/, "$1-$2-$3"),
       );
     } else {
       setPhoneNumberContent(phoneNumber);
@@ -189,12 +203,7 @@ export default function SignupPage() {
                     disabled={isDuplicateCheckDisabled}
                   >
                     {!isUsernameDuplicate && isDuplicateCheckCompleted ? (
-                      <Image
-                        src={check}
-                        alt="check"
-                        width={40}
-                        height={40}
-                      ></Image>
+                      <Image src={check} alt="check" width={40} height={40}></Image>
                     ) : (
                       "중복검사"
                     )}
@@ -207,17 +216,11 @@ export default function SignupPage() {
                   <p className="text-red-500">중복 아이디입니다.</p>
                 )}
                 {!isUsernameValid && username !== "" && (
-                  <p className="text-red-500">
-                    아이디는 영어 또는 숫자만 가능합니다.
-                  </p>
+                  <p className="text-red-500">아이디는 영어 또는 숫자만 가능합니다.</p>
                 )}
-                {isUsernameValid &&
-                  !isUsernameValidLength &&
-                  username !== "" && (
-                    <p className="text-red-500">
-                      아이디는 4글자 이상 12글자 이하여야 합니다.
-                    </p>
-                  )}
+                {isUsernameValid && !isUsernameValidLength && username !== "" && (
+                  <p className="text-red-500">아이디는 4글자 이상 12글자 이하여야 합니다.</p>
+                )}
               </div>
               <div className="flex flex-col gap-2 w-full">
                 <label htmlFor="username" className="font-bold">
@@ -233,18 +236,22 @@ export default function SignupPage() {
                 />
                 {!isPasswordValid && password !== "" && (
                   <p className="text-red-500">
-                    비밀번호는 8글자 이상으로, 영문 대소문자, 숫자, 특수문자를
-                    조합해서 사용하세요.
+                    비밀번호는 8글자 이상으로, 영문 대소문자, 숫자, 특수문자를 조합해서 사용하세요.
                   </p>
                 )}
               </div>
               <button
                 onClick={clickHandler}
                 className={`text-white w-1/2 py-4 rounded-lg mt-10 ${
-                  isEmpty
-                    ? "bg-[#D9D9D9] cursor-auto"
-                    : "bg-[#1FAB89] hover:brightness-90"
+                  isEmpty ? "bg-[#D9D9D9] cursor-auto" : "bg-[#1FAB89] hover:brightness-90"
                 }`}
+                disabled={
+                  isUsernameDuplicate ||
+                  !isUsernameValid ||
+                  isEmpty ||
+                  !isPasswordValid ||
+                  !isUsernameValidLength
+                }
               >
                 회원가입
               </button>
