@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Summary from "./components/summary";
 import Form from "@/app/ui/component/molecule/form/form-index";
 import { FormState } from "@/app/ui/component/molecule/form/form-root";
@@ -13,6 +13,14 @@ import Image from "next/image";
 import { StaticImport } from "next/dist/shared/lib/get-img-props";
 
 export default function Home() {
+  const today = new Date();
+  const threeMonthsAgo = new Date();
+  threeMonthsAgo.setMonth(today.getMonth() - 3);
+
+  // 날짜 상태와 검색값 상태 관리
+  const [startDate, setStartDate] = useState<string>(threeMonthsAgo.toISOString().slice(0, 10));
+  const [endDate, setEndDate] = useState<string>(today.toISOString().slice(0, 10));
+  const [searchValue, setSearchValue] = useState<string>("");
   const [isSummaryVisible, setIsSummaryVisible] = useState(false);
   const [isFullScreen, setIsFullScreen] = useState(false);
   const [selectedRecord, setSelectedRecord] = useState<ConsultingRecord | null>(null);
@@ -69,9 +77,44 @@ export default function Home() {
     </main>
   ));
 
+  // API 호출 함수
+  async function fetchRecords(
+    startDate: string,
+    endDate: string,
+    value: string,
+    customerId: number,
+  ) {
+    try {
+      const response = await fetch(`/api/consultings/${customerId}`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          startDate,
+          endDate,
+          value,
+          customerId,
+        }),
+      });
+
+      if (!response.ok) throw new Error("API 요청 실패!");
+
+      const result = await response.json();
+      console.log("API 호출 성공:", result);
+    } catch (error) {
+      console.error("API 호출 오류:", error);
+    }
+  }
+
+  // 컴포넌트 렌더링 시 API 호출
+  useEffect(() => {
+    fetchRecords(startDate, endDate, searchValue, 0);
+  }, [startDate, endDate]);
+
   function searchAction(prevState: FormState, formData: FormData) {
-    const value = formData.get("search");
-    console.log(value, "가 검색되었습니다.");
+    const value = formData.get("search") as string;
+    setSearchValue(value);
+    fetchRecords(startDate, endDate, value, 1);
+
     return {
       isSuccess: true,
       isFailure: false,
@@ -94,7 +137,12 @@ export default function Home() {
           </div>
         </Form>
       </div>
-      <DateSelector />
+      <DateSelector
+        startDate={startDate}
+        endDate={endDate}
+        onStartDateChange={setStartDate}
+        onEndDateChange={setEndDate}
+      />
 
       <div style={{ fontSize: "30px", fontWeight: "Bold" }}>화창기록</div>
       <div className="grid grid-rows-1 gap-3 text-hwachang-hwachanggray text-lg text-center">
