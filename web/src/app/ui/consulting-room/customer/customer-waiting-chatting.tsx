@@ -4,11 +4,12 @@ import { useEffect, useRef, useState } from "react";
 import { BsChatDots } from "react-icons/bs";
 import { FormState } from "../../component/molecule/form/form-root";
 import { Card, CardContent, CardHeader } from "../../component/molecule/card/card";
-import { OtherChat } from "../chat-box";
+import { MyChat, OtherChat } from "../chat-box";
 import Form from "../../component/molecule/form/form-index";
 import { FormTextInput } from "../../component/molecule/form/form-textinput";
 import AchromaticButton from "../../component/atom/button/achromatic-button";
 import { LuSendHorizonal } from "react-icons/lu";
+import { sendPrechat } from "@/app/business/waiting-room/pre-chat.service";
 
 export default function CustomerWaitingChatting() {
   const userName = "윤영헌";
@@ -20,12 +21,17 @@ export default function CustomerWaitingChatting() {
   function sendMessage(prevState: FormState, formData: FormData) {
     const value: string = formData.get("chat") as string;
 
+    console.log(value);
+    
+    sendPrechat(value).then((value)=>{
+      console.log(value);
+    });
+
     if (value.trim() !== "") {
       // 메시지 전송
       setMyMessages((prevMessages) => [...prevMessages, value]);
       setInputValue("");
     }
-
     return {
       isSuccess: true,
       isFailure: false,
@@ -63,7 +69,12 @@ export default function CustomerWaitingChatting() {
           </CardHeader>
           <CardContent className="flex-grow overflow-y-auto h-96 p-4" ref={chatContainerRef}>
             <div className="flex flex-col space-y-2">
-              <OtherChat name={`${tellerName}`} chat={`${userName}님 반갑습니다^^`}></OtherChat>
+              <OtherChat name={`${tellerName}`} chat={`${userName}님 반갑습니다^^`}/>
+              {myMessages.map((value, index) => (
+                <main key={index}>
+                  <MyChat chat={value}></MyChat>
+                </main>
+              ))}
             </div>
           </CardContent>
           <hr className="bg-hwachang-gray4"></hr>

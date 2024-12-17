@@ -4,7 +4,7 @@ import { APIResponseType, instance } from "@/app/utils/http";
 export async function sendPrechat(content: string): Promise<APIResponseType>{
   const userName: string = "윤개똥이";
 
-  const response = await instance.post(`${process.env.API_URL}/waiting-room/prechat`, {userName: userName, content:content})
+  const response = await instance.post(`/api/waiting-room/prechat`, {userName:userName, content:content})
 
   console.log(response);
   return {
@@ -14,12 +14,12 @@ export async function sendPrechat(content: string): Promise<APIResponseType>{
   }
 }
 
-export async function getPreChat(): Promise<APIResponseType> {
+export async function getPrechat(): Promise<APIResponseType> {
   const userName: string = "윤개똥이";
 
-  const response = await instance.get(`${process.env.API_URL}/waiting-room/prechat/${userName}`)
+  const response = await instance.get(`/api/waiting-room/prechat/${userName}`)
+  
   console.log(response);
-
   return {
     isSuccess: true,
     isFailure: false,

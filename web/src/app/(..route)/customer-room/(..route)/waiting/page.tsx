@@ -4,8 +4,6 @@ import { Dialog, DialogContent, DialogTrigger } from "@/app/ui/component/molecul
 import { LegacyRef, useEffect, useRef, useState } from "react";
 import { MatchingAlarm } from "@/app/ui/consulting-room/modal/matching-alarm";
 import { WaitingModal } from "@/app/ui/consulting-room/modal/waiting";
-import { VideoSettingModal } from "@/app/ui/consulting-room/modal/video-setting";
-import { SharingLinkModal } from "@/app/ui/consulting-room/modal/sharing-link";
 import {
   MicIcon,
   MicOffIcon,
@@ -14,9 +12,9 @@ import {
   VideoIcon,
   VideoOffIcon,
 } from "lucide-react";
-import { ReviewModal } from "@/app/ui/consulting-room/modal/review-modal";
 import { Video, VideoView } from "../../components/video-view";
 import { createMockMyProfile } from "../../mock/mock-profiles";
+import { ReviewDialog } from "@/app/ui/consulting-room/modal/review-dialog";
 
 export default function Home() {
   const [isWaitingDialogMounted, setIsWaitingDialogMounted] = useState(false);
@@ -29,8 +27,6 @@ export default function Home() {
 
   const audioContext = useRef<AudioContext | null>(null);
   const gainNode = useRef<GainNode | null>(null);
-
-  const modalBackground = useRef<HTMLDivElement | null>(null);
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
 
   const [isLinkModalOpen, setIsLinkModalOpen] = useState<boolean>(false);
@@ -143,26 +139,6 @@ export default function Home() {
         
 
       <div className="flex justify-center space-x-4 mt-4">
-        {/* 모달 영역 */}
-        {isModalOpen && (
-          <div
-            ref={modalBackground}
-            className="w-screen h-screen fixed top-0 left-0 flex justify-center items-center bg-black bg-opacity-20 z-10"
-            onClick={(e) => {
-              if (e.target === modalBackground.current) {
-                setIsModalOpen(false);
-                setIsLinkModalOpen(false);
-                setIsSettingsModalOpen(false);
-              }
-            }}
-          >
-            {/* 링크 모달 */}
-            {isLinkModalOpen && <SharingLinkModal />}
-            {/* 설정 모달 */}
-            {isSettingsModalOpen && <VideoSettingModal videoRef={videoRef} />}
-          </div>
-        )}
-
         <div className="flex justify-center gap-4">
           <AchromaticButton
             onClick={toggleAudio}
@@ -188,20 +164,7 @@ export default function Home() {
               )}
             </div>
           </AchromaticButton>
-
-            
-           <Dialog>
-              <DialogTrigger asChild>
-                <AchromaticButton className="rounded-full bg-hwachang-gray2 hover:bg-hwachang-gray3 text-black">
-                  상담종료
-                </AchromaticButton>
-              </DialogTrigger>
-              <DialogContent>
-                <ReviewModal />
-              </DialogContent>
-          </Dialog>
-            
-        
+          <ReviewDialog/>
           <AchromaticButton
             className="rounded-full bg-hwachang-gray2 hover:bg-hwachang-gray3"
             onClick={toggleLink}

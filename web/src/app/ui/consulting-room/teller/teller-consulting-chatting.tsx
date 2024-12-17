@@ -1,3 +1,5 @@
+'use client'
+
 import { useEffect, useRef, useState } from "react";
 import { FormState } from "../../component/molecule/form/form-root";
 import { BsChatDots } from "react-icons/bs";
