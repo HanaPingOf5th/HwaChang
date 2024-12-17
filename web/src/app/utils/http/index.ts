@@ -14,6 +14,7 @@ instance.interceptors.request.use(
     const token = Cookies.get('token');
     if (token) {
       config.headers.Authorization = `Bearer ${token}`;
+      config.headers['Content-Type'] = 'application/json';
     }
     return config;
   },
