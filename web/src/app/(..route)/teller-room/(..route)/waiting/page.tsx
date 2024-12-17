@@ -60,7 +60,6 @@ export default function Home() {
     };
   }, [videoStream]);
 
-
   // To-Do: 내가 비디오를 끌 경우, 나의 비디오 상태를 상대방에게 보내는 api 추가: isCam: false
   const toggleVideo = () => {
     if (videoStream) {

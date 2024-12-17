@@ -8,6 +8,8 @@ import Form from "../../component/molecule/form/form-index";
 import { FormTextInput } from "../../component/molecule/form/form-textinput";
 import AchromaticButton from "../../component/atom/button/achromatic-button";
 import { LuSendHorizonal } from "react-icons/lu";
+import { getPrechat } from "@/app/business/waiting-room/pre-chat.service";
+import { MyChat } from "../chat-box";
 
 export default function TellerWaitingChatting() {
   const [myMessages, setMyMessages] = useState<string[]>([]);
@@ -36,6 +38,15 @@ export default function TellerWaitingChatting() {
       chatContainerRef.current.scrollTop = chatContainerRef.current.scrollHeight;
     }
   }, [myMessages]);
+
+  useEffect(()=>{
+    getPrechat().then((value)=>{
+      const messages = value.data as string[];
+      for(const message of messages){
+        setMyMessages((prevMessages) => [...prevMessages, message])
+      }
+    })
+  }, [])
 
   return (
     <div className="flex justify-center min-w-[311.6px] bg-hwachang-darkgreen">
@@ -68,7 +79,11 @@ export default function TellerWaitingChatting() {
           </CardHeader>
           <CardContent className="flex-grow overflow-y-auto h-96 p-4" ref={chatContainerRef}>
             <div className="flex flex-col space-y-2">
-              {/* 채팅 메세지들이 들어갈 자리 */}
+              {myMessages.map((value, index) => (
+                <main key={index}>
+                  <MyChat chat={value}></MyChat>
+                </main>
+                ))}
             </div>
           </CardContent>
           <hr className="bg-hwachang-gray4"></hr>

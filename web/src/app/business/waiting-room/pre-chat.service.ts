@@ -14,12 +14,12 @@ export async function sendPrechat(content: string): Promise<APIResponseType>{
   }
 }
 
-export async function getPreChat(): Promise<APIResponseType> {
+export async function getPrechat(): Promise<APIResponseType> {
   const userName: string = "윤개똥이";
 
   const response = await instance.get(`/api/waiting-room/prechat/${userName}`)
+  
   console.log(response);
-
   return {
     isSuccess: true,
     isFailure: false,
