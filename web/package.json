@@ -27,6 +27,7 @@
     "@tailwindcss/forms": "^0.5.9",
     "@types/stompjs": "^2.3.9",
     "apexcharts": "^3.54.1",
+    "axios": "^1.7.9",
     "class-variance-authority": "^0.7.0",
     "clsx": "^2.1.1",
     "js-cookie": "^3.0.5",
@@ -42,7 +43,7 @@
     "tailwind-merge": "^2.5.3",
     "tailwind-scrollbar": "^3.1.0",
     "tailwindcss-animate": "^1.0.7",
-    "zod": "^3.23.8"
+    "zod": "^3.24.1"
   },
   "devDependencies": {
     "@chromatic-com/storybook": "^1.9.0",

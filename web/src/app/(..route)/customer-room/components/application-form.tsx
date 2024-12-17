@@ -4,7 +4,6 @@ import Form from "@/app/ui/component/molecule/form/form-index";
 import { FormState } from "@/app/ui/component/molecule/form/form-root";
 import { FormSubmitButton } from "@/app/ui/component/molecule/form/form-submit-button";
 import { FormTextInput } from "@/app/ui/component/molecule/form/form-textinput";
-import { application } from "../mock/mock-application";
 
 interface Customer{
   name: string;
@@ -26,10 +25,9 @@ export interface ApplicationProps{
   subjects: Subject[];
 }
 
-export function ApplicationForm(){
+export function ApplicationForm({formData}:{formData: ApplicationProps}){
   // mockData
-  const mockApplication = application;
-  const {title} = mockApplication;
+  const { title } = formData;
 
   return(
     <main>
@@ -37,7 +35,7 @@ export function ApplicationForm(){
       <Card className="aspect-[16/9] overflow-y-auto px-6">
         <CardHeader className="text-center font-semibold">{title}</CardHeader>
         <CardContent className="text-start">
-          {getForms(mockApplication)}
+          {getForms(formData)}
         </CardContent>
       </Card>
     </main>

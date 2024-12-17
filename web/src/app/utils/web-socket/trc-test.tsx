@@ -2,11 +2,11 @@
 import { LegacyRef, useEffect, useRef,} from "react";
 import AchromaticButton from "@/app/ui/component/atom/button/achromatic-button";
 import { useSocket } from "./useSocket";
-import { Video, VideoView } from "@/app/(..route)/consulting-room/components/video-view";
+import { Video, VideoView } from "@/app/(..route)/customer-room/components/video-view";
 
 export default function WebCamTest() {
   const videoRef = useRef<HTMLVideoElement | null>(null);
-  const { client, video, startStream, connectSocket} = useSocket();
+  const { client, video, startStream } = useSocket();
 
   useEffect(() => {
     const getMedia = async () => {
@@ -35,7 +35,10 @@ export default function WebCamTest() {
 
   useEffect(() => {
     if (client) {
-      connectSocket();
+      client.activate();
+      setTimeout(()=>{
+        console.log(client.connected);
+      }, 1000)
     } else{
       console.log("웹소켓 클라이언트 로딩에 실패했습니다.")
     }
