@@ -72,6 +72,7 @@ function Review(){
             <input type="hidden" name="nps" id="nps-score" value={currentScore} />
             <input type="hidden" name="consulting-room" id="consulting-room" value={"9b1deb4d-3b7d-4bad-9bdd-2b0d7b3dcb6d"}/>
             <input type="hidden" name="user-id" id="user-id" value={"9b1deb4d-3b7d-4bad-9bdd-2b0d7b3dcb6d"}/>
+            <input type="hidden" name="teller-id" id="teller-id" value={"9b1deb4d-3b7d-4bad-9bdd-2b0d7b3dcb6d"}/>
           </CardContent>
           <CardContent>
             <textarea 

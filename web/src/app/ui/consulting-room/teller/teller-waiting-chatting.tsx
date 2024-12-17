@@ -39,15 +39,40 @@ export default function TellerWaitingChatting() {
     }
   }, [myMessages]);
 
-  useEffect(()=>{
-    getPrechat().then((value)=>{
-      const messages = value.data as string[];
-      for(const message of messages){
-        setMyMessages((prevMessages) => [...prevMessages, message])
-      }
-    })
-  }, [])
+  // useEffect(() => {
 
+  //   const interval = setInterval(()=>{
+  //     getPrechat().then((value) => {
+  //       const messages = value.data as string[];
+
+  //       for(const message of messages){
+  //         setMyMessages((prev)=>{
+  //           if(!prev.includes(message))
+  //           return [...prev, message]
+  //         })
+  //       }
+  //     });
+  //   }, 10000)
+
+  // }, []);
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      getPrechat().then((value) => {
+        const messages = value.data as string[];
+  
+        setMyMessages((prevMessages) => {
+          return [
+            ...prevMessages,
+            ...messages.filter((message) => !prevMessages.includes(message)),
+          ];
+        });
+      });
+    }, 10000);
+  
+    return () => clearInterval(interval);
+  }, []);
+  
   return (
     <div className="flex justify-center min-w-[311.6px] bg-hwachang-darkgreen">
       <div className="flex justify-center flex-col">
