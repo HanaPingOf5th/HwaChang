@@ -12,7 +12,7 @@ import { getPrechat } from "@/app/business/waiting-room/pre-chat.service";
 import { MyChat } from "../chat-box";
 
 export default function TellerWaitingChatting() {
-  const [myMessages, setMyMessages] = useState<string[]>([]);
+  const [myMessages, setMyMessages] = useState<string[]>(["고객님이 상담전 보낸 질문이 나타납니다,"]);
   const [inputValue, setInputValue] = useState<string>("");
   const chatContainerRef = useRef<HTMLDivElement | null>(null);
 
@@ -39,38 +39,18 @@ export default function TellerWaitingChatting() {
     }
   }, [myMessages]);
 
-  // useEffect(() => {
-
-  //   const interval = setInterval(()=>{
-  //     getPrechat().then((value) => {
-  //       const messages = value.data as string[];
-
-  //       for(const message of messages){
-  //         setMyMessages((prev)=>{
-  //           if(!prev.includes(message))
-  //           return [...prev, message]
-  //         })
-  //       }
-  //     });
-  //   }, 10000)
-
-  // }, []);
-
   useEffect(() => {
-    const interval = setInterval(() => {
+
+    const interval = setInterval(()=>{
       getPrechat().then((value) => {
         const messages = value.data as string[];
-  
-        setMyMessages((prevMessages) => {
-          return [
-            ...prevMessages,
-            ...messages.filter((message) => !prevMessages.includes(message)),
-          ];
-        });
+
+        for(const message of messages){
+          setMyMessages((prev)=>[...prev, message])
+        }
       });
-    }, 10000);
-  
-    return () => clearInterval(interval);
+    }, 10000)
+
   }, []);
   
   return (
@@ -104,11 +84,13 @@ export default function TellerWaitingChatting() {
           </CardHeader>
           <CardContent className="flex-grow overflow-y-auto h-96 p-4" ref={chatContainerRef}>
             <div className="flex flex-col space-y-2">
-              {myMessages.map((value, index) => (
-                <main key={index}>
-                  <MyChat chat={value}></MyChat>
-                </main>
-                ))}
+              {myMessages
+                .filter((value, index, self) => self.indexOf(value) === index) // 중복 제거
+                .map((value, index) => (
+                  <main key={index}>
+                    <MyChat chat={value}></MyChat>
+                  </main>
+              ))}
             </div>
           </CardContent>
           <hr className="bg-hwachang-gray4"></hr>
