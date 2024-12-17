@@ -4,7 +4,11 @@ import { instance } from "@/app/utils/http";
 
 export async function sendReview(prevState: FormState, formData: FormData): Promise<FormState> {
     const contentValue = formData.get('review-content') as string;
-    const response = await instance.post('http://localhost:8080/consulting-room/review', {customerId: "9b1deb4d-3b7d-4bad-9bdd-2b0d7b3dcb6d", npm: 2, content:contentValue, consultingRoomId:"9b1deb4d-3b7d-4bad-9bdd-2b0d7b3dcb6d"})
+    const npsValue = formData.get('nps') as string;
+    const consultingRoomIdValue = formData.get("consulting-room") as string;
+    const userIdValue = formData.get("user-id") as string;
+
+    const response = await instance.post(`${process.env.API_URL}/consulting-room/review`, {customerId: consultingRoomIdValue, nps: npsValue, content:contentValue, consultingRoomId:userIdValue})
     console.log(response);
 
     return {

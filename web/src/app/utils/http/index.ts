@@ -1,6 +1,12 @@
 import axios, { AxiosResponse } from 'axios';
 import Cookies from 'js-cookie';
 
+export interface APIResponseType{
+  isSuccess: boolean,
+  isFailure: boolean
+  data: unknown
+}
+
 export const instance = axios.create({
   withCredentials: true,
 });

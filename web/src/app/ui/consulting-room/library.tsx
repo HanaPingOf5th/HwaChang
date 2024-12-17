@@ -6,6 +6,7 @@ import { IoSearch, IoChevronBack, IoChevronForward } from "react-icons/io5";
 import { formDocuments } from "./mock/mock-documents";
 import Image from "next/image"
 import Pen from "@/app/utils/public/Pen.png"
+import { getApplicationFormById } from "@/app/business/consulting-room/application-form.service";
 
 const categories = [
   '예금', '대출', '주택청약', '펀드/신탁', '인터넷/스마트뱅킹', '전자금융사기',
@@ -90,14 +91,9 @@ export default function Library() {
           <div key={index} className="flex flex-col items-center p-3">
             <button
               className="flex flex-col items-center"
-              onClick={() => { alert(`${doc.title}가 고객님게 보내졌습니다.`) }}
+              onClick={() => {getApplicationFormById("9b1deb4d-3b7d-4bad-9bdd-2b0d7b3dcb6d")}}
             >
-              <Image
-                src={Pen}
-                alt="Page Facing Up"
-                width={80}
-                height={80}
-              />
+              <Image src={Pen} alt="Page Facing Up" width={80} height={80}/>
               <p className="text-left text-sm font-medium">{doc.title}</p>
             </button>
           </div>

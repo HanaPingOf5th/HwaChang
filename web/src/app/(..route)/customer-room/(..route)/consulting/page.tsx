@@ -12,9 +12,10 @@ import {
 import { useSocket } from "@/app/utils/web-socket/useSocket";
 import { Video, VideoView } from "../../components/video-view";
 import { createMockMyProfile, mockOtherProfile, mockProfile } from "../../mock/mock-profiles";
-import { ApplicationForm } from "../../components/application-form";
+import { ApplicationForm, ApplicationProps } from "../../components/application-form";
 import { ReviewDialog } from "@/app/ui/consulting-room/modal/review-dialog";
 import { SharingLinkDialog } from "@/app/ui/consulting-room/modal/share-link-dialog";
+import { getApplicationFormById } from "@/app/business/consulting-room/application-form.service";
 
 export default function Home() {
   // 현재 내 모습을 보여주는 MediaStram
@@ -26,12 +27,14 @@ export default function Home() {
 
   // application form
   const [isForm, setIsForm] = useState<boolean>(false);
-  // 상단 인덱싱
-  const [slideIndex, setSlideIndex] = useState(0);
 
   // rtc
   const { client, video } = useSocket();
   const videoRef = useRef<HTMLVideoElement | null>(null);
+  const [formData, setFormData] = useState<ApplicationProps | null>(null);
+
+  // 상단 인덱싱
+  const [slideIndex, setSlideIndex] = useState(0);
 
   const handlePrev = () => {
     if (slideIndex > 0) {
@@ -99,6 +102,12 @@ export default function Home() {
       };
     }
   }, [client]);
+
+  useEffect(()=>{
+    getApplicationFormById("9b1deb4d-3b7d-4bad-9bdd-2b0d7b3dcb6d").then((value)=>{
+      setFormData(value.data as ApplicationProps)
+    })
+  }, [isForm])
   
   // To-Do: 내가 비디오를 끌 경우, 나의 비디오 상태를 상대방에게 보내는 api 추가: isCam: false
   const toggleVideo = () => {
@@ -162,7 +171,7 @@ export default function Home() {
           </AchromaticButton>
         </div>
         <div className="pt-4 px-6">
-          {isForm ? (<ApplicationForm />) : ( <VideoView video={video[0]} onCam={true} profile={mockProfile}/>)}
+          {isForm ? (<ApplicationForm formData={formData} />) : ( <VideoView video={video[0]} onCam={true} profile={mockProfile}/>)}
         </div>
       </div>
 
