@@ -8,9 +8,10 @@ import { FormTextInput } from "@/app/ui/component/molecule/form/form-textinput";
 import { FormSubmitButton } from "@/app/ui/component/molecule/form/form-submit-button";
 import { DateSelector } from "./components/date-selector";
 import { Card } from "@/app/ui/component/molecule/card/card";
-import { ConsultingRecord, records } from "./mock/mock-records";
+import { ConsultingRecord } from "./mock/mock-records"; // 필요한 타입 가져오기
 import Image from "next/image";
 import { StaticImport } from "next/dist/shared/lib/get-img-props";
+import { fetchCustomerConsultings } from "../../../business/auth/customer/customer-consultings"; // 서버 함수 불러오기
 
 export default function Home() {
   const today = new Date();
@@ -21,9 +22,12 @@ export default function Home() {
   const [startDate, setStartDate] = useState<string>(threeMonthsAgo.toISOString().slice(0, 10));
   const [endDate, setEndDate] = useState<string>(today.toISOString().slice(0, 10));
   const [searchValue, setSearchValue] = useState<string>("");
+  const [records, setRecords] = useState<ConsultingRecord[]>([]);
   const [isSummaryVisible, setIsSummaryVisible] = useState(false);
   const [isFullScreen, setIsFullScreen] = useState(false);
   const [selectedRecord, setSelectedRecord] = useState<ConsultingRecord | null>(null);
+
+  const customerId = "312d98db-ade1-4c22-a72b-b454da2524b7"; // 고객 ID 고정
 
   const handleOpenSummary = (record: ConsultingRecord) => {
     setSelectedRecord(record);
@@ -45,88 +49,109 @@ export default function Home() {
     console.log(isSummaryVisible);
   };
 
-  const RecordCards = records.map((value, index) => (
-    <main key={index}>
-      <Card className="grid grid-cols-7 gap-3 h-20">
-        <div className="flex items-center justify-center mb-2 mt-2 text-sm md:text-sm lg:text-xl">
-          <Image
-            src={value.image as unknown as StaticImport}
-            alt="프로필 사진"
-            className="object-cover w-10 h-10 rounded-full border-1 border-white shadow-lg"
-          />
-        </div>
-        <div className="flex items-center justify-center text-sm md:text-sm lg:text-xl">
-          {value.title}
-        </div>
-        <div className="flex items-center justify-center text-sm md:text-sm lg:text-xl">
-          {value.consultant}
-        </div>
-        <div className="flex items-center justify-center text-sm md:text-sm lg:text-xl">
-          {value.cartegoryType}
-        </div>
-        <div className="flex items-center justify-center text-sm md:text-sm lg:text-xl">
-          {value.cartegory}
-        </div>
-        <div className="flex items-center justify-center text-sm md:text-sm lg:text-xl">
-          {value.date}
-        </div>
-        <div className="flex items-center justify-center text-sm md:text-sm lg:text-xl">
-          <button onClick={() => handleOpenSummary(value)}>{"->"}</button>
-        </div>
-      </Card>
-    </main>
-  ));
+  const formatDate = (date: string) => {
+    const formattedDate = new Date(date);
+    return formattedDate.toISOString().split("T")[0]; // "2024-12-19" 형식으로 변환
+  };
+
+  const RecordCards =
+    records.length === 0 ? (
+      <div className="flex justify-center items-center h-[300px]">
+        {" "}
+        <p className="text-center text-gray-500">상담 기록이 없습니다.</p>
+      </div>
+    ) : (
+      records.map((value, index) => (
+        <main key={index}>
+          <Card className="grid grid-cols-7 gap-3 h-20">
+            <div className="flex items-center justify-center mb-2 mt-2 text-sm md:text-sm lg:text-xl">
+              <Image
+                src={value.image as unknown as StaticImport}
+                alt="프로필 사진"
+                className="object-cover w-10 h-10 rounded-full border-1 border-white shadow-lg"
+              />
+            </div>
+            <div className="flex items-center justify-center text-sm md:text-sm lg:text-xl">
+              {value.summary}
+            </div>
+            <div className="flex items-center justify-center text-sm md:text-sm lg:text-xl">
+              {value.tellerName}
+            </div>
+            <div className="flex justify-center items-center w-full h-full">
+              <div
+                className={`flex justify-center items-center w-[80px] h-[40px] 
+    ${
+      value.type === "개인금융"
+        ? "bg-[#CADCFF] text-[#2C71F6] rounded-md"
+        : value.type === "기업금융"
+          ? "bg-[#FFCACA] text-[#F62C2C] rounded-md"
+          : ""
+    }`}
+              >
+                {value.type === "개인금융"
+                  ? "개인"
+                  : value.type === "기업금융"
+                    ? "기업"
+                    : value.type}
+              </div>
+            </div>
+
+            <div className="flex items-center justify-center text-sm md:text-sm lg:text-xl">
+              {value.category} {/* typo 수정: 'cartegory' -> 'category' */}
+            </div>
+            <div className="flex items-center justify-center text-sm md:text-sm lg:text-xl">
+              {formatDate(value.date)} {/* 날짜 포맷 변환 */}
+            </div>
+            <div className="flex items-center justify-center text-sm md:text-sm lg:text-xl">
+              <button onClick={() => handleOpenSummary(value)}>{"->"}</button>
+            </div>
+          </Card>
+        </main>
+      ))
+    );
 
   // API 호출 함수
-  async function fetchRecords(
-    startDate: string,
-    endDate: string,
-    value: string,
-    customerId: number,
-  ) {
+  async function loadRecords() {
     try {
-      const response = await fetch(`/api/consultings/${customerId}`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          startDate,
-          endDate,
-          value,
-          customerId,
-        }),
-      });
+      // API 호출 시 payload에 startDate, endDate, summaryKeyword, customerId 값 포함
+      const payload = {
+        customerId,
+        summaryKeyword: searchValue,
+        startDate,
+        endDate,
+      };
 
-      if (!response.ok) throw new Error("API 요청 실패!");
+      const response = await fetchCustomerConsultings(payload);
 
-      const result = await response.json();
-      console.log("API 호출 성공:", result);
+      if (response && Array.isArray(response)) {
+        console.log("API 호출 성공:", response);
+        setRecords(response); // 데이터 배열을 상태로 설정
+      } else {
+        console.error("API 호출 실패:", response);
+      }
     } catch (error) {
-      console.error("API 호출 오류:", error);
+      console.error("API 호출 중 오류 발생:", error);
     }
   }
 
-  // 컴포넌트 렌더링 시 API 호출
   useEffect(() => {
-    fetchRecords(startDate, endDate, searchValue, 0);
-  }, [startDate, endDate]);
+    loadRecords();
+  }, [startDate, endDate, searchValue]);
 
-  function searchAction(prevState: FormState, formData: FormData) {
+  const handleSearch = (prevState: FormState, formData: FormData) => {
     const value = formData.get("search") as string;
-    setSearchValue(value);
-    fetchRecords(startDate, endDate, value, 1);
-
+    setSearchValue(value); // 상태만 업데이트
     return {
       isSuccess: true,
       isFailure: false,
       message: "",
       validationError: {},
     };
-  }
-
+  };
   return (
     <div className="flex flex-col">
       <div className="mb-5">
-        <Form id={"search-form"} action={searchAction} failMessageControl={"alert"}>
+        <Form id={"search-form"} action={handleSearch} failMessageControl={"alert"}>
           <div className="grid grid-cols-[12fr_1fr] gap-2">
             <FormTextInput
               id={"search"}
