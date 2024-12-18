@@ -9,19 +9,17 @@ import { Client  } from "@stomp/stompjs";
 
 // 전역으로 관리해줘도 좋을것 같은 데이터
 const roomId = 11;
+// 고객의 UUID
 const myKey:string = Math.random().toString(36).substring(2, 11);
-//const access:string ='@@@mockToekn@@@';
 
 export function useSocket(){
-  const socket = new SockJS("https://hwachang.site/consulting-room");
-  const otherKeyList: string[] = [];
-
-  const pcListMap = new Map<string, RTCPeerConnection>();
+  const socket = new SockJS("http://localhost:8080/ws/consulting-room");
+  const [otherKeyList] = useState<string[]>([]);
+  const [pcListMap] = useState<Map<string,RTCPeerConnection>>(new Map<string, RTCPeerConnection>());
   const [videoElements, setVideoElements] = useState<React.ReactNode[]>([]);
-  
+
   const client = new Client({
     webSocketFactory: () => socket,
-    // connectHeaders:{Authorization: `Bearer ${access}`},
     debug: (str:string) => {console.log(str)},
     reconnectDelay: 5000,
     heartbeatIncoming: 4000,
@@ -41,7 +39,6 @@ export function useSocket(){
 
       // 서버가 클라이언트에게 보내는 응답값(참여중인 모든 참여자들의 키)
       client.subscribe(`/topic/send/key`, (message)=>{
-        console.log(message.body);
         const key: string = JSON.parse(message.body);
         console.log(key);
         if (
@@ -52,24 +49,23 @@ export function useSocket(){
         }
       })
       
-      client.subscribe( `/topic/peer/offer/${myKey}/${roomId}`, async (offer)=>{
+      client.subscribe( `/topic/peer/offer/${myKey}/${roomId}`, 
+        async (offer)=>{
           console.log('offer')
           const key = JSON.parse(offer.body).key;
           const message = JSON.parse(offer.body).body;
   
-          pcListMap.set(key, createPeerConnection(key));
-          console.log("만들어진 피어커넥션", createPeerConnection(key))
+          pcListMap.set(key, await createPeerConnection(key));
           pcListMap.get(key).setRemoteDescription(
             new RTCSessionDescription({type: message.type, sdp: message.sdp})
           );
-          console.log("sendAnswer 메서드에 담아서 보낼 pcList: ", pcListMap.get(key), 'key: ', key);
           sendAnswer(pcListMap.get(key), key);
         }
       )
 
       client.subscribe(`/topic/peer/answer/${myKey}/${roomId}`, (answer)=>{
           console.log('answer')
-          console.log(answer.body)
+
           const key = JSON.parse(answer.body).key;
           const message = JSON.parse(answer.body).body;
           pcListMap.get(key).setRemoteDescription(new RTCSessionDescription(message));
@@ -96,18 +92,13 @@ export function useSocket(){
     if(client.connected){
       console.log("start steam ... ")
       setTimeout(() => {
-        if(client.connected){
-          // app/call/key: 서버에 브로드 캐스트 해야함 - 현재 먹통 ... 
-          client.publish({ destination: `/app/call/key` });
-          /*
-          app/call/key -> topic/call/key
-          -> app/send/key(를 통해 내 키 전송) -> topic/call/key(모든 키를 otherList에 담아버림)
-          */
+        if(client.connected){ 
+          client.publish({ destination: `/app/call/key`, body:"publish: call/key" });
+
           setTimeout(()=>{
-            console.log("스트림 누른 후 비동기 처리 후 키 리스트: ", otherKeyList)
-            otherKeyList.map((key)=>{
+            otherKeyList.map(async (key)=>{
             if(!pcListMap.has(key)){
-              pcListMap.set(key, createPeerConnection(key));
+              pcListMap.set(key, await createPeerConnection(key));
               sendOffer(pcListMap.get(key), key);
               }
             })
@@ -118,16 +109,8 @@ export function useSocket(){
     }
   }
 
-  const connectSocket = ()=>{
-    client.activate();
-    setTimeout(()=>{
-      startStream();
-    }, 1000)
-  }
-
-  const createPeerConnection = (otherKey: string)=>{
+  const createPeerConnection = async (otherKey: string)=>{
     const pc = new RTCPeerConnection();
-    console.log("만들어지기 전 피어커넥션", pc)
     try{
       pc.addEventListener("icecandidate", (event)=>{
         console.log("iceCandidate 이벤트 발생")
@@ -139,16 +122,10 @@ export function useSocket(){
         onTrack(event, otherKey);
       });
   
-      navigator.mediaDevices.getUserMedia({ video: { width: 800, height: 450, facingMode: "user" }, audio: true })
+      await navigator.mediaDevices.getUserMedia({ video: { width: 800, height: 450, facingMode: "user" }, audio: true })
         .then((localStream)=>{
           localStream.getTracks().forEach((track)=>{
-            console.log("---------------------");
-            console.log("보낼 트랙 확인", track);
-            console.log("보낼 로컬 스트림 확인", track);
             pc.addTrack(track, localStream)
-            console.log(pc)
-            console.log(pc.getSenders())
-            console.log("---------------------");
           })
           console.log("송출완료")
         })
@@ -192,9 +169,8 @@ export function useSocket(){
     }
   };
 
-  const sendAnswer = (pc:RTCPeerConnection, otherKey:string)=>{
-    console.log(otherKey, "로 answer를 보냅니다 !: ", pc)
-    pc.createAnswer().then((answer)=>{
+  const sendAnswer = async (pc:RTCPeerConnection, otherKey:string)=>{
+    await pc.createAnswer().then((answer)=>{
       setLocalAndSendMessage(pc, answer);
       client.publish({
         destination: `/app/peer/answer/${otherKey}/${roomId}`,
@@ -204,8 +180,8 @@ export function useSocket(){
     })
   }
 
-  const sendOffer = (pc:RTCPeerConnection, otherKey:string)=>{
-    pc.createOffer().then((offer)=>{
+  const sendOffer = async (pc:RTCPeerConnection, otherKey:string)=>{
+    await pc.createOffer().then((offer)=>{
       setLocalAndSendMessage(pc, offer);
       client.publish({
         destination:`/app/peer/offer/${otherKey}/${roomId}`,
@@ -222,9 +198,6 @@ export function useSocket(){
   return {
     client: client, 
     video: videoElements,
-    otherKeyList: otherKeyList, 
-    pcListMap: pcListMap,
-    startStream: startStream,
-    connectSocket: connectSocket
+    startStream: startStream
   };
 }

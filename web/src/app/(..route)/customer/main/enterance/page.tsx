@@ -30,7 +30,7 @@ function CategoryList() {
           <Card
             className="bg-hwachang-darkgreen hover:bg-hwachang-green text-white"
             onClick={() => {
-              router.push("/consulting-room?isWait=true");
+              router.push("/customer-room/waiting");
             }}
           >
             <CardHeader className="text-2xl">

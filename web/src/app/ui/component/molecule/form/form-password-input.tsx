@@ -7,10 +7,11 @@ interface FormPasswordInputProps {
   label: string;
   id: string;
   placeholder: string;
+  className?: string;
   required?: boolean;
 }
 
-export function FormPasswordInput({label, id, placeholder, required = false}:FormPasswordInputProps){
+export function FormPasswordInput({label, id, placeholder ,className, required = false}:FormPasswordInputProps){
   const { errors } = useContext(FormContext);
   const { pending } = useFormStatus();
 
@@ -29,6 +30,7 @@ export function FormPasswordInput({label, id, placeholder, required = false}:For
         errorMessages={errors[id]}
         type={'password'}
         id={id}
+        className={className}
         name={id}
         placeholder={placeholder}
       />
