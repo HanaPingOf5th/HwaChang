@@ -3,6 +3,7 @@ import { ConsultingRoom } from '../business/consulting-room/consulting-room'
 
 export interface ConsultingRoomActions{
   updateCustomer: (customerId: string)=>void
+  updateTeller: (tellerId: string)=>void
 }
 
 export type ConsultingRoomStore = ConsultingRoom & ConsultingRoomActions
@@ -42,6 +43,9 @@ export const createConsultingRoomStore = (init:ConsultingRoom = defaultConsultin
       updateCustomer: (customerId: string) => set((state)=>{
         const newCustomerIds = [...state.customerIds, customerId];
         return {customerIds: newCustomerIds}
+      }),
+      updateTeller: (tellerId: string) => set(()=>{
+        return {tellerId: tellerId}
       })
     }
   }))
