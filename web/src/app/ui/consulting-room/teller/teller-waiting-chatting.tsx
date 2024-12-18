@@ -44,12 +44,13 @@ export default function TellerWaitingChatting() {
     const interval = setInterval(()=>{
       getPrechat().then((value) => {
         const messages = value.data as string[];
-
         for(const message of messages){
           setMyMessages((prev)=>[...prev, message])
         }
       });
     }, 10000)
+
+    return ()=> clearInterval(interval)
 
   }, []);
   
@@ -85,7 +86,7 @@ export default function TellerWaitingChatting() {
           <CardContent className="flex-grow overflow-y-auto h-96 p-4" ref={chatContainerRef}>
             <div className="flex flex-col space-y-2">
               {myMessages
-                .filter((value, index, self) => self.indexOf(value) === index) // 중복 제거
+                .filter((value, index, self) => self.indexOf(value) === index)
                 .map((value, index) => (
                   <main key={index}>
                     <MyChat chat={value}></MyChat>
