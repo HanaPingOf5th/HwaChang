@@ -8,7 +8,7 @@ export interface ConsultingRoomActions{
 
 export type ConsultingRoomStore = ConsultingRoom & ConsultingRoomActions
 
-export const initialConsultingRoomStore = (): ConsultingRoom => {
+export const initConsultingRoomStore = (): ConsultingRoom => {
   return {
     consultingRoomId: null,
     tellerId: null,
