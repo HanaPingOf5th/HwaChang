@@ -2,9 +2,10 @@
 
 import { ApplicationProps } from "@/app/(..route)/customer-room/components/application-form"
 import { APIResponseType, instance } from "@/app/utils/http"
+import { API_PATH } from "@/app/utils/http/api-query";
 
 export async function getApplicationFormById(id: string):Promise<APIResponseType>{
-  const response = await instance.get(`${process.env.API_URL}/consulting-room/application/${id}`)
+  const response = await instance.get(`${API_PATH}/application/${id}`)
   console.log(response);
 
   const data= response.data as ApplicationProps
@@ -17,7 +18,7 @@ export async function getApplicationFormById(id: string):Promise<APIResponseType
 }
 
 export async function getCategories():Promise<APIResponseType>{
-  const response = await instance.get(`${process.env.API_URL}/consulting-room/application/categories`)
+  const response = await instance.get(`${API_PATH}/category`)
   console.log(response);
 
   const data = response.data
@@ -30,7 +31,7 @@ export async function getCategories():Promise<APIResponseType>{
 }
 
 export async function getFormTitleAndIdByCategoryId(categoryId: string):Promise<APIResponseType>{
-  const response = await instance.get(`${process.env.API_URL}/consulting-room/application-forms/${categoryId}`)
+  const response = await instance.get(`${API_PATH}/application/${categoryId}`)
   console.log(response);
 
   const data = response.data
