@@ -12,11 +12,16 @@ export default function DocumentSearch() {
   const [categories, setCategories] = useState<Category[]>([]);
   const [documents, setDocuments] = useState<Document[]>([]);
   const [searchText, setSearchText] = useState("");
-
   const [currentPage, setCurrentPage] = useState(1);
+  const [selectedCategory, setSelectedCategory] = useState<Category>(null);
   const documentsPerPage = 6;
 
-  const [selectedCategory, setSelectedCategory] = useState<Category>(null);
+  const totalPages = Math.ceil(documents.length / documentsPerPage);
+
+  const currentPageDocuments = documents.slice(
+    (currentPage - 1) * documentsPerPage,
+    currentPage * documentsPerPage
+  );
 
   useEffect(() => {
     getCategories().then((response) => {
@@ -36,13 +41,6 @@ export default function DocumentSearch() {
   const handleSearchChange = (value: string) => {
     setSearchText(value);
   };
-
-  const totalPages = Math.ceil(documents.length / documentsPerPage);
-
-  const currentPageDocuments = documents.slice(
-    (currentPage - 1) * documentsPerPage,
-    currentPage * documentsPerPage
-  );
 
   const handleNextPage = () => {
     setCurrentPage((prev) => Math.min(prev + 1, totalPages));
