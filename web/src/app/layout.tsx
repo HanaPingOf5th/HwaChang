@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import localFont from 'next/font/local';
 import "./globals.css";
 import { cn } from "./utils/style";
+import { ConsultingRoomStoreProvider } from "./stores/consulting-room.provider";
 
 const globalFont = localFont({
   src: './PretendardVariable.woff2',
@@ -23,7 +24,9 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={cn(globalFont.variable, 'font-pretendard')}>
+        <ConsultingRoomStoreProvider>
         {children}
+        </ConsultingRoomStoreProvider>
       </body>
     </html>
   );
