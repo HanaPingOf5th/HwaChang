@@ -9,7 +9,7 @@ import { FormTextInput } from "../../component/molecule/form/form-textinput";
 import AchromaticButton from "../../component/atom/button/achromatic-button";
 import { LuSendHorizonal } from "react-icons/lu";
 import { getPrechat } from "@/app/business/waiting-room/pre-chat.service";
-import { MyChat } from "../chat-box";
+import { OtherChat } from "../chat-box";
 
 export default function TellerWaitingChatting() {
   const [myMessages, setMyMessages] = useState<string[]>(["고객님이 상담전 보낸 질문이 나타납니다,"]);
@@ -89,7 +89,7 @@ export default function TellerWaitingChatting() {
                 .filter((value, index, self) => self.indexOf(value) === index)
                 .map((value, index) => (
                   <main key={index}>
-                    <MyChat chat={value}></MyChat>
+                    <OtherChat chat={value} name={"손님"}></OtherChat>
                   </main>
               ))}
             </div>
