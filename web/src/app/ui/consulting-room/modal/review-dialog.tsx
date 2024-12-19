@@ -66,7 +66,7 @@ function Review(){
         
         <Form id="review" action={sendReview} onSuccess={() => setIsSubmitted(false)} failMessageControl="alert">
           <CardContent>
-            <div className="grid grid-cols-2 sm:grid-cols-5 lg:grid-cols-10 gap-4">
+            <div className="grid grid-cols-5 gap-4">
               {scores}
             </div>
             <input type="hidden" name="nps" id="nps-score" value={currentScore} />
