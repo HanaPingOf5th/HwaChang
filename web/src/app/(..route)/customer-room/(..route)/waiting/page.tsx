@@ -7,14 +7,14 @@ import { WaitingModal } from "@/app/ui/consulting-room/modal/waiting";
 import {
   MicIcon,
   MicOffIcon,
-  SettingsIcon,
-  Share2Icon,
   VideoIcon,
   VideoOffIcon,
 } from "lucide-react";
 import { Video, VideoView } from "../../components/video-view";
 import { createMockMyProfile } from "../../mock/mock-profiles";
 import { ReviewDialog } from "@/app/ui/consulting-room/modal/review-dialog";
+import { SharingLinkDialog } from "@/app/ui/consulting-room/modal/share-link-dialog";
+import { VideoSettingDialog } from "@/app/ui/consulting-room/modal/video-setting";
 
 export default function Home() {
   const [isWaitingDialogMounted, setIsWaitingDialogMounted] = useState(false);
@@ -27,10 +27,6 @@ export default function Home() {
 
   const audioContext = useRef<AudioContext | null>(null);
   const gainNode = useRef<GainNode | null>(null);
-  const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
-
-  const [isLinkModalOpen, setIsLinkModalOpen] = useState<boolean>(false);
-  const [isSettingsModalOpen, setIsSettingsModalOpen] = useState<boolean>(false);
 
   useEffect(() => {
     const getMedia = async () => {
@@ -85,16 +81,6 @@ export default function Home() {
       videoStream.getAudioTracks().forEach((track) => (track.enabled = !track.enabled));
       setIsAudioEnabled(!isAudioEnabled);
     }
-  };
-
-  const toggleLink = () => {
-    setIsModalOpen(!isModalOpen);
-    setIsLinkModalOpen(!isLinkModalOpen);
-  };
-
-  const toggleSettings = () => {
-    setIsModalOpen(!isModalOpen);
-    setIsSettingsModalOpen(!isSettingsModalOpen);
   };
 
   return (
@@ -165,22 +151,8 @@ export default function Home() {
             </div>
           </AchromaticButton>
           <ReviewDialog/>
-          <AchromaticButton
-            className="rounded-full bg-hwachang-gray2 hover:bg-hwachang-gray3"
-            onClick={toggleLink}
-          >
-            <div className="p-2">
-              <Share2Icon color="black" size={20} />
-            </div>
-          </AchromaticButton>
-          <AchromaticButton
-            className="rounded-full bg-hwachang-gray2 hover:bg-hwachang-gray3"
-            onClick={toggleSettings}
-          >
-            <div className="p-2">
-              <SettingsIcon color="black" size={20} />
-            </div>
-          </AchromaticButton>
+          <SharingLinkDialog/>
+          <VideoSettingDialog videoRef={videoRef}/>
         </div>
       </div>
     </main>

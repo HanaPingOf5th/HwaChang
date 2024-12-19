@@ -3,6 +3,7 @@ import { cookies } from "next/headers";
 import { FormState } from "@/app/ui/component/molecule/form/form-root";
 import { LogInFormSchema, LogInRequestBody } from "./customer-auth-validation";
 import { HttpError } from "@/app/utils/http/http-error";
+import { API_PATH } from "@/app/utils/http/api-query";
 
 export async function authenticateCustomer(prevState: FormState, formData: FormData): Promise<FormState> {
   const validatedFields = LogInFormSchema.safeParse({
@@ -21,7 +22,7 @@ export async function authenticateCustomer(prevState: FormState, formData: FormD
 
   const body:LogInRequestBody = {...validatedFields.data};
   try {
-    const response = await fetch(`http://localhost:8080/customer/login`, {
+    const response = await fetch(`${API_PATH}/customer/login`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",

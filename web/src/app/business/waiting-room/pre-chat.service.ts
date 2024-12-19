@@ -1,10 +1,11 @@
+'use server'
 import { APIResponseType, instance } from "@/app/utils/http";
+import { API_PATH } from "@/app/utils/http/api-query";
 
-// ToDo: 유저네임 전역으로 관리
+const userName: string = "dw1234";
+
 export async function sendPrechat(content: string): Promise<APIResponseType>{
-  const userName: string = "윤개똥이";
-
-  const response = await instance.post(`/api/waiting-room/prechat`, {userName:userName, content:content})
+  const response = await instance.post(`${API_PATH}/waiting-room/prechat`, {content:content})
 
   console.log(response);
   return {
@@ -15,9 +16,8 @@ export async function sendPrechat(content: string): Promise<APIResponseType>{
 }
 
 export async function getPrechat(): Promise<APIResponseType> {
-  const userName: string = "윤개똥이";
-
-  const response = await instance.get(`/api/waiting-room/prechat/${userName}`)
+  console.log(`${API_PATH}/waiting-room/prechat/${userName}`);
+  const response = await instance.get(`${API_PATH}/waiting-room/prechat/${userName}`)
   
   console.log(response);
   return {

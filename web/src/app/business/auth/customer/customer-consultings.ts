@@ -1,3 +1,4 @@
+import { API_PATH } from "@/app/utils/http/api-query";
 import { HttpError } from "@/app/utils/http/http-error";
 
 // 요청 파라미터 타입 정의
@@ -32,7 +33,7 @@ export async function fetchCustomerConsultings(
     if (params.endDate) queryParams.append("endDate", params.endDate);
 
     // GET 요청 URL
-    const url = `/api/customer/consultings?${queryParams.toString()}`;
+    const url = `${API_PATH}/customer/consultings?${queryParams.toString()}`;
 
     const response = await fetch(url, {
       method: "GET",
