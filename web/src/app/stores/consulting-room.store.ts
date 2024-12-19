@@ -39,14 +39,12 @@ export const defaultConsultingRoom: ConsultingRoom = {
 export const createConsultingRoomStore = (init:ConsultingRoom = defaultConsultingRoom)=>{
   return createStore<ConsultingRoom>()((set)=>({
     ...init,
-    actions:{
-      updateCustomer: (customerId: string) => set((state)=>{
-        const newCustomerIds = [...state.customerIds, customerId];
-        return {customerIds: newCustomerIds}
-      }),
-      updateTeller: (tellerId: string) => set(()=>{
-        return {tellerId: tellerId}
-      })
-    }
+    updateCustomer: (customerId: string) => set((state)=>{
+      const newCustomerIds = [...state.customerIds, customerId];
+      return {customerIds: newCustomerIds}
+    }),
+    updateTeller: (tellerId: string) => set(()=>{
+      return {tellerId: tellerId}
+    })
   }))
 }

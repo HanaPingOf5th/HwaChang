@@ -35,20 +35,20 @@ export default function Home() {
   const [formData ] = useState<ApplicationProps | null>(null);
 
   // (전역 상태 관리) consulting-room data
-  const { customerIds, tellerId, updateCustomer, updateTeller } = useConsultingRoomStore((state)=>state);
+  const { customerIds, tellerId, updateCustomer,updateTeller } = useConsultingRoomStore((state)=>state);
 
   // test
   useEffect(()=>{
-    console.log('업데이트 전 customer-id', customerIds);
-    console.log('업데이트 전 data teller-id',tellerId);
+    const handleUpdate = ()=>{
+      updateCustomer("updatedCustomer");
+      updateTeller("updatedTeller");
+    }
 
-    
-
-    // const handleUpdateCustomer = ()=>{updateCustomer("12345")};
-    // const handleUpdateTeller = ()=>{updateTeller("54321")}
-
-    console.log('업데이트 후 customer-id', customerIds);
-    console.log('업데이트 후 data teller-id',tellerId);
+    setTimeout(()=>{
+      handleUpdate();
+      console.log('customer-id', customerIds);
+      console.log('teller-id',tellerId);
+    }, 1000)
   },[])
 
   // 상단 인덱싱
