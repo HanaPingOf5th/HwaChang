@@ -1,50 +1,49 @@
- import ProfileImg from "@/app/utils/public/lalalping.png";
- export interface ConsultingRecord{
-  id: number,
-  title: string,
-  consultant: string,
-  cartegoryType: '기업'|'개인',
-  cartegory: string,
-  date: string,
-  image:JSX.Element
- }
+import ProfileImg from "@/app/utils/public/lalalping.png";
+export interface ConsultingRecord {
+  id: number;
+  summary: string;
+  tellerName: string;
+  type: string;
+  category: string;
+  date: string;
+  image: JSX.Element;
+}
 
- export const records:  ConsultingRecord[] = [
+export const records: ConsultingRecord[] = [
   {
     id: 1,
-    title: "제목 1",
-    consultant: "김동은",
-    cartegoryType: "기업",
-    cartegory: "예금 관리",
+    summary: "제목 1",
+    tellerName: "김동은",
+    type: "기업",
+    category: "예금 관리",
     date: "2024.10.22",
     image: ProfileImg as unknown as JSX.Element,
   },
   {
     id: 2,
-    title: "제목 123",
-    consultant: "김동은",
-    cartegoryType: "기업",
-    cartegory: "예금 관리",
+    summary: "제목 123",
+    tellerName: "김동은",
+    type: "기업",
+    category: "예금 관리",
     date: "2024.10.22",
     image: ProfileImg as unknown as JSX.Element,
   },
   {
     id: 3,
-    title: "제목 11",
-    consultant: "김동은",
-    cartegoryType: "기업",
-    cartegory: "예금 관리",
+    summary: "제목 11",
+    tellerName: "김동은",
+    type: "기업",
+    category: "예금 관리",
     date: "2024.10.22",
     image: ProfileImg as unknown as JSX.Element,
   },
   {
     id: 4,
-    title: "제목 12",
-    consultant: "김동은",
-    cartegoryType: "기업",
-    cartegory: "예금 관리",
+    summary: "제목 12",
+    tellerName: "김동은",
+    type: "기업",
+    category: "예금 관리",
     date: "2024.10.22",
     image: ProfileImg as unknown as JSX.Element,
   },
-
 ];
