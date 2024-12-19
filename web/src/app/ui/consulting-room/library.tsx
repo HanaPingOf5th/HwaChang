@@ -3,49 +3,44 @@
 import React, { useEffect, useState } from "react";
 import TextInput from "../component/atom/text-input/text-input";
 import { IoSearch, IoChevronBack, IoChevronForward } from "react-icons/io5";
-import { formDocuments } from "./mock/mock-documents";
 import Image from "next/image"
 import Pen from "@/app/utils/public/Pen.png"
-import { getApplicationFormById } from "@/app/business/consulting-room/application-form.service";
-
-const categories = [
-  '예금', '대출', '주택청약', '펀드/신탁', '인터넷/스마트뱅킹', '전자금융사기',
-  '카드', '인증서/간편로그인', '입출금 알림', '외환', '자동이체'
-];
+import { ApplicationFormInfoType, getApplicationFormById, getApplicationFormInfoListByCategoryId } from "@/app/business/consulting-room/application-form.service";
+import { Category, getCategories } from "@/app/business/categoty/category.service";
 
 export default function Library() {
+  const [categories, setCategories] = useState<Category[]>([]);
+  const [applicationForms, setApplicationForms] = useState<ApplicationFormInfoType[]>([]);
   const [searchText, setSearchText] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
-  const [filteredDocuments, setFilteredDocuments] = useState(formDocuments);
-  const [selectedCategory, setSelectedCategory] = useState<string>(categories[0]);
+  const [selectedCategory, setSelectedCategory] = useState<Category>(null);
   const documentsPerPage = 6;
+
+  const totalPages = Math.ceil(applicationForms.length / documentsPerPage);
+
+  const currentDocuments = applicationForms.slice(
+    (currentPage - 1) * documentsPerPage,
+    currentPage * documentsPerPage
+  );
+
+  useEffect(() => {
+    getCategories().then((response) => {
+      const categoriesData = response.data as Category[];
+      setCategories(categoriesData);
+      setSelectedCategory(categoriesData[0]);
+    });
+  }, []);
+
+  useEffect(()=>{
+    if(!selectedCategory) return;
+    getApplicationFormInfoListByCategoryId(selectedCategory.categoryId).then((response)=>{
+      setApplicationForms(response.data as ApplicationFormInfoType[])
+    })
+  }, [selectedCategory])
 
   const handleSearchChange = (value: string) => {
     setSearchText(value);
   };
-
-  const filterDocuments = () => {
-    const result = formDocuments.filter((document) => {
-      const matchesCategory = selectedCategory ? document.category === selectedCategory : true;
-      const matchesSearchText = document.title.includes(searchText);
-      return matchesCategory && matchesSearchText;
-    });
-
-    setFilteredDocuments(result);
-  };
-
-  useEffect(() => {
-    filterDocuments();
-  }, [searchText, selectedCategory]);
-
-  // 필터링된 문서의 총 페이지 수 계산
-  const totalPages = Math.ceil(filteredDocuments.length / documentsPerPage);
-
-  // 현재 페이지에 표시할 문서 추출
-  const currentDocuments = filteredDocuments.slice(
-    (currentPage - 1) * documentsPerPage,
-    currentPage * documentsPerPage
-  );
 
   const handleNextPage = () => {
     setCurrentPage((prev) => Math.min(prev + 1, totalPages));
@@ -70,17 +65,17 @@ export default function Library() {
       </div>
 
       <div className="p-2 flex flex-wrap gap-4">
-        {categories.map((category) => (
+        {categories.map((category, index) => (
           <button
-            key={category}
+            key={index}
             onClick={() => {
               setSelectedCategory(category);
               setCurrentPage(1); // 카테고리 변경 시 첫 페이지로 이동
             }}
-            className={`text-sm hover:underline ${selectedCategory === category ? "font-bold underline" : ""
+            className={`text-sm hover:underline ${selectedCategory.categoryName === category.categoryName ? "font-bold underline" : ""
               }`}
           >
-            {category}
+            {category.categoryName}
           </button>
         ))}
       </div>
