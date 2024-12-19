@@ -3,12 +3,7 @@ import AchromaticButton from "@/app/ui/component/atom/button/achromatic-button";
 import { LegacyRef, useEffect, useRef, useState } from "react";
 import { SlArrowLeft, SlArrowRight } from "react-icons/sl";
 import { VideoSettingDialog } from "@/app/ui/consulting-room/modal/video-setting";
-import {
-  MicIcon,
-  MicOffIcon,
-  VideoIcon,
-  VideoOffIcon,
-} from "lucide-react";
+import { MicIcon, MicOffIcon, VideoIcon, VideoOffIcon } from "lucide-react";
 import { useSocket } from "@/app/utils/web-socket/useSocket";
 import { Video, VideoView } from "../../components/video-view";
 import { createMockMyProfile, mockOtherProfile, mockProfile } from "../../mock/mock-profiles";
@@ -32,24 +27,26 @@ export default function Home() {
   // rtc
   const { client, video } = useSocket();
   const videoRef = useRef<HTMLVideoElement | null>(null);
-  const [formData, setFormData ] = useState<ApplicationProps | null>(null);
+  const [formData, setFormData] = useState<ApplicationProps | null>(null);
 
   // (전역 상태 관리) consulting-room data
-  const { customerIds, tellerId, updateCustomer,updateTeller } = useConsultingRoomStore((state)=>state);
+  const { customerIds, tellerId, updateCustomer, updateTeller } = useConsultingRoomStore(
+    (state) => state,
+  );
 
   // test
-  useEffect(()=>{
-    const handleUpdate = ()=>{
+  useEffect(() => {
+    const handleUpdate = () => {
       updateCustomer("updatedCustomer");
       updateTeller("updatedTeller");
-    }
+    };
 
-    setTimeout(()=>{
+    setTimeout(() => {
       handleUpdate();
-      console.log('customer-id', customerIds);
-      console.log('teller-id',tellerId);
-    }, 1000)
-  },[])
+      console.log("customer-id", customerIds);
+      console.log("teller-id", tellerId);
+    }, 1000);
+  }, []);
 
   // 상단 인덱싱
   const [slideIndex, setSlideIndex] = useState(0);
@@ -113,7 +110,7 @@ export default function Home() {
     if (client) {
       client.activate();
       console.log("Activating STOMP client...");
-  
+
       return () => {
         console.log("Deactivating STOMP client...");
         client.deactivate();
@@ -121,12 +118,12 @@ export default function Home() {
     }
   }, [client]);
 
-  useEffect(()=>{
-    getApplicationFormById("9b1deb4d-3b7d-4bad-9bdd-2b0d7b3dcb6d").then((value)=>{
-      setFormData(value.data as ApplicationProps)
-    })
-  }, [isForm])
-  
+  useEffect(() => {
+    getApplicationFormById("9b1deb4d-3b7d-4bad-9bdd-2b0d7b3dcb6d").then((value) => {
+      setFormData(value.data as ApplicationProps);
+    });
+  }, [isForm]);
+
   // To-Do: 내가 비디오를 끌 경우, 나의 비디오 상태를 상대방에게 보내는 api 추가: isCam: false
   const toggleVideo = () => {
     if (videoStream) {
@@ -147,7 +144,10 @@ export default function Home() {
     <main>
       <div>
         <div className="relative w-full overflow-hidden h-1/6 p-6 bg-slate-100">
-          <div className="flex transition-transform duration-300" style={{ transform: `translateX(-${(slideIndex * 100) / 3}%)`}}>
+          <div
+            className="flex transition-transform duration-300"
+            style={{ transform: `translateX(-${(slideIndex * 100) / 3}%)` }}
+          >
             <div className="w-1/3 flex-shrink-0">
               <VideoView
                 video={<Video ref={videoRef as LegacyRef<HTMLVideoElement>} isTop={true} />}
@@ -181,15 +181,27 @@ export default function Home() {
         </div>
         {/* API 연동 후, 삭제 예정 */}
         <div className="flex justify-center items-center gap-4 pt-4">
-          <AchromaticButton onClick={() => { setIsForm(true);}}>
-             mock form
+          <AchromaticButton
+            onClick={() => {
+              setIsForm(true);
+            }}
+          >
+            mock form
           </AchromaticButton>
-          <AchromaticButton onClick={() => {setIsForm(false);}}>
+          <AchromaticButton
+            onClick={() => {
+              setIsForm(false);
+            }}
+          >
             mock view
           </AchromaticButton>
         </div>
         <div className="pt-4 px-6">
-          {isForm ? (<ApplicationForm formData={formData} />) : ( <VideoView video={video[0]} onCam={true} profile={mockProfile}/>)}
+          {isForm ? (
+            <ApplicationForm formData={formData} />
+          ) : (
+            <VideoView video={video[0]} onCam={true} profile={mockProfile} />
+          )}
         </div>
       </div>
 
@@ -200,7 +212,11 @@ export default function Home() {
             className="rounded-full bg-hwachang-gray2 hover:bg-hwachang-gray3"
           >
             <div className="p-2">
-              {isAudioEnabled ? (<MicIcon color="black" size={20} />) : (<MicOffIcon color="black" size={20} />)}
+              {isAudioEnabled ? (
+                <MicIcon color="black" size={20} />
+              ) : (
+                <MicOffIcon color="black" size={20} />
+              )}
             </div>
           </AchromaticButton>
           <AchromaticButton
@@ -215,9 +231,9 @@ export default function Home() {
               )}
             </div>
           </AchromaticButton>
-          <ReviewDialog/>
-          <SharingLinkDialog/>
-          <VideoSettingDialog videoRef={videoRef}/>
+          <ReviewDialog />
+          <SharingLinkDialog />
+          <VideoSettingDialog videoRef={videoRef} />
         </div>
       </div>
     </main>
