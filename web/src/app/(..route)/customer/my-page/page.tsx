@@ -27,8 +27,6 @@ export default function Home() {
   const [isFullScreen, setIsFullScreen] = useState(false);
   const [selectedRecord, setSelectedRecord] = useState<ConsultingRecord | null>(null);
 
-  const customerId = "312d98db-ade1-4c22-a72b-b454da2524b7"; // 고객 ID 고정
-
   const handleOpenSummary = (record: ConsultingRecord) => {
     setSelectedRecord(record);
     setIsSummaryVisible(true);
@@ -110,32 +108,17 @@ export default function Home() {
       ))
     );
 
-  // API 호출 함수
-  async function loadRecords() {
-    try {
-      // API 호출 시 payload에 startDate, endDate, summaryKeyword, customerId 값 포함
-      const payload = {
-        customerId,
-        summaryKeyword: searchValue,
-        startDate,
-        endDate,
-      };
-
-      const response = await fetchCustomerConsultings(payload);
-
-      if (response && Array.isArray(response)) {
-        console.log("API 호출 성공:", response);
-        setRecords(response); // 데이터 배열을 상태로 설정
-      } else {
-        console.error("API 호출 실패:", response);
-      }
-    } catch (error) {
-      console.error("API 호출 중 오류 발생:", error);
-    }
-  }
-
   useEffect(() => {
-    loadRecords();
+    const payload = {
+      summaryKeyword: searchValue,
+      startDate,
+      endDate,
+    };
+
+    fetchCustomerConsultings(payload).then((response) => {
+      console.log(response.data);
+      setRecords(response.data as ConsultingRecord[]);
+    });
   }, [startDate, endDate, searchValue]);
 
   const handleSearch = (prevState: FormState, formData: FormData) => {
