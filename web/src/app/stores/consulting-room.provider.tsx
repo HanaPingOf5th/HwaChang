@@ -6,7 +6,9 @@ import { ConsultingRoomStore, createConsultingRoomStore, initConsultingRoomStore
 
 // 왜 ReturnType을 사용하는지 알아보기
 export type ConsultingRoomStoreApi = ReturnType<typeof createConsultingRoomStore>
+
 export const ConsultingRoomStoreContext = createContext<ConsultingRoomStoreApi | undefined>(undefined);
+
 export interface ConsultingRoomStoreProviderProps { children: ReactNode }
 
 export const ConsultingRoomStoreProvider = ({
@@ -24,7 +26,7 @@ export const ConsultingRoomStoreProvider = ({
   )
 }
 
-export const useCounterStore = <T,>(selector: (store: ConsultingRoomStore) => T,):T => {
+export const useConsultingRoomStore = <T,>(selector: (store: ConsultingRoomStore) => T,):T => {
   const consultingRoomStoreContext = useContext(ConsultingRoomStoreContext)
 
   if(!consultingRoomStoreContext){
