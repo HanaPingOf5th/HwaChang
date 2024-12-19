@@ -1,5 +1,5 @@
 import axios, { AxiosResponse } from 'axios';
-import Cookies from 'js-cookie';
+import { cookies } from 'next/headers';
 
 export interface APIResponseType{
   isSuccess: boolean,
@@ -17,7 +17,8 @@ instance.interceptors.response.use((response: AxiosResponse) => {
 
 instance.interceptors.request.use(
   function (config) {
-    const token = Cookies.get('token');
+    const token = cookies().get('token').value;
+    console.log(token)
     if (token) {
       config.headers.Authorization = `Bearer ${token}`;
       config.headers['Content-Type'] = 'application/json';
