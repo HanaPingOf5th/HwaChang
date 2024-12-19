@@ -115,7 +115,7 @@
 // }
 
 "use client";
-import { authenticateTeller } from "@/app/business/auth/teller/teller-login";
+import { authenticateTeller } from "@/app/business/auth/teller/teller-auth.service";
 import Form from "@/app/ui/component/molecule/form/form-index";
 import MainPageContent from "@/app/ui/component/organism/mainpage-content";
 
