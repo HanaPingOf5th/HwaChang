@@ -8,7 +8,7 @@ export interface ApplicationFormInfoType{
   applicationFormId: string;
   title: string;
 }
-interface SubjectedFormData{
+export interface SubjectedFormData{
   section:string;
   label:string;
   value:string;
