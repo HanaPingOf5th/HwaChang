@@ -1,4 +1,5 @@
 "use client";
+
 import AchromaticButton from "@/app/ui/component/atom/button/achromatic-button";
 import { LegacyRef, useEffect, useRef, useState } from "react";
 import { SlArrowLeft, SlArrowRight } from "react-icons/sl";
@@ -12,14 +13,19 @@ import { ReviewDialog } from "@/app/ui/consulting-room/modal/review-dialog";
 import { SharingLinkDialog } from "@/app/ui/consulting-room/modal/share-link-dialog";
 import { getApplicationFormById } from "@/app/business/consulting-room/application-form.service";
 import { useConsultingRoomStore } from "@/app/stores/consulting-room.provider";
+import { uploadFileToNcloud } from "@/app/utils/http/ncloudStorage";
+import { saveAs } from "file-saver";
 
 export default function Home() {
-  // 현재 내 모습을 보여주는 MediaStram
+  // 현재 내 모습을 보여주는 MediaStream
   const [videoStream, setVideoStream] = useState<MediaStream | null>(null);
   const [isVideoEnabled, setIsVideoEnabled] = useState<boolean>(true);
   const [isAudioEnabled, setIsAudioEnabled] = useState<boolean>(true);
   const audioContext = useRef<AudioContext | null>(null);
   const gainNode = useRef<GainNode | null>(null);
+  const [mediaRecorder, setMediaRecorder] = useState<MediaRecorder | null>(null);
+  const [audioChunks, setAudioChunks] = useState<Blob[]>([]);
+  const [isRecording, setIsRecording] = useState(false);
 
   // application form
   const [isForm, setIsForm] = useState<boolean>(false);
@@ -47,6 +53,92 @@ export default function Home() {
       console.log("teller-id", tellerId);
     }, 1000);
   }, []);
+
+  // 녹음 시작
+  useEffect(() => {
+    navigator.mediaDevices
+      .getUserMedia({ audio: true })
+      .then((stream) => {
+        console.log("마이크 스트림 가져오기 성공");
+        const recorder = new MediaRecorder(stream);
+
+        recorder.ondataavailable = (event) => {
+          console.log("녹음 데이터 수신 중");
+          setAudioChunks((prev) => [...prev, event.data]);
+        };
+
+        recorder.start();
+        setMediaRecorder(recorder);
+        setIsRecording(true);
+        console.log("녹음 시작");
+      })
+      .catch((error) => {
+        console.error("녹음 시작 실패:", error);
+      });
+
+    return () => {
+      if (mediaRecorder && mediaRecorder.state !== "inactive") {
+        mediaRecorder.stop();
+      }
+    };
+  }, []);
+
+  const stopAndUploadRecording = async () => {
+    if (!mediaRecorder || mediaRecorder.state === "inactive") {
+      console.warn("녹음 중지 실패: mediaRecorder가 초기화되지 않았거나 이미 중지됨");
+      return;
+    }
+
+    if (audioChunks.length === 0) {
+      console.warn("녹음 데이터가 부족합니다. 최소한 1초간 녹음을 시작합니다.");
+
+      // 강제 짧은 녹음 실행
+      try {
+        const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+        const shortRecorder = new MediaRecorder(stream);
+        const shortChunks: Blob[] = [];
+
+        shortRecorder.ondataavailable = (event) => {
+          if (event.data.size > 0) {
+            shortChunks.push(event.data);
+          }
+        };
+
+        shortRecorder.start();
+        console.log("10초 동안 강제 녹음 시작...");
+
+        await new Promise<void>((resolve) => {
+          setTimeout(() => {
+            shortRecorder.stop();
+            shortRecorder.onstop = () => resolve();
+          }, 10000); // 10초 강제 녹음
+        });
+
+        const completeBlob = new Blob(shortChunks, { type: "audio/wav" });
+        saveAs(completeBlob, "forced_audio.wav");
+        console.log("강제 녹음된 오디오 파일이 생성되었습니다.");
+      } catch (error) {
+        console.error("강제 녹음 실패:", error);
+        alert("강제 녹음 중 오류 발생");
+      }
+      return;
+    }
+
+    mediaRecorder.stop();
+    setIsRecording(false);
+
+    const completeBlob = new Blob(audioChunks, { type: "audio/wav" });
+    setAudioChunks([]);
+
+    try {
+      const uploadedUrl = await uploadFileToNcloud(completeBlob, "consulting_audio.wav");
+      console.log("녹음 파일 업로드 성공:", uploadedUrl);
+      alert(`녹음 파일 업로드 성공: ${uploadedUrl}`);
+    } catch (error) {
+      console.error("녹음 파일 업로드 실패:", error);
+      alert("녹음 파일 업로드 실패");
+    }
+  };
 
   // 상단 인덱싱
   const [slideIndex, setSlideIndex] = useState(0);
@@ -124,7 +216,6 @@ export default function Home() {
     });
   }, [isForm]);
 
-  // To-Do: 내가 비디오를 끌 경우, 나의 비디오 상태를 상대방에게 보내는 api 추가: isCam: false
   const toggleVideo = () => {
     if (videoStream) {
       videoStream.getVideoTracks().forEach((track) => (track.enabled = !track.enabled));
@@ -132,7 +223,6 @@ export default function Home() {
     }
   };
 
-  // To-Do: 내가 오디오를 끌 경우, 나의 오디오 상태를 상대방에게 보내는 api 추가: isCam: false
   const toggleAudio = () => {
     if (videoStream) {
       videoStream.getAudioTracks().forEach((track) => (track.enabled = !track.enabled));
@@ -179,7 +269,6 @@ export default function Home() {
             </button>
           )}
         </div>
-        {/* API 연동 후, 삭제 예정 */}
         <div className="flex justify-center items-center gap-4 pt-4">
           <AchromaticButton
             onClick={() => {
@@ -231,7 +320,7 @@ export default function Home() {
               )}
             </div>
           </AchromaticButton>
-          <ReviewDialog />
+          <ReviewDialog stopAndUploadRecording={stopAndUploadRecording} />
           <SharingLinkDialog />
           <VideoSettingDialog videoRef={videoRef} />
         </div>
