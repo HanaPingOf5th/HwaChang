@@ -76,7 +76,7 @@ export default function Home() {
     const getMedia = async () => {
       try {
         const mediaStream = await navigator.mediaDevices.getUserMedia({
-          video: { width: 800, height: 450, facingMode: "user" },
+          video: { width: 800, height: 450 },
         });
         setVideoStream(mediaStream);
         if (videoRef.current) {
