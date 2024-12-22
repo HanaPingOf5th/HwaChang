@@ -172,7 +172,7 @@
 import Link from "next/link";
 import MainPageContent from "./ui/component/organism/mainpage-content";
 import Form from "./ui/component/molecule/form/form-index";
-import { authenticateCustomer } from "./business/auth/customer/customer-login";
+import { authenticateCustomer } from "./business/auth/customer/customer-auth.service";
 import { useRouter } from "next/navigation";
 
 export default function Home() {

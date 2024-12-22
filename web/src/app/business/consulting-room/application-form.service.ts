@@ -8,6 +8,11 @@ export interface ApplicationFormInfoType{
   applicationFormId: string;
   title: string;
 }
+export interface SubjectedFormData{
+  section:string;
+  label:string;
+  value:string;
+}
 
 export async function getApplicationFormById(id: string):Promise<APIResponseType>{
   const response = await instance.get(`${API_PATH}/application/${id}`)
@@ -32,5 +37,16 @@ export async function getApplicationFormInfoListByCategoryId(categoryId: string)
     isSuccess: true,
     isFailure: false,
     data: data as ApplicationFormInfoType[]
+  }
+}
+
+export async function submitApplicationForm(subjectedFormData:SubjectedFormData[]):Promise<APIResponseType> {
+  const response = await instance.post(`${API_PATH}/save-form`, {subjectedFormData: subjectedFormData})
+  console.log(response);
+
+  return {
+    isSuccess: true,
+    isFailure: false,
+    data: response.status
   }
 }

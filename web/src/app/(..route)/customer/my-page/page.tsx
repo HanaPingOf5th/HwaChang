@@ -11,7 +11,7 @@ import { Card } from "@/app/ui/component/molecule/card/card";
 import { ConsultingRecord } from "./mock/mock-records"; // 필요한 타입 가져오기
 import Image from "next/image";
 import { StaticImport } from "next/dist/shared/lib/get-img-props";
-import { fetchCustomerConsultings } from "../../../business/auth/customer/customer-consultings"; // 서버 함수 불러오기
+import { fetchCustomerConsultings } from "../../../business/customer/customer.service"; // 서버 함수 불러오기
 
 export default function Home() {
   const today = new Date();
