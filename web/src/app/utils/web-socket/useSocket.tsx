@@ -15,7 +15,7 @@ export function useSocket(){
 
   const client = new Client({
     webSocketFactory: () => socket,
-    debug: (str:string) => {console.log(str)},
+    debug: () => {},
     reconnectDelay: 5000,
     heartbeatIncoming: 4000,
     heartbeatOutgoing: 4000,
@@ -83,29 +83,8 @@ export function useSocket(){
           },1000)
         }
       )
-
-      client.subscribe(`/topic/peer/chat/message/${roomId}`, (message)=>{
-        console.log("chat signam 수신")
-
-        const { id, chat, time } = JSON.parse(message.body);
-
-        const chatMessagesDiv = document.getElementById('chatMessages');
-
-        const newMessageDiv = document.createElement('div');
-        newMessageDiv.textContent = `${id} (${time}): ${chat}`;
-
-        chatMessagesDiv.appendChild(newMessageDiv);
-
-        chatMessagesDiv.scrollTop = chatMessagesDiv.scrollHeight;
-      })
     } 
   });
-
-  const sendMessage = (message: string) => {
-    if(client.connected){
-      client.publish({destination: `/app/peer/chat/message/${roomId}`, body: JSON.stringify({id: myKey, chat: message, time: new Date()})})
-    }
-  }
 
   const startStream = async ()=>{
     if(client.connected){
@@ -222,6 +201,5 @@ export function useSocket(){
     client: client, 
     video: videoElements,
     startStream: startStream,
-    sendMessage: sendMessage
   };
 }

@@ -8,19 +8,25 @@ import Form from "../../component/molecule/form/form-index";
 import { FormTextInput } from "../../component/molecule/form/form-textinput";
 import AchromaticButton from "../../component/atom/button/achromatic-button";
 import { LuSendHorizonal } from "react-icons/lu";
+import { ChatDataType, useChat } from "@/app/utils/web-socket/useChat";
+import { MyChat, OtherChat } from "../chat-box";
 
 export default function TellerConsultingChatting() {
-    const [myMessages, setMyMessages] = useState<string[]>([]);
-    const [inputValue, setInputValue] = useState<string>("");
+    const [myMessages, setMyMessages] = useState<ChatDataType[]>([]);
     const chatContainerRef = useRef<HTMLDivElement | null>(null);
+    const {client, chatMessage, messages} = useChat();
   
-    function sendMessage(prevState: FormState, formData: FormData) {
+    async function sendMessage(prevState: FormState, formData: FormData) {
       const value: string = formData.get("chat") as string;
+      const chatDate = {
+        id: 'my',
+        chat: value,
+        time: new Date(),
+      }
   
       if (value.trim() !== "") {
-        // 메시지 전송
-        setMyMessages((prevMessages) => [...prevMessages, value]);
-        setInputValue("");
+        setMyMessages((prevMessages) => [...prevMessages, chatDate]);
+        chatMessage(value);
       }
   
       return {
@@ -30,6 +36,36 @@ export default function TellerConsultingChatting() {
         validationError: {},
       };
     }
+
+    useEffect(() => {
+      if (client) {
+        client.activate();
+        console.log("Activating STOMP client...");
+  
+        return () => {
+          console.log("Deactivating STOMP client...");
+          client.deactivate();
+        };
+      }
+    }, [client]);
+
+    useEffect(() => {
+      setMyMessages((prevMessages) => {
+        const allMessages = [...prevMessages, ...messages];
+    
+        const uniqueMessages = allMessages.filter(
+          (value, index, self) =>
+            index ===
+            self.findIndex(
+              (t) => t.chat === value.chat && new Date(t.time).getTime() === new Date(value.time).getTime()
+            )
+        );
+    
+        uniqueMessages.sort((a, b) => new Date(a.time).getTime() - new Date(b.time).getTime());
+    
+        return uniqueMessages;
+      });
+    }, [messages]);
   
     useEffect(() => {
       if (chatContainerRef.current) {
@@ -68,7 +104,19 @@ export default function TellerConsultingChatting() {
             </CardHeader>
             <CardContent className="flex-grow overflow-y-auto h-96 p-4" ref={chatContainerRef}>
               <div className="flex flex-col space-y-2">
-                {/* 채팅 메세지들이 들어갈 자리 */}
+              {/* {messages.map((message, index) => (
+                  <OtherChat key={index} name={message.id} chat={message.chat} />
+              ))}
+              {myMessages.map((data, index) => (
+                <MyChat key={index} chat={data.chat} />
+              ))} */}
+              {myMessages.map((message, index) =>
+                message.id === "my" ? (
+                 <MyChat key={index} chat={message.chat} />
+                ) : (
+                  <OtherChat key={index} name={message.id} chat={message.chat} />
+                )
+                )}              
               </div>
             </CardContent>
             <hr className="bg-hwachang-gray4"></hr>
@@ -78,10 +126,8 @@ export default function TellerConsultingChatting() {
                   placeholder="메시지를 입력해주세요."
                   id={"chat"}
                   className="w-full border-none"
-                  value={inputValue}
-                  onValueChange={(value) => setInputValue(value)}
                 />
-                <AchromaticButton className={`w-full ${inputValue.trim() !== "" ? "bg-hwachang-hwachangcolor" : "bg-hwachang-gray4"}`}>
+                <AchromaticButton className={`w-full bg-hwachang-hwachangcolor`}>
                   <LuSendHorizonal size="20" />
                 </AchromaticButton>
               </CardContent>
