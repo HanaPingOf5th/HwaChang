@@ -12,7 +12,6 @@ export function useSocket(){
   const [otherKeyList] = useState<string[]>([]);
   const [pcListMap] = useState<Map<string,RTCPeerConnection>>(new Map<string, RTCPeerConnection>());
   const [videoElements, setVideoElements] = useState<React.ReactNode[]>([]);
-  
   const [remoteStream, setRemoteStream] = useState<MediaStream | null>(null);
 
   const client = new Client({

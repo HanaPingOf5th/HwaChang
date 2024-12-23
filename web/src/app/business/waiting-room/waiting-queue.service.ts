@@ -12,3 +12,13 @@ export async function addCustomerToQueue(typeId: string, categoryId: string):Pro
     data: response.data
   }
 }
+
+export async function deleteCustomerFromQueueAndCreatingRoom(typeId: string) {
+  const response = await instance.delete(`${API_PATH}/queues/${typeId}/next`)
+
+  return {
+    isSuccess: true,
+    isFailure: false,
+    data: response.data
+  }
+}

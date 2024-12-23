@@ -19,18 +19,6 @@ import { useSearchParams } from "next/navigation";
 import { addCustomerToQueue } from "@/app/business/waiting-room/waiting-queue.service";
 
 export default function Home() {
-  const params = useSearchParams();
-  const ctg = params.get("categoryId");
-  const type = params.get("type");
-
-  // TODO: 대기열에 입장하는 API 연동
-  useEffect(()=>{
-    addCustomerToQueue(type, ctg).then((response)=>{
-      console.log(response);
-    })
-  }, [])
-
-  // TODO: 레디스에서 내 "userId+consulting"이라는 키로 consultingRoom 객체를 가져오는 API 연동
   const [isWaitingDialogMounted, setIsWaitingDialogMounted] = useState(false);
 
   const videoRef = useRef<HTMLVideoElement | null>(null);
@@ -40,6 +28,16 @@ export default function Home() {
 
   const audioContext = useRef<AudioContext | null>(null);
   const gainNode = useRef<GainNode | null>(null);
+
+  const params = useSearchParams();
+  const ctg = params.get("categoryId");
+  const type = params.get("type");
+
+  useEffect(()=>{
+    addCustomerToQueue(type, ctg).then((response)=>{
+      console.log(response);
+    })
+  }, [])
 
   useEffect(() => {
     const getMedia = async () => {
