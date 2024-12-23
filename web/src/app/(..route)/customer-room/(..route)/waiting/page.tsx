@@ -15,10 +15,21 @@ import { createMockMyProfile } from "../../mock/mock-profiles";
 import { ReviewDialog } from "@/app/ui/consulting-room/modal/review-dialog";
 import { SharingLinkDialog } from "@/app/ui/consulting-room/modal/share-link-dialog";
 import { VideoSettingDialog } from "@/app/ui/consulting-room/modal/video-setting";
-import { useRecorder } from "@/app/utils/web-socket/use-recorder";
+import { useSearchParams } from "next/navigation";
+import { addCustomerToQueue } from "@/app/business/waiting-room/waiting-queue.service";
 
 export default function Home() {
+  const params = useSearchParams();
+  const ctg = params.get("categoryId");
+  const type = params.get("type");
+
   // TODO: 대기열에 입장하는 API 연동
+  useEffect(()=>{
+    addCustomerToQueue(type, ctg).then((response)=>{
+      console.log(response);
+    })
+  }, [])
+
   // TODO: 레디스에서 내 "userId+consulting"이라는 키로 consultingRoom 객체를 가져오는 API 연동
   const [isWaitingDialogMounted, setIsWaitingDialogMounted] = useState(false);
 
@@ -29,8 +40,6 @@ export default function Home() {
 
   const audioContext = useRef<AudioContext | null>(null);
   const gainNode = useRef<GainNode | null>(null);
-
-  const {audioChunks, startRecord, stopRecord, download, getAudioPermission} = useRecorder();
 
   useEffect(() => {
     const getMedia = async () => {
@@ -69,11 +78,6 @@ export default function Home() {
   useEffect(() => {
     setIsWaitingDialogMounted(true);
   }, []);
-
-  useEffect(()=>{
-    getAudioPermission().then(()=>{console.log('audio permission 실행')});
-  }, [])
-
 
   // To-Do: 내가 비디오를 끌 경우, 나의 비디오 상태를 상대방에게 보내는 api 추가: isCam: false
   const toggleVideo = () => {
@@ -133,9 +137,6 @@ export default function Home() {
         
 
       <div className="flex justify-center space-x-4 mt-4">
-        <AchromaticButton onClick={()=>{startRecord()}}>녹화시작</AchromaticButton>
-        <AchromaticButton onClick={()=>{stopRecord(); console.log(audioChunks)}}>녹화끝</AchromaticButton>
-        <AchromaticButton onClick={download}>다운로드</AchromaticButton>
         <div className="flex justify-center gap-4">
           <AchromaticButton
             onClick={toggleAudio}
