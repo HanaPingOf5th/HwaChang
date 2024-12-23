@@ -118,9 +118,10 @@
 import { authenticateTeller } from "@/app/business/auth/teller/teller-auth.service";
 import Form from "@/app/ui/component/molecule/form/form-index";
 import MainPageContent from "@/app/ui/component/organism/mainpage-content";
+import { useRouter } from "next/navigation";
 
 export default function Home() {
-
+  const router = useRouter();
   return (
     <main className="flex h-screen">
       {/* 왼쪽 절반 */}
@@ -134,7 +135,7 @@ export default function Home() {
           </p>
           {/* 로그인 Form 영역 */}
           <div className="w-full space-y-10">
-            <Form action={authenticateTeller} id={"log-in"} failMessageControl={"alert"} >
+            <Form action={authenticateTeller} id={"log-in"} onSuccess={()=>{router.push('/teller/main')}} failMessageControl={"alert"} >
                 {/* className="flex flex-col gap-4 items-center"> */}
               {/* 아이디 input */}
               <div className="flex flex-col gap-2 w-full">
