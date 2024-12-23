@@ -2,9 +2,9 @@ import { useState } from "react";
 import SockJS from "sockjs-client";
 import { Client  } from "@stomp/stompjs";
 
-// 전역으로 관리해줘도 좋을것 같은 데이터
+// 전역으로 관리데이터 -> consulting-room 객체 데이터임 consultingRoom의 UUID
 const roomId = 11;
-// 사용자의 UUID로 관리
+// 사용자의 UUID로 관리 -> Consulting-room으로 내 ID를 받을 수 있음
 const myKey:string = Math.random().toString(36).substring(2, 11);
 
 export function useSocket(){
