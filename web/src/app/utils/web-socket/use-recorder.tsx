@@ -1,6 +1,6 @@
 import { useCallback, useRef } from "react";
 
-export const useRecorder = () => {
+export const useRecorder = (remoteStream: MediaStream) => {
   const soundRef = useRef<HTMLVideoElement>(null);
   const mediaRecorder = useRef<MediaRecorder | null>(null);
   const soundChunks = useRef<Blob[]>([]);
@@ -8,11 +8,9 @@ export const useRecorder = () => {
   const getAudioPermission = useCallback(async () => {
     try{
       
-      const audioStream = await navigator.mediaDevices.getDisplayMedia({audio: true});
-      const mikeStream = await navigator.mediaDevices.getUserMedia({audio: true})
-      const stream = new MediaStream([...audioStream.getAudioTracks(), ...mikeStream.getAudioTracks()]);
-      console.log(mikeStream)
-      const recorder = new MediaRecorder(stream, {mimeType: "video/mp4"});
+      // const audioStream = await navigator.mediaDevices.getUserMedia({audio: true});
+      const stream = new MediaStream([...remoteStream.getAudioTracks()]);
+      const recorder = new MediaRecorder(stream, {mimeType: "video/webm"});
 
       recorder.ondataavailable = (event) => {
         if(!event.data){return}
@@ -40,7 +38,7 @@ const download = ()=>{
   const blob = new Blob(soundChunks.current, {type: 'mimeType'});
   const audioUrl = URL.createObjectURL(blob);
   const link = document.createElement('a');
-  link.download = `MyAudio.mp4`;
+  link.download = `Audio.webm`;
     link.href = audioUrl;
     document.body.appendChild(link);
     link.click();

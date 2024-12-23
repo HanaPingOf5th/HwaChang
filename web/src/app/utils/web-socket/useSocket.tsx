@@ -12,6 +12,8 @@ export function useSocket(){
   const [otherKeyList] = useState<string[]>([]);
   const [pcListMap] = useState<Map<string,RTCPeerConnection>>(new Map<string, RTCPeerConnection>());
   const [videoElements, setVideoElements] = useState<React.ReactNode[]>([]);
+  
+  const [remoteStream, setRemoteStream] = useState<MediaStream | null>(null);
 
   const client = new Client({
     webSocketFactory: () => socket,
@@ -139,6 +141,7 @@ export function useSocket(){
   }
 
   const onTrack = (event: RTCTrackEvent, otherKey: string)=>{
+    setRemoteStream(event.streams[0]);
     const newVideoElement = (
       <video
         className="rounded-xl aspect-[16/9] object-cover"
@@ -201,5 +204,6 @@ export function useSocket(){
     client: client, 
     video: videoElements,
     startStream: startStream,
+    remoteStream: remoteStream
   };
 }
