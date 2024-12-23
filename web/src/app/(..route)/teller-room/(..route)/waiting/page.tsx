@@ -12,6 +12,7 @@ import { createMockMyProfile } from "@/app/(..route)/customer-room/mock/mock-pro
 import { Video, VideoView } from "@/app/(..route)/customer-room/components/video-view";
 import { SharingLinkDialog } from "@/app/ui/consulting-room/modal/share-link-dialog";
 import { VideoSettingDialog } from "@/app/ui/consulting-room/modal/video-setting";
+// import { deleteCustomerFromQueueAndCreatingRoom } from "@/app/business/waiting-room/waiting-queue.service";
 
 export default function Home() {
   const videoRef = useRef<HTMLVideoElement | null>(null);
@@ -55,6 +56,12 @@ export default function Home() {
       }
     };
   }, [videoStream]);
+
+  // useEffect(()=>{
+  //   deleteCustomerFromQueueAndCreatingRoom('0').then((response)=>{
+  //     console.log(response.data)
+  //   })
+  // },[])
 
   // To-Do: 내가 비디오를 끌 경우, 나의 비디오 상태를 상대방에게 보내는 api 추가: isCam: false
   const toggleVideo = () => {

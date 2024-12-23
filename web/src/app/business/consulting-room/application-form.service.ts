@@ -50,3 +50,15 @@ export async function submitApplicationForm(subjectedFormData:SubjectedFormData[
     data: response.status
   }
 }
+
+export async function searchApplicationFormByKeyword(keyword: string):Promise<APIResponseType> {
+  const response = await instance.get(`${API_PATH}/application?keyword=${keyword}`)
+
+  console.log(response)
+
+  return {
+    isSuccess: true,
+    isFailure: false,
+    data: response.data as ApplicationFormInfoType[]
+  }
+}

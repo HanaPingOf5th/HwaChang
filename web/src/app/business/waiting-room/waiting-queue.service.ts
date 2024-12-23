@@ -15,7 +15,7 @@ export async function addCustomerToQueue(typeId: string, categoryId: string):Pro
 
 export async function deleteCustomerFromQueueAndCreatingRoom(typeId: string) {
   const response = await instance.delete(`${API_PATH}/queues/${typeId}/next`)
-
+  console.log(response);
   return {
     isSuccess: true,
     isFailure: false,
