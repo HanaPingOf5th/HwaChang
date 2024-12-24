@@ -38,22 +38,6 @@ export const defaultConsultingRoom: ConsultingRoom = {
   time: null,
 }
 
-// export const createConsultingRoomStore = (init:ConsultingRoom = defaultConsultingRoom)=>{
-//   return createStore<ConsultingRoom>()((set)=>({
-//     ...init,
-//     updateCustomer: (customerId: string) => set((state)=>{
-//       const newCustomerIds = [...state.customerIds, customerId];
-//       return {customerIds: newCustomerIds}
-//     }),
-//     updateTeller: (tellerId: string) => set(()=>{
-//       return {tellerId: tellerId}
-//     }),
-//     updateConsultingRoomId: (consultingRoomId: string) => set(()=>{
-//       return {consultingRoomId: consultingRoomId}
-//     })
-//   }))
-// }
-
 export const createConsultingRoomStore = (
   init: ConsultingRoom = defaultConsultingRoom
 ) => {

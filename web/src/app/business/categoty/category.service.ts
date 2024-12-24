@@ -9,7 +9,7 @@ export interface Category{
 }
 
 export async function getCategories():Promise<APIResponseType>{
-  const response = await instance.get(`${API_PATH}/category`)
+  const response = await instance.get(`${API_PATH}/category/CORPORATE`)
   
   return {
     isSuccess: true,

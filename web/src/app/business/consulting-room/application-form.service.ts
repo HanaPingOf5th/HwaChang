@@ -41,7 +41,7 @@ export async function getApplicationFormInfoListByCategoryId(categoryId: string)
 }
 
 export async function submitApplicationForm(subjectedFormData:SubjectedFormData[]):Promise<APIResponseType> {
-  const response = await instance.post(`${API_PATH}/save-form`, {subjectedFormData: subjectedFormData})
+  const response = await instance.post(`${API_PATH}/application`, {subjectedFormData: subjectedFormData})
   console.log(response);
 
   return {

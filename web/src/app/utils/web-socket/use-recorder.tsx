@@ -1,4 +1,6 @@
 import { useCallback, useRef } from "react";
+import {FFmpeg} from "@ffmpeg/ffmpeg"
+import {fetchFile} from "@ffmpeg/util"
 
 export const useRecorder = (remoteStream: MediaStream) => {
   const mediaRecorder = useRef<MediaRecorder | null>(null);
@@ -7,7 +9,7 @@ export const useRecorder = (remoteStream: MediaStream) => {
   const getAudioPermission = useCallback(async () => {
     try {
       const stream = new MediaStream(remoteStream.getAudioTracks());
-      const recorder = new MediaRecorder(stream, { mimeType: "audio/webm" });
+      const recorder = new MediaRecorder(stream, { mimeType: "audio/mp4" });
       recorder.ondataavailable = (event) => {
         if (event.data && event.data.size > 0) {
           soundChunks.current.push(event.data);
@@ -29,11 +31,17 @@ export const useRecorder = (remoteStream: MediaStream) => {
     console.log("녹음 종료");
   };
 
-  const download = () => {
-    const blob = new Blob(soundChunks.current, { type: "audio/webm" });
-    const audioUrl = URL.createObjectURL(blob);
+  const download = async () => {
+    const blob = new Blob(soundChunks.current, { type: "audio/mp4" });
+    const ffmpeg = new FFmpeg();
+    await ffmpeg.load();
+    await ffmpeg.writeFile("sound.mp4", await fetchFile(blob))
+    await ffmpeg.exec(['-i', 'sound.mp4', 'out.mp4']);
+    const data = await ffmpeg.readFile('out.mp4');
+
+    const audioUrl = URL.createObjectURL(new Blob([data], { type: "audio/mp4" }));
     const link = document.createElement("a");
-    link.download = `Audio.webm`;
+    link.download = `out.mp4`;
     link.href = audioUrl;
     document.body.appendChild(link);
     link.click();
