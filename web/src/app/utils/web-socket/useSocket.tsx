@@ -2,9 +2,9 @@ import { useState } from "react";
 import SockJS from "sockjs-client";
 import { Client  } from "@stomp/stompjs";
 
-// 전역으로 관리해줘도 좋을것 같은 데이터
+// 전역으로 관리데이터 -> consulting-room 객체 데이터임 consultingRoom의 UUID
 const roomId = 11;
-// 사용자의 UUID로 관리
+// 사용자의 UUID로 관리 -> Consulting-room으로 내 ID를 받을 수 있음
 const myKey:string = Math.random().toString(36).substring(2, 11);
 
 export function useSocket(){
@@ -12,6 +12,8 @@ export function useSocket(){
   const [otherKeyList] = useState<string[]>([]);
   const [pcListMap] = useState<Map<string,RTCPeerConnection>>(new Map<string, RTCPeerConnection>());
   const [videoElements, setVideoElements] = useState<React.ReactNode[]>([]);
+  
+  const [remoteStream, setRemoteStream] = useState<MediaStream | null>(null);
 
   const client = new Client({
     webSocketFactory: () => socket,
@@ -139,6 +141,7 @@ export function useSocket(){
   }
 
   const onTrack = (event: RTCTrackEvent, otherKey: string)=>{
+    setRemoteStream(event.streams[0]);
     const newVideoElement = (
       <video
         className="rounded-xl aspect-[16/9] object-cover"
@@ -201,5 +204,6 @@ export function useSocket(){
     client: client, 
     video: videoElements,
     startStream: startStream,
+    remoteStream: remoteStream
   };
 }
