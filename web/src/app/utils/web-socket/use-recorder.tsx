@@ -58,15 +58,6 @@ export const useRecorder = (remoteStream: MediaStream) => {
       console.log(response)
       console.log(`${process.env.NCLOUD_URL}/${fileName}`)
     }
-    
-    const audioUrl = URL.createObjectURL(updatedBlob);
-    const link = document.createElement("a");
-    link.download = `out.mp4`;
-    link.href = audioUrl;
-    document.body.appendChild(link);
-    link.click();
-    document.body.removeChild(link);
-    URL.revokeObjectURL(audioUrl);
   };
 
   return { startRecord, stopRecord, download, getAudioPermission };

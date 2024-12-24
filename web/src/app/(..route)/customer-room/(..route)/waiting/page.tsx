@@ -123,7 +123,7 @@ export default function Home() {
             </AchromaticButton>
           </DialogTrigger>
           <DialogContent>
-            <MatchingAlarm />
+            <MatchingAlarm categoryId={ctg} typeId={type} />
           </DialogContent>
         </Dialog>
         <VideoView
