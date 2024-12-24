@@ -120,3 +120,30 @@ export async function patchTellerStatus(status: string): Promise<APIResponseType
     };
   }
 }
+
+interface QueueDataResponseType {
+  waitingCustomer: number;
+  waitingTeller: number;
+  calling: number;
+  postProcessing: number;
+}
+
+export async function getQueueData(
+  categoryId: number,
+): Promise<TellerAPIResponseType<TellerResponseWrapper<QueueDataResponseType>>> {
+  const response = await instance.get(`${API_PATH}/queues/${categoryId}/teller-entrance`);
+  console.log(response.data);
+  if (response.status === 200) {
+    return {
+      isSuccess: true,
+      isFailure: false,
+      data: response.data,
+    };
+  } else {
+    return {
+      isSuccess: false,
+      isFailure: true,
+      data: null,
+    };
+  }
+}

@@ -9,6 +9,7 @@ import { Card } from "../component/molecule/card/card";
 import TellerNavLinks from "./teller-nav-link";
 import Link from "next/link";
 import { fetchTellerStatus, patchTellerStatus } from "@/app/business/teller/teller.service";
+import { useTellerStore } from "@/app/stores/tellerStore";
 
 const statusOptions = [
   { name: "상담가능", color: "bg-hwachang-active" },
@@ -22,6 +23,11 @@ const statusColorMapper = {
   "상담 불가": "bg-[#FF2500]",
 };
 
+const tellerTypeMapper = {
+  기업금융: 1,
+  개인금융: 0,
+};
+
 export default function TellerNav() {
   const [currentStatus, setCurrentStatus] = useState<string>("");
   const [currentColor, setCurrentColor] = useState<string>("bg-gray-300");
@@ -33,6 +39,8 @@ export default function TellerNav() {
   const [type, setType] = useState<string>("");
   const [position, setPosition] = useState<string>("");
 
+  const { tellerType, setTellerType } = useTellerStore();
+
   useEffect(() => {
     async function getData() {
       const response = await fetchTellerStatus();
@@ -41,10 +49,11 @@ export default function TellerNav() {
       setPosition(response.data.result.position);
       setCurrentStatus(response.data.result.status);
       setCurrentColor(statusColorMapper[response.data.result.status]);
+      setTellerType(tellerTypeMapper[response.data.result.type]);
     }
 
     getData();
-  });
+  }, []);
 
   const handleStatusChange = () => {
     setIsEditing(!isEditing);
