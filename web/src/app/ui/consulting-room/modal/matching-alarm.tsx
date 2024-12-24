@@ -18,7 +18,7 @@ export function MatchingAlarm(matchingAlarmProps: MatchingAlarmProps){
                 <p className="text-center mb-4">입장하시겠습니까?</p>
                 <div className="flex gap-8">
                     <AchromaticButton onClick={()=>{router.push("/customer/main")}} className="bg-red-500 hover:bg-red-400">거절</AchromaticButton>
-                    <AchromaticButton onClick={()=>{router.push(`/customer-room/consulting?categoryId=${matchingAlarmProps.categoryId}&type={${matchingAlarmProps.typeId}}`)}} >수락</AchromaticButton>
+                    <AchromaticButton onClick={()=>{router.push(`/customer-room/consulting?categoryId=${matchingAlarmProps.categoryId}&type=${matchingAlarmProps.typeId}`)}} >수락</AchromaticButton>
                 </div>            
             </div>
         </>
