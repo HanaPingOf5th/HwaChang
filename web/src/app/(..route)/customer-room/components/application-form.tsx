@@ -1,4 +1,5 @@
 'use client'
+import { SubjectedFormData, submitApplicationForm } from "@/app/business/consulting-room/application-form.service";
 import { Card, CardContent, CardHeader } from "@/app/ui/component/molecule/card/card";
 import Form from "@/app/ui/component/molecule/form/form-index";
 import { FormState } from "@/app/ui/component/molecule/form/form-root";
@@ -13,7 +14,7 @@ interface Customer{
 
 interface Item{
   type: 'input'|'check';
-  description: string;
+  description: string; // description == label
 }
 interface Subject{
   title: string;
@@ -26,12 +27,10 @@ export interface ApplicationProps{
 }
 
 export function ApplicationForm({formData}:{formData: ApplicationProps}){
-  // mockData
   const { title } = formData;
 
   return(
     <main>
-      {/* 은행원 화면 ToDo: 배경 이미지 대신 웹소켓으로 받은 실시간 데이터를 보여주기 */}
       <Card className="aspect-[16/9] overflow-y-auto px-6">
         <CardHeader className="text-center font-semibold">{title}</CardHeader>
         <CardContent className="text-start">
@@ -42,20 +41,34 @@ export function ApplicationForm({formData}:{formData: ApplicationProps}){
   )
 }
 
-function submit(prevState:FormState, formData:FormData):FormState{
-  const value = formData.get('name')
-  console.log('제출되었습니다.', value);
-  alert('제출완료.')
-  return{
-    isSuccess: true,
-    isFailure: false,
-    message: '성공적으로 신청했습니다.',
-    validationError:{}
-  }
-};
-
 function getForms(application: ApplicationProps){
   const {subjects} = application;
+
+  function submit(prevState:FormState, formData:FormData):FormState{
+    const value = formData.get('name')
+
+    const requestData:SubjectedFormData[] = [];
+
+    for(const subject of subjects){
+      for(const item of subject.items){
+        const data: SubjectedFormData = {section: subject.title, label: item.description, value:formData.get(`${item.description}${item.type}`) as string}
+        requestData.push(data);
+      }
+    }
+
+    submitApplicationForm(requestData).then((response)=>{
+      console.log(response);
+    })
+  
+    console.log('제출되었습니다.', value);
+    alert('제출완료.')
+    return{
+      isSuccess: true,
+      isFailure: false,
+      message: '성공적으로 신청했습니다.',
+      validationError:{}
+    }
+  };
 
   return (
     <>
@@ -84,7 +97,7 @@ function getForms(application: ApplicationProps){
                 {
                   value.type=='input'
                   ?
-                  <FormTextInput id={`${value.description}${index}`} placeholder={""} label={`${value.description}`}/>
+                  <FormTextInput id={`${value.description}${value.type}`} placeholder={""} label={`${value.description}`}/>
                   :
                   <div className="flex space-x-3">
                     <div className="grid place-items-center">

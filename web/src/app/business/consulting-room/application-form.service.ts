@@ -4,6 +4,16 @@ import { ApplicationProps } from "@/app/(..route)/customer-room/components/appli
 import { APIResponseType, instance } from "@/app/utils/http"
 import { API_PATH } from "@/app/utils/http/api-query";
 
+export interface ApplicationFormInfoType{
+  applicationFormId: string;
+  title: string;
+}
+export interface SubjectedFormData{
+  section:string;
+  label:string;
+  value:string;
+}
+
 export async function getApplicationFormById(id: string):Promise<APIResponseType>{
   const response = await instance.get(`${API_PATH}/application/${id}`)
   console.log(response);
@@ -17,21 +27,8 @@ export async function getApplicationFormById(id: string):Promise<APIResponseType
   }
 }
 
-export async function getCategories():Promise<APIResponseType>{
-  const response = await instance.get(`${API_PATH}/category`)
-  console.log(response);
-
-  const data = response.data
-
-  return {
-   isSuccess: true,
-   isFailure: false,
-   data: data
-  }
-}
-
-export async function getFormTitleAndIdByCategoryId(categoryId: string):Promise<APIResponseType>{
-  const response = await instance.get(`${API_PATH}/application/${categoryId}`)
+export async function getApplicationFormInfoListByCategoryId(categoryId: string):Promise<APIResponseType>{
+  const response = await instance.get(`${API_PATH}/application/list/${categoryId}`)
   console.log(response);
 
   const data = response.data
@@ -39,6 +36,17 @@ export async function getFormTitleAndIdByCategoryId(categoryId: string):Promise<
   return{
     isSuccess: true,
     isFailure: false,
-    data: data
+    data: data as ApplicationFormInfoType[]
+  }
+}
+
+export async function submitApplicationForm(subjectedFormData:SubjectedFormData[]):Promise<APIResponseType> {
+  const response = await instance.post(`${API_PATH}/save-form`, {subjectedFormData: subjectedFormData})
+  console.log(response);
+
+  return {
+    isSuccess: true,
+    isFailure: false,
+    data: response.status
   }
 }

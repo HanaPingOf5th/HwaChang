@@ -3,48 +3,44 @@
 import React, { useEffect, useState } from "react";
 import TextInput from "../component/atom/text-input/text-input";
 import { IoSearch, IoChevronBack, IoChevronForward } from "react-icons/io5";
-import { documents } from "./mock/mock-documents";
 import Image from "next/image"
-import Document from "@/app/utils/public/Document.png";
-
-const categories = [
-  '예금', '대출', '주택청약', '펀드/신탁', '인터넷/스마트뱅킹', '전자금융사기',
-  '카드', '인증서/간편로그인', '입출금 알림', '외환', '자동이체'
-];
+import DocumentImage from "@/app/utils/public/DocumentImage.png";
+import { Category, getCategories } from "@/app/business/categoty/category.service";
+import { getDocumentsByCategoryId, Document } from "@/app/business/consulting-room/document.service";
 
 export default function DocumentSearch() {
+  const [categories, setCategories] = useState<Category[]>([]);
+  const [documents, setDocuments] = useState<Document[]>([]);
   const [searchText, setSearchText] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
-  const [filteredDocuments, setFilteredDocuments] = useState(documents);
-  const [selectedCategory, setSelectedCategory] = useState<string>(categories[0]);
+  const [selectedCategory, setSelectedCategory] = useState<Category>(null);
   const documentsPerPage = 6;
+
+  const totalPages = Math.ceil(documents.length / documentsPerPage);
+
+  const currentPageDocuments = documents.slice(
+    (currentPage - 1) * documentsPerPage,
+    currentPage * documentsPerPage
+  );
+
+  useEffect(() => {
+    getCategories().then((response) => {
+      const categoriesData = response.data as Category[];
+      setCategories(categoriesData);
+      setSelectedCategory(categoriesData[0]);
+    });
+  }, []);
+  
+  useEffect(() => {
+    if (!selectedCategory) return;
+    getDocumentsByCategoryId(selectedCategory.categoryId).then((response) => {
+      setDocuments(response.data as Document[]);
+    });
+  }, [selectedCategory]);
 
   const handleSearchChange = (value: string) => {
     setSearchText(value);
   };
-
-  const filterDocuments = () => {
-    const result = documents.filter((document) => {
-      const matchesCategory = selectedCategory ? document.category === selectedCategory : true;
-      const matchesSearchText = document.title.includes(searchText);
-      return matchesCategory && matchesSearchText;
-    });
-
-    setFilteredDocuments(result);
-  };
-
-  useEffect(() => {
-    filterDocuments();
-  }, [searchText, selectedCategory]);
-
-  // 필터링된 문서의 총 페이지 수 계산
-  const totalPages = Math.ceil(filteredDocuments.length / documentsPerPage);
-
-  // 현재 페이지에 표시할 문서 추출
-  const currentDocuments = filteredDocuments.slice(
-    (currentPage - 1) * documentsPerPage,
-    currentPage * documentsPerPage
-  );
 
   const handleNextPage = () => {
     setCurrentPage((prev) => Math.min(prev + 1, totalPages));
@@ -73,31 +69,30 @@ export default function DocumentSearch() {
       </div>
 
       <div className="p-2 flex flex-wrap gap-4">
-        {categories.map((category) => (
+        {categories.length!==0?(categories.map((category, index) => (
           <button
-            key={category}
+            key={index}
             onClick={() => {
               setSelectedCategory(category);
               setCurrentPage(1); // 카테고리 변경 시 첫 페이지로 이동
             }}
-            className={`text-sm hover:underline ${selectedCategory === category ? "font-bold underline" : ""
-              }`}
+            className={`text-sm hover:underline ${selectedCategory.categoryName === category.categoryName? "font-bold underline" : ""}`}
           >
-            {category}
+            {category.categoryName}
           </button>
-        ))}
+        ))):<></>}
       </div>
 
       <div className="grid grid-cols-3 overflow-y-scroll h-2/4">
 
-        {currentDocuments.map((doc, index) => (
+        {currentPageDocuments.length!==0?(currentPageDocuments.map((doc, index) => (
           <div key={index} className="flex flex-col items-center p-3">
             <button
               className="flex flex-col items-center"
-              onClick={() => openPDF(doc.fileLink)}
+              onClick={() => openPDF(doc.path)}
             >
               <Image
-                src={Document}
+                src={DocumentImage}
                 alt="Page Facing Up"
                 width={80}
                 height={80}
@@ -105,7 +100,7 @@ export default function DocumentSearch() {
               <p className="text-left text-sm font-medium">{doc.title}</p>
             </button>
           </div>
-        ))}
+        ))):<></>}
       </div>
 
       <div className="flex justify-center items-center gap-4">

@@ -11,13 +11,11 @@ import { Card } from "@/app/ui/component/molecule/card/card";
 import Image from "next/image";
 import { StaticImport } from "next/dist/shared/lib/get-img-props";
 import {
-  ConsultingResponse,
-  fetchCustomerConsultings,
-} from "@/app/business/auth/customer/customer-consultings";
-import {
   ConsultingDetailResponse,
   fetchConsultingDetail,
 } from "@/app/business/auth/customer/customer-consulting-detail";
+
+import { fetchCustomerConsultings } from "../../../business/customer/customer.service"; // 서버 함수 불러오기
 
 export default function Home() {
   const today = new Date();

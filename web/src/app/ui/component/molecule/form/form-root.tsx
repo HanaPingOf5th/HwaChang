@@ -17,6 +17,7 @@ export interface FormState {
 interface FormRootProps {
   id: string;
   onSuccess?: ()=>void;
+  onSubmit?: ()=>void;
   action: (prevState: FormState, formData: FormData) => Promise<FormState> | FormState;
   failMessageControl: 'alert' | 'toast';
 }
@@ -28,6 +29,7 @@ interface FormRootProps {
 export function FormRoot({
   id,
   action,
+  onSubmit,
   onSuccess,
   failMessageControl = 'alert',
   children,
@@ -68,7 +70,7 @@ export function FormRoot({
           <Callout variant={'destructive'} content={formState.message!} />
         </div>
       ) : null}
-      <form id={id} action={dispatch}>
+      <form id={id} action={dispatch} onSubmit={onSubmit}>
         {renderWithoutSubmitButton()}
         {/* {formSubmitButton} */}
       </form>

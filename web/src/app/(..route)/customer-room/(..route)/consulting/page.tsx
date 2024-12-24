@@ -15,6 +15,7 @@ import { getApplicationFormById } from "@/app/business/consulting-room/applicati
 import { useConsultingRoomStore } from "@/app/stores/consulting-room.provider";
 import { uploadFileToNcloud } from "@/app/utils/http/ncloudStorage";
 import { saveAs } from "file-saver";
+import { useRecorder } from "@/app/utils/web-socket/use-recorder";
 
 export default function Home() {
   // 현재 내 모습을 보여주는 MediaStream
@@ -31,9 +32,12 @@ export default function Home() {
   const [isForm, setIsForm] = useState<boolean>(false);
 
   // rtc
-  const { client, video } = useSocket();
+  const { client, video, remoteStream } = useSocket();
   const videoRef = useRef<HTMLVideoElement | null>(null);
   const [formData, setFormData] = useState<ApplicationProps | null>(null);
+
+  // 녹화
+  const { startRecord, stopRecord, download, getAudioPermission } = useRecorder(remoteStream);
 
   // (전역 상태 관리) consulting-room data
   const { customerIds, tellerId, updateCustomer, updateTeller } = useConsultingRoomStore(
@@ -139,7 +143,12 @@ export default function Home() {
       alert("녹음 파일 업로드 실패");
     }
   };
-
+  async function handleMediaControll() {
+    if (remoteStream) {
+      console.log(remoteStream);
+      await getAudioPermission();
+    }
+  }
   // 상단 인덱싱
   const [slideIndex, setSlideIndex] = useState(0);
 
@@ -168,7 +177,7 @@ export default function Home() {
     const getMedia = async () => {
       try {
         const mediaStream = await navigator.mediaDevices.getUserMedia({
-          video: { width: 800, height: 450, facingMode: "user" },
+          video: { width: 800, height: 450 },
         });
         setVideoStream(mediaStream);
         if (videoRef.current) {
@@ -295,6 +304,34 @@ export default function Home() {
       </div>
 
       <div className="flex justify-center space-x-4 mt-4">
+        <AchromaticButton
+          onClick={() => {
+            handleMediaControll();
+          }}
+        >
+          권한요청
+        </AchromaticButton>
+        <AchromaticButton
+          onClick={() => {
+            startRecord();
+          }}
+        >
+          녹화시작
+        </AchromaticButton>
+        <AchromaticButton
+          onClick={() => {
+            stopRecord();
+          }}
+        >
+          녹화종료
+        </AchromaticButton>
+        <AchromaticButton
+          onClick={() => {
+            download();
+          }}
+        >
+          다운로드
+        </AchromaticButton>
         <div className="flex justify-center gap-4">
           <AchromaticButton
             onClick={toggleAudio}

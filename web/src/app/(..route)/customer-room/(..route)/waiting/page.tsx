@@ -15,10 +15,23 @@ import { createMockMyProfile } from "../../mock/mock-profiles";
 import { ReviewDialog } from "@/app/ui/consulting-room/modal/review-dialog";
 import { SharingLinkDialog } from "@/app/ui/consulting-room/modal/share-link-dialog";
 import { VideoSettingDialog } from "@/app/ui/consulting-room/modal/video-setting";
+import { useSearchParams } from "next/navigation";
+import { addCustomerToQueue } from "@/app/business/waiting-room/waiting-queue.service";
 
 export default function Home() {
-  const [isWaitingDialogMounted, setIsWaitingDialogMounted] = useState(false);
+  const params = useSearchParams();
+  const ctg = params.get("categoryId");
+  const type = params.get("type");
 
+  // TODO: 대기열에 입장하는 API 연동
+  useEffect(()=>{
+    addCustomerToQueue(type, ctg).then((response)=>{
+      console.log(response);
+    })
+  }, [])
+
+  // TODO: 레디스에서 내 "userId+consulting"이라는 키로 consultingRoom 객체를 가져오는 API 연동
+  const [isWaitingDialogMounted, setIsWaitingDialogMounted] = useState(false);
 
   const videoRef = useRef<HTMLVideoElement | null>(null);
   const [videoStream, setVideoStream] = useState<MediaStream | null>(null);
@@ -32,7 +45,7 @@ export default function Home() {
     const getMedia = async () => {
       try {
         const mediaStream = await navigator.mediaDevices.getUserMedia({
-          video: { width: 800, height: 450, facingMode: "user" },
+          video: { width: 800, height: 450 },
         });
         setVideoStream(mediaStream);
         if (videoRef.current) {
@@ -65,7 +78,6 @@ export default function Home() {
   useEffect(() => {
     setIsWaitingDialogMounted(true);
   }, []);
-
 
   // To-Do: 내가 비디오를 끌 경우, 나의 비디오 상태를 상대방에게 보내는 api 추가: isCam: false
   const toggleVideo = () => {
