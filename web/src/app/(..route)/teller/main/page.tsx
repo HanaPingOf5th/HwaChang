@@ -5,53 +5,30 @@ import ApexChart from "@/app/ui/component/molecule/Chart/ApexChart";
 import RadialBarDynamic from "@/app/ui/component/molecule/Chart/RadialBarDynamic";
 import { FormSelectItem } from "@/app/ui/component/molecule/form/form-select-item";
 import FormSelect from "@/app/ui/component/molecule/form/form-select-index";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { MyChat } from "@/app/ui/consulting-room/chat-box";
+import { fetchTellerMain } from "@/app/business/teller/teller.service";
 
-const sampleData = [
-  {
-    id: "불만족 고객",
-    data: [{ x: "불만족 고객", y: 0.3 }],
-  },
-  {
-    id: "중립 고객",
-    data: [{ x: "중립 고객", y: 0.2 }],
-  },
-  {
-    id: "만족 고객",
-    data: [{ x: "만족 고객", y: 0.5 }],
-  },
-];
+interface NpsGraphData {
+  x: string;
+  y: number;
+}
 
-const sampleSeries = {
-  day: [
-    {
-      name: "전날",
-      data: [
-        10, 2, 35, 40, 50, 60, 70, 40, 2, 25, 70, 30, 70, 50, 9, 21, 56, 23, 54, 78, 12, 3, 77,
-      ],
-    },
-    {
-      name: "오늘",
-      data: [
-        15, 45, 35, 5, 25, 5, 15, 10, 2, 35, 40, 50, 60, 30, 1, 57, 86, 34, 23, 56, 53, 23, 45,
-      ],
-    },
-  ],
-  week: [
-    { name: "저번주", data: [100, 200, 150, 300, 400, 350, 450] },
-    { name: "이번주", data: [120, 180, 160, 290, 410, 340, 480] },
-  ],
-  month: [
-    { name: "저번달", data: Array(30).fill(120) },
-    { name: "이번달", data: Array(30).fill(150) },
-  ],
-};
-const categories = {
-  day: Array.from({ length: 24 }, (_, i) => `${i < 10 ? `0${i}` : i}시`),
-  week: ["월", "화", "수", "목", "금", "토", "일"],
-  month: Array.from({ length: 30 }, (_, i) => `${i + 1}`),
-};
+interface NpsData {
+  id: string;
+  data: Array<NpsGraphData>;
+}
+
+interface Log {
+  name: string;
+  data: Array<number>;
+}
+
+interface Series {
+  day: Array<Log>;
+  week: Array<Log>;
+  month: Array<Log>;
+}
 
 const colors = {
   day: ["#CFCFCF", "#FFBFBF"],
@@ -61,9 +38,99 @@ const colors = {
 
 export default function Main() {
   const [selectedType, setSelectedType] = useState<"day" | "week" | "month">("day");
+  const [categories, setCategories] = useState({
+    day: Array.from({ length: 24 }, (_, i) => `${i < 10 ? `0${i}` : i}시`),
+    week: ["월", "화", "수", "목", "금", "토", "일"],
+    month: Array.from({ length: 31 }, (_, i) => `${i + 1}`),
+  });
+
+  // NPS 데이터
+  const [npsData, setNpsData] = useState<Array<NpsData>>([]);
+  const [npsAvg, setNpsAvg] = useState<number>(0);
+  const [npsPromoter, setNpsPromoter] = useState<number>(0);
+
+  // 그래프 데이터
+  const [series, setSeries] = useState<Series>({
+    day: [],
+    week: [],
+    month: [],
+  });
+  // 리뷰 데이터
+  const [reviews, setReviews] = useState<Array<string>>([]);
+
   const handleSelectChange = (value: "day" | "week" | "month") => {
     setSelectedType(value);
   };
+
+  useEffect(() => {
+    async function getData() {
+      const response = await fetchTellerMain();
+      const data = response.data;
+      console.log(data);
+      setSeries({
+        ...series,
+        day: [
+          {
+            name: "어제",
+            data: data.result.hwachangLog.dailyLog.yesterday,
+          },
+          {
+            name: "오늘",
+            data: data.result.hwachangLog.dailyLog.today,
+          },
+        ],
+        week: [
+          {
+            name: "저번주",
+            data: data.result.hwachangLog.weeklyLog.lastWeek,
+          },
+          {
+            name: "이번주",
+            data: data.result.hwachangLog.weeklyLog.thisWeek,
+          },
+        ],
+        month: [
+          {
+            name: "이번달",
+            data: data.result.hwachangLog.monthlyLog.lastMonth,
+          },
+          {
+            name: "저번달",
+            data: data.result.hwachangLog.monthlyLog.thisMonth,
+          },
+        ],
+      });
+      setCategories({
+        ...categories,
+        month: Array.from(
+          {
+            length: Math.max(
+              data.result.hwachangLog.monthlyLog.thisMonth.length,
+              data.result.hwachangLog.monthlyLog.lastMonth.length,
+            ),
+          },
+          (_, i) => `${i + 1}`,
+        ),
+      });
+      setReviews(data.result.reviews);
+      const promoter = {
+        id: "추천 고객",
+        data: [{ x: "추천 고객", y: data.result.npsData.promoter / data.result.sumCustomer }],
+      };
+      const neutral = {
+        id: "중립 고객",
+        data: [{ x: "중립 고객", y: data.result.npsData.neutral / data.result.sumCustomer }],
+      };
+      const detractor = {
+        id: "비추천 고객",
+        data: [{ x: "비추천 고객", y: data.result.npsData.detractor / data.result.sumCustomer }],
+      };
+      setNpsData([...npsData, detractor, neutral, promoter]);
+      setNpsPromoter(data.result.npsData.promoter);
+    }
+    getData();
+  }, []);
+
   return (
     <main>
       <div className={`grid gap-12 grid-cols-3 px-10 py-5`}>
@@ -78,14 +145,14 @@ export default function Main() {
             </CardHeader>
             <CardContent>
               <div className="flex justify-items-center">
-                <RadialBarDynamic data={sampleData} />
+                <RadialBarDynamic data={npsData} />
                 <div className="m-auto ">
                   <Card className="bg-hwachang-hwachangcolor mx-2 shadow-hwachang-hwachangcolor">
                     <CardHeader className="font-semibold text-3xl text-white text-center">
-                      <p className="font-bold mb-1">임수진 대리 </p> NPS 점수
+                      <p className="font-bold mb-1">NPS 점수</p>
                     </CardHeader>
                     <CardContent className="font-black text-5xl text-white text-center pb-5">
-                      80점
+                      {npsAvg}점
                     </CardContent>
                   </Card>
                   <p className="text-xs text-hwachang-hwachangcolor font-semibold pt-2">NPS란 ?</p>
@@ -124,7 +191,7 @@ export default function Main() {
             <CardContent>
               <div className="pt-6">
                 <ApexChart
-                  series={sampleSeries[selectedType]}
+                  series={series[selectedType]}
                   xaxisCategories={categories[selectedType]}
                   colors={colors[selectedType]}
                 />
@@ -139,7 +206,7 @@ export default function Main() {
               내가 상담한 손님 중 ...
             </CardHeader>
             <CardContent className="text-2xl font-semibold text-hwachang-green1 flex justify-center items-end">
-              <p className="text-7xl font-bold text-hwachang-hwachangcolor">80명</p>이
+              <p className="text-7xl font-bold text-hwachang-hwachangcolor">{npsPromoter}명</p>이
             </CardContent>
             <CardHeader className="text-2xl font-semibold text-hwachang-green1 text-right pt-2">
               나를 또 만나고 싶어해요 !
@@ -151,12 +218,9 @@ export default function Main() {
             </CardHeader>
             <CardContent>
               <div className="overflow-y-auto p-2 h-[450px]">
-                <MyChat chat="친절하세요 ~ "/>
-                <MyChat chat="당신은 나의 별, 나의 태양, 나의 하늘, 나의 바다입니다. "/>
-                <MyChat chat="친절하세요 ~ "/>
-                <MyChat chat="당신은 나의 별, 나의 태양, 나의 하늘, 나의 바다입니다. "/>
-                <MyChat chat="친절하세요 ~ "/>
-                <MyChat chat="당신은 나의 별, 나의 태양, 나의 하늘, 나의 바다입니다. "/>
+                {reviews.map((review, index) => (
+                  <MyChat key={index} chat={review} />
+                ))}
               </div>
             </CardContent>
           </Card>
