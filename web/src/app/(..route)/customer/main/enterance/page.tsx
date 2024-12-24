@@ -2,27 +2,34 @@
 
 import { Card, CardContent, CardFooter, CardHeader } from "@/app/ui/component/molecule/card/card";
 import { useSearchParams, useRouter } from "next/navigation";
-import React, { Suspense } from "react";
-import { customerCategories, enterpriseCategories } from "./categories";
+import React, { Suspense, useEffect, useState } from "react";
+import { Category, ConsultingType, getCategories } from "@/app/business/categoty/category.service";
 
 function CategoryList() {
   const params = useSearchParams();
   const key = params.get("isIndividual");
   const router = useRouter();
+  const [categories, setCategories] = useState<Category[]>([])
+  const [pageTitle, setPageTitle] = useState<ConsultingType>(null);
 
-  let pageTitle: string;
-  let pageCategory;
+  useEffect(()=>{
+    if(key==="true"){
+      setPageTitle("PERSONAL")
+      getCategories("PERSONAL").then((response)=>{
+        setCategories(response.data as Category[])
+      })
+    }else{
+      setPageTitle("CORPORATE")
+      getCategories("CORPORATE").then((response)=>{
+        setCategories(response.data as Category[])
+      })
+    }
 
-  if (key === "true") {
-    pageTitle = "개인 금융";
-    pageCategory = customerCategories;
-  } else {
-    pageTitle = "기업 금융";
-    pageCategory = enterpriseCategories;
-  }
+  },[])
 
-  const Categories: JSX.Element[] = pageCategory.map((value, index) => {
-    const Icon = value.icon;
+
+  const Categories: JSX.Element[] = categories.map((value, index) => {
+    // const Icon = value.icon;
 
     return (
       <main key={index}>
@@ -30,15 +37,15 @@ function CategoryList() {
           <Card
             className="bg-hwachang-darkgreen hover:bg-hwachang-green text-white"
             onClick={() => {
-              router.push("/customer-room/waiting?categoryId=919f60c9-7adf-4740-8e56-7694b61bb2d2&type=0");
+              router.push(`/customer-room/waiting?categoryId=${value.categoryId}&type=${value.type==="PERSONAL"?0:1}`);
             }}
           >
             <CardHeader className="text-2xl">
-              <strong>{value.title}</strong>
+              <strong>{value.categoryName}</strong>
             </CardHeader>
             <CardContent className="" />
             <CardFooter className="items-end justify-end">
-              <Icon color="white" size="60" />
+              {/* <Icon color="white" size="60" /> */}
             </CardFooter>
           </Card>
         </div>

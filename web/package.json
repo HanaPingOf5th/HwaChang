@@ -11,6 +11,7 @@
     "build-storybook": "storybook build"
   },
   "dependencies": {
+    "@aws-sdk/client-s3": "^3.717.0",
     "@ffmpeg/ffmpeg": "^0.12.10",
     "@ffmpeg/types": "^0.12.2",
     "@ffmpeg/util": "^0.12.1",
