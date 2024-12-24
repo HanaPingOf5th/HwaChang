@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import AchromaticButton from "../component/atom/button/achromatic-button";
 import Image from "next/image";
 import Logo from "@/app/utils/public/Logo.png";
@@ -8,20 +8,43 @@ import ProfileImg from "@/app/utils/public/lalalping.png";
 import { Card } from "../component/molecule/card/card";
 import TellerNavLinks from "./teller-nav-link";
 import Link from "next/link";
+import { fetchTellerStatus, patchTellerStatus } from "@/app/business/teller/teller.service";
 
 const statusOptions = [
-  { name: "상담 가능", color: "bg-hwachang-active" },
+  { name: "상담가능", color: "bg-hwachang-active" },
   { name: "다른 업무중", color: "bg-[#FFFB01]" },
   { name: "상담 불가", color: "bg-[#FF2500]" },
-  { name: "업무 종료", color: "bg-[#8D8D8D]" },
 ];
 
+const statusColorMapper = {
+  상담가능: "bg-hwachang-active",
+  "다른 업무중": "bg-[#FFFB01]",
+  "상담 불가": "bg-[#FF2500]",
+};
+
 export default function TellerNav() {
-  const [currentStatus, setCurrentStatus] = useState("상담 가능");
-  const [currentColor, setCurrentColor] = useState("bg-hwachang-active");
-  const [isEditing, setIsEditing] = useState(false);
+  const [currentStatus, setCurrentStatus] = useState<string>("");
+  const [currentColor, setCurrentColor] = useState<string>("bg-gray-300");
+  const [isEditing, setIsEditing] = useState<boolean>(false);
   const [selectedStatus, setSelectedStatus] = useState(currentStatus);
   const [selectedColor, setSelectedColor] = useState(currentColor);
+
+  const [name, setName] = useState<string>("");
+  const [type, setType] = useState<string>("");
+  const [position, setPosition] = useState<string>("");
+
+  useEffect(() => {
+    async function getData() {
+      const response = await fetchTellerStatus();
+      setName(response.data.result.name);
+      setType(response.data.result.type);
+      setPosition(response.data.result.position);
+      setCurrentStatus(response.data.result.status);
+      setCurrentColor(statusColorMapper[response.data.result.status]);
+    }
+
+    getData();
+  });
 
   const handleStatusChange = () => {
     setIsEditing(!isEditing);
@@ -33,6 +56,16 @@ export default function TellerNav() {
   };
 
   const handleStatusConfirm = () => {
+    if (selectedStatus === "" || selectedStatus === currentStatus) return;
+    let value = "";
+    if (selectedStatus === "상담가능") {
+      value = "AVAILABLE";
+    } else if (selectedStatus === "다른 업무중") {
+      value = "BUSY";
+    } else if (selectedStatus === "상담 불가") {
+      value = "UNAVAILABLE";
+    }
+    patchTellerStatus(value);
     setCurrentStatus(selectedStatus);
     setCurrentColor(selectedColor);
     setIsEditing(false);
@@ -66,16 +99,15 @@ export default function TellerNav() {
           <div className="p-5 text-center">
             <div className="flex flex-col items-center mb-4">
               <div className="flex items-baseline space-x-2">
-                <p className="text-3xl font-semibold">임수진</p>
-                <p className="text-xl text-gray1">대리</p>
+                <p className="text-3xl font-semibold">{name}</p>
+                <p className="text-xl text-gray1">{position}</p>
               </div>
             </div>
 
             {/* 상태 변경 모드가 아닐 때만 표시 */}
             {!isEditing && (
               <>
-                <p className="text-hwachang-black text-lg">성수역점</p>
-                <p className="text-hwachang-black text-lg">개인 금융 (대출 상담)</p>
+                <p className="text-hwachang-black text-lg">{type}</p>
                 <div className="flex items-center justify-center space-x-2">
                   <div className={`w-3 h-3 rounded-full ${currentColor}`}></div>
                   <p className="text-hwachang-black text-lg">{currentStatus}</p>
@@ -86,16 +118,16 @@ export default function TellerNav() {
             {/* 상태 변경 모드일 때 */}
             {isEditing && (
               <div className="flex flex-col items-center space-y-2">
-                {statusOptions.map((status) => (
+                {statusOptions.map((item) => (
                   <button
-                    key={status.name}
-                    onClick={() => handleStatusSelect(status.name, status.color)}
+                    key={item.name}
+                    onClick={() => handleStatusSelect(item.name, item.color)}
                     className={`flex items-center justify-center w-full px-4 rounded-lg ${
-                      selectedStatus === status.name ? "font-bold" : "font-normal"
+                      selectedStatus === item.name ? "font-bold" : "font-normal"
                     }`}
                   >
-                    <div className={`w-3 h-3 rounded-full mr-2 ${status.color}`}></div>
-                    <span>{status.name}</span>
+                    <div className={`w-3 h-3 rounded-full mr-2 ${item.color}`}></div>
+                    <span>{item.name}</span>
                   </button>
                 ))}
               </div>

@@ -1,18 +1,19 @@
 "use server";
-import { instance } from "@/app/utils/http";
+import { APIResponseType, instance } from "@/app/utils/http";
 import { API_PATH } from "@/app/utils/http/api-query";
+import { boolean } from "zod";
 
-export interface DailyLog {
+interface DailyLog {
   yesterday: Array<number>;
   today: Array<number>;
 }
 
-export interface WeeklyLog {
+interface WeeklyLog {
   lastWeek: Array<number>;
   thisWeek: Array<number>;
 }
 
-export interface MonthlyLog {
+interface MonthlyLog {
   lastMonth: Array<number>;
   thisMonth: Array<number>;
 }
@@ -29,7 +30,7 @@ interface NpsData {
   detractor: number;
 }
 
-interface TellerMainDataResultAPIResponseType {
+interface TellerMainDataResultType {
   avgScore: number;
   hwachangLog: HwachangLog;
   reviews: Array<string>;
@@ -41,21 +42,81 @@ interface TellerMainDataAPIResponseType {
   code: string;
   isSuccess: boolean;
   message: string;
-  result: TellerMainDataResultAPIResponseType;
+  result: TellerMainDataResultType;
 }
 
-export interface TellerMainAPIResponseType {
+export interface TellerAPIResponseType<T> {
   isSuccess: boolean;
   isFailure: boolean;
-  data: TellerMainDataAPIResponseType;
+  data: T;
 }
 
-export async function fetchTellerMain(): Promise<TellerMainAPIResponseType> {
+export async function fetchTellerMain(): Promise<
+  TellerAPIResponseType<TellerMainDataAPIResponseType>
+> {
   const response = await instance.get(`${API_PATH}/teller/main`);
   console.log(response);
-  return {
-    isSuccess: true,
-    isFailure: false,
-    data: response.data,
-  };
+  if (response.status === 200) {
+    return {
+      isSuccess: true,
+      isFailure: false,
+      data: response.data,
+    };
+  } else {
+    return {
+      isSuccess: false,
+      isFailure: true,
+      data: null,
+    };
+  }
+}
+
+interface TellerStatusResponseType {
+  name: string;
+  position: string;
+  type: string;
+  status: string;
+}
+
+interface TellerResponseWrapper<T> {
+  code: string;
+  isSucess: boolean;
+  message: string;
+  result: T;
+}
+
+export async function fetchTellerStatus(): Promise<
+  TellerAPIResponseType<TellerResponseWrapper<TellerStatusResponseType>>
+> {
+  const response = await instance.get(`${API_PATH}/teller/mypage`);
+  if (response.status === 200) {
+    return {
+      isSuccess: true,
+      isFailure: false,
+      data: response.data,
+    };
+  } else {
+    return {
+      isSuccess: false,
+      isFailure: true,
+      data: null,
+    };
+  }
+}
+
+export async function patchTellerStatus(status: string): Promise<APIResponseType> {
+  const response = await instance.patch(`${API_PATH}/teller/status`, { status });
+  if (response.status === 200) {
+    return {
+      isSuccess: true,
+      isFailure: false,
+      data: null,
+    };
+  } else {
+    return {
+      isSuccess: false,
+      isFailure: true,
+      data: null,
+    };
+  }
 }

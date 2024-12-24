@@ -149,7 +149,7 @@ export default function Main() {
                 <div className="m-auto ">
                   <Card className="bg-hwachang-hwachangcolor mx-2 shadow-hwachang-hwachangcolor">
                     <CardHeader className="font-semibold text-3xl text-white text-center">
-                      <p className="font-bold mb-1">임수진 대리 </p> NPS 점수
+                      <p className="font-bold mb-1">NPS 점수</p>
                     </CardHeader>
                     <CardContent className="font-black text-5xl text-white text-center pb-5">
                       {npsAvg}점
