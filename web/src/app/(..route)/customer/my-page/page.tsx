@@ -8,9 +8,13 @@ import { FormTextInput } from "@/app/ui/component/molecule/form/form-textinput";
 import { FormSubmitButton } from "@/app/ui/component/molecule/form/form-submit-button";
 import { DateSelector } from "./components/date-selector";
 import { Card } from "@/app/ui/component/molecule/card/card";
-import { ConsultingRecord } from "./mock/mock-records"; // 필요한 타입 가져오기
 import Image from "next/image";
 import { StaticImport } from "next/dist/shared/lib/get-img-props";
+import {
+  ConsultingDetailResponse,
+  fetchConsultingDetail,
+} from "@/app/business/auth/customer/customer-consulting-detail";
+
 import { fetchCustomerConsultings } from "../../../business/customer/customer.service"; // 서버 함수 불러오기
 
 export default function Home() {
@@ -18,112 +22,66 @@ export default function Home() {
   const threeMonthsAgo = new Date();
   threeMonthsAgo.setMonth(today.getMonth() - 3);
 
-  // 날짜 상태와 검색값 상태 관리
   const [startDate, setStartDate] = useState<string>(threeMonthsAgo.toISOString().slice(0, 10));
   const [endDate, setEndDate] = useState<string>(today.toISOString().slice(0, 10));
   const [searchValue, setSearchValue] = useState<string>("");
-  const [records, setRecords] = useState<ConsultingRecord[]>([]);
+  const [records, setRecords] = useState<ConsultingResponse[]>([]);
   const [isSummaryVisible, setIsSummaryVisible] = useState(false);
   const [isFullScreen, setIsFullScreen] = useState(false);
-  const [selectedRecord, setSelectedRecord] = useState<ConsultingRecord | null>(null);
+  const [selectedRecord, setSelectedRecord] = useState<ConsultingDetailResponse | null>(null);
 
-  const handleOpenSummary = (record: ConsultingRecord) => {
-    setSelectedRecord(record);
-    setIsSummaryVisible(true);
-    console.log(isFullScreen);
-    console.log(isSummaryVisible);
+  const handleOpenSummary = async (consultingRoomId: string) => {
+    try {
+      const response = await fetchConsultingDetail(consultingRoomId);
+      if (response.isSuccess) {
+        setSelectedRecord(response.data);
+        setIsSummaryVisible(true);
+      } else {
+        console.error("Failed to fetch consulting detail");
+      }
+    } catch (error) {
+      console.error("Error fetching consulting detail:", error);
+    }
   };
 
   const handleCloseSummary = () => {
     setIsSummaryVisible(false);
+    setSelectedRecord(null);
     setIsFullScreen(false);
-    console.log(isFullScreen);
-    console.log(isSummaryVisible);
   };
 
   const handleToggleFullScreen = () => {
-    setIsFullScreen((prev) => !prev); // 전체화면 토글
-    console.log(isFullScreen);
-    console.log(isSummaryVisible);
+    setIsFullScreen((prev) => !prev);
   };
 
   const formatDate = (date: string) => {
     const formattedDate = new Date(date);
-    return formattedDate.toISOString().split("T")[0]; // "2024-12-19" 형식으로 변환
+    return formattedDate.toISOString().split("T")[0];
   };
 
-  const RecordCards =
-    records.length === 0 ? (
-      <div className="flex justify-center items-center h-[300px]">
-        {" "}
-        <p className="text-center text-gray-500">상담 기록이 없습니다.</p>
-      </div>
-    ) : (
-      records.map((value, index) => (
-        <main key={index}>
-          <Card className="grid grid-cols-7 gap-3 h-20">
-            <div className="flex items-center justify-center mb-2 mt-2 text-sm md:text-sm lg:text-xl">
-              <Image
-                src={value.image as unknown as StaticImport}
-                alt="프로필 사진"
-                className="object-cover w-10 h-10 rounded-full border-1 border-white shadow-lg"
-              />
-            </div>
-            <div className="flex items-center justify-center text-sm md:text-sm lg:text-xl">
-              {value.summary}
-            </div>
-            <div className="flex items-center justify-center text-sm md:text-sm lg:text-xl">
-              {value.tellerName}
-            </div>
-            <div className="flex justify-center items-center w-full h-full">
-              <div
-                className={`flex justify-center items-center w-[80px] h-[40px] 
-    ${
-      value.type === "개인금융"
-        ? "bg-[#CADCFF] text-[#2C71F6] rounded-md"
-        : value.type === "기업금융"
-          ? "bg-[#FFCACA] text-[#F62C2C] rounded-md"
-          : ""
-    }`}
-              >
-                {value.type === "개인금융"
-                  ? "개인"
-                  : value.type === "기업금융"
-                    ? "기업"
-                    : value.type}
-              </div>
-            </div>
-
-            <div className="flex items-center justify-center text-sm md:text-sm lg:text-xl">
-              {value.category} {/* typo 수정: 'cartegory' -> 'category' */}
-            </div>
-            <div className="flex items-center justify-center text-sm md:text-sm lg:text-xl">
-              {formatDate(value.date)} {/* 날짜 포맷 변환 */}
-            </div>
-            <div className="flex items-center justify-center text-sm md:text-sm lg:text-xl">
-              <button onClick={() => handleOpenSummary(value)}>{"->"}</button>
-            </div>
-          </Card>
-        </main>
-      ))
-    );
-
+  // 초기 렌더링 시 모든 데이터를 불러오기
   useEffect(() => {
-    const payload = {
-      summaryKeyword: searchValue,
-      startDate,
-      endDate,
+    const fetchRecords = async () => {
+      const payload = {
+        summaryKeyword: searchValue,
+        startDate,
+        endDate,
+      };
+
+      const response = await fetchCustomerConsultings(payload);
+      if (response.isSuccess) {
+        setRecords(response.data);
+      } else {
+        console.error("Failed to fetch consulting records");
+      }
     };
 
-    fetchCustomerConsultings(payload).then((response) => {
-      console.log(response.data);
-      setRecords(response.data as ConsultingRecord[]);
-    });
+    fetchRecords();
   }, [startDate, endDate, searchValue]);
 
   const handleSearch = (prevState: FormState, formData: FormData) => {
     const value = formData.get("search") as string;
-    setSearchValue(value); // 상태만 업데이트
+    setSearchValue(value);
     return {
       isSuccess: true,
       isFailure: false,
@@ -131,6 +89,54 @@ export default function Home() {
       validationError: {},
     };
   };
+
+  const RecordCards = records.map((value, index) => {
+    // 주요 주제 추출 로직
+    const extractMainTopic = (summary: string) => {
+      if (!summary) return "주요 주제 없음"; // summary가 없을 경우 기본값
+      const startIndex = summary.indexOf("주요주제 :");
+      if (startIndex === -1) return "주요 주제 없음"; // "주요주제 :"가 없을 경우 기본값
+      const endIndex = summary.indexOf("-", startIndex);
+      return endIndex !== -1
+        ? summary.slice(startIndex + 6, endIndex).trim() // "주요주제 :" 이후와 "-" 사이 텍스트 추출
+        : summary.slice(startIndex + 6).trim(); // "-"가 없는 경우 끝까지 추출
+    };
+
+    const mainTopic = extractMainTopic(value.summary);
+
+    return (
+      <main key={index}>
+        <Card className="grid grid-cols-7 gap-3 h-20">
+          <div className="flex items-center justify-center mb-2 mt-2 text-sm md:text-sm lg:text-xl">
+            <Image
+              src={value.image as StaticImport}
+              alt="프로필 사진"
+              className="object-cover w-10 h-10 rounded-full border-1 border-white shadow-lg"
+            />
+          </div>
+          <div className="flex items-center justify-center text-sm md:text-sm lg:text-xl">
+            {mainTopic} {/* 추출된 주요 주제 표시 */}
+          </div>
+          <div className="flex items-center justify-center text-sm md:text-sm lg:text-xl">
+            {value.tellerName}
+          </div>
+          <div className="flex items-center justify-center text-sm md:text-sm lg:text-xl">
+            {value.type}
+          </div>
+          <div className="flex items-center justify-center text-sm md:text-sm lg:text-xl">
+            {value.category}
+          </div>
+          <div className="flex items-center justify-center text-sm md:text-sm lg:text-xl">
+            {formatDate(value.date)}
+          </div>
+          <div className="flex items-center justify-center text-sm md:text-sm lg:text-xl">
+            <button onClick={() => handleOpenSummary(value.consultingRoomId)}>{"->"}</button>
+          </div>
+        </Card>
+      </main>
+    );
+  });
+
   return (
     <div className="flex flex-col">
       <div className="mb-5">
@@ -187,7 +193,11 @@ export default function Home() {
                 &lt;&gt;
               </button>
             </div>
-            <Summary record={selectedRecord as ConsultingRecord} />
+            <Summary
+              detail={selectedRecord}
+              onClose={handleCloseSummary}
+              onExpand={handleToggleFullScreen}
+            />
           </div>
         )}
       </div>
