@@ -8,6 +8,7 @@ import green_eclipse from "@/app/utils/public/green_eclipse.svg";
 import Image from "next/image";
 import { useEffect, useState } from "react";
 import { fetchCustomerMyInfo } from "@/app/business/auth/customer/customer-auth-myinfo";
+import { useCustomerStore } from "@/app/stores/customerStore";
 
 export default function Home() {
   const [individualWaitTime, setIndividualWaitTime] = useState<number>(3);
@@ -15,6 +16,7 @@ export default function Home() {
   const [userInfo, setUserInfo] = useState<any>(null);
   const [error, setError] = useState<string | null>(null);
   const congestionTime: number = 10;
+  const { setCustomerName } = useCustomerStore();
 
   useEffect(() => {
     async function getUserInfo() {
@@ -23,6 +25,7 @@ export default function Home() {
       if (response.isSuccess) {
         console.log(response.data);
         setUserInfo(response.data);
+        setCustomerName(response.data.name);
         setIndividualWaitTime(response.data.individualWaitTime || 3);
         setCompanyWaitTime(response.data.companyWaitTime || 11);
       } else {

@@ -10,9 +10,10 @@ import { FormTextInput } from "../../component/molecule/form/form-textinput";
 import AchromaticButton from "../../component/atom/button/achromatic-button";
 import { LuSendHorizonal } from "react-icons/lu";
 import { sendPrechat } from "@/app/business/waiting-room/pre-chat.service";
+import { useCustomerStore } from "@/app/stores/customerStore";
 
 export default function CustomerWaitingChatting() {
-  const userName = "윤영헌";
+  const { customerName } = useCustomerStore();
   const tellerName = "김하나 행원";
   const [myMessages, setMyMessages] = useState<string[]>([]);
   const [inputValue, setInputValue] = useState<string>("");
@@ -22,8 +23,8 @@ export default function CustomerWaitingChatting() {
     const value: string = formData.get("chat") as string;
 
     console.log(value);
-    
-    sendPrechat(value).then((value)=>{
+
+    sendPrechat(value).then((value) => {
       console.log(value);
     });
 
@@ -56,7 +57,7 @@ export default function CustomerWaitingChatting() {
         <Card className="rounded-none rounded-b-lg">
           <CardHeader className="space-y-5">
             <div className="bg-hwachang-gray6 rounded-3xl px-10 py-3 font-medium text-xs text-center text-slate-800">
-              {`${userName}님 반갑습니다. 상담원과 매칭되기전 궁금하신 정보를 미리 입력해주세요.`}
+              {`${customerName || "고객"}님 반갑습니다. 상담원과 매칭되기전 궁금하신 정보를 미리 입력해주세요.`}
             </div>
             {
               <div className="space-y-5">
@@ -69,7 +70,7 @@ export default function CustomerWaitingChatting() {
           </CardHeader>
           <CardContent className="flex-grow overflow-y-auto h-96 p-4" ref={chatContainerRef}>
             <div className="flex flex-col space-y-2">
-              <OtherChat name={`${tellerName}`} chat={`${userName}님 반갑습니다^^`}/>
+              <OtherChat name={`${tellerName}`} chat={`${customerName || "고객"}님 반갑습니다^^`} />
               {myMessages.map((value, index) => (
                 <main key={index}>
                   <MyChat chat={value}></MyChat>
@@ -87,7 +88,9 @@ export default function CustomerWaitingChatting() {
                 value={inputValue}
                 onValueChange={(value) => setInputValue(value)}
               />
-              <AchromaticButton className={`w-full ${inputValue.trim() !== "" ? "bg-hwachang-hwachangcolor" : "bg-hwachang-gray4"}`}>
+              <AchromaticButton
+                className={`w-full ${inputValue.trim() !== "" ? "bg-hwachang-hwachangcolor" : "bg-hwachang-gray4"}`}
+              >
                 <LuSendHorizonal size="20" />
               </AchromaticButton>
             </CardContent>
