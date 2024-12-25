@@ -34,6 +34,7 @@ export default function DocumentSearch() {
   useEffect(() => {
     if (!selectedCategory) return;
     getDocumentsByCategoryId(selectedCategory.categoryId).then((response) => {
+      console.log(selectedCategory.categoryId)
       setDocuments(response.data as Document[]);
     });
   }, [selectedCategory]);

@@ -18,3 +18,13 @@ export async function getDocumentsByCategoryId(categoryId: string):Promise<APIRe
     data: response.data as Document[]
   }
 }
+
+export async function getDocumentsByKeyword(keyword: string):Promise<APIResponseType> {
+  const response = await instance.get(`${API_PATH}/document?keyword=${keyword}`);
+
+  return {
+    isSuccess: true,
+    isFailure: false,
+    data: response.data as Document[]
+  }
+}

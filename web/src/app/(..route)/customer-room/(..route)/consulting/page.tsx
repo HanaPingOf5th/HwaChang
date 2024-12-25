@@ -220,7 +220,7 @@ export default function Home() {
         <AchromaticButton onClick={()=>{handleMediaControll()}}>권한요청</AchromaticButton>
         <AchromaticButton onClick={()=>{startRecord()}}>녹화시작</AchromaticButton>
         <AchromaticButton onClick={()=>{stopRecord()}}>녹화종료</AchromaticButton>
-        <AchromaticButton onClick={()=>{download()}}>다운로드</AchromaticButton>
+        <AchromaticButton onClick={async()=>{await download()}}>다운로드</AchromaticButton>
         <div className="flex justify-center gap-4">
           <AchromaticButton
             onClick={toggleAudio}

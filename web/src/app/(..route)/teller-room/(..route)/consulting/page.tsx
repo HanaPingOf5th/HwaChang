@@ -14,6 +14,7 @@ import { Video, VideoView } from "@/app/(..route)/customer-room/components/video
 import { createMockMyProfile, mockOtherProfile, mockProfile } from "@/app/(..route)/customer-room/mock/mock-profiles";
 import { ReviewDialog } from "@/app/ui/consulting-room/modal/review-dialog";
 import { SharingLinkDialog } from "@/app/ui/consulting-room/modal/share-link-dialog";
+import { useConsultingRoomStore } from "@/app/stores/consulting-room.provider";
 
 export default function Home() {
   const [videoStream, setVideoStream] = useState<MediaStream | null>(null);
@@ -27,6 +28,8 @@ export default function Home() {
 
   const { client, video, startStream } = useSocket();
   const videoRef = useRef<HTMLVideoElement | null>(null);
+
+  const consultingRoomId = useConsultingRoomStore((state)=>state.consultingRoomId);
 
   const handlePrev = () => {
     if (slideIndex > 0) {
@@ -110,6 +113,12 @@ export default function Home() {
       };
     }
   }, [client]);
+
+  useEffect(()=>{
+    setTimeout(()=>{
+      console.log(consultingRoomId)
+    },1000)
+  }, [])
   
 
   const handleStartStream = async () => {
