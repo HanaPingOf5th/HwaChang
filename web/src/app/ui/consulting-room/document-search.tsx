@@ -5,10 +5,12 @@ import TextInput from "../component/atom/text-input/text-input";
 import { IoSearch, IoChevronBack, IoChevronForward } from "react-icons/io5";
 import Image from "next/image"
 import DocumentImage from "@/app/utils/public/DocumentImage.png";
-import { Category, getCategories } from "@/app/business/categoty/category.service";
+import { Category, ConsultingType, getCategories } from "@/app/business/categoty/category.service";
 import { getDocumentsByCategoryId, Document } from "@/app/business/consulting-room/document.service";
 
-export default function DocumentSearch() {
+interface DocumentSearchProps {type: ConsultingType}
+
+export default function DocumentSearch({type}:DocumentSearchProps) {
   const [categories, setCategories] = useState<Category[]>([]);
   const [documents, setDocuments] = useState<Document[]>([]);
   const [searchText, setSearchText] = useState("");
@@ -24,7 +26,7 @@ export default function DocumentSearch() {
   );
 
   useEffect(() => {
-    getCategories().then((response) => {
+    getCategories(type).then((response) => {
       const categoriesData = response.data as Category[];
       setCategories(categoriesData);
       setSelectedCategory(categoriesData[0]);

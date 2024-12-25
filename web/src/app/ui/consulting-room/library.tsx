@@ -6,9 +6,10 @@ import { IoSearch, IoChevronBack, IoChevronForward } from "react-icons/io5";
 import Image from "next/image"
 import Pen from "@/app/utils/public/Pen.png"
 import { ApplicationFormInfoType, getApplicationFormById, getApplicationFormInfoListByCategoryId } from "@/app/business/consulting-room/application-form.service";
-import { Category, getCategories } from "@/app/business/categoty/category.service";
+import { Category, ConsultingType, getCategories } from "@/app/business/categoty/category.service";
+interface LibraryProps{type: ConsultingType}
 
-export default function Library() {
+export default function Library({type}:LibraryProps) {
   const [categories, setCategories] = useState<Category[]>([]);
   const [applicationForms, setApplicationForms] = useState<ApplicationFormInfoType[]>([]);
   const [searchText, setSearchText] = useState("");
@@ -24,7 +25,7 @@ export default function Library() {
   );
 
   useEffect(() => {
-    getCategories().then((response) => {
+    getCategories(type).then((response) => {
       const categoriesData = response.data as Category[];
       setCategories(categoriesData);
       setSelectedCategory(categoriesData[0]);

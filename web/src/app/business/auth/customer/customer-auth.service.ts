@@ -22,6 +22,7 @@ export async function authenticateCustomer(prevState: FormState, formData: FormD
 
   const body:LogInRequestBody = {...validatedFields.data};
   try {
+    console.log(`${API_PATH}/customer/login`)
     const response = await fetch(`${API_PATH}/customer/login`, {
       method: "POST",
       headers: {
