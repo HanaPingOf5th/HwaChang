@@ -14,7 +14,7 @@ export function ReviewDialog(){
         상담종료
       </AchromaticButton>
     </DialogTrigger>
-    <DialogContent>
+    <DialogContent className="max-w-2xl">
       <Review />
     </DialogContent>
     </Dialog>
@@ -66,7 +66,7 @@ function Review(){
         
         <Form id="review" action={sendReview} onSuccess={() => setIsSubmitted(false)} failMessageControl="alert">
           <CardContent>
-            <div className="grid grid-cols-5 gap-4">
+            <div className="grid grid-cols-10 max-sm:grid-cols-5 gap-4">
               {scores}
             </div>
             <input type="hidden" name="nps" id="nps-score" value={currentScore} />
