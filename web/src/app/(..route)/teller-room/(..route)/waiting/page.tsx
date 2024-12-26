@@ -21,7 +21,7 @@ export default function Home() {
   const [videoStream, setVideoStream] = useState<MediaStream | null>(null);
   const [isVideoEnabled, setIsVideoEnabled] = useState<boolean>(true);
   const [isAudioEnabled, setIsAudioEnabled] = useState<boolean>(true);
-  const { consultingRoomId, customerIds, tellerId, updateCustomer, updateTeller, updateConsultingRoomId } = useConsultingRoomStore(
+  const { consultingRoomId, customerId, tellerId, customerName, updateCustomer, updateTeller, updateConsultingRoomId, updateCustomerName } = useConsultingRoomStore(
     (state) => state,
   );
 
@@ -75,8 +75,10 @@ export default function Home() {
           const consultingRoomId: string = roomInfo.consultingRoomId;
           const customerId: string = roomInfo.customerId;
           const tellerId: string = roomInfo.tellerId;
+          const customerName: string = roomInfo.userName;
 
           updateConsultingRoomId(consultingRoomId)
+          updateCustomerName(customerName)
           updateCustomer(customerId)
           updateTeller(tellerId)
         })
@@ -84,8 +86,8 @@ export default function Home() {
   },[])
 
   useEffect(()=>{
-    console.log(consultingRoomId, customerIds, tellerId )
-  },[consultingRoomId, customerIds, tellerId])
+    console.log(consultingRoomId, customerId, tellerId, 'username: ',customerName )
+  },[consultingRoomId, customerId, tellerId])
 
   // To-Do: 내가 비디오를 끌 경우, 나의 비디오 상태를 상대방에게 보내는 api 추가: isCam: false
   const toggleVideo = () => {

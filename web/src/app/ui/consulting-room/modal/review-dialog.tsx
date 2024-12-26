@@ -13,7 +13,7 @@ import {
 
 export function ReviewDialog({ stopAndUpload }: { stopAndUpload: () => Promise<string> }) {
   const consultingRoomStore = createConsultingRoomStore();
-  const { tellerId, consultingRoomId, customerIds } = consultingRoomStore.getState();
+  const { tellerId, consultingRoomId, customerId } = consultingRoomStore.getState();
   const categoryId = useConsultingRoomStore((state) => state.categoryId);
   const recordChat = useConsultingRoomStore((state) => state.recordChat);
 
@@ -28,7 +28,7 @@ export function ReviewDialog({ stopAndUpload }: { stopAndUpload: () => Promise<s
         consultingRoomId,
         tellerId,
         categoryId,
-        customerIds,
+        customerId,
         recordChat,
         voiceUrl,
         time,

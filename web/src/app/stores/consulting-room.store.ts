@@ -5,6 +5,7 @@ export interface ConsultingRoomActions{
   updateCustomer: (customerId: string)=>void
   updateTeller: (tellerId: string)=>void
   updateConsultingRoomId: (consultingRoomId: string) => void
+  updateCustomerName: (customerName: string)=>void
 
 }
 
@@ -14,7 +15,7 @@ export const initConsultingRoomStore = (): ConsultingRoom => {
   return {
     consultingRoomId: null,
     tellerId: null,
-    customerIds: [],
+    customerId: null,
     categoryId: null,
     originalText: null,
     summary: null,
@@ -28,7 +29,7 @@ export const initConsultingRoomStore = (): ConsultingRoom => {
 export const defaultConsultingRoom: ConsultingRoom = {
   consultingRoomId: null,
   tellerId: null,
-  customerIds: [],
+  customerId: null,
   categoryId: null,
   originalText: null,
   summary: null,
@@ -46,10 +47,9 @@ export const createConsultingRoomStore = (
       (set) => ({
         ...init,
         updateCustomer: (customerId: string) =>
-          set((state) => {
-            const newCustomerIds = [...state.customerIds, customerId];
-            return { customerIds: newCustomerIds };
-          }),
+          set(() => ({
+            customerId: customerId
+          })),
         updateTeller: (tellerId: string) =>
           set(() => ({
             tellerId: tellerId,
@@ -58,11 +58,15 @@ export const createConsultingRoomStore = (
           set(() => ({
             consultingRoomId: consultingRoomId,
           })),
+        updateCustomerName: (customerName: string) =>
+          set(()=>({
+            customerName: customerName
+          }))
       }),
       {
         name: 'consulting-room-store',
         partialize: (state) => ({
-          customerIds: state.customerIds,
+          customerId: state.customerId,
           tellerId: state.tellerId,
           consultingRoomId: state.consultingRoomId,
         }),
