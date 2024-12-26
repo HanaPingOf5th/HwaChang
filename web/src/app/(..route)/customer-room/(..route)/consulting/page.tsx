@@ -69,15 +69,6 @@ export default function Home() {
     }
   };
 
-  const handleStopAndUpload = async () => {
-    try {
-      await stopAndUpload();
-      alert("녹음 종료 및 업로드 성공!");
-    } catch (error) {
-      console.error("녹음 종료 및 업로드 중 에러 발생:", error);
-      alert("녹음 파일 업로드에 실패했습니다.");
-    }
-  };
   const videoViews: JSX.Element[] = Array(5).fill(
     <VideoView
       isTop={true}
@@ -127,13 +118,15 @@ export default function Home() {
     };
 
     setupRecording();
+  }, [isMediaReady, remoteStream]);
 
+  useEffect(() => {
     return () => {
       if (videoStream) {
         videoStream.getTracks().forEach((track) => track.stop());
       }
     };
-  }, [isMediaReady, remoteStream]);
+  }, [videoStream]);
 
   useEffect(() => {
     if (client) {
