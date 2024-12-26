@@ -4,44 +4,39 @@ import { MdSummarize } from "react-icons/md";
 import { IoDocumentTextSharp } from "react-icons/io5";
 import { Card, CardHeader, CardTitle, CardContent } from "@/app/ui/component/molecule/card/card";
 import { MyChat, OtherChat } from "@/app/ui/consulting-room/chat-box";
-import { ConsultingRecord } from "../mock/mock-records";
-import { AISummaryData, SummaryData } from "../mock/mock-summary";
 import FormSelect from "@/app/ui/component/molecule/form/form-select-index";
 import { FormSelectItem } from "@/app/ui/component/molecule/form/form-select-item";
 import { Tag } from "@/app/ui/component/atom/tag/name-tag";
 import { AudioPlayer } from "./audio-player";
 
-interface SSTContent {
-  speaker: string;
-  text: string;
-  time: string;
-}
-interface SttSummary {
-  id: number;
-  title: string;
-  speakers: string[];
-  contents: SSTContent[];
-  date: string;
-  mainTopics: string[];
-}
-// Todo : 네이버 클로바 노트 api 응답값에 따라 변동 가능
-interface AISummary {
-  id: number;
+interface ConsultingDetail {
   summary: string;
-  contents: string[];
+  originalText: {
+    speaker: string;
+    startTime: string;
+    endTime: string;
+    text: string;
+  }[];
+  tellerName: string;
+  type: string;
+  category: string;
   date: string;
-  mainTopics: string[];
 }
 
-export default function Summary({ record }: { record: ConsultingRecord }) {
+interface SummaryProps {
+  detail: ConsultingDetail;
+  onClose: () => void;
+  onExpand: () => void;
+}
+
+export default function Summary({ detail, onClose, onExpand }: SummaryProps) {
   const [selectedSpeaker, setSelectedSpeaker] = useState<string>("전체");
-  const [sttSummaries] = useState<SttSummary | null>(SummaryData);
-  const [aiSummaries] = useState<AISummary | null>(AISummaryData);
 
   const filterStyles = (type: string) => {
     const className = `flex flex-row justify-center items-center p-1 gap-2.5 w-[50px] h-[31px] ${type === "개인" ? "bg-[#CADCFF] text-[#2C71F6]" : type === "기업" ? "bg-[#FFCACA] text-[#F62C2C]" : ""} rounded-sm`;
     return className;
   };
+
   const renderChat = (chat: { speaker: string; text: string }) => {
     if (chat.speaker === selectedSpeaker) {
       return <MyChat chat={chat.text} />;
@@ -56,31 +51,36 @@ export default function Summary({ record }: { record: ConsultingRecord }) {
     return formattedDate.toISOString().split("T")[0]; // "2024-12-19" 형식으로 변환
   };
 
-  if (!record) return null;
+  const mainTopic =
+    detail.summary.split("주요주제 :")[1]?.split("-")[0]?.trim() || "주요 주제 없음";
+  const summaryLines = detail.summary
+    .split("-")
+    .slice(1)
+    .map((line) => line.trim())
+    .filter((line) => line.length > 0);
 
   return (
     <main>
       <h1 className="text-4xl font-bold text-gray-800 mt-4">상담 요약 페이지</h1>
-
       <div className="mt-6">
         <div className="grid gap-4 text-lg text-gray-500 font-pretendard">
           <div className="flex items-center">
             <span className="w-40">유형:</span>
-            <span className={filterStyles(record.type === "개인금융" ? "개인" : "기업")}>
-              {record.type === "개인금융" ? "개인" : "기업"}
+            <span className={filterStyles(detail.type === "개인금융" ? "개인" : "기업")}>
+              {detail.type === "개인금융" ? "개인" : "기업"}
             </span>{" "}
           </div>
           <div className="flex items-center">
             <span className="w-40">카테고리:</span>
-            <span className="text-black">{record.category}</span>
+            <span className="text-black">{detail.category}</span>
           </div>
           <div className="flex items-center">
             <span className="w-40">담당자:</span>
-            <span className="text-black">{record.tellerName}</span>
+            <span className="text-black">{detail.tellerName}</span>
           </div>
           <div className="flex items-center">
             <span className="w-40">화창 날짜:</span>
-            <span className="text-black">{formatDate(record.date)}</span>
+            <span className="text-black">{formatDate(detail.date)}</span>
           </div>
         </div>
       </div>
@@ -97,26 +97,31 @@ export default function Summary({ record }: { record: ConsultingRecord }) {
         <CardContent className="flex justify-end">
           <div className="w-1/4">
             <FormSelect placeholder={"발화자 선택"}>
-              {sttSummaries?.speakers.map((value, index) => {
-                return (
+              <FormSelectItem
+                value="전체"
+                placeholder="전체"
+                onSelect={() => setSelectedSpeaker("전체")}
+              />
+              {Array.from(new Set(detail.originalText.map((text) => text.speaker))).map(
+                (speaker, index) => (
                   <FormSelectItem
                     key={index}
-                    value={value}
-                    placeholder={value}
-                    onSelect={() => setSelectedSpeaker(value)}
+                    value={speaker}
+                    placeholder={speaker}
+                    onSelect={() => setSelectedSpeaker(speaker)}
                   />
-                );
-              })}
+                ),
+              )}
             </FormSelect>
           </div>
         </CardContent>
 
         <CardContent>
           <div className="bg-gray-50 p-2 rounded-lg">
-            {(sttSummaries as SttSummary) ? (
-              (sttSummaries as SttSummary).contents.map((value, index) => (
-                <div key={index} className="mb-4 cursor-pointer">
-                  {renderChat(value)}
+            {detail.originalText.length > 0 ? (
+              detail.originalText.map((text, index) => (
+                <div key={index} className="mb-4">
+                  {renderChat(text)}
                 </div>
               ))
             ) : (
@@ -137,24 +142,19 @@ export default function Summary({ record }: { record: ConsultingRecord }) {
             <MdSummarize className="mr-2" size={28} /> 상담 요약 내용
           </CardTitle>
         </CardHeader>
+
         <CardContent className="bg-gray-50 p-2 rounded-lg shadow-md mx-6 mb-6">
           <CardTitle className="text-xl font-semibold mb-4">주요 주제</CardTitle>
-          <div className="grid grid-cols-7">
-            {(aiSummaries as AISummary).mainTopics.map((topic, index) => {
-              return (
-                <div key={index}>
-                  <Tag content={topic} />
-                </div>
-              );
-            })}
-          </div>
+          <Tag content={mainTopic} />
         </CardContent>
 
         <CardContent className="bg-gray-50 p-2 rounded-lg shadow-md mx-6 mb-6">
           <CardTitle className="text-xl font-semibold mb-4">요약</CardTitle>
-          {(aiSummaries as AISummary).contents.map((value, index) => {
-            return <div key={index}>{value}</div>;
-          })}
+          <div className="textlg text-gray-800">
+            {summaryLines.map((line, index) => (
+              <p key={index}>{line}</p>
+            ))}
+          </div>
         </CardContent>
       </Card>
     </main>
