@@ -19,16 +19,15 @@ export default function Home() {
   const [videoStream, setVideoStream] = useState<MediaStream | null>(null);
   const [isVideoEnabled, setIsVideoEnabled] = useState<boolean>(true);
   const [isAudioEnabled, setIsAudioEnabled] = useState<boolean>(true);
+  const consultingRoomId = useConsultingRoomStore((state)=>state.consultingRoomId);
 
   const audioContext = useRef<AudioContext | null>(null);
   const gainNode = useRef<GainNode | null>(null);
 
   const [slideIndex, setSlideIndex] = useState(0);
 
-  const { client, video, startStream } = useSocket();
+  const { client, video, startStream } = useSocket({id: consultingRoomId});
   const videoRef = useRef<HTMLVideoElement | null>(null);
-
-  const consultingRoomId = useConsultingRoomStore((state)=>state.consultingRoomId);
 
   const handlePrev = () => {
     if (slideIndex > 0) {
@@ -111,13 +110,14 @@ export default function Home() {
         client.deactivate();
       };
     }
-  }, [client]);
+  }, [client, consultingRoomId]);
 
+  // string reset
   useEffect(()=>{
     setTimeout(()=>{
       console.log(consultingRoomId)
     },1000)
-  }, [])
+  }, [consultingRoomId])
   
 
   const handleStartStream = async () => {

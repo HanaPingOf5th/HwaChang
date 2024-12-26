@@ -41,3 +41,13 @@ export async function fetchCustomerConsultings(
     data: response.data,
   };
 }
+
+export async function getCustomerId() :Promise<APIResponseType>{
+  const response = await instance.get(`${API_PATH}/customer`)
+  console.log(response);
+  return {
+    isSuccess: true,
+    isFailure: false,
+    data: response.data
+  }
+}

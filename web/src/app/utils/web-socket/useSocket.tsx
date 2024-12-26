@@ -1,14 +1,17 @@
 import { useState } from "react";
 import SockJS from "sockjs-client";
 import { Client } from "@stomp/stompjs";
+import { API_PATH } from "../http/api-query";
 
-// 전역으로 관리데이터 -> consulting-room 객체 데이터임 consultingRoom의 UUID
-const roomId = 11;
 // 사용자의 UUID로 관리 -> Consulting-room으로 내 ID를 받을 수 있음
 const myKey: string = Math.random().toString(36).substring(2, 11);
 
-export function useSocket() {
-  const socket = new SockJS("https://chawnghwa.site/ws/consulting-room");
+export function useSocket({id}:{id: string}) {
+  const socket = new SockJS(`${API_PATH}/ws/consulting-room`);
+
+  const roomId= `${id}consulting`;
+  console.log("room id: ", roomId);
+  
   const [otherKeyList] = useState<string[]>([]);
   const [pcListMap] = useState<Map<string, RTCPeerConnection>>(
     new Map<string, RTCPeerConnection>(),

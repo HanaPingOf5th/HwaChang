@@ -1,9 +1,8 @@
 import { useState } from "react";
 import SockJS from "sockjs-client";
 import { Client } from "@stomp/stompjs";
+import { API_PATH } from "../http/api-query";
 
-// 전역으로 관리해줘도 좋을것 같은 데이터
-const roomId = 12;
 // 사용자의 UUID로 관리
 const myKey: string = Math.random().toString(36).substring(2, 11);
 
@@ -13,9 +12,12 @@ export interface ChatDataType {
   time: Date;
 }
 
-export function useChat() {
-  const socket = new SockJS("https://chawnghwa.site/ws/consulting-room");
+export function useChat({id}:{id: string}) {
+  const socket = new SockJS(`${API_PATH}/ws/consulting-room`);
   const [messages, setMessages] = useState<ChatDataType[]>([]);
+
+  const roomId= `${id}chat`;
+  console.log("room id: ", roomId);
 
   const client = new Client({
     webSocketFactory: () => socket,
