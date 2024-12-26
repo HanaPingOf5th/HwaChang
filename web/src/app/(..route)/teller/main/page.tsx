@@ -125,6 +125,7 @@ export default function Main() {
         id: "비추천 고객",
         data: [{ x: "비추천 고객", y: data.result.npsData.detractor / data.result.sumCustomer }],
       };
+      setNpsAvg(data.result.avgScore);
       setNpsData([...npsData, detractor, neutral, promoter]);
       setNpsPromoter(data.result.npsData.promoter);
       console.log(data.result);
