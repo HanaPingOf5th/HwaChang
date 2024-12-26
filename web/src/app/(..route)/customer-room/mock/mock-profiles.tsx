@@ -22,7 +22,7 @@ export const createMockMyProfile = (isFullHeight: boolean): Profile => ({
       <Image src={Cameraoff} alt="Cameraoff" width={50} height={50} />
     </div>
   ),
-  name: "나나나",
+  name: "나",
 });
 
 export const mockOtherProfile: Profile = {
