@@ -109,7 +109,7 @@ useEffect(() => {
         </p>
         <div className="flex justify-between space-x-2">
           <p className={`mb-6 text-2xl text-hwachang-green1 font-semibold`}>
-            상담사를 기다리는 중입니다...
+            고객을 기다리는 중입니다...
           </p>
         </div>
         <VideoView
