@@ -6,6 +6,6 @@ interface TellerState {
 }
 
 export const useTellerStore = create<TellerState>()((set) => ({
-  tellerType: 0,
-  setTellerType: (newType) => set((state) => ({ tellerType: newType })),
+  tellerType: 1,
+  setTellerType: (newType) => set(() => ({ tellerType: newType })),
 }));

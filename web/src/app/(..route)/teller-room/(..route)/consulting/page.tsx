@@ -14,12 +14,14 @@ import { Video, VideoView } from "@/app/(..route)/customer-room/components/video
 import { createMockMyProfile, mockOtherProfile, mockProfile } from "@/app/(..route)/customer-room/mock/mock-profiles";
 import { SharingLinkDialog } from "@/app/ui/consulting-room/modal/share-link-dialog";
 import { useConsultingRoomStore } from "@/app/stores/consulting-room.provider";
+import { useRouter } from "next/navigation";
 
 export default function Home() {
   const [videoStream, setVideoStream] = useState<MediaStream | null>(null);
   const [isVideoEnabled, setIsVideoEnabled] = useState<boolean>(true);
   const [isAudioEnabled, setIsAudioEnabled] = useState<boolean>(true);
   const consultingRoomId = useConsultingRoomStore((state)=>state.consultingRoomId);
+  const router = useRouter();
 
   const audioContext = useRef<AudioContext | null>(null);
   const gainNode = useRef<GainNode | null>(null);
@@ -170,7 +172,6 @@ export default function Home() {
       </div>
 
       <div className="flex justify-center space-x-4 mt-4">
-        <AchromaticButton type="button" onClick={async ()=>{await handleStartStream()}}>상담 시작</AchromaticButton>
         <div className="flex justify-center gap-4">
           <AchromaticButton
             onClick={toggleAudio}
@@ -192,7 +193,17 @@ export default function Home() {
               )}
             </div>
           </AchromaticButton>
-          <AchromaticButton className="rounded-full bg-hwachang-gray2 hover:bg-hwachang-gray3">나가기</AchromaticButton>
+          <AchromaticButton 
+            className="rounded-full bg-hwachang-gray2 hover:bg-hwachang-gray3 text-black" type="button" 
+            onClick={async ()=>{
+              if (client.connected) {
+                await handleStartStream();
+              } else {
+                router.push('/teller/main');
+              }
+              }}>
+            {client.connected?'상담 시작':'상담종료'}
+          </AchromaticButton>
           <SharingLinkDialog/>
           <VideoSettingDialog videoRef={videoRef}/>
         </div>

@@ -8,7 +8,6 @@ import { sendReview } from "@/app/business/consulting-room/review.service";
 import { useConsultingRoomStore } from "@/app/stores/consulting-room.provider";
 import { createConsultingRoomStore } from "@/app/stores/consulting-room.store";
 import {
-  EndConsultingRoom,
   endConsultingRoom,
 } from "@/app/business/consulting-room/consulting-room-end";
 
