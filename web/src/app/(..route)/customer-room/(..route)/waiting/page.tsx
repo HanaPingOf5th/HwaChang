@@ -22,12 +22,62 @@ export default function Home() {
   const params = useSearchParams();
   const ctg = params.get("categoryId");
   const type = params.get("type");
+  const [notifications, setNotifications] = useState<string[]>([]);
 
   // TODO: 대기열에 입장하는 API 연동
-  useEffect(()=>{
-    addCustomerToQueue(type, ctg).then((response)=>{
-      console.log(response);
+  useEffect(() => {
+    // addCustomerToQueue(type, ctg).then((response) => {
+    //   console.log(response); 
+    // })
+    const headers = new Headers([['access-control-allow-origin', "*"]]);
+
+
+    // const EventSourcePolyfill = (window as any).EventSourcePolyfill || EventSource;
+    // const eventSource = new EventSourcePolyfill('http://localhost:8080/queues/0',
+    //   {
+    //     withCredentials: true,
+    //     headers: {
+    //       "Access-Control-Allow-Origin": "*"
+    //     }
+    //   }
+    // );
+    const eventSource = new EventSource("http://localhost:8080/queues/0", {
+      withCredentials: true,
+    });
+
+    eventSource.addEventListener("message", (event) => {
+      console.log("이벤트 왔어요")
+      console.log(event);
     })
+
+    eventSource.onopen = () => {
+      console.log("서버에 연결되었습니다.")
+    }
+
+    // 서버에서 메시지 수신
+    eventSource.onmessage = (event) => {
+      try {
+        const message = JSON.parse(event.data);
+        console.log("Message received:", message);
+
+        // 상태 업데이트
+        setNotifications((prev) => [...prev, message]);
+      } catch (error) {
+        console.error("Error parsing message:", error);
+      }
+    };
+    // 에러 처리
+    eventSource.onerror = (error) => {
+      console.log("연결에 실패하였습니다.");
+      console.error(error);
+      eventSource.close(); // 연결 끊기
+    };
+
+    // 컴포넌트 언마운트 시 연결 해제
+    return () => {
+      eventSource.close();
+    };
+
   }, [])
 
   // TODO: 레디스에서 내 "userId+consulting"이라는 키로 consultingRoom 객체를 가져오는 API 연동
@@ -101,6 +151,12 @@ export default function Home() {
         <p className={`mb-6 text-4xl text-hwachang-green1`}>
           <strong>상담 대기실</strong>
         </p>
+        <ul>
+          <li>결과</li>
+          {notifications.map((notification, index) => (
+            <li key={index}>{notification}</li>
+          ))}
+        </ul>
         <div className="flex justify-between space-x-2">
           <p className={`mb-6 text-2xl text-hwachang-green1 font-semibold`}>
             상담사를 기다리는 중입니다...
@@ -134,7 +190,7 @@ export default function Home() {
           profile={createMockMyProfile(false)}
         />
       </div>
-        
+
 
       <div className="flex justify-center space-x-4 mt-4">
         <div className="flex justify-center gap-4">
@@ -162,9 +218,9 @@ export default function Home() {
               )}
             </div>
           </AchromaticButton>
-          <ReviewDialog/>
-          <SharingLinkDialog/>
-          <VideoSettingDialog videoRef={videoRef}/>
+          <ReviewDialog />
+          <SharingLinkDialog />
+          <VideoSettingDialog videoRef={videoRef} />
         </div>
       </div>
     </main>

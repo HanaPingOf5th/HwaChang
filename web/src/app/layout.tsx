@@ -23,9 +23,12 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
+      <head>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/event-source-polyfill/0.0.9/eventsource.min.js"></script>
+      </head>
       <body className={cn(globalFont.variable, 'font-pretendard')}>
         <ConsultingRoomStoreProvider>
-        {children}
+          {children}
         </ConsultingRoomStoreProvider>
       </body>
     </html>
