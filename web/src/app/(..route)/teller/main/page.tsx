@@ -127,6 +127,7 @@ export default function Main() {
       };
       setNpsData([...npsData, detractor, neutral, promoter]);
       setNpsPromoter(data.result.npsData.promoter);
+      console.log(data.result);
     }
     getData();
   }, []);
