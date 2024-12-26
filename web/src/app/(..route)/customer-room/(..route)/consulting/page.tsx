@@ -32,7 +32,7 @@ export default function Home() {
   const [formData, setFormData] = useState<ApplicationProps | null>(null);
 
   // 녹화
-  const { startRecord, stopRecord, download, getAudioPermission, stopAndUpload } =
+  const { startRecord, getAudioPermission, stopAndUpload } =
     useRecorder(remoteStream);
 
   // (전역 상태 관리) consulting-room data

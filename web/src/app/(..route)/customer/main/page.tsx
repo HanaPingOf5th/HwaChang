@@ -13,8 +13,8 @@ import { useCustomerStore } from "@/app/stores/customerStore";
 export default function Home() {
   const [individualWaitTime, setIndividualWaitTime] = useState<number>(3);
   const [companyWaitTime, setCompanyWaitTime] = useState<number>(99);
-  const [userInfo, setUserInfo] = useState<any>(null);
-  const [error, setError] = useState<string | null>(null);
+  // const [userInfo, setUserInfo] = useState(null);
+  // const [error, setError] = useState<string | null>(null);
   const congestionTime: number = 10;
   const { setCustomerName } = useCustomerStore();
 
@@ -24,13 +24,13 @@ export default function Home() {
 
       if (response.isSuccess) {
         console.log(response.data);
-        setUserInfo(response.data);
+        // setUserInfo(response.data);
         setCustomerName(response.data.name);
         setIndividualWaitTime(response.data.individualWaitTime || 3);
         setCompanyWaitTime(response.data.companyWaitTime || 11);
       } else {
         console.error(response.message);
-        setError(response.message);
+        // setError(response.message);
       }
     }
 

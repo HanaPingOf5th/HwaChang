@@ -12,7 +12,6 @@ import {
 } from "lucide-react";
 import { Video, VideoView } from "../../components/video-view";
 import { createMockMyProfile } from "../../mock/mock-profiles";
-import { ReviewDialog } from "@/app/ui/consulting-room/modal/review-dialog";
 import { SharingLinkDialog } from "@/app/ui/consulting-room/modal/share-link-dialog";
 import { VideoSettingDialog } from "@/app/ui/consulting-room/modal/video-setting";
 import { useSearchParams } from "next/navigation";
@@ -160,7 +159,7 @@ export default function Home() {
               )}
             </div>
           </AchromaticButton>
-          <ReviewDialog/>
+          <AchromaticButton className="rounded-full bg-hwachang-gray2 hover:bg-hwachang-gray3">나가기</AchromaticButton>
           <SharingLinkDialog/>
           <VideoSettingDialog videoRef={videoRef}/>
         </div>

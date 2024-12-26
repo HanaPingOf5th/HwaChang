@@ -24,7 +24,7 @@ export default function Library() {
   );
 
   useEffect(() => {
-    getCategories().then((response) => {
+    getCategories('PERSONAL').then((response) => {
       const categoriesData = response.data as Category[];
       setCategories(categoriesData);
       setSelectedCategory(categoriesData[0]);

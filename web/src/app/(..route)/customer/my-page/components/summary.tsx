@@ -29,7 +29,7 @@ interface SummaryProps {
   onExpand: () => void;
 }
 
-export default function Summary({ detail, onClose, onExpand }: SummaryProps) {
+export default function Summary({ detail }: SummaryProps) {
   const [selectedSpeaker, setSelectedSpeaker] = useState<string>("전체");
 
   const filterStyles = (type: string) => {
