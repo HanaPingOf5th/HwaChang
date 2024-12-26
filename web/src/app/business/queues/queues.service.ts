@@ -7,7 +7,7 @@ export async function addCustomerToQueue(
   typeId: string,
   categoryId: string,
 ): Promise<APIResponseType> {
-  const response = await instance.post(`${API_PATH}/queues/${typeId}?categoryId=${categoryId}`);
+  const response = await instance.get(`${API_PATH}/queues/${typeId}?categoryId=${categoryId}`);
 
   return {
     isSuccess: true,
@@ -53,22 +53,22 @@ export async function postProcessingRequest(): Promise<APIResponseType> {
 }
 
 // 다음 고객 처리
-export async function processNextCustomer(typeId: number): Promise<APIResponseType> {
-  const response = await instance.get(`${API_PATH}/queues/${typeId}/processNextCustomer`);
-  if (response.status === 200) {
-    return {
-      isSuccess: true,
-      isFailure: false,
-      data: response.data,
-    };
-  } else {
-    return {
-      isSuccess: false,
-      isFailure: true,
-      data: null,
-    };
-  }
-}
+// export async function processNextCustomer(typeId: number): Promise<APIResponseType> {
+//   const response = await instance.get(`${API_PATH}/queues/${typeId}/processNextCustomer`);
+//   if (response.status === 200) {
+//     return {
+//       isSuccess: true,
+//       isFailure: false,
+//       data: response.data,
+//     };
+//   } else {
+//     return {
+//       isSuccess: false,
+//       isFailure: true,
+//       data: null,
+//     };
+//   }
+// }
 
 // 대기열에서 나가기
 export async function exitWaitingRoom(typeId: number): Promise<APIResponseType> {
@@ -104,4 +104,15 @@ export async function getQueueSize(categoryId: number): Promise<APIResponseType>
       data: null,
     };
   }
+}
+
+// 상담실 정보 조회
+export async function getConsultingRoomInfo(): Promise<APIResponseType> {
+  const response = await instance.post(`${API_PATH}/queues/consulting-room`);
+
+  return {
+    isSuccess: true,
+    isFailure: false,
+    data: response.data,
+  };
 }

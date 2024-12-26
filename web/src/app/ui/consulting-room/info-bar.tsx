@@ -2,13 +2,17 @@
 
 import React, { useEffect, useState } from "react";
 import InfoContent from "./info-content";
-import { useTellerStore } from "@/app/stores/tellerStore";
 import { getQueueData } from "@/app/business/teller/teller.service";
+import { useTellerStore } from "@/app/stores/tellerStore";
+
 
 const tellerTypeMapper = {
   기업금융: 1,
   개인금융: 0,
 };
+const { typeId } = useTellerStore(
+  (state) => state,
+);
 
 export default function InfoBar() {
   const [waitingCustomer, setWaitingCustomer] = useState<number>(0);
@@ -16,12 +20,9 @@ export default function InfoBar() {
   const [calling, setCalling] = useState<number>(0);
   const [postProcessing, setPostProcessing] = useState<number>(0);
 
-  const { tellerType, setTellerType } = useTellerStore();
-
   useEffect(() => {
     async function getData() {
-      console.log(tellerType);
-      const response = await getQueueData(tellerType);
+      const response = await getQueueData(typeId);
       console.log(response);
       setWaitingCustomer(response.data.result.waitingCustomer);
       setWaitingTeller(response.data.result.waitingTeller);

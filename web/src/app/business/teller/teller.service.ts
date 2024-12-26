@@ -129,9 +129,9 @@ interface QueueDataResponseType {
 }
 
 export async function getQueueData(
-  categoryId: number,
+  typeId: number,
 ): Promise<TellerAPIResponseType<TellerResponseWrapper<QueueDataResponseType>>> {
-  const response = await instance.get(`${API_PATH}/queues/${categoryId}/teller-entrance`);
+  const response = await instance.get(`${API_PATH}/queues/${typeId}/teller-entrance`);
   console.log(response.data);
   if (response.status === 200) {
     return {

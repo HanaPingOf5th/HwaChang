@@ -12,22 +12,21 @@ function CategoryList() {
   const [categories, setCategories] = useState<Category[]>([])
   const [pageTitle, setPageTitle] = useState<ConsultingType>(null);
 
-  useEffect(()=>{
-    if(key==="true"){
+  useEffect(() => {
+    if (key === "true") {
       setPageTitle("PERSONAL")
-      getCategories("PERSONAL").then((response)=>{
+      getCategories("PERSONAL").then((response) => {
         setCategories(response.data as Category[])
       })
-    }else{
+    } else {
       setPageTitle("CORPORATE")
-      getCategories("CORPORATE").then((response)=>{
+      getCategories("CORPORATE").then((response) => {
         setCategories(response.data as Category[])
       })
     }
 
-  },[])
-
-
+  }, [])
+  console.log(categories)
   const Categories: JSX.Element[] = categories.map((value, index) => {
     // const Icon = value.icon;
 
@@ -37,7 +36,7 @@ function CategoryList() {
           <Card
             className="bg-hwachang-darkgreen hover:bg-hwachang-green text-white"
             onClick={() => {
-              router.push(`/customer-room/waiting?categoryId=${value.categoryId}&type=${value.type==="PERSONAL"?0:1}`);
+              router.push(`/customer-room/waiting?categoryId=${value.categoryId}&type=${value.categoryType === "PERSONAL" ? 0 : 1}`);
             }}
           >
             <CardHeader className="text-2xl">
