@@ -17,6 +17,7 @@ import { useRecorder } from "@/app/utils/web-socket/use-recorder";
 export default function Home() {
   // 현재 내 모습을 보여주는 MediaStram
   const [videoStream, setVideoStream] = useState<MediaStream | null>(null);
+  const [isMediaReady, setIsMediaReady] = useState(false);
   const [isVideoEnabled, setIsVideoEnabled] = useState<boolean>(true);
   const [isAudioEnabled, setIsAudioEnabled] = useState<boolean>(true);
   const audioContext = useRef<AudioContext | null>(null);
@@ -29,9 +30,10 @@ export default function Home() {
   const { client, video, remoteStream } = useSocket();
   const videoRef = useRef<HTMLVideoElement | null>(null);
   const [formData, setFormData] = useState<ApplicationProps | null>(null);
-  
+
   // 녹화
-  const {startRecord, stopRecord, download, getAudioPermission} = useRecorder(remoteStream);
+  const { startRecord, stopRecord, download, getAudioPermission, stopAndUpload } =
+    useRecorder(remoteStream);
 
   // (전역 상태 관리) consulting-room data
   const { customerIds, tellerId, updateCustomer, updateTeller } = useConsultingRoomStore(
@@ -51,13 +53,6 @@ export default function Home() {
       console.log("teller-id", tellerId);
     }, 1000);
   }, []);
-
-  async function handleMediaControll(){
-    if(remoteStream){
-      console.log(remoteStream)
-      await getAudioPermission();
-    }
-  }
 
   // 상단 인덱싱
   const [slideIndex, setSlideIndex] = useState(0);
@@ -95,6 +90,7 @@ export default function Home() {
         }
         audioContext.current = new window.AudioContext();
         gainNode.current = audioContext.current.createGain();
+        setIsMediaReady(true);
       } catch (error) {
         throw new Error(error as string);
       }
@@ -108,6 +104,21 @@ export default function Home() {
       }
     };
   }, [isVideoEnabled]);
+
+  useEffect(() => {
+    const setupRecording = async () => {
+      if (isMediaReady && remoteStream) {
+        try {
+          await getAudioPermission();
+          startRecord();
+        } catch (error) {
+          console.error("Error during recording setup:", error);
+        }
+      }
+    };
+
+    setupRecording();
+  }, [isMediaReady, remoteStream]);
 
   useEffect(() => {
     return () => {
@@ -217,10 +228,7 @@ export default function Home() {
       </div>
 
       <div className="flex justify-center space-x-4 mt-4">
-        <AchromaticButton onClick={()=>{handleMediaControll()}}>권한요청</AchromaticButton>
-        <AchromaticButton onClick={()=>{startRecord()}}>녹화시작</AchromaticButton>
-        <AchromaticButton onClick={()=>{stopRecord()}}>녹화종료</AchromaticButton>
-        <AchromaticButton onClick={async()=>{await download()}}>다운로드</AchromaticButton>
+        {/* <AchromaticButton onClick={handleStopAndUpload}>녹음 종료 및 업로드</AchromaticButton> */}
         <div className="flex justify-center gap-4">
           <AchromaticButton
             onClick={toggleAudio}
@@ -246,7 +254,8 @@ export default function Home() {
               )}
             </div>
           </AchromaticButton>
-          <ReviewDialog />
+
+          <ReviewDialog stopAndUpload={stopAndUpload} />
           <SharingLinkDialog />
           <VideoSettingDialog videoRef={videoRef} />
         </div>
