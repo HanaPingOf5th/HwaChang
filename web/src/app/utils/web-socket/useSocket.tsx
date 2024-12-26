@@ -84,13 +84,71 @@ export function useSocket({id}:{id: string}) {
           );
         }, 1000);
       });
+
+      client.subscribe(`/topic/peer/shareScreen/${roomId}`, (message)=>{
+        const { screenStream: shareScreenStream } = JSON.parse(message.body);
+      })
     },
   });
+
+  const startScreenStream = async () => {
+    try {
+      console.log("화면 공유 시작");
+
+      const screenStream = await navigator.mediaDevices.getDisplayMedia({
+        video: true,
+        audio: true,
+      });
+
+      pcListMap.forEach((pc, key) => {
+        const videoSender = pc.getSenders().find((sender) => sender.track?.kind === "video");
+  
+        if (videoSender) {
+          videoSender.replaceTrack(screenStream.getVideoTracks()[0]);
+        } else {
+          pc.addTrack(screenStream.getVideoTracks()[0], screenStream);
+        }
+      });
+
+      const newVideoElement = (
+        <video
+          className="rounded-xl aspect-[16/9] object-cover"
+          key={myKey}
+          autoPlay
+          playsInline
+          ref={(videoElem: HTMLVideoElement | null) => {
+            if (videoElem) {
+              videoElem.srcObject = screenStream;
+            }
+          }}
+        />
+      );
+
+      setVideoElements((prev) => [...prev, newVideoElement]);
+
+      screenStream.getVideoTracks()[0].onended = () => {
+        console.log("화면 공유가 종료되었습니다.");
+        if(screenStream){
+          screenStream.getTracks().forEach((track)=>track.stop());
+          pcListMap.forEach(async (pc, key) => {
+            const videoSender = pc.getSenders().find((sender)=>sender.track.kind === "video");
+            if(videoSender){
+              const stream = await navigator.mediaDevices.getUserMedia({ video: true, audio: true })
+              videoSender.replaceTrack(stream.getVideoTracks()[0]);
+            }
+          })
+        }
+      };
+    } catch (error) {
+      console.error("화면 공유 중 오류 발생:", error);
+      alert("화면 공유를 시작하는 데 실패했습니다. 권한을 확인하세요.");
+    }
+  };
+  
 
   const startStream = async () => {
     if (client.connected) {
       console.log("start steam ... ");
-      // setTimeout(() => {
       if (client.connected) {
         client.publish({ destination: `/app/call/key`, body: "publish: call/key" });
         setTimeout(() => {
@@ -102,7 +160,6 @@ export function useSocket({id}:{id: string}) {
           });
         }, 1000);
       }
-      // }, 1000);
     }
   };
 
@@ -207,6 +264,7 @@ export function useSocket({id}:{id: string}) {
     client: client,
     video: videoElements,
     startStream: startStream,
+    startScreenStream: startScreenStream,
     remoteStream: remoteStream,
   };
 }

@@ -28,7 +28,7 @@ export default function Home() {
 
   const [slideIndex, setSlideIndex] = useState(0);
 
-  const { client, video, startStream } = useSocket({id: consultingRoomId});
+  const { client, video, startStream, startScreenStream } = useSocket({id: consultingRoomId});
   const videoRef = useRef<HTMLVideoElement | null>(null);
 
   const handlePrev = () => {
@@ -130,6 +130,12 @@ export default function Home() {
     }
   };
 
+  const handleStartScreenStream = async () =>{
+    if(client.connected){
+      await startScreenStream();
+    }
+  }
+
   return (
     <main>
       <div>
@@ -173,6 +179,12 @@ export default function Home() {
 
       <div className="flex justify-center space-x-4 mt-4">
         <div className="flex justify-center gap-4">
+          <AchromaticButton
+              onClick={async()=>{await handleStartScreenStream()}}
+              className="rounded-full bg-hwachang-gray2 hover:bg-hwachang-gray3 text-black"
+            >
+            화면공유
+          </AchromaticButton>
           <AchromaticButton
             onClick={toggleAudio}
             className="rounded-full bg-hwachang-gray2 hover:bg-hwachang-gray3"
