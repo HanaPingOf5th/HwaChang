@@ -243,7 +243,7 @@ export default function Home() {
           <SharingLinkDialog />
           <AchromaticButton 
             className="rounded-full bg-hwachang-gray2 hover:bg-hwachang-gray3 text-black" type="button" 
-            onClick={()=>{router.push('/teller/main');}}>
+            onClick={()=>{router.push('/customer/main');}}>
             <PowerOff/>
           </AchromaticButton>
         </div>

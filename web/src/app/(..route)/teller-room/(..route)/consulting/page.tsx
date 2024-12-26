@@ -103,15 +103,15 @@ export default function Home() {
   };
 
   useEffect(() => {
-    if (client) {
-      client.activate();
-      console.log("Activating STOMP client...");
+    if (!client || !consultingRoomId) return;
+    
+    console.log("Activating STOMP client...");
+    client.activate();
   
-      return () => {
-        console.log("Deactivating STOMP client...");
-        client.deactivate();
-      };
-    }
+    return () => {
+      console.log("Deactivating STOMP client...");
+      client.deactivate();
+    };
   }, [client, consultingRoomId]);
 
   // string reset
