@@ -10,6 +10,7 @@ import { FormTextInput } from "../../component/molecule/form/form-textinput";
 import AchromaticButton from "../../component/atom/button/achromatic-button";
 import { LuSendHorizonal } from "react-icons/lu";
 import { ChatDataType, useChat } from "@/app/utils/web-socket/useChat";
+import { useConsultingRoomStore } from "@/app/stores/consulting-room.provider";
 import { useCustomerStore } from "@/app/stores/customerStore";
 
 export default function CustomerConsultingChatting() {
@@ -17,7 +18,9 @@ export default function CustomerConsultingChatting() {
   const tellerName = "김하나 행원";
   const [myMessages, setMyMessages] = useState<ChatDataType[]>([]);
   const chatContainerRef = useRef<HTMLDivElement | null>(null);
-  const { client, chatMessage, messages } = useChat();
+  const consultingRoomId = useConsultingRoomStore(state => state.consultingRoomId);
+  
+  const { client, chatMessage, messages } = useChat({id: `${consultingRoomId}`});
 
   async function sendMessage(prevState: FormState, formData: FormData) {
     const value: string = formData.get("chat") as string;

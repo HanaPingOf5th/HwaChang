@@ -33,6 +33,7 @@ export default function Home() {
   const type = params.get("type");
 
   useEffect(()=>{
+    console.log(type)
     addCustomerToQueue(type, ctg).then((response)=>{
       console.log(response);
     })

@@ -16,10 +16,10 @@ export async function sendPrechat(content: string): Promise<APIResponseType>{
 }
 
 export async function getPrechat(): Promise<APIResponseType> {
-  console.log(`${API_PATH}/waiting-room/prechat/${userName}`);
+  // console.log(`${API_PATH}/waiting-room/prechat/${userName}`);
   const response = await instance.get(`${API_PATH}/waiting-room/prechat/${userName}`)
   
-  console.log(response);
+  // console.log(response);
   return {
     isSuccess: true,
     isFailure: false,

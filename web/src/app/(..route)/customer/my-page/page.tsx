@@ -124,7 +124,7 @@ export default function Home() {
               className="object-cover w-10 h-10 rounded-full border-1 border-white shadow-lg"
             />
           </div>
-          <div className="flex items-center justify-center text-sm md:text-sm lg:text-lg">
+          <div className="flex items-center justify-center text-sm md:text-sm lg:text-base">
             {mainTopic} {/* 추출된 주요 주제 표시 */}
           </div>
           <div className="flex items-center justify-center text-sm md:text-sm lg:text-xl">

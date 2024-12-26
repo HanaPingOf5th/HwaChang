@@ -6,29 +6,28 @@ import { createMockMyProfile } from "@/app/(..route)/customer-room/mock/mock-pro
 import { Video, VideoView } from "@/app/(..route)/customer-room/components/video-view";
 import { SharingLinkDialog } from "@/app/ui/consulting-room/modal/share-link-dialog";
 import { VideoSettingDialog } from "@/app/ui/consulting-room/modal/video-setting";
-import { deleteCustomerFromQueueAndCreatingRoom } from "@/app/business/waiting-room/waiting-queue.service";
+import {
+  deleteCustomerFromQueueAndCreatingRoom,
+  initialConsultingRoomInfoType,
+} from "@/app/business/waiting-room/waiting-queue.service";
 import { useConsultingRoomStore } from "@/app/stores/consulting-room.provider";
-import { useRouter } from "next/navigation"; // useRouter 추가
+import { useTellerStore } from "@/app/stores/tellerStore";
 
 export default function Home() {
-  const router = useRouter();
-
-  const handleNavigateToConsultingRoom = () => {
-    router.push("/teller-room/consulting");
-  };
-
   const videoRef = useRef<HTMLVideoElement | null>(null);
   const [videoStream, setVideoStream] = useState<MediaStream | null>(null);
   const [isVideoEnabled, setIsVideoEnabled] = useState<boolean>(true);
   const [isAudioEnabled, setIsAudioEnabled] = useState<boolean>(true);
   const {
     consultingRoomId,
-    tellerId,
     customerIds,
+    tellerId,
     updateCustomer,
     updateTeller,
     updateConsultingRoomId,
   } = useConsultingRoomStore((state) => state);
+
+  const { tellerType } = useTellerStore();
 
   const audioContext = useRef<AudioContext | null>(null);
   const gainNode = useRef<GainNode | null>(null);
@@ -69,10 +68,12 @@ export default function Home() {
 
   useEffect(() => {
     if (consultingRoomId === null) {
-      deleteCustomerFromQueueAndCreatingRoom("0").then((response) => {
-        const roomInfo = response.data;
+      console.log(tellerType);
+      // personal
+      deleteCustomerFromQueueAndCreatingRoom(tellerType).then((response) => {
+        const roomInfo = response.data as initialConsultingRoomInfoType;
 
-        const consultingRoomId: string = roomInfo.consultingRoom;
+        const consultingRoomId: string = roomInfo.consultingRoomId;
         const customerId: string = roomInfo.customerId;
         const tellerId: string = roomInfo.tellerId;
 
@@ -83,11 +84,8 @@ export default function Home() {
     }
   }, []);
 
-  // test
   useEffect(() => {
-    console.log("Updated consultingRoomId:", consultingRoomId);
-    console.log("Updated customerIds:", customerIds);
-    console.log("Updated tellerId:", tellerId);
+    console.log(consultingRoomId, customerIds, tellerId);
   }, [consultingRoomId, customerIds, tellerId]);
 
   // To-Do: 내가 비디오를 끌 경우, 나의 비디오 상태를 상대방에게 보내는 api 추가: isCam: false
@@ -150,11 +148,8 @@ export default function Home() {
               )}
             </div>
           </AchromaticButton>
-          <AchromaticButton
-            onClick={handleNavigateToConsultingRoom}
-            className="rounded-full bg-hwachang-gray2 hover:bg-hwachang-gray3"
-          >
-            상담실로 이동
+          <AchromaticButton className="rounded-full bg-hwachang-gray2 hover:bg-hwachang-gray3">
+            나가기
           </AchromaticButton>
           <SharingLinkDialog />
           <VideoSettingDialog videoRef={videoRef} />
