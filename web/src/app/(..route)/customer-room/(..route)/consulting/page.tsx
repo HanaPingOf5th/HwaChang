@@ -2,8 +2,7 @@
 import AchromaticButton from "@/app/ui/component/atom/button/achromatic-button";
 import { LegacyRef, useEffect, useRef, useState } from "react";
 import { SlArrowLeft, SlArrowRight } from "react-icons/sl";
-import { VideoSettingDialog } from "@/app/ui/consulting-room/modal/video-setting";
-import { MicIcon, MicOffIcon, VideoIcon, VideoOffIcon } from "lucide-react";
+import { MicIcon, MicOffIcon, PowerOff, VideoIcon, VideoOffIcon } from "lucide-react";
 import { useSocket } from "@/app/utils/web-socket/useSocket";
 import { Video, VideoView } from "../../components/video-view";
 import { createMockMyProfile, mockOtherProfile, mockProfile } from "../../mock/mock-profiles";
@@ -11,15 +10,20 @@ import { ApplicationForm, ApplicationProps } from "../../components/application-
 import { ReviewDialog } from "@/app/ui/consulting-room/modal/review-dialog";
 import { SharingLinkDialog } from "@/app/ui/consulting-room/modal/share-link-dialog";
 import { getApplicationFormById } from "@/app/business/consulting-room/application-form.service";
-import { useConsultingRoomStore } from "@/app/stores/consulting-room.provider";
 import { useRecorder } from "@/app/utils/web-socket/use-recorder";
+import { useRouter, useSearchParams } from "next/navigation";
 
 export default function Home() {
+  const params = useSearchParams();
+  const roomId:string = params.get("roomId");
+  const router = useRouter();
+
   // 현재 내 모습을 보여주는 MediaStram
   const [videoStream, setVideoStream] = useState<MediaStream | null>(null);
   const [isMediaReady, setIsMediaReady] = useState(false);
   const [isVideoEnabled, setIsVideoEnabled] = useState<boolean>(true);
   const [isAudioEnabled, setIsAudioEnabled] = useState<boolean>(true);
+
   const audioContext = useRef<AudioContext | null>(null);
   const gainNode = useRef<GainNode | null>(null);
 
@@ -27,32 +31,13 @@ export default function Home() {
   const [isForm, setIsForm] = useState<boolean>(false);
 
   // rtc
-  const { client, video, remoteStream } = useSocket();
+  const { client, video, remoteStream } = useSocket({id: roomId});
   const videoRef = useRef<HTMLVideoElement | null>(null);
   const [formData, setFormData] = useState<ApplicationProps | null>(null);
 
   // 녹화
-  const { startRecord, stopRecord, download, getAudioPermission, stopAndUpload } =
+  const { startRecord, getAudioPermission, stopAndUpload } =
     useRecorder(remoteStream);
-
-  // (전역 상태 관리) consulting-room data
-  const { customerIds, tellerId, updateCustomer, updateTeller } = useConsultingRoomStore(
-    (state) => state,
-  );
-
-  // test
-  useEffect(() => {
-    const handleUpdate = () => {
-      updateCustomer("updatedCustomer");
-      updateTeller("updatedTeller");
-    };
-
-    setTimeout(() => {
-      handleUpdate();
-      console.log("customer-id", customerIds);
-      console.log("teller-id", tellerId);
-    }, 1000);
-  }, []);
 
   // 상단 인덱싱
   const [slideIndex, setSlideIndex] = useState(0);
@@ -138,7 +123,7 @@ export default function Home() {
         client.deactivate();
       };
     }
-  }, [client]);
+  }, [client, roomId]);
 
   useEffect(() => {
     getApplicationFormById("9b1deb4d-3b7d-4bad-9bdd-2b0d7b3dcb6d").then((value) => {
@@ -161,6 +146,7 @@ export default function Home() {
       setIsAudioEnabled(!isAudioEnabled);
     }
   };
+
 
   return (
     <main>
@@ -228,7 +214,6 @@ export default function Home() {
       </div>
 
       <div className="flex justify-center space-x-4 mt-4">
-        {/* <AchromaticButton onClick={handleStopAndUpload}>녹음 종료 및 업로드</AchromaticButton> */}
         <div className="flex justify-center gap-4">
           <AchromaticButton
             onClick={toggleAudio}
@@ -254,10 +239,13 @@ export default function Home() {
               )}
             </div>
           </AchromaticButton>
-
           <ReviewDialog stopAndUpload={stopAndUpload} />
           <SharingLinkDialog />
-          <VideoSettingDialog videoRef={videoRef} />
+          <AchromaticButton 
+            className="rounded-full bg-hwachang-gray2 hover:bg-hwachang-gray3 text-black" type="button" 
+            onClick={()=>{router.push('/customer/main');}}>
+            <PowerOff/>
+          </AchromaticButton>
         </div>
       </div>
     </main>

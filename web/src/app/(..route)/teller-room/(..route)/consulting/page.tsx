@@ -2,34 +2,34 @@
 import AchromaticButton from "@/app/ui/component/atom/button/achromatic-button";
 import { LegacyRef, useEffect, useRef, useState } from "react";
 import { SlArrowLeft, SlArrowRight } from "react-icons/sl";
-import { VideoSettingDialog } from "@/app/ui/consulting-room/modal/video-setting";
 import {
   MicIcon,
   MicOffIcon,
   VideoIcon,
   VideoOffIcon,
+  PowerOff
 } from "lucide-react";
 import { useSocket } from "@/app/utils/web-socket/useSocket";
 import { Video, VideoView } from "@/app/(..route)/customer-room/components/video-view";
 import { createMockMyProfile, mockOtherProfile, mockProfile } from "@/app/(..route)/customer-room/mock/mock-profiles";
-import { ReviewDialog } from "@/app/ui/consulting-room/modal/review-dialog";
 import { SharingLinkDialog } from "@/app/ui/consulting-room/modal/share-link-dialog";
 import { useConsultingRoomStore } from "@/app/stores/consulting-room.provider";
+import { useRouter } from "next/navigation";
 
 export default function Home() {
   const [videoStream, setVideoStream] = useState<MediaStream | null>(null);
   const [isVideoEnabled, setIsVideoEnabled] = useState<boolean>(true);
   const [isAudioEnabled, setIsAudioEnabled] = useState<boolean>(true);
+  const consultingRoomId = useConsultingRoomStore((state)=>state.consultingRoomId);
+  const router = useRouter();
 
   const audioContext = useRef<AudioContext | null>(null);
   const gainNode = useRef<GainNode | null>(null);
 
   const [slideIndex, setSlideIndex] = useState(0);
 
-  const { client, video, startStream } = useSocket();
+  const { client, video, startStream, startScreenStream } = useSocket({id: consultingRoomId});
   const videoRef = useRef<HTMLVideoElement | null>(null);
-
-  const consultingRoomId = useConsultingRoomStore((state)=>state.consultingRoomId);
 
   const handlePrev = () => {
     if (slideIndex > 0) {
@@ -103,22 +103,23 @@ export default function Home() {
   };
 
   useEffect(() => {
-    if (client) {
-      client.activate();
-      console.log("Activating STOMP client...");
+    if (!client || !consultingRoomId) return;
+    
+    console.log("Activating STOMP client...");
+    client.activate();
   
-      return () => {
-        console.log("Deactivating STOMP client...");
-        client.deactivate();
-      };
-    }
-  }, [client]);
+    return () => {
+      console.log("Deactivating STOMP client...");
+      client.deactivate();
+    };
+  }, [client, consultingRoomId]);
 
+  // string reset
   useEffect(()=>{
     setTimeout(()=>{
       console.log(consultingRoomId)
     },1000)
-  }, [])
+  }, [consultingRoomId])
   
 
   const handleStartStream = async () => {
@@ -128,6 +129,12 @@ export default function Home() {
       await startStream();
     }
   };
+
+  const handleStartScreenStream = async () =>{
+    if(client.connected){
+      await startScreenStream();
+    }
+  }
 
   return (
     <main>
@@ -171,8 +178,13 @@ export default function Home() {
       </div>
 
       <div className="flex justify-center space-x-4 mt-4">
-        <AchromaticButton type="button" onClick={async ()=>{await handleStartStream()}}>상담 시작</AchromaticButton>
         <div className="flex justify-center gap-4">
+          <AchromaticButton
+              onClick={async()=>{await handleStartScreenStream()}}
+              className="rounded-full bg-hwachang-gray2 hover:bg-hwachang-gray3 text-black"
+            >
+            화면공유
+          </AchromaticButton>
           <AchromaticButton
             onClick={toggleAudio}
             className="rounded-full bg-hwachang-gray2 hover:bg-hwachang-gray3"
@@ -193,9 +205,17 @@ export default function Home() {
               )}
             </div>
           </AchromaticButton>
-          <ReviewDialog/>
+          <AchromaticButton 
+            className="rounded-full bg-hwachang-gray2 hover:bg-hwachang-gray3 text-black" type="button" 
+            onClick={async ()=>{ await handleStartStream();}}>
+            상담시작
+          </AchromaticButton>
           <SharingLinkDialog/>
-          <VideoSettingDialog videoRef={videoRef}/>
+          <AchromaticButton 
+            className="rounded-full bg-hwachang-gray2 hover:bg-hwachang-gray3 text-black" type="button" 
+            onClick={()=>{router.push('/teller/main');}}>
+            <PowerOff/>
+          </AchromaticButton>
         </div>
       </div>
     </main>

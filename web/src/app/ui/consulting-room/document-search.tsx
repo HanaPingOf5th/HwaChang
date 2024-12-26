@@ -24,7 +24,7 @@ export default function DocumentSearch() {
   );
 
   useEffect(() => {
-    getCategories().then((response) => {
+    getCategories('CORPORATE').then((response) => {
       const categoriesData = response.data as Category[];
       setCategories(categoriesData);
       setSelectedCategory(categoriesData[0]);

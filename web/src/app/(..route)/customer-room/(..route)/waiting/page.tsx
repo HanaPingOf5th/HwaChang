@@ -3,7 +3,6 @@ import AchromaticButton from "@/app/ui/component/atom/button/achromatic-button";
 import { Dialog, DialogContent, DialogTrigger } from "@/app/ui/component/molecule/dialog/dialog";
 import { LegacyRef, useEffect, useRef, useState } from "react";
 import { MatchingAlarm } from "@/app/ui/consulting-room/modal/matching-alarm";
-import { WaitingModal } from "@/app/ui/consulting-room/modal/waiting";
 import {
   MicIcon,
   MicOffIcon,
@@ -12,14 +11,12 @@ import {
 } from "lucide-react";
 import { Video, VideoView } from "../../components/video-view";
 import { createMockMyProfile } from "../../mock/mock-profiles";
-import { ReviewDialog } from "@/app/ui/consulting-room/modal/review-dialog";
 import { SharingLinkDialog } from "@/app/ui/consulting-room/modal/share-link-dialog";
-import { VideoSettingDialog } from "@/app/ui/consulting-room/modal/video-setting";
-import { useSearchParams } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { addCustomerToQueue } from "@/app/business/waiting-room/waiting-queue.service";
 
 export default function Home() {
-  const [isWaitingDialogMounted, setIsWaitingDialogMounted] = useState(false);
+  const router = useRouter();
 
   const videoRef = useRef<HTMLVideoElement | null>(null);
   const [videoStream, setVideoStream] = useState<MediaStream | null>(null);
@@ -34,6 +31,7 @@ export default function Home() {
   const type = params.get("type");
 
   useEffect(()=>{
+    console.log(type)
     addCustomerToQueue(type, ctg).then((response)=>{
       console.log(response);
     })
@@ -73,10 +71,6 @@ export default function Home() {
     };
   }, [videoStream]);
 
-  useEffect(() => {
-    setIsWaitingDialogMounted(true);
-  }, []);
-
   // To-Do: 내가 비디오를 끌 경우, 나의 비디오 상태를 상대방에게 보내는 api 추가: isCam: false
   const toggleVideo = () => {
     if (videoStream) {
@@ -103,7 +97,7 @@ export default function Home() {
           <p className={`mb-6 text-2xl text-hwachang-green1 font-semibold`}>
             상담사를 기다리는 중입니다...
           </p>
-          <Dialog>
+          {/* <Dialog>
             <DialogTrigger asChild>
               <AchromaticButton className="bg-hwachang-brightgreen hover:bg-hwachang-lightgreen text-black">
                 대기현황 보기
@@ -114,18 +108,18 @@ export default function Home() {
                 <WaitingModal />
               </DialogContent>
             )}
-          </Dialog>
-        </div>
+          </Dialog> */}
         <Dialog>
           <DialogTrigger asChild>
             <AchromaticButton className="bg-hwachang-brightgreen hover:bg-hwachang-lightgreen text-black">
-              (삭제 예정) 매칭 알림
+              매칭 시작
             </AchromaticButton>
           </DialogTrigger>
           <DialogContent>
             <MatchingAlarm categoryId={ctg} typeId={type} />
           </DialogContent>
         </Dialog>
+        </div>
         <VideoView
           video={<Video ref={videoRef as LegacyRef<HTMLVideoElement>} />}
           onCam={isVideoEnabled}
@@ -160,9 +154,14 @@ export default function Home() {
               )}
             </div>
           </AchromaticButton>
-          <ReviewDialog/>
+          <AchromaticButton
+            className="rounded-full bg-hwachang-gray2 hover:bg-hwachang-gray3 text-black"
+            onClick={()=>{router.push("/customer/main")}}
+            >
+            나가기
+          </AchromaticButton>
           <SharingLinkDialog/>
-          <VideoSettingDialog videoRef={videoRef}/>
+          {/* <VideoSettingDialog videoRef={videoRef}/> */}
         </div>
       </div>
     </main>

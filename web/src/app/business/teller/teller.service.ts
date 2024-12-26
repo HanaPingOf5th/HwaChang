@@ -1,7 +1,6 @@
 "use server";
 import { APIResponseType, instance } from "@/app/utils/http";
 import { API_PATH } from "@/app/utils/http/api-query";
-import { boolean } from "zod";
 
 interface DailyLog {
   yesterday: Array<number>;

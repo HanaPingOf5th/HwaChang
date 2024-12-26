@@ -4,11 +4,8 @@ import AchromaticButton from "../component/atom/button/achromatic-button";
 import { useRouter } from "next/navigation";
 // import { processNextCustomer } from "@/app/business/queues/queues.service";
 
-interface waitingCountProps {
-  waitingCount: number;
-}
 
-export default function ConsultationStartContent({ waitingCount }: waitingCountProps) {
+export default function ConsultationStartContent() {
   const router = useRouter();
 
   const handleEntrance = () => {
