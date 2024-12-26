@@ -8,9 +8,6 @@ import { FormTextInput } from "@/app/ui/component/molecule/form/form-textinput";
 import { FormSubmitButton } from "@/app/ui/component/molecule/form/form-submit-button";
 import { DateSelector } from "./components/date-selector";
 import { Card } from "@/app/ui/component/molecule/card/card";
-import { ConsultingRecord } from "./mock/mock-records"; // 필요한 타입 가져오기
-import Image from "next/image";
-import { StaticImport } from "next/dist/shared/lib/get-img-props";
 import {
   ConsultingResponse,
   fetchCustomerConsultings,
@@ -37,7 +34,7 @@ export default function Home() {
     try {
       const response = await fetchConsultingDetail(consultingRoomId);
       if (response.isSuccess) {
-        setSelectedRecord(response.data);
+        setSelectedRecord(response.data as ConsultingDetailResponse);
         setIsSummaryVisible(true);
       } else {
         console.error("Failed to fetch consulting detail");
@@ -73,7 +70,7 @@ export default function Home() {
 
       const response = await fetchCustomerConsultings(payload);
       if (response.isSuccess) {
-        setRecords(response.data);
+        setRecords(response.data as ConsultingResponse[]);
       } else {
         console.error("Failed to fetch consulting records");
       }
@@ -111,11 +108,11 @@ export default function Home() {
       <main key={index}>
         <Card className="grid grid-cols-7 gap-3 h-20">
           <div className="flex items-center justify-center mb-2 mt-2 text-sm md:text-sm lg:text-xl">
-            <Image
+            {/* <Image
               src={value.image as StaticImport}
               alt="프로필 사진"
               className="object-cover w-10 h-10 rounded-full border-1 border-white shadow-lg"
-            />
+            /> */}
           </div>
           <div className="flex items-center justify-center text-sm md:text-sm lg:text-xl">
             {mainTopic} {/* 추출된 주요 주제 표시 */}
