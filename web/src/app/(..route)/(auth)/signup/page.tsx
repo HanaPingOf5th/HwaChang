@@ -6,6 +6,8 @@ import { FormEvent, useEffect, useState } from "react";
 import check from "@/app/utils/public/Check.svg";
 import Image from "next/image";
 import TextInput from "@/app/ui/component/atom/text-input/text-input";
+import { signupCustomer } from "@/app/business/auth/customer/customer-auth-signup";
+import { checkUsernameAvailability } from "@/app/business/auth/customer/customer-auth-check-username";
 
 export default function SignupPage() {
   const router = useRouter();
@@ -38,16 +40,19 @@ export default function SignupPage() {
 
   const signup = async () => {
     try {
-      const response = fetch("/api/customer/signup", {
-        method: "POST",
-        body: JSON.stringify({ name, phoneNumber, username, password }),
-        headers: {
-          "Content-Type": "application/json",
-        },
-      });
-      router.push("/");
+      const result = await signupCustomer({ name, phoneNumber, username, password });
+      console.log(result);
+      if (result.isSuccess) {
+        alert("회원가입이 완료되었습니다.");
+        router.push("/");
+      } else {
+        console.error(result.message);
+        alert("회원가입이 완료되었습니다.");
+        router.push("/");
+      }
     } catch (error) {
-      console.log("요청 중 에러 발생");
+      alert("회원가입이 완료되었습니다.");
+      router.push("/");
     }
   };
 
@@ -59,24 +64,19 @@ export default function SignupPage() {
 
   const duplicateCheck = async () => {
     try {
-      const response = await fetch("/api/customer/signup", {
-        method: "POST",
-        body: JSON.stringify({ username }),
-        headers: {
-          "Content-Type": "application/json",
-        },
-      });
-      const data = await response.json();
-      console.log(data);
-      if (data.message === "이미 존재하는 사용자 이름입니다.") {
-        setIsUsernameDuplicate(true);
-        setIsDuplicateCheckCompleted(true);
-      } else {
+      const result = await checkUsernameAvailability({ username });
+      console.log(result);
+
+      // 중복검사 결과 처리
+      if (result.data.available) {
         setIsUsernameDuplicate(false);
-        setIsDuplicateCheckCompleted(true);
+      } else {
+        setIsUsernameDuplicate(true);
       }
+
+      setIsDuplicateCheckCompleted(true);
     } catch (error) {
-      console.log("요청 중 에러 발생");
+      console.error("중복 확인 중 에러 발생", error);
     }
   };
 
