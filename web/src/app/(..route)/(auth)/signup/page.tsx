@@ -51,6 +51,9 @@ export default function SignupPage() {
         router.push("/");
       }
     } catch (error) {
+      // 회원가입 시 콘솔에 message: "알 수 없는 오류가 발생했습니다. 오류 발생
+      // DB에 고객 데이터는 반영됨
+      // 추후 개선 필요
       alert("회원가입이 완료되었습니다.");
       router.push("/");
     }
