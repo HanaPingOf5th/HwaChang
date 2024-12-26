@@ -114,7 +114,7 @@ export default function Home() {
         </p>
         <div className="flex justify-between space-x-2">
           <p className={`mb-6 text-2xl text-hwachang-green1 font-semibold`}>
-            고객을 기다리는 중입니다...
+            손님을 기다리는 중입니다...
           </p>
         </div>
         <VideoView
