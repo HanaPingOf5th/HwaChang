@@ -2,12 +2,12 @@
 import AchromaticButton from "@/app/ui/component/atom/button/achromatic-button";
 import { LegacyRef, useEffect, useRef, useState } from "react";
 import { SlArrowLeft, SlArrowRight } from "react-icons/sl";
-import { VideoSettingDialog } from "@/app/ui/consulting-room/modal/video-setting";
 import {
   MicIcon,
   MicOffIcon,
   VideoIcon,
   VideoOffIcon,
+  PowerOff
 } from "lucide-react";
 import { useSocket } from "@/app/utils/web-socket/useSocket";
 import { Video, VideoView } from "@/app/(..route)/customer-room/components/video-view";
@@ -195,17 +195,15 @@ export default function Home() {
           </AchromaticButton>
           <AchromaticButton 
             className="rounded-full bg-hwachang-gray2 hover:bg-hwachang-gray3 text-black" type="button" 
-            onClick={async ()=>{
-              if (client.connected) {
-                await handleStartStream();
-              } else {
-                router.push('/teller/main');
-              }
-              }}>
-            {client.connected?'상담 시작':'상담종료'}
+            onClick={async ()=>{ await handleStartStream();}}>
+            상담시작
           </AchromaticButton>
           <SharingLinkDialog/>
-          <VideoSettingDialog videoRef={videoRef}/>
+          <AchromaticButton 
+            className="rounded-full bg-hwachang-gray2 hover:bg-hwachang-gray3 text-black" type="button" 
+            onClick={()=>{router.push('/teller/main');}}>
+            <PowerOff/>
+          </AchromaticButton>
         </div>
       </div>
     </main>

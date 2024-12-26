@@ -2,8 +2,7 @@
 import AchromaticButton from "@/app/ui/component/atom/button/achromatic-button";
 import { LegacyRef, useEffect, useRef, useState } from "react";
 import { SlArrowLeft, SlArrowRight } from "react-icons/sl";
-import { VideoSettingDialog } from "@/app/ui/consulting-room/modal/video-setting";
-import { MicIcon, MicOffIcon, VideoIcon, VideoOffIcon } from "lucide-react";
+import { MicIcon, MicOffIcon, PowerOff, VideoIcon, VideoOffIcon } from "lucide-react";
 import { useSocket } from "@/app/utils/web-socket/useSocket";
 import { Video, VideoView } from "../../components/video-view";
 import { createMockMyProfile, mockOtherProfile, mockProfile } from "../../mock/mock-profiles";
@@ -12,11 +11,12 @@ import { ReviewDialog } from "@/app/ui/consulting-room/modal/review-dialog";
 import { SharingLinkDialog } from "@/app/ui/consulting-room/modal/share-link-dialog";
 import { getApplicationFormById } from "@/app/business/consulting-room/application-form.service";
 import { useRecorder } from "@/app/utils/web-socket/use-recorder";
-import { useSearchParams } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 
 export default function Home() {
   const params = useSearchParams();
   const roomId:string = params.get("roomId");
+  const router = useRouter();
 
   // 현재 내 모습을 보여주는 MediaStram
   const [videoStream, setVideoStream] = useState<MediaStream | null>(null);
@@ -241,7 +241,11 @@ export default function Home() {
           </AchromaticButton>
           <ReviewDialog stopAndUpload={stopAndUpload} />
           <SharingLinkDialog />
-          <VideoSettingDialog videoRef={videoRef} />
+          <AchromaticButton 
+            className="rounded-full bg-hwachang-gray2 hover:bg-hwachang-gray3 text-black" type="button" 
+            onClick={()=>{router.push('/teller/main');}}>
+            <PowerOff/>
+          </AchromaticButton>
         </div>
       </div>
     </main>

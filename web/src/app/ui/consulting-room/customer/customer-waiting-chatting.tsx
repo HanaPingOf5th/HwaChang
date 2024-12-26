@@ -14,7 +14,7 @@ import { useCustomerStore } from "@/app/stores/customerStore";
 
 export default function CustomerWaitingChatting() {
   const { customerName } = useCustomerStore();
-  const tellerName = "김하나 행원";
+  const tellerName = "하나은행";
   const [myMessages, setMyMessages] = useState<string[]>([]);
   const [inputValue, setInputValue] = useState<string>("");
   const chatContainerRef = useRef<HTMLDivElement | null>(null);

@@ -10,12 +10,13 @@ import {
 import { createMockMyProfile } from "@/app/(..route)/customer-room/mock/mock-profiles";
 import { Video, VideoView } from "@/app/(..route)/customer-room/components/video-view";
 import { SharingLinkDialog } from "@/app/ui/consulting-room/modal/share-link-dialog";
-import { VideoSettingDialog } from "@/app/ui/consulting-room/modal/video-setting";
 import { deleteCustomerFromQueueAndCreatingRoom, initialConsultingRoomInfoType } from "@/app/business/waiting-room/waiting-queue.service";
 import { useConsultingRoomStore } from "@/app/stores/consulting-room.provider";
 import { useTellerStore } from "@/app/stores/tellerStore";
+import { useRouter } from "next/navigation";
 
 export default function Home() {
+  const router = useRouter();
   const videoRef = useRef<HTMLVideoElement | null>(null);
   const [videoStream, setVideoStream] = useState<MediaStream | null>(null);
   const [isVideoEnabled, setIsVideoEnabled] = useState<boolean>(true);
@@ -147,9 +148,14 @@ export default function Home() {
               )}
             </div>
           </AchromaticButton>
-          <AchromaticButton className="rounded-full bg-hwachang-gray2 hover:bg-hwachang-gray3">나가기</AchromaticButton>
+          <AchromaticButton
+            className="rounded-full bg-hwachang-gray2 hover:bg-hwachang-gray3 text-black"
+            onClick={()=>{router.push("/teller-room/consulting")}}
+            >
+            상담실 이동
+          </AchromaticButton>
           <SharingLinkDialog/>
-          <VideoSettingDialog videoRef={videoRef}/>
+          {/* <VideoSettingDialog videoRef={videoRef}/> */}
         </div>
       </div>
     </main>
