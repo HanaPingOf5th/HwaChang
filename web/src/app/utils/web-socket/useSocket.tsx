@@ -164,38 +164,80 @@ export function useSocket({id}:{id: string}) {
   };
 
   const createPeerConnection = async (otherKey: string) => {
-    const pc = new RTCPeerConnection();
+    const configuration: RTCConfiguration = {
+      iceServers: [
+        {
+          urls: "stun:stun.l.google.com:19302",
+        },
+      ],
+    };
+  
+    const pc = new RTCPeerConnection(configuration);
+  
     try {
       pc.addEventListener("icecandidate", (event) => {
         console.log("iceCandidate 이벤트 발생");
         onIceCandidate(event, otherKey);
       });
-
+  
       pc.addEventListener("track", (event) => {
         console.log("track 이벤트 발생");
         onTrack(event, otherKey);
       });
-
-      await navigator.mediaDevices
-        .getUserMedia({ video: true, audio: true })
-        .then((localStream) => {
-          localStream.getTracks().forEach((track) => {
-            pc.addTrack(track, localStream);
-          });
-          console.log("송출완료");
-        });
-
+  
+      const localStream = await navigator.mediaDevices.getUserMedia({ video: true, audio: true });
+      localStream.getTracks().forEach((track) => {
+        pc.addTrack(track, localStream);
+      });
+  
+      console.log("송출완료");
+  
       pc.onconnectionstatechange = () => {
         if (["disconnected", "failed", "closed"].includes(pc.iceConnectionState)) {
           console.log("연결이 끊어졌습니다.");
         }
       };
-    } catch (e) {
-      console.log(e);
+    } catch (error) {
+      console.error("피어 커넥션 생성 중 오류:", error);
     }
+  
     console.log("만들어진 후 피어커넥션", pc);
     return pc;
   };
+  
+  // const createPeerConnection = async (otherKey: string) => {
+  //   const pc = new RTCPeerConnection();
+  //   try {
+  //     pc.addEventListener("icecandidate", (event) => {
+  //       console.log("iceCandidate 이벤트 발생");
+  //       onIceCandidate(event, otherKey);
+  //     });
+
+  //     pc.addEventListener("track", (event) => {
+  //       console.log("track 이벤트 발생");
+  //       onTrack(event, otherKey);
+  //     });
+
+  //     await navigator.mediaDevices
+  //       .getUserMedia({ video: true, audio: true })
+  //       .then((localStream) => {
+  //         localStream.getTracks().forEach((track) => {
+  //           pc.addTrack(track, localStream);
+  //         });
+  //         console.log("송출완료");
+  //       });
+
+  //     pc.onconnectionstatechange = () => {
+  //       if (["disconnected", "failed", "closed"].includes(pc.iceConnectionState)) {
+  //         console.log("연결이 끊어졌습니다.");
+  //       }
+  //     };
+  //   } catch (e) {
+  //     console.log(e);
+  //   }
+  //   console.log("만들어진 후 피어커넥션", pc);
+  //   return pc;
+  // };
 
   const onTrack = (event: RTCTrackEvent, otherKey: string) => {
     setRemoteStream(event.streams[0]);

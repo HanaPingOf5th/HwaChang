@@ -5,6 +5,7 @@ import AchromaticButton from "../component/atom/button/achromatic-button";
 import Library from "./library";
 import DocumentSearch from "./document-search";
 import ConsultationHistory from "./consultation-history";
+import { useConsultingRoomStore } from "@/app/stores/consulting-room.provider";
 
 interface TabItem {
   id: number;
@@ -13,8 +14,9 @@ interface TabItem {
 }
 
 export default function TabMenu() {
+  const customerName = useConsultingRoomStore(state=>state.customerName)
   const TabData: TabItem[] = [
-    { id: 1, button: "과거 상담 기록", content: <ConsultationHistory name="유유정" /> },
+    { id: 1, button: "과거 상담 기록", content: <ConsultationHistory name={customerName}/> },
     { id: 2, button: "문서 검색", content: <DocumentSearch /> },
     { id: 3, button: "자료실", content: <Library /> },
   ];
