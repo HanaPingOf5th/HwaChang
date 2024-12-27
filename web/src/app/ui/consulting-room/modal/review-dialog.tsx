@@ -7,10 +7,7 @@ import { Dialog, DialogContent, DialogTrigger } from "@/app/ui/component/molecul
 import { sendReview } from "@/app/business/consulting-room/review.service";
 import { useConsultingRoomStore } from "@/app/stores/consulting-room.provider";
 import { createConsultingRoomStore } from "@/app/stores/consulting-room.store";
-import {
-  EndConsultingRoom,
-  endConsultingRoom,
-} from "@/app/business/consulting-room/consulting-room-end";
+import {endConsultingRoom} from "@/app/business/consulting-room/consulting-room-end";
 
 export function ReviewDialog({ stopAndUpload }: { stopAndUpload: () => Promise<string> }) {
   const consultingRoomStore = createConsultingRoomStore();
