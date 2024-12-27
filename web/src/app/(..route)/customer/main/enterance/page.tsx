@@ -36,7 +36,7 @@ function CategoryList() {
             className="bg-hwachang-darkgreen hover:bg-hwachang-green text-white cursor-pointer"
             onClick={() => {
               router.push(
-                `/customer-room/waiting?categoryId=${value.categoryId}&type=${value.categoryType === "PERSONAL" ? 0 : 1}`,
+                `/customer-room/waiting?categoryId=${value.categoryId}&type=${value.type === "PERSONAL" ? 0 : 1}`,
               );
             }}
           >

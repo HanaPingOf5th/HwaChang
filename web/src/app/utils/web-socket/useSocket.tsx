@@ -86,7 +86,7 @@ export function useSocket({id}:{id: string}) {
       });
 
       client.subscribe(`/topic/peer/shareScreen/${roomId}`, (message)=>{
-        const { screenStream: shareScreenStream } = JSON.parse(message.body);
+        console.log(message);
       })
     },
   });
@@ -100,9 +100,9 @@ export function useSocket({id}:{id: string}) {
         audio: true,
       });
 
-      pcListMap.forEach((pc, key) => {
+      pcListMap.forEach((pc) => {
         const videoSender = pc.getSenders().find((sender) => sender.track?.kind === "video");
-  
+        
         if (videoSender) {
           videoSender.replaceTrack(screenStream.getVideoTracks()[0]);
         } else {
@@ -130,7 +130,7 @@ export function useSocket({id}:{id: string}) {
         console.log("화면 공유가 종료되었습니다.");
         if(screenStream){
           screenStream.getTracks().forEach((track)=>track.stop());
-          pcListMap.forEach(async (pc, key) => {
+          pcListMap.forEach(async (pc) => {
             const videoSender = pc.getSenders().find((sender)=>sender.track.kind === "video");
             if(videoSender){
               const stream = await navigator.mediaDevices.getUserMedia({ video: true, audio: true })

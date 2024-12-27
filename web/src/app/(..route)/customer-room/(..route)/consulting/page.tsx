@@ -1,11 +1,10 @@
 "use client";
 import AchromaticButton from "@/app/ui/component/atom/button/achromatic-button";
 import { LegacyRef, useEffect, useRef, useState } from "react";
-import { SlArrowLeft, SlArrowRight } from "react-icons/sl";
 import { MicIcon, MicOffIcon, VideoIcon, VideoOffIcon } from "lucide-react";
 import { useSocket } from "@/app/utils/web-socket/useSocket";
 import { Video, VideoView } from "../../components/video-view";
-import { createMockMyProfile, mockOtherProfile, mockProfile } from "../../mock/mock-profiles";
+import { createMockMyProfile, mockProfile } from "../../mock/mock-profiles";
 import { ApplicationForm, ApplicationProps } from "../../components/application-form";
 import { ReviewDialog } from "@/app/ui/consulting-room/modal/review-dialog";
 import { SharingLinkDialog } from "@/app/ui/consulting-room/modal/share-link-dialog";
@@ -41,9 +40,6 @@ export default function Home() {
   // 녹화
   const { startRecord, getAudioPermission, stopAndUpload } =
     useRecorder(remoteStream);
-
-  // 상단 인덱싱
-  const [slideIndex, setSlideIndex] = useState(0);
 
   useEffect(() => {
     const getMedia = async () => {

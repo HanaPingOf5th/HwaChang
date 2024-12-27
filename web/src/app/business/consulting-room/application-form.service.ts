@@ -3,7 +3,6 @@
 import { ApplicationProps } from "@/app/(..route)/customer-room/components/application-form"
 import { APIResponseType, instance } from "@/app/utils/http"
 import { API_PATH } from "@/app/utils/http/api-query";
-import { date } from "zod";
 
 export interface ApplicationFormInfoType{
   applicationFormId: string;
