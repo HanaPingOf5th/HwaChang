@@ -6,7 +6,7 @@ import { IoSearch, IoChevronBack, IoChevronForward } from "react-icons/io5";
 import Image from "next/image"
 import DocumentImage from "@/app/utils/public/DocumentImage.png";
 import { Category, getCategories } from "@/app/business/categoty/category.service";
-import { getDocumentsByCategoryId, Document } from "@/app/business/consulting-room/document.service";
+import { getDocumentsByCategoryId, Document, getDocumentsByKeyword } from "@/app/business/consulting-room/document.service";
 
 export default function DocumentSearch() {
   const [categories, setCategories] = useState<Category[]>([]);
@@ -38,6 +38,13 @@ export default function DocumentSearch() {
       setDocuments(response.data as Document[]);
     });
   }, [selectedCategory]);
+
+  useEffect(() => {
+    getDocumentsByKeyword(searchText).then((response) => {
+      console.log(searchText);
+      setDocuments(response.data as Document[]);
+    })
+  },[searchText])
 
   const handleSearchChange = (value: string) => {
     setSearchText(value);

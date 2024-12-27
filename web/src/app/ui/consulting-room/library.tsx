@@ -5,7 +5,7 @@ import TextInput from "../component/atom/text-input/text-input";
 import { IoSearch, IoChevronBack, IoChevronForward } from "react-icons/io5";
 import Image from "next/image"
 import Pen from "@/app/utils/public/Pen.png"
-import { ApplicationFormInfoType, getApplicationFormById, getApplicationFormInfoListByCategoryId, sendApplicaiotionForm } from "@/app/business/consulting-room/application-form.service";
+import { ApplicationFormInfoType, getApplicationFormById, getApplicationFormByKeyword, getApplicationFormInfoListByCategoryId, sendApplicaiotionForm } from "@/app/business/consulting-room/application-form.service";
 import { Category, getCategories } from "@/app/business/categoty/category.service";
 import { useConsultingRoomStore } from "@/app/stores/consulting-room.provider";
 
@@ -43,6 +43,13 @@ export default function Library() {
   const handleSearchChange = (value: string) => {
     setSearchText(value);
   };
+
+  useEffect(()=>{
+    getApplicationFormByKeyword(searchText).then((response)=>{
+      console.log(searchText);
+      setApplicationForms(response.data as ApplicationFormInfoType[])
+    })
+  },[searchText])
 
   const handleNextPage = () => {
     setCurrentPage((prev) => Math.min(prev + 1, totalPages));

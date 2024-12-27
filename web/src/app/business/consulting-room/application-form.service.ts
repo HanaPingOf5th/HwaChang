@@ -52,7 +52,7 @@ export async function submitApplicationForm(subjectedFormData:SubjectedFormData[
   }
 }
 
-export async function searchApplicationFormByKeyword(keyword: string):Promise<APIResponseType> {
+export async function getApplicationFormByKeyword(keyword: string):Promise<APIResponseType> {
   const response = await instance.get(`${API_PATH}/application?keyword=${keyword}`)
 
   console.log(response)
@@ -80,7 +80,7 @@ export async function getApplicationForm(): Promise<APIResponseType> {
   try {
     const response = await instance.get(`${API_PATH}/application/get`);
     
-    console.log(response);
+    console.log(response.data);
     return {
       isSuccess: true,
       isFailure: false,

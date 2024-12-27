@@ -126,7 +126,6 @@ export default function Home() {
   }, [client, roomId]);
 
   useEffect(() => {
-    if(!isForm) return;
     getApplicationForm().then((value) => {
       setFormData(value.data as ApplicationProps);
     });
@@ -188,23 +187,6 @@ export default function Home() {
             </button>
           )}
         </div>
-        {/* API 연동 후, 삭제 예정 */}
-        <div className="flex justify-center items-center gap-4 pt-4">
-          <AchromaticButton
-            onClick={() => {
-              setIsForm(true);
-            }}
-          >
-            mock form
-          </AchromaticButton>
-          <AchromaticButton
-            onClick={() => {
-              setIsForm(false);
-            }}
-          >
-            mock view
-          </AchromaticButton>
-        </div>
         <div className="pt-4 px-6">
           {isForm ? (
             <ApplicationForm formData={formData} />
@@ -242,10 +224,21 @@ export default function Home() {
           </AchromaticButton>
           <ReviewDialog stopAndUpload={stopAndUpload} />
           <SharingLinkDialog />
-          <AchromaticButton 
+          {/* <AchromaticButton 
             className="rounded-full bg-hwachang-gray2 hover:bg-hwachang-gray3 text-black" type="button" 
             onClick={()=>{router.push('/customer/main');}}>
             <PowerOff/>
+          </AchromaticButton> */}
+          <AchromaticButton
+            onClick={() => {
+              if(isForm){
+                setIsForm(false);
+              }else{
+                setIsForm(true);
+              }
+            }}
+          >
+            신청서 확인
           </AchromaticButton>
         </div>
       </div>
