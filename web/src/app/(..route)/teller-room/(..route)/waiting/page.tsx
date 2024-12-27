@@ -24,8 +24,9 @@ export default function Home() {
   const { consultingRoomId, customerIds, tellerId, updateCustomer, updateTeller, updateConsultingRoomId } = useConsultingRoomStore(
     (state) => state,
   );
-
-  const {tellerType} = useTellerStore();
+  const { typeId } = useTellerStore(
+    (state) => state,
+  );
 
 
   const audioContext = useRef<AudioContext | null>(null);
@@ -65,27 +66,22 @@ export default function Home() {
     };
   }, [videoStream]);
 
-  useEffect(()=>{
-      if( consultingRoomId === null){
-        console.log(tellerType);
-        // personal
-        deleteCustomerFromQueueAndCreatingRoom(tellerType).then((response)=>{
-          const roomInfo = response.data as initialConsultingRoomInfoType;
-        
-          const consultingRoomId: string = roomInfo.consultingRoomId;
-          const customerId: string = roomInfo.customerId;
-          const tellerId: string = roomInfo.tellerId;
+  useEffect(() => {
+    if (consultingRoomId === null) {
+      // personal
+      deleteCustomerFromQueueAndCreatingRoom(typeId).then((response) => {
+        const roomInfo = response.data as initialConsultingRoomInfoType;
 
-          updateConsultingRoomId(consultingRoomId)
-          updateCustomer(customerId)
-          updateTeller(tellerId)
-        })
-      }
-  },[])
+        const consultingRoomId: string = roomInfo.consultingRoomId;
+        const customerId: string = roomInfo.customerId;
+        const tellerId: string = roomInfo.tellerId;
+      })
+    }
+  }, [])
 
-  useEffect(()=>{
-    console.log(consultingRoomId, customerIds, tellerId )
-  },[consultingRoomId, customerIds, tellerId])
+  useEffect(() => {
+    console.log(consultingRoomId, customerIds, tellerId)
+  }, [consultingRoomId, customerIds, tellerId])
 
   // To-Do: 내가 비디오를 끌 경우, 나의 비디오 상태를 상대방에게 보내는 api 추가: isCam: false
   const toggleVideo = () => {
@@ -111,7 +107,7 @@ export default function Home() {
         </p>
         <div className="flex justify-between space-x-2">
           <p className={`mb-6 text-2xl text-hwachang-green1 font-semibold`}>
-            상담사를 기다리는 중입니다...
+            고객을 기다리는 중입니다...
           </p>
         </div>
         <VideoView
@@ -120,7 +116,7 @@ export default function Home() {
           profile={createMockMyProfile(false)}
         />
       </div>
-        
+
 
       <div className="flex justify-center space-x-4 mt-4">
         <div className="flex justify-center gap-4">
@@ -150,11 +146,11 @@ export default function Home() {
           </AchromaticButton>
           <AchromaticButton
             className="rounded-full bg-hwachang-gray2 hover:bg-hwachang-gray3 text-black"
-            onClick={()=>{router.push("/teller-room/consulting")}}
-            >
+            onClick={() => { router.push("/teller-room/consulting") }}
+          >
             상담실 이동
           </AchromaticButton>
-          <SharingLinkDialog/>
+          <SharingLinkDialog />
           {/* <VideoSettingDialog videoRef={videoRef}/> */}
         </div>
       </div>
