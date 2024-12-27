@@ -10,7 +10,6 @@ import { useConsultingRoomStore } from "@/app/stores/consulting-room.provider";
 
 export default function Home() {
   const { setCustomerName } = useCustomerStore();
-  const {initConsultingRoomStore} = useConsultingRoomStore(state => state);
 
   useEffect(() => {
     async function getUserInfo() {
