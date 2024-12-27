@@ -23,6 +23,7 @@ export default function Home() {
   const { consultingRoomId, customerId, tellerId, customerName, updateCustomer, updateTeller, updateConsultingRoomId, updateCustomerName } = useConsultingRoomStore(
     (state) => state,
   );
+
   const tellerType = useConsultingRoomStore(state=>state.tellerType)
 
 
@@ -113,7 +114,7 @@ export default function Home() {
         </p>
         <div className="flex justify-between space-x-2">
           <p className={`mb-6 text-2xl text-hwachang-green1 font-semibold`}>
-            상담사를 기다리는 중입니다...
+            고객을 기다리는 중입니다...
           </p>
         </div>
         <VideoView
@@ -122,7 +123,7 @@ export default function Home() {
           profile={createMockMyProfile(false)}
         />
       </div>
-        
+
 
       <div className="flex justify-center space-x-4 mt-4">
         <div className="flex justify-center gap-4">
@@ -152,11 +153,11 @@ export default function Home() {
           </AchromaticButton>
           <AchromaticButton
             className="rounded-full bg-hwachang-gray2 hover:bg-hwachang-gray3 text-black"
-            onClick={()=>{router.push("/teller-room/consulting")}}
-            >
+            onClick={() => { router.push("/teller-room/consulting") }}
+          >
             상담실 이동
           </AchromaticButton>
-          <SharingLinkDialog/>
+          <SharingLinkDialog />
           {/* <VideoSettingDialog videoRef={videoRef}/> */}
         </div>
       </div>

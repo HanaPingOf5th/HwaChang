@@ -6,6 +6,7 @@ import { FormSubmitButton } from "../../component/molecule/form/form-submit-butt
 import { Dialog, DialogContent, DialogTrigger } from "@/app/ui/component/molecule/dialog/dialog";
 import { sendReview } from "@/app/business/consulting-room/review.service";
 import { useConsultingRoomStore } from "@/app/stores/consulting-room.provider";
+import { createConsultingRoomStore } from "@/app/stores/consulting-room.store";
 import {
   endConsultingRoom,
 } from "@/app/business/consulting-room/consulting-room-end";

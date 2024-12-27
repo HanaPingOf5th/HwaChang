@@ -2,6 +2,7 @@
 import React from "react";
 import AchromaticButton from "../component/atom/button/achromatic-button";
 import { useRouter } from "next/navigation";
+// import { processNextCustomer } from "@/app/business/queues/queues.service";
 
 
 export default function ConsultationStartContent() {

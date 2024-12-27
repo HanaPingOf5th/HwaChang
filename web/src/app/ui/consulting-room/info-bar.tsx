@@ -9,6 +9,9 @@ const tellerTypeMapper = {
   기업금융: 1,
   개인금융: 0,
 };
+const { typeId } = useTellerStore(
+  (state) => state,
+);
 
 export default function InfoBar() {
   const [waitingCustomer, setWaitingCustomer] = useState<number>(0);
@@ -19,8 +22,7 @@ export default function InfoBar() {
 
   useEffect(() => {
     async function getData() {
-      console.log(tellerType);
-      const response = await getQueueData(tellerType);
+      const response = await getQueueData(typeId);
       console.log(response);
       setWaitingCustomer(response.data.result.waitingCustomer);
       setWaitingTeller(response.data.result.waitingTeller);

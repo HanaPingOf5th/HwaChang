@@ -11,11 +11,14 @@ import { ReviewDialog } from "@/app/ui/consulting-room/modal/review-dialog";
 import { SharingLinkDialog } from "@/app/ui/consulting-room/modal/share-link-dialog";
 import { getApplicationForm} from "@/app/business/consulting-room/application-form.service";
 import { useRecorder } from "@/app/utils/web-socket/use-recorder";
+
 import { useRouter, useSearchParams } from "next/navigation";
+
 
 export default function Home() {
   const params = useSearchParams();
   const roomId:string = params.get("roomId");
+
   const router = useRouter();
 
   // 현재 내 모습을 보여주는 MediaStram
