@@ -13,7 +13,6 @@ export default function Home() {
   const {initConsultingRoomStore} = useConsultingRoomStore(state => state);
 
   useEffect(() => {
-    initConsultingRoomStore();
     async function getUserInfo() {
       const response = await fetchCustomerMyInfo();
 
