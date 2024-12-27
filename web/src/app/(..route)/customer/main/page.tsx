@@ -6,7 +6,6 @@ import Link from "next/link";
 import { useEffect } from "react";
 import { fetchCustomerMyInfo } from "@/app/business/auth/customer/customer-auth-myinfo";
 import { useCustomerStore } from "@/app/stores/customerStore";
-import { useConsultingRoomStore } from "@/app/stores/consulting-room.provider";
 
 export default function Home() {
   const { setCustomerName } = useCustomerStore();
