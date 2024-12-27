@@ -6,7 +6,7 @@ import { IoSearch, IoChevronBack, IoChevronForward } from "react-icons/io5";
 import Image from "next/image"
 import Pen from "@/app/utils/public/Pen.png"
 import { ApplicationFormInfoType, getApplicationFormById, getApplicationFormByKeyword, getApplicationFormInfoListByCategoryId, sendApplicaiotionForm } from "@/app/business/consulting-room/application-form.service";
-import { Category, getCategories } from "@/app/business/categoty/category.service";
+import { Category, ConsultingType, getCategories } from "@/app/business/categoty/category.service";
 import { useConsultingRoomStore } from "@/app/stores/consulting-room.provider";
 
 export default function Library() {
@@ -16,7 +16,8 @@ export default function Library() {
   const [currentPage, setCurrentPage] = useState(1);
   const [selectedCategory, setSelectedCategory] = useState<Category>(null);
   const documentsPerPage = 6;
-  const customerName = useConsultingRoomStore(state => state.customerName);
+  const tellerType = useConsultingRoomStore(state => state.tellerType);
+  const consultingType:ConsultingType = `${tellerType===0?'PERSONAL':'CORPORATE'}`
 
   const totalPages = Math.ceil(applicationForms.length / documentsPerPage);
 
@@ -26,7 +27,7 @@ export default function Library() {
   );
 
   useEffect(() => {
-    getCategories('PERSONAL').then((response) => {
+    getCategories(consultingType).then((response) => {
       const categoriesData = response.data as Category[];
       setCategories(categoriesData);
       setSelectedCategory(categoriesData[0]);
