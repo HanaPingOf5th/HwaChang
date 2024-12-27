@@ -37,12 +37,20 @@ export default function Summary({ detail }: SummaryProps) {
     return className;
   };
 
-  const renderChat = (chat: { speaker: string; text: string }) => {
-    if (chat.speaker === selectedSpeaker) {
-      return <MyChat chat={chat.text} />;
-    } else {
-      return <OtherChat name={chat.speaker} chat={chat.text} />;
-    }
+  const renderChat = (chat: { speaker: string; text: string; startTime: string }) => {
+    return chat.speaker === selectedSpeaker ? (
+      // 오른쪽에 표시되는 채팅 (MyChat)
+      <div className="flex justify-end items-center gap-2">
+        <p className="text-sm text-gray-500">{chat.startTime}</p>
+        <MyChat chat={chat.text} />
+      </div>
+    ) : (
+      // 왼쪽에 표시되는 채팅 (OtherChat)
+      <div className="flex justify-start items-center gap-2">
+        <OtherChat name={chat.speaker} chat={chat.text} />
+        <p className="text-sm text-gray-500 mt-5">{chat.startTime}</p>
+      </div>
+    );
   };
 
   // 날짜 포맷 변환
@@ -152,7 +160,7 @@ export default function Summary({ detail }: SummaryProps) {
           <CardTitle className="text-xl font-semibold mb-4">요약</CardTitle>
           <div className="textlg text-gray-800">
             {summaryLines.map((line, index) => (
-              <p key={index}>{line}</p>
+              <p key={index}>· {line}</p>
             ))}
           </div>
         </CardContent>

@@ -21,12 +21,15 @@ export default function Home() {
   const [isVideoEnabled, setIsVideoEnabled] = useState<boolean>(true);
   const [isAudioEnabled, setIsAudioEnabled] = useState<boolean>(true);
   const consultingRoomId = useConsultingRoomStore((state)=>state.consultingRoomId);
+
   const router = useRouter();
+
 
   const audioContext = useRef<AudioContext | null>(null);
   const gainNode = useRef<GainNode | null>(null);
 
   const [slideIndex, setSlideIndex] = useState(0);
+
 
   const { client, video, startStream, startScreenStream } = useSocket({id: consultingRoomId});
   const videoRef = useRef<HTMLVideoElement | null>(null);
