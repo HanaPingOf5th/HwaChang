@@ -4,10 +4,10 @@ import { persist } from 'zustand/middleware';
 export interface ConsultingRoomActions{
   updateCustomer: (customerId: string)=>void
   updateTeller: (tellerId: string)=>void
-  updateConsultingRoomId: (consultingRoomId: string) => void
+  updateConsultingRoomId: (consultingRoomId: string)=>void
   updateCustomerName: (customerName: string)=>void
-  updateTellerType: (tellerType: string) => void
-  updateCategotyId: (categoryId: string) => void
+  updateTellerType: (tellerType: string)=>void
+  updateCategoryId: (categoryId: string)=>void
 }
 
 export type ConsultingRoomStore = ConsultingRoom & ConsultingRoomActions

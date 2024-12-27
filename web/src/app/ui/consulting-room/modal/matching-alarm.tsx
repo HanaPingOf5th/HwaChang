@@ -15,15 +15,19 @@ interface MatchingAlarmProps {
 export function MatchingAlarm(matchingAlarmProps: MatchingAlarmProps){
     const router = useRouter();
     const [roomId, setRoomId] = useState<string>("");
-    const {updateConsultingRoomId, consultingRoomId} = useConsultingRoomStore(state => state)
+    const {updateConsultingRoomId, updateCategoryId, updateCustomer, updateTeller, consultingRoomId} = useConsultingRoomStore(state => state)
 
     // 렌더링 후 api 요청
     useEffect(()=>{
       findCustomerRoomId().then((response)=>{
         console.log(response.data)
         const data = response.data as initialConsultingRoomInfoType
+        console.log(data);
         setRoomId(data.consultingRoomId as string);
-        updateConsultingRoomId(data.consultingRoomId as string)
+        updateConsultingRoomId(data.consultingRoomId as string);
+        updateCategoryId(data.categoryId);
+        updateCustomer(data.customerId);
+        updateTeller(data.tellerId);
       })
     }, [roomId])
 

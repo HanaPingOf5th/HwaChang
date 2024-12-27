@@ -15,7 +15,7 @@ import { useCustomerStore } from "@/app/stores/customerStore";
 
 export default function CustomerConsultingChatting() {
   const { customerName } = useCustomerStore();
-  const tellerName = "김하나 행원";
+  const tellerName = "행원";
   const [myMessages, setMyMessages] = useState<ChatDataType[]>([]);
   const chatContainerRef = useRef<HTMLDivElement | null>(null);
   const consultingRoomId = useConsultingRoomStore(state => state.consultingRoomId);

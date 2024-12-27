@@ -6,7 +6,7 @@ export interface EndConsultingRoom {
   consultingRoomId: string;
   tellerId: string;
   categoryId: string;
-  customerId: string;
+  customerIds: string[];
   recordChat: string[];
   voiceUrl: string;
   time: string;
