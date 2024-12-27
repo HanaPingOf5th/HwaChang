@@ -1,6 +1,6 @@
 "use client";
 import AchromaticButton from "@/app/ui/component/atom/button/achromatic-button";
-import { LegacyRef, Suspense, useEffect, useRef, useState } from "react";
+import { LegacyRef, useEffect, useRef, useState } from "react";
 import { MicIcon, MicOffIcon, VideoIcon, VideoOffIcon } from "lucide-react";
 import { useSocket } from "@/app/utils/web-socket/useSocket";
 import { Video, VideoView } from "../../components/video-view";
@@ -125,7 +125,6 @@ export default function Home() {
 
   return (
     <main>
-      <Suspense fallback={<div>로딩 중...</div>}>
       <div>
         <div className="relative w-full overflow-hidden h-1/6 p-6 bg-slate-100">
           <div className="flex transition-transform duration-300" style={{ transform: `translateX(-0%)`}}>
@@ -176,11 +175,6 @@ export default function Home() {
           </AchromaticButton>
           <ReviewDialog stopAndUpload={stopAndUpload} />
           <SharingLinkDialog />
-          {/* <AchromaticButton 
-            className="rounded-full bg-hwachang-gray2 hover:bg-hwachang-gray3 text-black" type="button" 
-            onClick={()=>{router.push('/customer/main');}}>
-            <PowerOff/>
-          </AchromaticButton> */}
           <AchromaticButton
             onClick={() => {
               if(isForm){
@@ -194,7 +188,6 @@ export default function Home() {
           </AchromaticButton>
         </div>
       </div>
-      </Suspense>
     </main>
   );
 }
