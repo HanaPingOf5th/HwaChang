@@ -142,7 +142,7 @@ export default function Home() {
           {isForm ? (
             <ApplicationForm formData={formData} />
           ) : (
-            <VideoView video={video[1]} onCam={true} profile={mockProfile} />
+            <VideoView video={video[0]} onCam={true} profile={mockProfile} />
           )}
         </div>
       </div>

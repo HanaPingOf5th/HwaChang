@@ -176,7 +176,8 @@ export function useSocket({id}:{id: string}) {
         onTrack(event, otherKey);
       });
 
-      await navigator.mediaDevices
+      // await 처리 철회
+      navigator.mediaDevices
         .getUserMedia({ video: true, audio: true })
         .then((localStream) => {
           localStream.getTracks().forEach((track) => {
