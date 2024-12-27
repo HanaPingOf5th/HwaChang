@@ -185,11 +185,6 @@ export function useSocket({id}:{id: string}) {
         console.log("track 이벤트 발생");
         onTrack(event, otherKey);
       });
-  
-      // const localStream = await navigator.mediaDevices.getUserMedia({ video: true, audio: true });
-      // localStream.getTracks().forEach((track) => {
-      //   pc.addTrack(track, localStream);
-      // });
 
       await navigator.mediaDevices.getUserMedia({ video: true, audio: true }).then((stream)=>{
         stream.getTracks().forEach((track)=>{
@@ -228,6 +223,7 @@ export function useSocket({id}:{id: string}) {
       />
     );
     setVideoElements((prev) => [...prev, newVideoElement]);
+    console.log(">>>>>>>>>>>>>>>>>>>>>>>>", videoElements)
   };
 
   const onIceCandidate = (event: RTCPeerConnectionIceEvent, otherKey: string) => {
