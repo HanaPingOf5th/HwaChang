@@ -9,21 +9,18 @@ const tellerTypeMapper = {
   기업금융: 1,
   개인금융: 0,
 };
-const { typeId } = useTellerStore(
-  (state) => state,
-);
 
 export default function InfoBar() {
   const [waitingCustomer, setWaitingCustomer] = useState<number>(0);
   const [waitingTeller, setWaitingTeller] = useState<number>(0);
   const [calling, setCalling] = useState<number>(0);
   const [postProcessing, setPostProcessing] = useState<number>(0);
-  const tellerType = useConsultingRoomStore(state=>state.tellerType)
+  const tellerType = useConsultingRoomStore((state) => state.tellerType);
 
   useEffect(() => {
     async function getData() {
-      const response = await getQueueData(typeId);
-      console.log(response);
+      console.log("GET DATA", tellerType);
+      const response = await getQueueData(tellerType);
       setWaitingCustomer(response.data.result.waitingCustomer);
       setWaitingTeller(response.data.result.waitingTeller);
       setCalling(response.data.result.calling);
