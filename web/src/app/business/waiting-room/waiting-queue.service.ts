@@ -16,6 +16,16 @@ export async function addCustomerToQueue(typeId: string, categoryId: string): Pr
   return {
     isSuccess: true,
     isFailure: false,
+    data: response.data.result as string
+  }
+}
+
+export async function deleteCustomerToQueue(typeId: string): Promise<APIResponseType> {
+  const response = await instance.delete(`${API_PATH}/queues/${typeId}`)
+
+  return {
+    isSuccess: true,
+    isFailure: false,
     data: response.data
   }
 }

@@ -13,7 +13,7 @@ import { Video, VideoView } from "../../components/video-view";
 import { createMockMyProfile } from "../../mock/mock-profiles";
 import { SharingLinkDialog } from "@/app/ui/consulting-room/modal/share-link-dialog";
 import { useRouter, useSearchParams } from "next/navigation";
-import { addCustomerToQueue } from "@/app/business/waiting-room/waiting-queue.service";
+import { addCustomerToQueue, deleteCustomerToQueue } from "@/app/business/waiting-room/waiting-queue.service";
 
 export default function Home() {
   const router = useRouter();
@@ -22,6 +22,7 @@ export default function Home() {
   const [videoStream, setVideoStream] = useState<MediaStream | null>(null);
   const [isVideoEnabled, setIsVideoEnabled] = useState<boolean>(true);
   const [isAudioEnabled, setIsAudioEnabled] = useState<boolean>(true);
+  const [customerName, setCustomerName] = useState<string>(null);
 
   const audioContext = useRef<AudioContext | null>(null);
   const gainNode = useRef<GainNode | null>(null);
@@ -30,10 +31,11 @@ export default function Home() {
   const ctg = params.get("categoryId");
   const type = params.get("type");
 
-  useEffect(()=>{
+  useEffect(() => {
     console.log(type)
-    addCustomerToQueue(type, ctg).then((response)=>{
+    addCustomerToQueue(type, ctg).then((response) => {
       console.log(response);
+      setCustomerName(response.data as string);
     })
   }, [])
 
@@ -87,6 +89,13 @@ export default function Home() {
     }
   };
 
+  const handleExit = () => {
+    deleteCustomerToQueue(type).then((response) => {
+      console.log(response);
+    })
+    router.push("/customer/main")
+  }
+
   return (
     <main>
       <div className="grid grid-row-1 gap-1 px-10 py-6">
@@ -109,24 +118,24 @@ export default function Home() {
               </DialogContent>
             )}
           </Dialog> */}
-        <Dialog>
-          <DialogTrigger asChild>
-            <AchromaticButton className="bg-hwachang-brightgreen hover:bg-hwachang-lightgreen text-black">
-              매칭 시작
-            </AchromaticButton>
-          </DialogTrigger>
-          <DialogContent>
-            <MatchingAlarm categoryId={ctg} typeId={type} />
-          </DialogContent>
-        </Dialog>
+          <Dialog>
+            <DialogTrigger asChild>
+              <AchromaticButton className="bg-hwachang-brightgreen hover:bg-hwachang-lightgreen text-black">
+                매칭 시작
+              </AchromaticButton>
+            </DialogTrigger>
+            <DialogContent>
+              <MatchingAlarm categoryId={ctg} typeId={type} />
+            </DialogContent>
+          </Dialog>
         </div>
         <VideoView
           video={<Video ref={videoRef as LegacyRef<HTMLVideoElement>} />}
           onCam={isVideoEnabled}
-          profile={createMockMyProfile(false)}
+          profile={createMockMyProfile(false, customerName)}
         />
       </div>
-        
+
 
       <div className="flex justify-center space-x-4 mt-4">
         <div className="flex justify-center gap-4">
@@ -156,11 +165,11 @@ export default function Home() {
           </AchromaticButton>
           <AchromaticButton
             className="rounded-full bg-hwachang-gray2 hover:bg-hwachang-gray3 text-black"
-            onClick={()=>{router.push("/customer/main")}}
-            >
+            onClick={handleExit}
+          >
             나가기
           </AchromaticButton>
-          <SharingLinkDialog/>
+          <SharingLinkDialog />
           {/* <VideoSettingDialog videoRef={videoRef}/> */}
         </div>
       </div>
