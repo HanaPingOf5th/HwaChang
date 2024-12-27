@@ -6,7 +6,7 @@ export interface ConsultingRoomActions{
   updateTeller: (tellerId: string)=>void
   updateConsultingRoomId: (consultingRoomId: string)=>void
   updateCustomerName: (customerName: string)=>void
-  updateTellerType: (tellerType: string)=>void
+  updateTellerType: (tellerType: number)=>void
   updateCategoryId: (categoryId: string)=>void
 }
 
@@ -65,7 +65,7 @@ export const createConsultingRoomStore = (
           set(()=>({
             customerName: customerName
           })),
-        updateTellerType: (tellerType: string) => 
+        updateTellerType: (tellerType: number) => 
           set(()=>({
             tellerType: tellerType
           })),

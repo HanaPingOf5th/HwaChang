@@ -11,7 +11,7 @@ import {
 } from "lucide-react";
 import { useSocket } from "@/app/utils/web-socket/useSocket";
 import { Video, VideoView } from "@/app/(..route)/customer-room/components/video-view";
-import { createMockMyProfile, mockOtherProfile, mockProfile } from "@/app/(..route)/customer-room/mock/mock-profiles";
+import { createMockMyProfile, mockProfile } from "@/app/(..route)/customer-room/mock/mock-profiles";
 import { SharingLinkDialog } from "@/app/ui/consulting-room/modal/share-link-dialog";
 import { useConsultingRoomStore } from "@/app/stores/consulting-room.provider";
 import { useRouter } from "next/navigation";
@@ -26,31 +26,8 @@ export default function Home() {
   const audioContext = useRef<AudioContext | null>(null);
   const gainNode = useRef<GainNode | null>(null);
 
-  const [slideIndex, setSlideIndex] = useState(0);
-
   const { client, video, startStream, startScreenStream } = useSocket({id: consultingRoomId});
   const videoRef = useRef<HTMLVideoElement | null>(null);
-
-  const handlePrev = () => {
-    if (slideIndex > 0) {
-      setSlideIndex(slideIndex - 1);
-    }
-  };
-
-  const handleNext = () => {
-    if (slideIndex < videoViews.length - 3) {
-      setSlideIndex(slideIndex + 1);
-    }
-  };
-
-  const videoViews: JSX.Element[] = Array(5).fill(
-    <VideoView
-      isTop={true}
-      video={<Video ref={videoRef as LegacyRef<HTMLVideoElement>} />}
-      onCam={false}
-      profile={mockOtherProfile}
-    />,
-  );
 
   useEffect(() => {
     const getMedia = async () => {
@@ -139,8 +116,8 @@ export default function Home() {
   return (
     <main>
       <div>
-        <div className="relative w-full overflow-hidden h-1/6 p-6 bg-slate-100">
-          <div className="flex transition-transform duration-300" style={{ transform: `translateX(-${(slideIndex * 100) / 3}%)`}}>
+        <div className="relative w-full h-1/6 p-6 bg-slate-100">
+          <div className="flex transition-transform duration-300" style={{ transform: `translateX(-0%)`}}>
             <div className="w-1/3 flex-shrink-0">
               <VideoView
                 video={<Video ref={videoRef as LegacyRef<HTMLVideoElement>} isTop={true} />}
@@ -149,28 +126,7 @@ export default function Home() {
                 profile={createMockMyProfile(true)}
               />
             </div>
-            {videoViews.map((videoView, index) => (
-              <div key={index} className="w-1/3 flex-shrink-0">
-                {videoView}
-              </div>
-            ))}
           </div>
-          {slideIndex > 0 && (
-            <button
-              onClick={handlePrev}
-              className="absolute left-0 top-1/2 transform -translate-y-1/2 px-3"
-            >
-              <SlArrowLeft />
-            </button>
-          )}
-          {slideIndex < videoViews.length - 3 && (
-            <button
-              onClick={handleNext}
-              className="absolute right-0 top-1/2 transform -translate-y-1/2 px-3"
-            >
-              <SlArrowRight />
-            </button>
-          )}
         </div>
         <div className="pt-4 px-6">
           <VideoView video={video[0]} onCam={true} profile={mockProfile}/>

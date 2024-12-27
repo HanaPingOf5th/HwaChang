@@ -109,7 +109,7 @@ export default function CustomerConsultingChatting() {
                 message.id === "my" ? (
                   <MyChat key={index} chat={message.chat} />
                 ) : (
-                  <OtherChat key={index} name={message.id} chat={message.chat} />
+                  <OtherChat key={index} name={"행원"} chat={message.chat} />
                 ),
               )}
             </div>

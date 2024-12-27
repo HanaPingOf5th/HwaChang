@@ -12,7 +12,6 @@ import { Video, VideoView } from "@/app/(..route)/customer-room/components/video
 import { SharingLinkDialog } from "@/app/ui/consulting-room/modal/share-link-dialog";
 import { deleteCustomerFromQueueAndCreatingRoom, initialConsultingRoomInfoType } from "@/app/business/waiting-room/waiting-queue.service";
 import { useConsultingRoomStore } from "@/app/stores/consulting-room.provider";
-import { useTellerStore } from "@/app/stores/tellerStore";
 import { useRouter } from "next/navigation";
 
 export default function Home() {
@@ -25,7 +24,7 @@ export default function Home() {
     (state) => state,
   );
 
-  const {tellerType} = useTellerStore();
+  const tellerType = useConsultingRoomStore(state=>state.tellerType)
 
 
   const audioContext = useRef<AudioContext | null>(null);

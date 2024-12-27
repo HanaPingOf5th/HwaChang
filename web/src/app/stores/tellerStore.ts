@@ -1,11 +1,11 @@
-import { create } from "zustand";
+// import { create } from "zustand";
 
-interface TellerState {
-  tellerType: number;
-  setTellerType: (newType: number) => void;
-}
+// interface TellerState {
+//   tellerType: number;
+//   setTellerType: (newType: number) => void;
+// }
 
-export const useTellerStore = create<TellerState>()((set) => ({
-  tellerType: 1,
-  setTellerType: (newType) => set(() => ({ tellerType: newType })),
-}));
+// export const useTellerStore = create<TellerState>()((set) => ({
+//   tellerType: 1,
+//   setTellerType: (newType) => set(() => ({ tellerType: newType })),
+// }));

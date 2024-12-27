@@ -2,14 +2,14 @@
 import AchromaticButton from "@/app/ui/component/atom/button/achromatic-button";
 import { LegacyRef, useEffect, useRef, useState } from "react";
 import { SlArrowLeft, SlArrowRight } from "react-icons/sl";
-import { MicIcon, MicOffIcon, PowerOff, VideoIcon, VideoOffIcon } from "lucide-react";
+import { MicIcon, MicOffIcon, VideoIcon, VideoOffIcon } from "lucide-react";
 import { useSocket } from "@/app/utils/web-socket/useSocket";
 import { Video, VideoView } from "../../components/video-view";
 import { createMockMyProfile, mockOtherProfile, mockProfile } from "../../mock/mock-profiles";
 import { ApplicationForm, ApplicationProps } from "../../components/application-form";
 import { ReviewDialog } from "@/app/ui/consulting-room/modal/review-dialog";
 import { SharingLinkDialog } from "@/app/ui/consulting-room/modal/share-link-dialog";
-import { getApplicationForm, getApplicationFormById } from "@/app/business/consulting-room/application-form.service";
+import { getApplicationForm} from "@/app/business/consulting-room/application-form.service";
 import { useRecorder } from "@/app/utils/web-socket/use-recorder";
 import { useRouter, useSearchParams } from "next/navigation";
 
@@ -41,27 +41,6 @@ export default function Home() {
 
   // 상단 인덱싱
   const [slideIndex, setSlideIndex] = useState(0);
-
-  const handlePrev = () => {
-    if (slideIndex > 0) {
-      setSlideIndex(slideIndex - 1);
-    }
-  };
-
-  const handleNext = () => {
-    if (slideIndex < videoViews.length - 3) {
-      setSlideIndex(slideIndex + 1);
-    }
-  };
-
-  const videoViews: JSX.Element[] = Array(5).fill(
-    <VideoView
-      isTop={true}
-      video={<Video ref={videoRef as LegacyRef<HTMLVideoElement>} />}
-      onCam={false}
-      profile={mockOtherProfile}
-    />,
-  );
 
   useEffect(() => {
     const getMedia = async () => {
@@ -147,15 +126,11 @@ export default function Home() {
     }
   };
 
-
   return (
     <main>
       <div>
         <div className="relative w-full overflow-hidden h-1/6 p-6 bg-slate-100">
-          <div
-            className="flex transition-transform duration-300"
-            style={{ transform: `translateX(-${(slideIndex * 100) / 3}%)` }}
-          >
+          <div className="flex transition-transform duration-300" style={{ transform: `translateX(-0%)`}}>
             <div className="w-1/3 flex-shrink-0">
               <VideoView
                 video={<Video ref={videoRef as LegacyRef<HTMLVideoElement>} isTop={true} />}
@@ -164,28 +139,7 @@ export default function Home() {
                 profile={createMockMyProfile(true)}
               />
             </div>
-            {videoViews.map((videoView, index) => (
-              <div key={index} className="w-1/3 flex-shrink-0">
-                {videoView}
-              </div>
-            ))}
           </div>
-          {slideIndex > 0 && (
-            <button
-              onClick={handlePrev}
-              className="absolute left-0 top-1/2 transform -translate-y-1/2 px-3"
-            >
-              <SlArrowLeft />
-            </button>
-          )}
-          {slideIndex < videoViews.length - 3 && (
-            <button
-              onClick={handleNext}
-              className="absolute right-0 top-1/2 transform -translate-y-1/2 px-3"
-            >
-              <SlArrowRight />
-            </button>
-          )}
         </div>
         <div className="pt-4 px-6">
           {isForm ? (
