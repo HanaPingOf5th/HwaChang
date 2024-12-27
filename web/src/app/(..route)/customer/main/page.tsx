@@ -54,16 +54,16 @@ export default function Home() {
               <div className="flex flex-col justify-center items-center py-5">
                 <HouseEmoji heignt={300} width={300} />
               </div>
-              <div className="flex justify-center items-center pt-12 text-2xl">
+              {/* <div className="flex justify-center items-center pt-12 text-2xl">
                 <p className="text-black font-semibold mr-2">예상 대기 시간 :</p>
                 <p
                   className={individualWaitTime > congestionTime ? "text-red-500" : "text-blue-400"}
                 >
                   <strong>{individualWaitTime}분</strong>
                 </p>
-              </div>
+              </div> */}
             </CardContent>
-            <CardFooter className="flex gap-2 justify-center mb-16">
+            {/* <CardFooter className="flex gap-2 justify-center mb-16">
               {individualWaitTime > 10 ? (
                 <>
                   <p className="text-xl">혼잡 상태</p>
@@ -75,7 +75,7 @@ export default function Home() {
                   <Image src={green_eclipse} alt="green_eclipse" width={20} height={20} />
                 </>
               )}
-            </CardFooter>
+            </CardFooter> */}
           </Card>
         </Link>
 
@@ -94,14 +94,14 @@ export default function Home() {
               <div className="flex flex-col justify-center items-center py-5">
                 <EnterPriseEmoji heignt={300} width={300} />
               </div>
-              <div className="flex justify-center items-center pt-12 text-2xl">
+              {/* <div className="flex justify-center items-center pt-12 text-2xl">
                 <p className="text-white mr-2 font-semibold">예상 대기 시간 :</p>
                 <p className={companyWaitTime > 10 ? "text-red-500" : "text-blue-300"}>
                   <strong>{companyWaitTime}분</strong>
                 </p>
-              </div>
+              </div> */}
             </CardContent>
-            <CardFooter className="justify-center mb-16 flex gap-2">
+            {/* <CardFooter className="justify-center mb-16 flex gap-2">
               {companyWaitTime > 10 ? (
                 <>
                   <p className="text-xl text-white">혼잡 상태</p>
@@ -113,7 +113,7 @@ export default function Home() {
                   <Image src={green_eclipse} alt="green_eclipse" width={20} height={20} />
                 </>
               )}
-            </CardFooter>
+            </CardFooter> */}
           </Card>
         </Link>
       </div>

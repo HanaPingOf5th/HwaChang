@@ -3,12 +3,7 @@ import AchromaticButton from "@/app/ui/component/atom/button/achromatic-button";
 import { Dialog, DialogContent, DialogTrigger } from "@/app/ui/component/molecule/dialog/dialog";
 import { LegacyRef, useEffect, useRef, useState } from "react";
 import { MatchingAlarm } from "@/app/ui/consulting-room/modal/matching-alarm";
-import {
-  MicIcon,
-  MicOffIcon,
-  VideoIcon,
-  VideoOffIcon,
-} from "lucide-react";
+import { MicIcon, MicOffIcon, VideoIcon, VideoOffIcon } from "lucide-react";
 import { Video, VideoView } from "../../components/video-view";
 import { createMockMyProfile } from "../../mock/mock-profiles";
 import { SharingLinkDialog } from "@/app/ui/consulting-room/modal/share-link-dialog";
@@ -30,12 +25,12 @@ export default function Home() {
   const ctg = params.get("categoryId");
   const type = params.get("type");
 
-  useEffect(()=>{
-    console.log(type)
-    addCustomerToQueue(type, ctg).then((response)=>{
+  useEffect(() => {
+    console.log(type);
+    addCustomerToQueue(type, ctg).then((response) => {
       console.log(response);
-    })
-  }, [])
+    });
+  }, []);
 
   useEffect(() => {
     const getMedia = async () => {
@@ -109,16 +104,16 @@ export default function Home() {
               </DialogContent>
             )}
           </Dialog> */}
-        <Dialog>
-          <DialogTrigger asChild>
-            <AchromaticButton className="bg-hwachang-brightgreen hover:bg-hwachang-lightgreen text-black">
-              매칭 시작
-            </AchromaticButton>
-          </DialogTrigger>
-          <DialogContent>
-            <MatchingAlarm categoryId={ctg} typeId={type} />
-          </DialogContent>
-        </Dialog>
+          <Dialog>
+            <DialogTrigger asChild>
+              <AchromaticButton className="bg-hwachang-brightgreen hover:bg-hwachang-lightgreen text-black">
+                매칭 시작
+              </AchromaticButton>
+            </DialogTrigger>
+            <DialogContent>
+              <MatchingAlarm categoryId={ctg} typeId={type} />
+            </DialogContent>
+          </Dialog>
         </div>
         <VideoView
           video={<Video ref={videoRef as LegacyRef<HTMLVideoElement>} />}
@@ -126,7 +121,6 @@ export default function Home() {
           profile={createMockMyProfile(false)}
         />
       </div>
-        
 
       <div className="flex justify-center space-x-4 mt-4">
         <div className="flex justify-center gap-4">
@@ -156,11 +150,13 @@ export default function Home() {
           </AchromaticButton>
           <AchromaticButton
             className="rounded-full bg-hwachang-gray2 hover:bg-hwachang-gray3 text-black"
-            onClick={()=>{router.push("/customer/main")}}
-            >
+            onClick={() => {
+              router.push("/customer/main");
+            }}
+          >
             나가기
           </AchromaticButton>
-          <SharingLinkDialog/>
+          <SharingLinkDialog />
           {/* <VideoSettingDialog videoRef={videoRef}/> */}
         </div>
       </div>
