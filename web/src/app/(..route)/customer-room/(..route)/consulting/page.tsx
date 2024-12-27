@@ -9,7 +9,7 @@ import { createMockMyProfile, mockOtherProfile, mockProfile } from "../../mock/m
 import { ApplicationForm, ApplicationProps } from "../../components/application-form";
 import { ReviewDialog } from "@/app/ui/consulting-room/modal/review-dialog";
 import { SharingLinkDialog } from "@/app/ui/consulting-room/modal/share-link-dialog";
-import { getApplicationFormById } from "@/app/business/consulting-room/application-form.service";
+import { getApplicationForm, getApplicationFormById } from "@/app/business/consulting-room/application-form.service";
 import { useRecorder } from "@/app/utils/web-socket/use-recorder";
 import { useRouter, useSearchParams } from "next/navigation";
 
@@ -126,7 +126,8 @@ export default function Home() {
   }, [client, roomId]);
 
   useEffect(() => {
-    getApplicationFormById("9b1deb4d-3b7d-4bad-9bdd-2b0d7b3dcb6d").then((value) => {
+    if(!isForm) return;
+    getApplicationForm().then((value) => {
       setFormData(value.data as ApplicationProps);
     });
   }, [isForm]);
