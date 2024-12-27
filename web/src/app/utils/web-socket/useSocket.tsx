@@ -144,22 +144,23 @@ export function useSocket({id}:{id: string}) {
       alert("화면 공유를 시작하는 데 실패했습니다. 권한을 확인하세요.");
     }
   };
-  
 
   const startStream = async () => {
     if (client.connected) {
       console.log("start steam ... ");
-      if (client.connected) {
-        client.publish({ destination: `/app/call/key`, body: "publish: call/key" });
-        setTimeout(() => {
-          otherKeyList.map(async (key) => {
-            if (!pcListMap.has(key)) {
-              pcListMap.set(key, await createPeerConnection(key));
-              await sendOffer(pcListMap.get(key), key);
-            }
-          });
-        }, 1000);
-      }
+      setTimeout(()=>{
+        if (client.connected) {
+          client.publish({ destination: `/app/call/key`, body: "publish: call/key" });
+          setTimeout(() => {
+            otherKeyList.map(async (key) => {
+              if (!pcListMap.has(key)) {
+                pcListMap.set(key, await createPeerConnection(key));
+                await sendOffer(pcListMap.get(key), key);
+              }
+            });
+          }, 1000);
+        }
+      },1000)
     }
   };
 
@@ -185,10 +186,16 @@ export function useSocket({id}:{id: string}) {
         onTrack(event, otherKey);
       });
   
-      const localStream = await navigator.mediaDevices.getUserMedia({ video: true, audio: true });
-      localStream.getTracks().forEach((track) => {
-        pc.addTrack(track, localStream);
-      });
+      // const localStream = await navigator.mediaDevices.getUserMedia({ video: true, audio: true });
+      // localStream.getTracks().forEach((track) => {
+      //   pc.addTrack(track, localStream);
+      // });
+
+      await navigator.mediaDevices.getUserMedia({ video: true, audio: true }).then((stream)=>{
+        stream.getTracks().forEach((track)=>{
+          pc.addTrack(track, stream)
+        })
+      })
   
       console.log("송출완료");
   
@@ -204,40 +211,6 @@ export function useSocket({id}:{id: string}) {
     console.log("만들어진 후 피어커넥션", pc);
     return pc;
   };
-  
-  // const createPeerConnection = async (otherKey: string) => {
-  //   const pc = new RTCPeerConnection();
-  //   try {
-  //     pc.addEventListener("icecandidate", (event) => {
-  //       console.log("iceCandidate 이벤트 발생");
-  //       onIceCandidate(event, otherKey);
-  //     });
-
-  //     pc.addEventListener("track", (event) => {
-  //       console.log("track 이벤트 발생");
-  //       onTrack(event, otherKey);
-  //     });
-
-  //     await navigator.mediaDevices
-  //       .getUserMedia({ video: true, audio: true })
-  //       .then((localStream) => {
-  //         localStream.getTracks().forEach((track) => {
-  //           pc.addTrack(track, localStream);
-  //         });
-  //         console.log("송출완료");
-  //       });
-
-  //     pc.onconnectionstatechange = () => {
-  //       if (["disconnected", "failed", "closed"].includes(pc.iceConnectionState)) {
-  //         console.log("연결이 끊어졌습니다.");
-  //       }
-  //     };
-  //   } catch (e) {
-  //     console.log(e);
-  //   }
-  //   console.log("만들어진 후 피어커넥션", pc);
-  //   return pc;
-  // };
 
   const onTrack = (event: RTCTrackEvent, otherKey: string) => {
     setRemoteStream(event.streams[0]);
