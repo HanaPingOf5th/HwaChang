@@ -39,7 +39,7 @@ export default function TellerNav() {
   const [type, setType] = useState<string>("");
   const [position, setPosition] = useState<string>("");
 
-  const updateTellerType = useConsultingRoomStore(state=>state.updateTellerType)
+  const updateTellerType = useConsultingRoomStore((state) => state.updateTellerType);
 
   useEffect(() => {
     async function getData() {
@@ -49,6 +49,7 @@ export default function TellerNav() {
       setPosition(response.data.result.position);
       setCurrentStatus(response.data.result.status);
       setCurrentColor(statusColorMapper[response.data.result.status]);
+      console.log("TELLER NAV", tellerTypeMapper[response.data.result.type]);
       updateTellerType(tellerTypeMapper[response.data.result.type]);
     }
 
@@ -131,8 +132,9 @@ export default function TellerNav() {
                   <button
                     key={item.name}
                     onClick={() => handleStatusSelect(item.name, item.color)}
-                    className={`flex items-center justify-center w-full px-4 rounded-lg ${selectedStatus === item.name ? "font-bold" : "font-normal"
-                      }`}
+                    className={`flex items-center justify-center w-full px-4 rounded-lg ${
+                      selectedStatus === item.name ? "font-bold" : "font-normal"
+                    }`}
                   >
                     <div className={`w-3 h-3 rounded-full mr-2 ${item.color}`}></div>
                     <span>{item.name}</span>
