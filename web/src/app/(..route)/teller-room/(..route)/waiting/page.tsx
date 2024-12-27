@@ -23,7 +23,6 @@ export default function Home() {
   const { consultingRoomId, customerId, tellerId, customerName, updateCustomer, updateTeller, updateConsultingRoomId, updateCustomerName } = useConsultingRoomStore(
     (state) => state,
   );
-
   const tellerType = useConsultingRoomStore(state=>state.tellerType)
 
 
@@ -65,12 +64,13 @@ export default function Home() {
   }, [videoStream]);
 
   useEffect(()=>{
+      if(tellerType === null) return;
       if( consultingRoomId === null){
         console.log(tellerType);
-        // personal
-        deleteCustomerFromQueueAndCreatingRoom(tellerType).then((response)=>{
-          const roomInfo = response.data as initialConsultingRoomInfoType;
         
+        deleteCustomerFromQueueAndCreatingRoom(tellerType).then((response)=>{
+          console.log(response)
+          const roomInfo = response.data as initialConsultingRoomInfoType;
           const consultingRoomId: string = roomInfo.consultingRoomId;
           const customerId: string = roomInfo.customerId;
           const tellerId: string = roomInfo.tellerId;
@@ -82,9 +82,10 @@ export default function Home() {
           updateTeller(tellerId)
         })
       }
-  },[])
+  },[tellerType])
 
   useEffect(()=>{
+    console.log('tellerType:', tellerType)
     console.log(consultingRoomId, customerId, tellerId, 'username: ',customerName )
   },[consultingRoomId, customerId, tellerId])
 
