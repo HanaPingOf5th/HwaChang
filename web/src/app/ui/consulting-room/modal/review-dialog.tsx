@@ -7,11 +7,14 @@ import { Dialog, DialogContent, DialogTrigger } from "@/app/ui/component/molecul
 import { sendReview } from "@/app/business/consulting-room/review.service";
 import { useConsultingRoomStore } from "@/app/stores/consulting-room.provider";
 import { createConsultingRoomStore } from "@/app/stores/consulting-room.store";
-import {endConsultingRoom} from "@/app/business/consulting-room/consulting-room-end";
+import {
+  endConsultingRoom,
+} from "@/app/business/consulting-room/consulting-room-end";
 
 export function ReviewDialog({ stopAndUpload }: { stopAndUpload: () => Promise<string> }) {
-  const consultingRoomStore = createConsultingRoomStore();
-  const { tellerId, consultingRoomId, customerIds } = consultingRoomStore.getState();
+  const consultingRoomId = useConsultingRoomStore((state)=>state.consultingRoomId);
+  const tellerId = useConsultingRoomStore((state)=>state.tellerId);
+  const customerId = useConsultingRoomStore((state)=>state.customerId);
   const categoryId = useConsultingRoomStore((state) => state.categoryId);
   const recordChat = useConsultingRoomStore((state) => state.recordChat);
 
@@ -20,7 +23,7 @@ export function ReviewDialog({ stopAndUpload }: { stopAndUpload: () => Promise<s
       const voiceUrl = await stopAndUpload();
       console.log("녹음 종료 및 업로드 완료: VoiceUrl:", voiceUrl);
       alert(`녹음 종료 및 업로드가 완료되었습니다! URL: ${voiceUrl}`);
-
+      const customerIds = [customerId];
       const time = new Date().toISOString();
       const requestData = {
         consultingRoomId,
@@ -31,6 +34,7 @@ export function ReviewDialog({ stopAndUpload }: { stopAndUpload: () => Promise<s
         voiceUrl,
         time,
       };
+      console.log(requestData);
 
       const response = await endConsultingRoom(requestData);
       if (response.isSuccess) {

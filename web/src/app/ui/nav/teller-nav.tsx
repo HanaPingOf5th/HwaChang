@@ -9,7 +9,7 @@ import { Card } from "../component/molecule/card/card";
 import TellerNavLinks from "./teller-nav-link";
 import Link from "next/link";
 import { fetchTellerStatus, patchTellerStatus } from "@/app/business/teller/teller.service";
-import { useTellerStore } from "@/app/stores/tellerStore";
+import { useConsultingRoomStore } from "@/app/stores/consulting-room.provider";
 
 const statusOptions = [
   { name: "상담가능", color: "bg-hwachang-active" },
@@ -38,9 +38,8 @@ export default function TellerNav() {
   const [name, setName] = useState<string>("");
   const [type, setType] = useState<string>("");
   const [position, setPosition] = useState<string>("");
-  const { typeId, updateTellerState } = useTellerStore(
-    (state) => state,
-  );
+
+  const updateTellerType = useConsultingRoomStore(state=>state.updateTellerType)
 
   useEffect(() => {
     async function getData() {
@@ -50,7 +49,7 @@ export default function TellerNav() {
       setPosition(response.data.result.position);
       setCurrentStatus(response.data.result.status);
       setCurrentColor(statusColorMapper[response.data.result.status]);
-      updateTellerState(tellerTypeMapper[response.data.result.type]);
+      updateTellerType(tellerTypeMapper[response.data.result.type]);
     }
 
     getData();

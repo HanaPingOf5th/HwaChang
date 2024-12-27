@@ -5,8 +5,9 @@ import TextInput from "../component/atom/text-input/text-input";
 import { IoSearch, IoChevronBack, IoChevronForward } from "react-icons/io5";
 import Image from "next/image"
 import DocumentImage from "@/app/utils/public/DocumentImage.png";
-import { Category, getCategories } from "@/app/business/categoty/category.service";
-import { getDocumentsByCategoryId, Document } from "@/app/business/consulting-room/document.service";
+import { Category, ConsultingType, getCategories } from "@/app/business/categoty/category.service";
+import { getDocumentsByCategoryId, Document, getDocumentsByKeyword } from "@/app/business/consulting-room/document.service";
+import { useConsultingRoomStore } from "@/app/stores/consulting-room.provider";
 
 export default function DocumentSearch() {
   const [categories, setCategories] = useState<Category[]>([]);
@@ -14,6 +15,8 @@ export default function DocumentSearch() {
   const [searchText, setSearchText] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
   const [selectedCategory, setSelectedCategory] = useState<Category>(null);
+  const tellerType = useConsultingRoomStore(state => state.tellerType);
+  const consultingType:ConsultingType = `${tellerType===0?'PERSONAL':'CORPORATE'}`
   const documentsPerPage = 6;
 
   const totalPages = Math.ceil(documents.length / documentsPerPage);
@@ -24,7 +27,7 @@ export default function DocumentSearch() {
   );
 
   useEffect(() => {
-    getCategories('CORPORATE').then((response) => {
+    getCategories(consultingType).then((response) => {
       const categoriesData = response.data as Category[];
       setCategories(categoriesData);
       setSelectedCategory(categoriesData[0]);
@@ -38,6 +41,13 @@ export default function DocumentSearch() {
       setDocuments(response.data as Document[]);
     });
   }, [selectedCategory]);
+
+  useEffect(() => {
+    getDocumentsByKeyword(searchText).then((response) => {
+      console.log(searchText);
+      setDocuments(response.data as Document[]);
+    })
+  },[searchText])
 
   const handleSearchChange = (value: string) => {
     setSearchText(value);

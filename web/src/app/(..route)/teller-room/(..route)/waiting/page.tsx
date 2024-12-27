@@ -12,7 +12,6 @@ import { Video, VideoView } from "@/app/(..route)/customer-room/components/video
 import { SharingLinkDialog } from "@/app/ui/consulting-room/modal/share-link-dialog";
 import { deleteCustomerFromQueueAndCreatingRoom, initialConsultingRoomInfoType } from "@/app/business/waiting-room/waiting-queue.service";
 import { useConsultingRoomStore } from "@/app/stores/consulting-room.provider";
-import { useTellerStore } from "@/app/stores/tellerStore";
 import { useRouter } from "next/navigation";
 
 export default function Home() {
@@ -21,12 +20,11 @@ export default function Home() {
   const [videoStream, setVideoStream] = useState<MediaStream | null>(null);
   const [isVideoEnabled, setIsVideoEnabled] = useState<boolean>(true);
   const [isAudioEnabled, setIsAudioEnabled] = useState<boolean>(true);
-  const { consultingRoomId, customerIds, tellerId, updateCustomer, updateTeller, updateConsultingRoomId } = useConsultingRoomStore(
+  const { consultingRoomId, customerId, tellerId, customerName, updateCustomer, updateTeller, updateConsultingRoomId, updateCustomerName } = useConsultingRoomStore(
     (state) => state,
   );
-  const { typeId } = useTellerStore(
-    (state) => state,
-  );
+
+  const tellerType = useConsultingRoomStore(state=>state.tellerType)
 
 
   const audioContext = useRef<AudioContext | null>(null);
@@ -66,22 +64,31 @@ export default function Home() {
     };
   }, [videoStream]);
 
-  useEffect(() => {
-    if (consultingRoomId === null) {
-      // personal
-      deleteCustomerFromQueueAndCreatingRoom(typeId).then((response) => {
-        const roomInfo = response.data as initialConsultingRoomInfoType;
+  useEffect(()=>{
+      if(tellerType === null) return;
+      if( consultingRoomId === null){
+        console.log(tellerType);
+        
+        deleteCustomerFromQueueAndCreatingRoom(tellerType).then((response)=>{
+          console.log(response)
+          const roomInfo = response.data as initialConsultingRoomInfoType;
+          const consultingRoomId: string = roomInfo.consultingRoomId;
+          const customerId: string = roomInfo.customerId;
+          const tellerId: string = roomInfo.tellerId;
+          const customerName: string = roomInfo.userName;
 
-        const consultingRoomId: string = roomInfo.consultingRoomId;
-        const customerId: string = roomInfo.customerId;
-        const tellerId: string = roomInfo.tellerId;
-      })
-    }
-  }, [])
+          updateConsultingRoomId(consultingRoomId)
+          updateCustomerName(customerName)
+          updateCustomer(customerId)
+          updateTeller(tellerId)
+        })
+      }
+  },[tellerType])
 
-  useEffect(() => {
-    console.log(consultingRoomId, customerIds, tellerId)
-  }, [consultingRoomId, customerIds, tellerId])
+  useEffect(()=>{
+    console.log('tellerType:', tellerType)
+    console.log(consultingRoomId, customerId, tellerId, 'username: ',customerName )
+  },[consultingRoomId, customerId, tellerId])
 
   // To-Do: 내가 비디오를 끌 경우, 나의 비디오 상태를 상대방에게 보내는 api 추가: isCam: false
   const toggleVideo = () => {

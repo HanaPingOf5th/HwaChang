@@ -9,7 +9,7 @@ export const mockProfile: Profile = {
       <Image src={Minji} alt="Minji" />
     </div>
   ),
-  name: "이수민",
+  name: "상대방",
 };
 
 export const createMockMyProfile = (isFullHeight: boolean): Profile => ({
@@ -33,13 +33,3 @@ export const mockOtherProfile: Profile = {
   ),
   name: "참여자",
 };
-
-// 캠 on 일 시
-// export const mockOtherProfile: Profile = {
-//   picture: (
-//     <div className="flex justify-center items-center rounded-xl overflow-hidden">
-//       <Image src={Ping} alt="Ping" width={300} height={300} />
-//     </div>
-//   ),
-//   name: "참여자",
-// };

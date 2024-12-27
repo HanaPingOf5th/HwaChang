@@ -61,7 +61,7 @@ export const useRecorder = (remoteStream: MediaStream) => {
             throw new Error("파일 업로드 실패");
           }
 
-          const voiceUrl = `https://kr.object.ncloudstorage.com/${fileName}`;
+          const voiceUrl = `https://kr.object.ncloudstorage.com/consulting-audiofile/${fileName}`;
           console.log(`업로드 완료: ${voiceUrl}`);
           resolve(voiceUrl);
         } catch (error) {

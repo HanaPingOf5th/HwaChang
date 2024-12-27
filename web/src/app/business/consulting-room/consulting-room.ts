@@ -1,7 +1,9 @@
 export interface ConsultingRoom {
   consultingRoomId?: string;
   tellerId?: string;
-  customerIds?: string[];
+  tellerType?: number;
+  customerId?: string;
+  customerName?: string;
   categoryId?: string;
   originalText?: unknown;
   summary?: string;

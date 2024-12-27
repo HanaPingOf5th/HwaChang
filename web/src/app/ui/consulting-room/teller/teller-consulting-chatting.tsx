@@ -17,6 +17,7 @@ export default function TellerConsultingChatting() {
     const chatContainerRef = useRef<HTMLDivElement | null>(null);
     const consultingRoomId = useConsultingRoomStore((state)=>state.consultingRoomId);
     const {client, chatMessage, messages} = useChat({id: consultingRoomId});
+    const customerName = useConsultingRoomStore(state => state.customerName);
   
     async function sendMessage(prevState: FormState, formData: FormData) {
       const value: string = formData.get("chat") as string;
@@ -106,17 +107,11 @@ export default function TellerConsultingChatting() {
             </CardHeader>
             <CardContent className="flex-grow overflow-y-auto h-96 p-4" ref={chatContainerRef}>
               <div className="flex flex-col space-y-2">
-              {/* {messages.map((message, index) => (
-                  <OtherChat key={index} name={message.id} chat={message.chat} />
-              ))}
-              {myMessages.map((data, index) => (
-                <MyChat key={index} chat={data.chat} />
-              ))} */}
               {myMessages.map((message, index) =>
                 message.id === "my" ? (
                  <MyChat key={index} chat={message.chat} />
                 ) : (
-                  <OtherChat key={index} name={message.id} chat={message.chat} />
+                  <OtherChat key={index} name={customerName} chat={message.chat} />
                 )
                 )}              
               </div>

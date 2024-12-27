@@ -4,8 +4,10 @@ import { persist } from 'zustand/middleware';
 export interface ConsultingRoomActions{
   updateCustomer: (customerId: string)=>void
   updateTeller: (tellerId: string)=>void
-  updateConsultingRoomId: (consultingRoomId: string) => void
-
+  updateConsultingRoomId: (consultingRoomId: string)=>void
+  updateCustomerName: (customerName: string)=>void
+  updateTellerType: (tellerType: number)=>void
+  updateCategoryId: (categoryId: string)=>void
 }
 
 export type ConsultingRoomStore = ConsultingRoom & ConsultingRoomActions
@@ -14,7 +16,8 @@ export const initConsultingRoomStore = (): ConsultingRoom => {
   return {
     consultingRoomId: null,
     tellerId: null,
-    customerIds: [],
+    tellerType: null,
+    customerId: null,
     categoryId: null,
     originalText: null,
     summary: null,
@@ -28,7 +31,8 @@ export const initConsultingRoomStore = (): ConsultingRoom => {
 export const defaultConsultingRoom: ConsultingRoom = {
   consultingRoomId: null,
   tellerId: null,
-  customerIds: [],
+  tellerType: null,
+  customerId: null,
   categoryId: null,
   originalText: null,
   summary: null,
@@ -46,10 +50,9 @@ export const createConsultingRoomStore = (
       (set) => ({
         ...init,
         updateCustomer: (customerId: string) =>
-          set((state) => {
-            const newCustomerIds = [...state.customerIds, customerId];
-            return { customerIds: newCustomerIds };
-          }),
+          set(() => ({
+            customerId: customerId
+          })),
         updateTeller: (tellerId: string) =>
           set(() => ({
             tellerId: tellerId,
@@ -58,13 +61,28 @@ export const createConsultingRoomStore = (
           set(() => ({
             consultingRoomId: consultingRoomId,
           })),
+        updateCustomerName: (customerName: string) =>
+          set(()=>({
+            customerName: customerName
+          })),
+        updateTellerType: (tellerType: number) => 
+          set(()=>({
+            tellerType: tellerType
+          })),
+        updateCategoryId: (categoryId: string) =>
+          set(()=>({
+            categoryId: categoryId
+          }))
       }),
       {
         name: 'consulting-room-store',
         partialize: (state) => ({
-          customerIds: state.customerIds,
+          customerId: state.customerId,
           tellerId: state.tellerId,
           consultingRoomId: state.consultingRoomId,
+          customerName: state.customerName,
+          tellerType: state.tellerType,
+          categoryId: state.categoryId
         }),
       }
     )

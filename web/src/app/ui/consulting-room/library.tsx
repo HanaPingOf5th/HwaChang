@@ -5,8 +5,9 @@ import TextInput from "../component/atom/text-input/text-input";
 import { IoSearch, IoChevronBack, IoChevronForward } from "react-icons/io5";
 import Image from "next/image"
 import Pen from "@/app/utils/public/Pen.png"
-import { ApplicationFormInfoType, getApplicationFormById, getApplicationFormInfoListByCategoryId } from "@/app/business/consulting-room/application-form.service";
-import { Category, getCategories } from "@/app/business/categoty/category.service";
+import { ApplicationFormInfoType, getApplicationFormById, getApplicationFormByKeyword, getApplicationFormInfoListByCategoryId, sendApplicaiotionForm } from "@/app/business/consulting-room/application-form.service";
+import { Category, ConsultingType, getCategories } from "@/app/business/categoty/category.service";
+import { useConsultingRoomStore } from "@/app/stores/consulting-room.provider";
 
 export default function Library() {
   const [categories, setCategories] = useState<Category[]>([]);
@@ -15,6 +16,8 @@ export default function Library() {
   const [currentPage, setCurrentPage] = useState(1);
   const [selectedCategory, setSelectedCategory] = useState<Category>(null);
   const documentsPerPage = 6;
+  const tellerType = useConsultingRoomStore(state => state.tellerType);
+  const consultingType:ConsultingType = `${tellerType===0?'PERSONAL':'CORPORATE'}`
 
   const totalPages = Math.ceil(applicationForms.length / documentsPerPage);
 
@@ -24,7 +27,7 @@ export default function Library() {
   );
 
   useEffect(() => {
-    getCategories('PERSONAL').then((response) => {
+    getCategories(consultingType).then((response) => {
       const categoriesData = response.data as Category[];
       setCategories(categoriesData);
       setSelectedCategory(categoriesData[0]);
@@ -41,6 +44,13 @@ export default function Library() {
   const handleSearchChange = (value: string) => {
     setSearchText(value);
   };
+
+  useEffect(()=>{
+    getApplicationFormByKeyword(searchText).then((response)=>{
+      console.log(searchText);
+      setApplicationForms(response.data as ApplicationFormInfoType[])
+    })
+  },[searchText])
 
   const handleNextPage = () => {
     setCurrentPage((prev) => Math.min(prev + 1, totalPages));
@@ -86,7 +96,7 @@ export default function Library() {
           <div key={index} className="flex flex-col items-center p-3">
             <button
               className="flex flex-col items-center"
-              onClick={() => {getApplicationFormById("9b1deb4d-3b7d-4bad-9bdd-2b0d7b3dcb6d")}}
+              onClick={() => {sendApplicaiotionForm('dw1234', doc.applicationFormId)}}
             >
               <Image src={Pen} alt="Page Facing Up" width={80} height={80}/>
               <p className="text-left text-sm font-medium">{doc.title}</p>
