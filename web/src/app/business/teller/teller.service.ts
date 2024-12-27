@@ -130,8 +130,8 @@ interface QueueDataResponseType {
 export async function getQueueData(
   typeId: number,
 ): Promise<TellerAPIResponseType<TellerResponseWrapper<QueueDataResponseType>>> {
+  console.log(`${API_PATH}/queues/${typeId}/teller-entrance`);
   const response = await instance.get(`${API_PATH}/queues/${typeId}/teller-entrance`);
-  console.log(response.data);
   if (response.status === 200) {
     return {
       isSuccess: true,
