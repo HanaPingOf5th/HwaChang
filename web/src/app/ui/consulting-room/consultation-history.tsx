@@ -3,7 +3,6 @@ import React from "react";
 import HistoryCard from "./history-card";
 import { useState,useEffect } from "react";
 import { getConsultingList,ConsultingList } from "@/app/business/consulting-room/customer-consulting.service";
-import { date } from "zod";
 
 interface CustomerProps {
   customerId: string

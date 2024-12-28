@@ -1,5 +1,4 @@
 "use client";
-
 import React, { useEffect, useState } from "react";
 import InfoContent from "./info-content";
 import { getQueueData } from "@/app/business/teller/teller.service";
