@@ -3,12 +3,8 @@ import SockJS from "sockjs-client";
 import { Client } from "@stomp/stompjs";
 import { API_PATH } from "../http/api-query";
 
-// 사용자의 UUID로 관리 -> Consulting-room으로 내 ID를 받을 수 있음
-const myKey: string = Math.random().toString(36).substring(2, 11);
-
-export function useSocket({id}:{id: string}) {
+export function useSocket({id, myKey}:{id: string, myKey:string}) {
   const socket = new SockJS(`${API_PATH}/ws/consulting-room`);
-
   const roomId= `${id}consulting`;
   console.log("room id: ", roomId);
   
@@ -16,12 +12,14 @@ export function useSocket({id}:{id: string}) {
   const [pcListMap] = useState<Map<string, RTCPeerConnection>>(
     new Map<string, RTCPeerConnection>(),
   );
-  const [videoElements, setVideoElements] = useState<React.ReactNode[]>([]);
+  const [videoElements] = useState<React.ReactNode[]>([]);
   const [remoteStream, setRemoteStream] = useState<MediaStream | null>(null);
 
   const client = new Client({
     webSocketFactory: () => socket,
-    debug: () => {},
+    debug: (str: string) => {
+      console.log(str);
+    },
     reconnectDelay: 5000,
     heartbeatIncoming: 4000,
     heartbeatOutgoing: 4000,
@@ -86,7 +84,7 @@ export function useSocket({id}:{id: string}) {
       });
 
       client.subscribe(`/topic/peer/shareScreen/${roomId}`, (message)=>{
-        const { screenStream: shareScreenStream } = JSON.parse(message.body);
+        console.log(message);
       })
     },
   });
@@ -100,9 +98,9 @@ export function useSocket({id}:{id: string}) {
         audio: true,
       });
 
-      pcListMap.forEach((pc, key) => {
+      pcListMap.forEach((pc) => {
         const videoSender = pc.getSenders().find((sender) => sender.track?.kind === "video");
-  
+        
         if (videoSender) {
           videoSender.replaceTrack(screenStream.getVideoTracks()[0]);
         } else {
@@ -124,13 +122,14 @@ export function useSocket({id}:{id: string}) {
         />
       );
 
-      setVideoElements((prev) => [...prev, newVideoElement]);
+      // setVideoElements((prev) => [...prev, newVideoElement]);
+      videoElements.push(newVideoElement)
 
       screenStream.getVideoTracks()[0].onended = () => {
         console.log("화면 공유가 종료되었습니다.");
         if(screenStream){
           screenStream.getTracks().forEach((track)=>track.stop());
-          pcListMap.forEach(async (pc, key) => {
+          pcListMap.forEach(async (pc) => {
             const videoSender = pc.getSenders().find((sender)=>sender.track.kind === "video");
             if(videoSender){
               const stream = await navigator.mediaDevices.getUserMedia({ video: true, audio: true })
@@ -144,55 +143,65 @@ export function useSocket({id}:{id: string}) {
       alert("화면 공유를 시작하는 데 실패했습니다. 권한을 확인하세요.");
     }
   };
-  
 
   const startStream = async () => {
     if (client.connected) {
       console.log("start steam ... ");
-      if (client.connected) {
-        client.publish({ destination: `/app/call/key`, body: "publish: call/key" });
-        setTimeout(() => {
-          otherKeyList.map(async (key) => {
-            if (!pcListMap.has(key)) {
-              pcListMap.set(key, await createPeerConnection(key));
-              await sendOffer(pcListMap.get(key), key);
-            }
-          });
-        }, 1000);
-      }
+      setTimeout(()=>{
+        if (client.connected) {
+          client.publish({ destination: `/app/call/key`, body: "publish: call/key" });
+          setTimeout(() => {
+            otherKeyList.map(async (key) => {
+              if (!pcListMap.has(key)) {
+                pcListMap.set(key, await createPeerConnection(key));
+                await sendOffer(pcListMap.get(key), key);
+              }
+            });
+          }, 1000);
+        }
+      },1000)
     }
   };
 
   const createPeerConnection = async (otherKey: string) => {
-    const pc = new RTCPeerConnection();
+    const configuration: RTCConfiguration = {
+      iceServers: [
+        {
+          urls: "stun:stun.l.google.com:19302",
+        },
+      ],
+    };
+  
+    const pc = new RTCPeerConnection(configuration);
+  
     try {
       pc.addEventListener("icecandidate", (event) => {
         console.log("iceCandidate 이벤트 발생");
         onIceCandidate(event, otherKey);
       });
-
+  
       pc.addEventListener("track", (event) => {
         console.log("track 이벤트 발생");
         onTrack(event, otherKey);
       });
 
-      await navigator.mediaDevices
-        .getUserMedia({ video: true, audio: true })
-        .then((localStream) => {
-          localStream.getTracks().forEach((track) => {
-            pc.addTrack(track, localStream);
-          });
-          console.log("송출완료");
-        });
-
+      await navigator.mediaDevices.getUserMedia({ video: true, audio: true }).then((stream)=>{
+        stream.getTracks().forEach((track)=>{
+          pc.addTrack(track, stream)
+        })
+      })
+  
+      console.log("송출완료");
+  
       pc.onconnectionstatechange = () => {
         if (["disconnected", "failed", "closed"].includes(pc.iceConnectionState)) {
           console.log("연결이 끊어졌습니다.");
         }
       };
-    } catch (e) {
-      console.log(e);
+    } catch (error) {
+      console.error("피어 커넥션 생성 중 오류:", error);
     }
+  
     console.log("만들어진 후 피어커넥션", pc);
     return pc;
   };
@@ -212,7 +221,9 @@ export function useSocket({id}:{id: string}) {
         }}
       />
     );
-    setVideoElements((prev) => [...prev, newVideoElement]);
+    //setVideoElements((prev) => [...prev, newVideoElement]);
+    videoElements.push(newVideoElement);
+    console.log(">>>>>>>>>>>>>>>>>>>>>>>>", videoElements)
   };
 
   const onIceCandidate = (event: RTCPeerConnectionIceEvent, otherKey: string) => {

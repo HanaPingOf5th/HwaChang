@@ -1,25 +1,26 @@
 import React, { useState } from "react";
 import Badge from "../component/atom/badge/badge";
 import { SlArrowUp, SlArrowDown } from "react-icons/sl";
-
-interface CardItem {
-  title: string;
-  category: string;
-  date: string;
-  content: string;
-}
+import { ConsultingList } from "@/app/business/consulting-room/customer-consulting.service";
 
 interface HistoryCardProps {
-  cardItem: CardItem;
+  cardItem: ConsultingList;
 }
 
 export default function HistoryCard({ cardItem }: HistoryCardProps) {
-  const { title, category, date, content } = cardItem;
+  // const { title, category, date, content } = cardItem;
+  const {consultingRoomId,createdAt,title,categoryName,summary,customerName} = cardItem;
   const [isOpen, setIssOpen] = useState(false);
 
   const toggleOpen = () => {
     setIssOpen((prev) => !prev);
   };
+
+  if(!consultingRoomId&&!customerName){
+    return (
+      <p>데이터가 없습니다.</p>
+    )
+  }
 
   return (
     <div
@@ -31,9 +32,9 @@ export default function HistoryCard({ cardItem }: HistoryCardProps) {
           <div className="text-lg font-medium">{title}</div>
           <div className="flex space-x-4 mt-3 items-center">
             <Badge className="bg-hwachang-lightgreen1 rounded-sm px-6 text-sm font-normal text-black hover:bg-hwachang-lightgreen1">
-              {category}
+              {categoryName}
             </Badge>
-            <div className="text-sm">{date}</div>
+            <div className="text-sm">{createdAt.slice(0, 19).replace("T", " ")}</div>
           </div>
         </div>
         <div className="mr-3">
@@ -49,7 +50,7 @@ export default function HistoryCard({ cardItem }: HistoryCardProps) {
       {/* 카드를 펼쳤을 때 나타날 공간 */}
       {isOpen && (
         <div className="p-4 font-medium">
-          {content}
+          {summary}
         </div>
       )}
     </div>

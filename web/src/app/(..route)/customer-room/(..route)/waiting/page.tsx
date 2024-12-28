@@ -3,12 +3,7 @@ import AchromaticButton from "@/app/ui/component/atom/button/achromatic-button";
 import { Dialog, DialogContent, DialogTrigger } from "@/app/ui/component/molecule/dialog/dialog";
 import { LegacyRef, useEffect, useRef, useState } from "react";
 import { MatchingAlarm } from "@/app/ui/consulting-room/modal/matching-alarm";
-import {
-  MicIcon,
-  MicOffIcon,
-  VideoIcon,
-  VideoOffIcon,
-} from "lucide-react";
+import { MicIcon, MicOffIcon, VideoIcon, VideoOffIcon } from "lucide-react";
 import { Video, VideoView } from "../../components/video-view";
 import { createMockMyProfile } from "../../mock/mock-profiles";
 import { SharingLinkDialog } from "@/app/ui/consulting-room/modal/share-link-dialog";
@@ -32,11 +27,11 @@ export default function Home() {
   const type = params.get("type");
 
   useEffect(() => {
-    console.log(type)
+    console.log(type);
     addCustomerToQueue(type, ctg).then((response) => {
       console.log(response);
-    })
-  }, [])
+    });
+  }, []);
 
   useEffect(() => {
     const getMedia = async () => {
@@ -105,18 +100,6 @@ export default function Home() {
           <p className={`mb-6 text-2xl text-hwachang-green1 font-semibold`}>
             상담사를 기다리는 중입니다...
           </p>
-          {/* <Dialog>
-            <DialogTrigger asChild>
-              <AchromaticButton className="bg-hwachang-brightgreen hover:bg-hwachang-lightgreen text-black">
-                대기현황 보기
-              </AchromaticButton>
-            </DialogTrigger>
-            {isWaitingDialogMounted && (
-              <DialogContent>
-                <WaitingModal />
-              </DialogContent>
-            )}
-          </Dialog> */}
           <Dialog>
             <DialogTrigger asChild>
               <AchromaticButton className="bg-hwachang-brightgreen hover:bg-hwachang-lightgreen text-black">
@@ -134,7 +117,6 @@ export default function Home() {
           profile={createMockMyProfile(false, customerName)}
         />
       </div>
-
 
       <div className="flex justify-center space-x-4 mt-4">
         <div className="flex justify-center gap-4">

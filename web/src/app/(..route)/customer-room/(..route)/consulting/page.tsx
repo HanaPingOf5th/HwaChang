@@ -1,33 +1,30 @@
 "use client";
 import AchromaticButton from "@/app/ui/component/atom/button/achromatic-button";
 import { LegacyRef, useEffect, useRef, useState } from "react";
-import { SlArrowLeft, SlArrowRight } from "react-icons/sl";
 import { MicIcon, MicOffIcon, VideoIcon, VideoOffIcon } from "lucide-react";
 import { useSocket } from "@/app/utils/web-socket/useSocket";
 import { Video, VideoView } from "../../components/video-view";
-import { createMockMyProfile, mockOtherProfile, mockProfile } from "../../mock/mock-profiles";
+import { createMockMyProfile, mockProfile } from "../../mock/mock-profiles";
 import { ApplicationForm, ApplicationProps } from "../../components/application-form";
 import { ReviewDialog } from "@/app/ui/consulting-room/modal/review-dialog";
 import { SharingLinkDialog } from "@/app/ui/consulting-room/modal/share-link-dialog";
 import { getApplicationForm } from "@/app/business/consulting-room/application-form.service";
 import { useRecorder } from "@/app/utils/web-socket/use-recorder";
-
-import { useRouter, useSearchParams } from "next/navigation";
 import { useCustomerStore } from "@/app/stores/customerStore";
 import { useConsultingRoomStore } from "@/app/stores/consulting-room.provider";
+import { useSearchParams } from "next/navigation";
 
 export default function Home() {
   const params = useSearchParams();
   const roomId: string = params.get("roomId");
   const { customerName } = useCustomerStore();
 
-  const router = useRouter();
-
   // 현재 내 모습을 보여주는 MediaStram
   const [videoStream, setVideoStream] = useState<MediaStream | null>(null);
   const [isMediaReady, setIsMediaReady] = useState(false);
   const [isVideoEnabled, setIsVideoEnabled] = useState<boolean>(true);
   const [isAudioEnabled, setIsAudioEnabled] = useState<boolean>(true);
+  const myKey = `${roomId}customer`
 
   const audioContext = useRef<AudioContext | null>(null);
   const gainNode = useRef<GainNode | null>(null);
@@ -39,16 +36,13 @@ export default function Home() {
   const [isForm, setIsForm] = useState<boolean>(false);
 
   // rtc
-  const { client, video, remoteStream } = useSocket({ id: roomId });
+  const { client, video, remoteStream } = useSocket({ id: roomId, myKey: myKey });
   const videoRef = useRef<HTMLVideoElement | null>(null);
   const [formData, setFormData] = useState<ApplicationProps | null>(null);
 
   // 녹화
   const { startRecord, getAudioPermission, stopAndUpload } =
     useRecorder(remoteStream);
-
-  // 상단 인덱싱
-  const [slideIndex, setSlideIndex] = useState(0);
 
   useEffect(() => {
     const getMedia = async () => {
@@ -186,11 +180,6 @@ export default function Home() {
           </AchromaticButton>
           <ReviewDialog stopAndUpload={stopAndUpload} />
           <SharingLinkDialog />
-          {/* <AchromaticButton 
-            className="rounded-full bg-hwachang-gray2 hover:bg-hwachang-gray3 text-black" type="button" 
-            onClick={()=>{router.push('/customer/main');}}>
-            <PowerOff/>
-          </AchromaticButton> */}
           <AchromaticButton
             onClick={() => {
               if (isForm) {

@@ -1,4 +1,4 @@
-'use client';
+"use client";
 
 import { Card, CardContent, CardFooter, CardHeader } from "@/app/ui/component/molecule/card/card";
 import { useSearchParams, useRouter } from "next/navigation";
@@ -9,24 +9,23 @@ function CategoryList() {
   const params = useSearchParams();
   const key = params.get("isIndividual");
   const router = useRouter();
-  const [categories, setCategories] = useState<Category[]>([])
+  const [categories, setCategories] = useState<Category[]>([]);
   const [pageTitle, setPageTitle] = useState<ConsultingType>(null);
 
   useEffect(() => {
     if (key === "true") {
-      setPageTitle("PERSONAL")
+      setPageTitle("PERSONAL");
       getCategories("PERSONAL").then((response) => {
-        setCategories(response.data as Category[])
-      })
+        setCategories(response.data as Category[]);
+      });
     } else {
-      setPageTitle("CORPORATE")
+      setPageTitle("CORPORATE");
       getCategories("CORPORATE").then((response) => {
-        setCategories(response.data as Category[])
-      })
+        setCategories(response.data as Category[]);
+      });
     }
-
-  }, [])
-  console.log(categories)
+  }, []);
+  console.log(categories);
   const Categories: JSX.Element[] = categories.map((value, index) => {
     // const Icon = value.icon;
 
@@ -34,9 +33,11 @@ function CategoryList() {
       <main key={index}>
         <div className="p-2">
           <Card
-            className="bg-hwachang-darkgreen hover:bg-hwachang-green text-white"
+            className="bg-hwachang-darkgreen hover:bg-hwachang-green text-white cursor-pointer"
             onClick={() => {
-              router.push(`/customer-room/waiting?categoryId=${value.categoryId}&type=${value.categoryType === "PERSONAL" ? 0 : 1}`);
+              router.push(
+                `/customer-room/waiting?categoryId=${value.categoryId}&type=${value.type === "PERSONAL" ? 0 : 1}`,
+              );
             }}
           >
             <CardHeader className="text-2xl">

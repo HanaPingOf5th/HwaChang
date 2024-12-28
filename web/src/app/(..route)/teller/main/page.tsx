@@ -8,6 +8,7 @@ import FormSelect from "@/app/ui/component/molecule/form/form-select-index";
 import { useEffect, useState } from "react";
 import { MyChat } from "@/app/ui/consulting-room/chat-box";
 import { fetchTellerMain } from "@/app/business/teller/teller.service";
+import { useConsultingRoomStore } from "@/app/stores/consulting-room.provider";
 
 interface NpsGraphData {
   x: string;
@@ -57,6 +58,8 @@ export default function Main() {
   });
   // 리뷰 데이터
   const [reviews, setReviews] = useState<Array<string>>([]);
+
+  const {initConsultingRoomStore} = useConsultingRoomStore(state=>state)
 
   const handleSelectChange = (value: "day" | "week" | "month") => {
     setSelectedType(value);
@@ -132,6 +135,10 @@ export default function Main() {
     }
     getData();
   }, []);
+
+  useEffect(()=>{
+    initConsultingRoomStore();
+  }, [])
 
   return (
     <main>

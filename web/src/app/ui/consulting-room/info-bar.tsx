@@ -5,11 +5,6 @@ import InfoContent from "./info-content";
 import { getQueueData } from "@/app/business/teller/teller.service";
 import { useConsultingRoomStore } from "@/app/stores/consulting-room.provider";
 
-const tellerTypeMapper = {
-  기업금융: 1,
-  개인금융: 0,
-};
-
 export default function InfoBar() {
   const [waitingCustomer, setWaitingCustomer] = useState<number>(0);
   const [waitingTeller, setWaitingTeller] = useState<number>(0);

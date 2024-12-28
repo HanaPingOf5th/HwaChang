@@ -1,7 +1,6 @@
 "use client";
 import AchromaticButton from "@/app/ui/component/atom/button/achromatic-button";
 import { LegacyRef, useEffect, useRef, useState } from "react";
-import { SlArrowLeft, SlArrowRight } from "react-icons/sl";
 import {
   MicIcon,
   MicOffIcon,
@@ -22,14 +21,14 @@ export default function Home() {
   const [isAudioEnabled, setIsAudioEnabled] = useState<boolean>(true);
   const consultingRoomId = useConsultingRoomStore((state) => state.consultingRoomId);
   const customerName = useConsultingRoomStore((state) => state.customerName);
+  const myKey = `${consultingRoomId}teller`
 
   const router = useRouter();
 
   const audioContext = useRef<AudioContext | null>(null);
   const gainNode = useRef<GainNode | null>(null);
 
-  const [slideIndex, setSlideIndex] = useState(0);
-  const { client, video, startStream, startScreenStream } = useSocket({ id: consultingRoomId });
+  const { client, video, startStream, startScreenStream } = useSocket({ id: consultingRoomId, myKey: myKey });
   const videoRef = useRef<HTMLVideoElement | null>(null);
   const tellerName = useConsultingRoomStore((state) => state.tellerName);
 
