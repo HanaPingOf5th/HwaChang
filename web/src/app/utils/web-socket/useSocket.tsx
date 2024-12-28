@@ -3,12 +3,8 @@ import SockJS from "sockjs-client";
 import { Client } from "@stomp/stompjs";
 import { API_PATH } from "../http/api-query";
 
-// 사용자의 UUID로 관리 -> Consulting-room으로 내 ID를 받을 수 있음
-const myKey: string = Math.random().toString(36).substring(2, 11);
-
-export function useSocket({id}:{id: string}) {
+export function useSocket({id, myKey}:{id: string, myKey:string}) {
   const socket = new SockJS(`${API_PATH}/ws/consulting-room`);
-
   const roomId= `${id}consulting`;
   console.log("room id: ", roomId);
   
@@ -21,7 +17,9 @@ export function useSocket({id}:{id: string}) {
 
   const client = new Client({
     webSocketFactory: () => socket,
-    debug: () => {},
+    debug: (str: string) => {
+      console.log(str);
+    },
     reconnectDelay: 5000,
     heartbeatIncoming: 4000,
     heartbeatOutgoing: 4000,
@@ -126,7 +124,7 @@ export function useSocket({id}:{id: string}) {
 
       // setVideoElements((prev) => [...prev, newVideoElement]);
       videoElements.push(newVideoElement)
-      
+
       screenStream.getVideoTracks()[0].onended = () => {
         console.log("화면 공유가 종료되었습니다.");
         if(screenStream){

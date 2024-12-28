@@ -10,9 +10,7 @@ import { ReviewDialog } from "@/app/ui/consulting-room/modal/review-dialog";
 import { SharingLinkDialog } from "@/app/ui/consulting-room/modal/share-link-dialog";
 import { getApplicationForm} from "@/app/business/consulting-room/application-form.service";
 import { useRecorder } from "@/app/utils/web-socket/use-recorder";
-
 import { useSearchParams } from "next/navigation";
-
 
 export default function Home() {
   const params = useSearchParams();
@@ -23,6 +21,7 @@ export default function Home() {
   const [isMediaReady, setIsMediaReady] = useState(false);
   const [isVideoEnabled, setIsVideoEnabled] = useState<boolean>(true);
   const [isAudioEnabled, setIsAudioEnabled] = useState<boolean>(true);
+  const myKey = `${roomId}customer`
 
   const audioContext = useRef<AudioContext | null>(null);
   const gainNode = useRef<GainNode | null>(null);
@@ -31,7 +30,7 @@ export default function Home() {
   const [isForm, setIsForm] = useState<boolean>(false);
 
   // rtc
-  const { client, video, remoteStream } = useSocket({id: roomId});
+  const { client, video, remoteStream } = useSocket({id: roomId, myKey:myKey});
   const videoRef = useRef<HTMLVideoElement | null>(null);
   const [formData, setFormData] = useState<ApplicationProps | null>(null);
 

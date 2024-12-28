@@ -11,6 +11,7 @@ export default function Home() {
   const { setCustomerName } = useCustomerStore();
 
   useEffect(() => {
+    localStorage.clear();
     async function getUserInfo() {
       const response = await fetchCustomerMyInfo();
 

@@ -20,6 +20,7 @@ export default function Home() {
   const [isVideoEnabled, setIsVideoEnabled] = useState<boolean>(true);
   const [isAudioEnabled, setIsAudioEnabled] = useState<boolean>(true);
   const consultingRoomId = useConsultingRoomStore((state)=>state.consultingRoomId);
+  const myKey = `${consultingRoomId}teller`
 
   const router = useRouter();
 
@@ -27,7 +28,7 @@ export default function Home() {
   const audioContext = useRef<AudioContext | null>(null);
   const gainNode = useRef<GainNode | null>(null);
   
-  const { client, video, startStream, startScreenStream } = useSocket({id: consultingRoomId});
+  const { client, video, startStream, startScreenStream } = useSocket({id: consultingRoomId, myKey:myKey});
   const videoRef = useRef<HTMLVideoElement | null>(null);
 
   useEffect(() => {
