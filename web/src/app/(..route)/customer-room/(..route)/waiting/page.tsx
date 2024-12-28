@@ -85,16 +85,16 @@ export default function Home() {
   return (
     <main>
       <div className="grid grid-row-1 gap-1 px-10 py-6">
-        <p className={`mb-6 text-4xl text-hwachang-green1`}>
+        <p className={`mb-6 text-4xl text-hwachang-accentmain`}>
           <strong>상담 대기실</strong>
         </p>
         <div className="flex justify-between space-x-2">
-          <p className={`mb-6 text-2xl text-hwachang-green1 font-semibold`}>
+          <p className={`mb-6 text-2xl text-hwachang-accentmain font-semibold`}>
             상담사를 기다리는 중입니다...
           </p>
           <Dialog>
             <DialogTrigger asChild>
-              <AchromaticButton className="bg-hwachang-brightgreen hover:bg-hwachang-lightgreen text-black">
+              <AchromaticButton className="bg-hwachang-gray2 hover:bg-hwachang-green text-black">
                 매칭 시작
               </AchromaticButton>
             </DialogTrigger>

@@ -15,7 +15,7 @@ export default function Home() {
       {/* 오른쪽 절반 */}
       <div className="flex w-1/2 h-full items-center justify-center bg-white px-4 dark:bg-gray-950">
         <div className="w-full max-w-md space-y-6">
-          <p className="flex flex-col justify-center items-center text-center text-3xl text-[#1FAB89]">
+          <p className="flex flex-col justify-center items-center text-center text-3xl text-black">
             로그인
           </p>
           {/* 로그인 Form 영역 */}
@@ -52,9 +52,9 @@ export default function Home() {
                   label=""
                 />
               </div>
-              <div className="pt-5">
+              <div className="pt-11">
                 <Form.SubmitButton
-                  className={`text-white w-1/2 py-4 rounded-lg`}
+                  className={`text-white w-1/2 py-7 rounded-lg`}
                   position="center"
                   label="로그인"
                 />
@@ -72,7 +72,7 @@ export default function Home() {
                 <span
                   className="font-bold hover:underline"
                   style={{
-                    color: "#1FAB89",
+                    color: "#3674D8",
                   }}
                 >
                   회원 가입

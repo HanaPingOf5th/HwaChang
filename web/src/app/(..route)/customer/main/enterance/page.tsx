@@ -33,7 +33,7 @@ function CategoryList() {
       <main key={index}>
         <div className="p-2">
           <Card
-            className="bg-hwachang-darkgreen hover:bg-hwachang-green text-white cursor-pointer"
+            className="bg-hwachang-main hover:bg-hwachang-green text-white cursor-pointer"
             onClick={() => {
               router.push(
                 `/customer-room/waiting?categoryId=${value.categoryId}&type=${value.type === "PERSONAL" ? 0 : 1}`,

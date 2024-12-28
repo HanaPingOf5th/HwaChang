@@ -35,7 +35,7 @@ export function MatchingAlarm(matchingAlarmProps: MatchingAlarmProps){
     return(
         <>
             <div className="justify-items-center">
-                <HiMiniBellAlert className="mb-4" size={50} color="#1FAB89"/>
+                <HiMiniBellAlert className="mb-4" size={50} color="#A5E3F1"/>
                 <p className="text-center ">상담사와 매칭되었습니다.</p>
                 <p className="text-center mb-4">입장하시겠습니까?</p>
                 <div className="flex gap-8">

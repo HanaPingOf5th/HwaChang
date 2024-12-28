@@ -31,7 +31,7 @@ function SharingLink() {
   };
   return (
     <div className="bg-white rounded-xl w-full h-1/3 flex flex-col justify-center items-center z-20 gap-5">
-      <Share2Icon className="stroke-hwachang-darkgreen" size={60} />
+      <Share2Icon className="stroke-hwachang-main" size={60} />
       <p className="text-xl font-bold">초대 링크 복사하기</p>
       <div className="w-4/5 flex">
         <TextInput

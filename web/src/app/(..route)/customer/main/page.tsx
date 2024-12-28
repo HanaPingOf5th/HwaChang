@@ -27,42 +27,34 @@ export default function Home() {
   }, []);
 
   return (
-    <main className="p-5">
+    <main className="mt-16 p-10">
+        <h1 className="mb-4 text-2xl text-center">
+          <strong>상담을 원하시는 업무를 선택해 주세요.</strong>
+        </h1>
       <div className={`grid sm:grid-cols-1 lg:grid-cols-2 text-center gap-20 mt-16`}>
         <Link href="./main/enterance?isIndividual=true">
           <Card
-            className="hover:bg-hwachang-brightgreen"
-            style={{ boxShadow: "0 0 10px 0 #1FAB89" }}
+            className="bg-hwachang-main"
+            style={{ boxShadow: "0 0 10px 0 #A5E3F1" }}
           >
             <CardHeader>
-              <p className="text-6xl mt-8 mb-8" style={{ color: "#1FAB89" }}>
+              <p className="text-4xl mt-8 mb-8 p-10 text-white">
                 <strong>개인</strong>
               </p>
             </CardHeader>
-            <CardContent>
-              <div className="flex flex-col justify-center items-center py-5">
-                <HouseEmoji heignt={300} width={300} />
-              </div>
-            </CardContent>
           </Card>
         </Link>
 
         <Link href="./main/enterance?isIndividual=false">
           <Card
-            className="bg-hwachang-darkgreen hover:bg-hwachang-green"
-            style={{ boxShadow: "0 0 10px 0 #1FAB89" }}
+            className="bg-hwachang-main"
+            style={{ boxShadow: "0 0 10px 0 #A5E3F1" }}
           >
             <CardHeader>
-              {" "}
-              <p className="text-6xl mt-8 mb-8 text-white">
+              <p className="text-4xl mt-8 mb-8 p-10 text-white">
                 <strong>기업</strong>
-              </p>{" "}
+              </p>
             </CardHeader>
-            <CardContent>
-              <div className="flex flex-col justify-center items-center py-5">
-                <EnterPriseEmoji heignt={300} width={300} />
-              </div>
-            </CardContent>
           </Card>
         </Link>
       </div>

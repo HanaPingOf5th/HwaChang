@@ -82,7 +82,7 @@ export default function TellerNav() {
   };
 
   return (
-    <div className="flex flex-col h-full bg-hwachang-darkgreen">
+    <div className="flex flex-col h-full bg-hwachang-main">
       <div className="flex justify-center items-center">
         {/* 로고 */}
         <Link href="/teller/main">
@@ -100,7 +100,7 @@ export default function TellerNav() {
             className="object-cover w-48 h-48 rounded-full border-4 border-white shadow-lg"
           />
           <div
-            className={`absolute right-16 transform translate-x-8 bottom-1 w-9 h-9 rounded-full border-4 border-white shadow-lg z-20 ${currentColor}`}
+            className={`absolute right-14 transform translate-x-8 bottom-1 w-9 h-9 rounded-full border-4 border-white shadow-lg z-20 ${currentColor}`}
           ></div>
         </div>
 

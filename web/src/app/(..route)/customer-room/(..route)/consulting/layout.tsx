@@ -9,7 +9,7 @@ export default function Layout({ children }:{ children: React.ReactNode; }) {
         {children}
       </Suspense>
       </div>
-      <div className="w-[30%] overflow-x-auto bg-hwachang-darkgreen">
+      <div className="w-[30%] overflow-x-auto bg-hwachang-main">
         <div className="grid grid-cols-1 gap-10 h-full p-7">
           <CustomerConsultingChatting/>
         </div>

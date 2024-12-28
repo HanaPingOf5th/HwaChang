@@ -7,7 +7,7 @@ import Sun from "@/app/utils/public/Sun.svg";
 export default function MainPageContent() {
   return (
     <>
-      <div className="relative p-20 flex flex-col justify-between text-white text-7xl w-1/2 h-full bg-[#1FAB89]">
+      <div className="relative p-20 flex flex-col justify-between text-white text-7xl w-1/2 h-full bg-hwachang-main">
         <Image
           className="absolute top-0 -right-32"
           src={Sun}
