@@ -1,7 +1,7 @@
 import { useState } from "react";
 import SockJS from "sockjs-client";
 import { Client } from "@stomp/stompjs";
-import { API_PATH, sid, twilloAuth } from "../http/api-query";
+import { API_PATH} from "../http/api-query";
 
 export function useSocket({id, myKey}:{id: string, myKey:string}) {
   const socket = new SockJS(`${API_PATH}/ws/consulting-room`);
@@ -163,28 +163,6 @@ export function useSocket({id, myKey}:{id: string, myKey:string}) {
     }
   };
 
-  const getTwilioIceServers = async () => {
-    const response = await fetch(`https://api.twilio.com/2010-04-01/Accounts/${sid}/Tokens.json`, {
-      method: "POST",
-      headers: {
-        Authorization: `Basic ${btoa(`${sid}:${twilloAuth}`)}`,
-        "Content-Type": "application/x-www-form-urlencoded",
-      },
-      body: new URLSearchParams({
-        Ttl: "3600",
-      }),
-    });
-
-    console.log("twillo-response: ", response.status)
-
-    if (!response.ok) {
-      throw new Error("TURN/STUN 서버 정보를 가져오는 데 실패했습니다.");
-    }
-
-    const data = await response.json();
-    return data.ice_servers;
-  };
-
   const createPeerConnection = async (otherKey: string) => {
     let iceServers: RTCIceServer[] = [
       {
@@ -193,8 +171,28 @@ export function useSocket({id, myKey}:{id: string, myKey:string}) {
     ];
   
     try {
-      const twilioIceServers = await getTwilioIceServers();
-      iceServers = iceServers.concat(twilioIceServers);
+      iceServers = iceServers.concat(
+        [
+          {
+              "urls": "stun:global.stun.twilio.com:3478"
+          },
+          {
+              "username": "4923676d508f537223ed109b796d675a7fb5d8283f4a0a2af50bc13987259544",
+              "urls": "turn:global.turn.twilio.com:3478?transport=udp",
+              "credential": "m2h/6tpNzSJzZEvNpv58N8VvJSAo/42/j9zlxBzcUd0="
+          },
+          {
+              "username": "4923676d508f537223ed109b796d675a7fb5d8283f4a0a2af50bc13987259544",
+              "urls": "turn:global.turn.twilio.com:3478?transport=tcp",
+              "credential": "m2h/6tpNzSJzZEvNpv58N8VvJSAo/42/j9zlxBzcUd0="
+          },
+          {
+              "username": "4923676d508f537223ed109b796d675a7fb5d8283f4a0a2af50bc13987259544",
+              "urls": "turn:global.turn.twilio.com:443?transport=tcp",
+              "credential": "m2h/6tpNzSJzZEvNpv58N8VvJSAo/42/j9zlxBzcUd0="
+          }
+      ]
+      );
     } catch (error) {
       console.error("Twilio TURN/STUN 서버를 가져오는 중 오류:", error);
     }
