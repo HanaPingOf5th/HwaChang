@@ -1,7 +1,7 @@
 import { useState } from "react";
 import SockJS from "sockjs-client";
 import { Client } from "@stomp/stompjs";
-import { API_PATH } from "../http/api-query";
+import { API_PATH, sid, twilloAuth } from "../http/api-query";
 
 export function useSocket({id, myKey}:{id: string, myKey:string}) {
   const socket = new SockJS(`${API_PATH}/ws/consulting-room`);
@@ -163,13 +163,44 @@ export function useSocket({id, myKey}:{id: string, myKey:string}) {
     }
   };
 
+  const getTwilioIceServers = async () => {
+    const response = await fetch(`https://api.twilio.com/2010-04-01/Accounts/${sid}/Tokens.json`, {
+      method: "POST",
+      headers: {
+        Authorization: `Basic ${btoa(`${sid}:${twilloAuth}`)}`,
+        "Content-Type": "application/x-www-form-urlencoded",
+      },
+      body: new URLSearchParams({
+        Ttl: "3600",
+      }),
+    });
+
+    console.log("twillo-response: ", response.status)
+
+    if (!response.ok) {
+      throw new Error("TURN/STUN 서버 정보를 가져오는 데 실패했습니다.");
+    }
+
+    const data = await response.json();
+    return data.ice_servers;
+  };
+
   const createPeerConnection = async (otherKey: string) => {
+    let iceServers: RTCIceServer[] = [
+      {
+        urls: "stun:stun.l.google.com:19302",
+      },
+    ];
+  
+    try {
+      const twilioIceServers = await getTwilioIceServers();
+      iceServers = iceServers.concat(twilioIceServers);
+    } catch (error) {
+      console.error("Twilio TURN/STUN 서버를 가져오는 중 오류:", error);
+    }
+  
     const configuration: RTCConfiguration = {
-      iceServers: [
-        {
-          urls: "stun:stun.l.google.com:19302",
-        },
-      ],
+      iceServers,
     };
   
     const pc = new RTCPeerConnection(configuration);
@@ -184,14 +215,13 @@ export function useSocket({id, myKey}:{id: string, myKey:string}) {
         console.log("track 이벤트 발생");
         onTrack(event, otherKey);
       });
-
-      await navigator.mediaDevices.getUserMedia({ video: true, audio: true }).then((stream)=>{
-        stream.getTracks().forEach((track)=>{
-          pc.addTrack(track, stream)
-        })
-      })
   
-      console.log("송출완료");
+      const stream = await navigator.mediaDevices.getUserMedia({ video: true, audio: true });
+      stream.getTracks().forEach((track) => {
+        pc.addTrack(track, stream);
+      });
+  
+      console.log("송출 완료");
   
       pc.onconnectionstatechange = () => {
         if (["disconnected", "failed", "closed"].includes(pc.iceConnectionState)) {
@@ -205,6 +235,7 @@ export function useSocket({id, myKey}:{id: string, myKey:string}) {
     console.log("만들어진 후 피어커넥션", pc);
     return pc;
   };
+  
 
   const onTrack = (event: RTCTrackEvent, otherKey: string) => {
     setRemoteStream(event.streams[0]);
@@ -278,4 +309,6 @@ export function useSocket({id, myKey}:{id: string, myKey:string}) {
     startScreenStream: startScreenStream,
     remoteStream: remoteStream,
   };
+
+  
 }
