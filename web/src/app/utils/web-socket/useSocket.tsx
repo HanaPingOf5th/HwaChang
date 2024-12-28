@@ -164,11 +164,7 @@ export function useSocket({id, myKey}:{id: string, myKey:string}) {
   };
 
   const createPeerConnection = async (otherKey: string) => {
-    let iceServers: RTCIceServer[] = [
-      {
-        urls: "stun:stun.l.google.com:19302",
-      },
-    ];
+    let iceServers: RTCIceServer[] = [];
   
     try {
       iceServers = iceServers.concat(
