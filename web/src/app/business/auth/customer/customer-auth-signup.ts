@@ -1,6 +1,5 @@
 "use server";
 
-// import { cookies } from "next/headers";
 import { HttpError } from "@/app/utils/http/http-error";
 import { API_PATH } from "@/app/utils/http/api-query";
 

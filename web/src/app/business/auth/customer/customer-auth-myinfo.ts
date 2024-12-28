@@ -16,7 +16,6 @@ export async function fetchCustomerMyInfo() {
     const response = await fetch(`${API_PATH}/customer/info`, {
       method: "GET",
       headers: {
-        // "Content-Type": "application/json",
         Authorization: `Bearer ${token}`,
       },
     });
