@@ -16,7 +16,7 @@ export function useSocket({id}:{id: string}) {
   const [pcListMap] = useState<Map<string, RTCPeerConnection>>(
     new Map<string, RTCPeerConnection>(),
   );
-  const [videoElements, setVideoElements] = useState<React.ReactNode[]>([]);
+  const [videoElements] = useState<React.ReactNode[]>([]);
   const [remoteStream, setRemoteStream] = useState<MediaStream | null>(null);
 
   const client = new Client({
@@ -124,8 +124,9 @@ export function useSocket({id}:{id: string}) {
         />
       );
 
-      setVideoElements((prev) => [...prev, newVideoElement]);
-
+      // setVideoElements((prev) => [...prev, newVideoElement]);
+      videoElements.push(newVideoElement)
+      
       screenStream.getVideoTracks()[0].onended = () => {
         console.log("화면 공유가 종료되었습니다.");
         if(screenStream){
@@ -222,7 +223,8 @@ export function useSocket({id}:{id: string}) {
         }}
       />
     );
-    setVideoElements((prev) => [...prev, newVideoElement]);
+    //setVideoElements((prev) => [...prev, newVideoElement]);
+    videoElements.push(newVideoElement);
     console.log(">>>>>>>>>>>>>>>>>>>>>>>>", videoElements)
   };
 
