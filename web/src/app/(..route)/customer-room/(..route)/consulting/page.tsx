@@ -9,15 +9,17 @@ import { createMockMyProfile, mockOtherProfile, mockProfile } from "../../mock/m
 import { ApplicationForm, ApplicationProps } from "../../components/application-form";
 import { ReviewDialog } from "@/app/ui/consulting-room/modal/review-dialog";
 import { SharingLinkDialog } from "@/app/ui/consulting-room/modal/share-link-dialog";
-import { getApplicationForm} from "@/app/business/consulting-room/application-form.service";
+import { getApplicationForm } from "@/app/business/consulting-room/application-form.service";
 import { useRecorder } from "@/app/utils/web-socket/use-recorder";
 
 import { useRouter, useSearchParams } from "next/navigation";
-
+import { useCustomerStore } from "@/app/stores/customerStore";
+import { useConsultingRoomStore } from "@/app/stores/consulting-room.provider";
 
 export default function Home() {
   const params = useSearchParams();
-  const roomId:string = params.get("roomId");
+  const roomId: string = params.get("roomId");
+  const { customerName } = useCustomerStore();
 
   const router = useRouter();
 
@@ -30,11 +32,14 @@ export default function Home() {
   const audioContext = useRef<AudioContext | null>(null);
   const gainNode = useRef<GainNode | null>(null);
 
+  // teller name
+  const tellerName = useConsultingRoomStore((state) => state.tellerName);
+
   // application form
   const [isForm, setIsForm] = useState<boolean>(false);
 
   // rtc
-  const { client, video, remoteStream } = useSocket({id: roomId});
+  const { client, video, remoteStream } = useSocket({ id: roomId });
   const videoRef = useRef<HTMLVideoElement | null>(null);
   const [formData, setFormData] = useState<ApplicationProps | null>(null);
 
@@ -133,13 +138,13 @@ export default function Home() {
     <main>
       <div>
         <div className="relative w-full overflow-hidden h-1/6 p-6 bg-slate-100">
-          <div className="flex transition-transform duration-300" style={{ transform: `translateX(-0%)`}}>
+          <div className="flex transition-transform duration-300" style={{ transform: `translateX(-0%)` }}>
             <div className="w-1/3 flex-shrink-0">
               <VideoView
                 video={<Video ref={videoRef as LegacyRef<HTMLVideoElement>} isTop={true} />}
                 onCam={isVideoEnabled}
                 isTop={true}
-                profile={createMockMyProfile(true)}
+                profile={createMockMyProfile(true, customerName)}
               />
             </div>
           </div>
@@ -148,7 +153,7 @@ export default function Home() {
           {isForm ? (
             <ApplicationForm formData={formData} />
           ) : (
-            <VideoView video={video[0]} onCam={true} profile={mockProfile} />
+            <VideoView video={video[0]} onCam={true} profile={mockProfile(tellerName)} />
           )}
         </div>
       </div>
@@ -188,9 +193,9 @@ export default function Home() {
           </AchromaticButton> */}
           <AchromaticButton
             onClick={() => {
-              if(isForm){
+              if (isForm) {
                 setIsForm(false);
-              }else{
+              } else {
                 setIsForm(true);
               }
             }}

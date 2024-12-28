@@ -14,6 +14,7 @@ import { createMockMyProfile } from "../../mock/mock-profiles";
 import { SharingLinkDialog } from "@/app/ui/consulting-room/modal/share-link-dialog";
 import { useRouter, useSearchParams } from "next/navigation";
 import { addCustomerToQueue, deleteCustomerToQueue } from "@/app/business/waiting-room/waiting-queue.service";
+import { useCustomerStore } from "@/app/stores/customerStore";
 
 export default function Home() {
   const router = useRouter();
@@ -22,11 +23,10 @@ export default function Home() {
   const [videoStream, setVideoStream] = useState<MediaStream | null>(null);
   const [isVideoEnabled, setIsVideoEnabled] = useState<boolean>(true);
   const [isAudioEnabled, setIsAudioEnabled] = useState<boolean>(true);
-  const [customerName, setCustomerName] = useState<string>(null);
 
   const audioContext = useRef<AudioContext | null>(null);
   const gainNode = useRef<GainNode | null>(null);
-
+  const { customerName } = useCustomerStore();
   const params = useSearchParams();
   const ctg = params.get("categoryId");
   const type = params.get("type");
@@ -35,7 +35,6 @@ export default function Home() {
     console.log(type)
     addCustomerToQueue(type, ctg).then((response) => {
       console.log(response);
-      setCustomerName(response.data as string);
     })
   }, [])
 

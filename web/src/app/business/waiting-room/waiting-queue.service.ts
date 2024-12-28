@@ -8,7 +8,8 @@ export interface initialConsultingRoomInfoType {
   categoryId: string,
   customerId: string,
   tellerId: string,
-  userName: string
+  customerName: string,
+  tellerName: string
 }
 export async function addCustomerToQueue(typeId: string, categoryId: string): Promise<APIResponseType> {
   const response = await instance.get(`${API_PATH}/queues/${typeId}?categoryId=${categoryId}`)

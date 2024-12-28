@@ -20,11 +20,11 @@ export default function Home() {
   const [videoStream, setVideoStream] = useState<MediaStream | null>(null);
   const [isVideoEnabled, setIsVideoEnabled] = useState<boolean>(true);
   const [isAudioEnabled, setIsAudioEnabled] = useState<boolean>(true);
-  const { consultingRoomId, customerId, tellerId, customerName, updateCustomer, updateTeller, updateConsultingRoomId, updateCustomerName } = useConsultingRoomStore(
+  const { consultingRoomId, customerId, tellerId, customerName, tellerName, updateCustomer, updateTeller, updateConsultingRoomId, updateCustomerName, updateTellerName } = useConsultingRoomStore(
     (state) => state,
   );
 
-  const tellerType = useConsultingRoomStore(state=>state.tellerType)
+  const tellerType = useConsultingRoomStore(state => state.tellerType)
 
 
   const audioContext = useRef<AudioContext | null>(null);
@@ -64,31 +64,36 @@ export default function Home() {
     };
   }, [videoStream]);
 
-  useEffect(()=>{
-      if(tellerType === null) return;
-      if( consultingRoomId === null){
-        console.log(tellerType);
-        
-        deleteCustomerFromQueueAndCreatingRoom(tellerType).then((response)=>{
-          console.log(response)
-          const roomInfo = response.data as initialConsultingRoomInfoType;
-          const consultingRoomId: string = roomInfo.consultingRoomId;
-          const customerId: string = roomInfo.customerId;
-          const tellerId: string = roomInfo.tellerId;
-          const customerName: string = roomInfo.userName;
+  useEffect(() => {
+    console.log("USE EFFECT!!!");
+    console.log("TELLER TYPE", tellerType);
+    console.log("CONSULTINGROOM ID", consultingRoomId);
+    if (tellerType === null) return;
+    // if (consultingRoomId === null) {
+    console.log(tellerType);
 
-          updateConsultingRoomId(consultingRoomId)
-          updateCustomerName(customerName)
-          updateCustomer(customerId)
-          updateTeller(tellerId)
-        })
-      }
-  },[tellerType])
+    deleteCustomerFromQueueAndCreatingRoom(tellerType).then((response) => {
+      console.log(">>>>>>>>>>>>>>>>", response)
+      const roomInfo = response.data as initialConsultingRoomInfoType;
+      const consultingRoomId: string = roomInfo.consultingRoomId;
+      const customerId: string = roomInfo.customerId;
+      const tellerId: string = roomInfo.tellerId;
+      const customerName: string = roomInfo.customerName;
+      const tellerName: string = roomInfo.tellerName;
 
-  useEffect(()=>{
+      updateConsultingRoomId(consultingRoomId)
+      updateCustomerName(customerName)
+      updateTellerName(tellerName)
+      updateCustomer(customerId)
+      updateTeller(tellerId)
+    })
+    // }
+  }, [tellerType])
+
+  useEffect(() => {
     console.log('tellerType:', tellerType)
-    console.log(consultingRoomId, customerId, tellerId, 'username: ',customerName )
-  },[consultingRoomId, customerId, tellerId])
+    console.log(consultingRoomId, customerId, tellerId, 'username: ', customerName)
+  }, [consultingRoomId, customerId, tellerId])
 
   // To-Do: 내가 비디오를 끌 경우, 나의 비디오 상태를 상대방에게 보내는 api 추가: isCam: false
   const toggleVideo = () => {
@@ -114,13 +119,13 @@ export default function Home() {
         </p>
         <div className="flex justify-between space-x-2">
           <p className={`mb-6 text-2xl text-hwachang-green1 font-semibold`}>
-            고객을 기다리는 중입니다...
+            손님을 기다리는 중입니다...
           </p>
         </div>
         <VideoView
           video={<Video ref={videoRef as LegacyRef<HTMLVideoElement>} />}
           onCam={isVideoEnabled}
-          profile={createMockMyProfile(false)}
+          profile={createMockMyProfile(false, tellerName)}
         />
       </div>
 

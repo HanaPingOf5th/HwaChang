@@ -1,13 +1,14 @@
 import { createStore } from 'zustand/vanilla'
 import { ConsultingRoom } from '../business/consulting-room/consulting-room'
 import { persist } from 'zustand/middleware';
-export interface ConsultingRoomActions{
-  updateCustomer: (customerId: string)=>void
-  updateTeller: (tellerId: string)=>void
-  updateConsultingRoomId: (consultingRoomId: string)=>void
-  updateCustomerName: (customerName: string)=>void
-  updateTellerType: (tellerType: number)=>void
-  updateCategoryId: (categoryId: string)=>void
+export interface ConsultingRoomActions {
+  updateCustomer: (customerId: string) => void
+  updateTeller: (tellerId: string) => void
+  updateTellerName: (tellerName: string) => void
+  updateConsultingRoomId: (consultingRoomId: string) => void
+  updateCustomerName: (customerName: string) => void
+  updateTellerType: (tellerType: number) => void
+  updateCategoryId: (categoryId: string) => void
 }
 
 export type ConsultingRoomStore = ConsultingRoom & ConsultingRoomActions
@@ -16,6 +17,7 @@ export const initConsultingRoomStore = (): ConsultingRoom => {
   return {
     consultingRoomId: null,
     tellerId: null,
+    tellerName: null,
     tellerType: null,
     customerId: null,
     categoryId: null,
@@ -31,6 +33,7 @@ export const initConsultingRoomStore = (): ConsultingRoom => {
 export const defaultConsultingRoom: ConsultingRoom = {
   consultingRoomId: null,
   tellerId: null,
+  tellerName: null,
   tellerType: null,
   customerId: null,
   categoryId: null,
@@ -57,20 +60,24 @@ export const createConsultingRoomStore = (
           set(() => ({
             tellerId: tellerId,
           })),
+        updateTellerName: (tellerName: string) =>
+          set(() => ({
+            tellerName: tellerName,
+          })),
         updateConsultingRoomId: (consultingRoomId: string) =>
           set(() => ({
             consultingRoomId: consultingRoomId,
           })),
         updateCustomerName: (customerName: string) =>
-          set(()=>({
+          set(() => ({
             customerName: customerName
           })),
-        updateTellerType: (tellerType: number) => 
-          set(()=>({
+        updateTellerType: (tellerType: number) =>
+          set(() => ({
             tellerType: tellerType
           })),
         updateCategoryId: (categoryId: string) =>
-          set(()=>({
+          set(() => ({
             categoryId: categoryId
           }))
       }),
@@ -79,6 +86,7 @@ export const createConsultingRoomStore = (
         partialize: (state) => ({
           customerId: state.customerId,
           tellerId: state.tellerId,
+          tellerName: state.tellerName,
           consultingRoomId: state.consultingRoomId,
           customerName: state.customerName,
           tellerType: state.tellerType,

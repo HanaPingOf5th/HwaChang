@@ -3,14 +3,14 @@ import Minji from "@/app/utils/public/Minji.jpeg";
 import Cameraoff from "@/app/utils/public/Cameraoff.svg";
 import Image from "next/image";
 
-export const mockProfile: Profile = {
+export const mockProfile = (name: string): Profile => ({
   picture: (
     <div className="flex justify-center items-center rounded-xl overflow-hidden">
       <Image src={Minji} alt="Minji" />
     </div>
   ),
-  name: "상대방",
-};
+  name: name,
+});
 
 export const createMockMyProfile = (isFullHeight: boolean, name: string): Profile => ({
   picture: (

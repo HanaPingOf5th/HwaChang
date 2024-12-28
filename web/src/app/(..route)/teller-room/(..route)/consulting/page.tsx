@@ -20,17 +20,18 @@ export default function Home() {
   const [videoStream, setVideoStream] = useState<MediaStream | null>(null);
   const [isVideoEnabled, setIsVideoEnabled] = useState<boolean>(true);
   const [isAudioEnabled, setIsAudioEnabled] = useState<boolean>(true);
-  const consultingRoomId = useConsultingRoomStore((state)=>state.consultingRoomId);
+  const consultingRoomId = useConsultingRoomStore((state) => state.consultingRoomId);
+  const customerName = useConsultingRoomStore((state) => state.customerName);
 
   const router = useRouter();
-
 
   const audioContext = useRef<AudioContext | null>(null);
   const gainNode = useRef<GainNode | null>(null);
 
   const [slideIndex, setSlideIndex] = useState(0);
-  const { client, video, startStream, startScreenStream } = useSocket({id: consultingRoomId});
+  const { client, video, startStream, startScreenStream } = useSocket({ id: consultingRoomId });
   const videoRef = useRef<HTMLVideoElement | null>(null);
+  const tellerName = useConsultingRoomStore((state) => state.tellerName);
 
   useEffect(() => {
     const getMedia = async () => {
@@ -84,10 +85,10 @@ export default function Home() {
 
   useEffect(() => {
     if (!client || !consultingRoomId) return;
-    
+
     console.log("Activating STOMP client...");
     client.activate();
-  
+
     return () => {
       console.log("Deactivating STOMP client...");
       client.deactivate();
@@ -95,23 +96,23 @@ export default function Home() {
   }, [client, consultingRoomId]);
 
   // string reset
-  useEffect(()=>{
-    setTimeout(()=>{
+  useEffect(() => {
+    setTimeout(() => {
       console.log(consultingRoomId)
-    },1000)
+    }, 1000)
   }, [consultingRoomId])
-  
+
 
   const handleStartStream = async () => {
     console.log(client.active)
     console.log(client.connected)
-    if(client.connected){
+    if (client.connected) {
       await startStream();
     }
   };
 
-  const handleStartScreenStream = async () =>{
-    if(client.connected){
+  const handleStartScreenStream = async () => {
+    if (client.connected) {
       await startScreenStream();
     }
   }
@@ -120,28 +121,28 @@ export default function Home() {
     <main>
       <div>
         <div className="relative w-full h-1/6 p-6 bg-slate-100">
-          <div className="flex transition-transform duration-300" style={{ transform: `translateX(-0%)`}}>
+          <div className="flex transition-transform duration-300" style={{ transform: `translateX(-0%)` }}>
             <div className="w-1/3 flex-shrink-0">
               <VideoView
                 video={<Video ref={videoRef as LegacyRef<HTMLVideoElement>} isTop={true} />}
                 onCam={isVideoEnabled}
                 isTop={true}
-                profile={createMockMyProfile(true)}
+                profile={createMockMyProfile(true, customerName)}
               />
             </div>
           </div>
         </div>
         <div className="pt-4 px-6">
-          <VideoView video={video[0]} onCam={true} profile={mockProfile}/>
+          <VideoView video={video[0]} onCam={true} profile={mockProfile(tellerName)} />
         </div>
       </div>
 
       <div className="flex justify-center space-x-4 mt-4">
         <div className="flex justify-center gap-4">
           <AchromaticButton
-              onClick={async()=>{await handleStartScreenStream()}}
-              className="rounded-full bg-hwachang-gray2 hover:bg-hwachang-gray3 text-black"
-            >
+            onClick={async () => { await handleStartScreenStream() }}
+            className="rounded-full bg-hwachang-gray2 hover:bg-hwachang-gray3 text-black"
+          >
             화면공유
           </AchromaticButton>
           <AchromaticButton
@@ -164,16 +165,16 @@ export default function Home() {
               )}
             </div>
           </AchromaticButton>
-          <AchromaticButton 
-            className="rounded-full bg-hwachang-gray2 hover:bg-hwachang-gray3 text-black" type="button" 
-            onClick={async ()=>{ await handleStartStream();}}>
+          <AchromaticButton
+            className="rounded-full bg-hwachang-gray2 hover:bg-hwachang-gray3 text-black" type="button"
+            onClick={async () => { await handleStartStream(); }}>
             상담시작
           </AchromaticButton>
-          <SharingLinkDialog/>
-          <AchromaticButton 
-            className="rounded-full bg-hwachang-gray2 hover:bg-hwachang-gray3 text-black" type="button" 
-            onClick={()=>{router.push('/teller/main');}}>
-            <PowerOff/>
+          <SharingLinkDialog />
+          <AchromaticButton
+            className="rounded-full bg-hwachang-gray2 hover:bg-hwachang-gray3 text-black" type="button"
+            onClick={() => { router.push('/teller/main'); }}>
+            <PowerOff />
           </AchromaticButton>
         </div>
       </div>
