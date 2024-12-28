@@ -14,11 +14,12 @@ interface TabItem {
 }
 
 export default function TabMenu() {
-  const customerName = useConsultingRoomStore(state=>state.customerName)
+  const customerId = useConsultingRoomStore(state=>state.customerId)
+
   const TabData: TabItem[] = [
-    { id: 1, button: "과거 상담 기록", content: <ConsultationHistory name={customerName}/> },
+    { id: 1, button: "과거 상담 기록", content: <ConsultationHistory customerId={customerId}/> },
     { id: 2, button: "문서 검색", content: <DocumentSearch /> },
-    { id: 3, button: "자료실", content: <Library /> },
+    { id: 3, button: "서류 검색", content: <Library /> },
   ];
 
   const [selectedTab, setSelectedTab] = useState(TabData[0].id);

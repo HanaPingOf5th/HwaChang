@@ -3,20 +3,25 @@ import React from "react";
 import HistoryCard from "./history-card";
 import { useState,useEffect } from "react";
 import { getConsultingList,ConsultingList } from "@/app/business/consulting-room/customer-consulting.service";
+import { date } from "zod";
 
 interface CustomerProps {
-  name: string;
+  customerId: string
 }
 
-export default function ConsultationHistory({ name }: CustomerProps) {
+export default function ConsultationHistory({ customerId }: CustomerProps) {
   const [historyData, setHistoryData] = useState<ConsultingList[]>([]);
+  const [name, setName] = useState<string>("");
 
   useEffect(() => {
-    getConsultingList("92d4abdc-196b-4ecb-aae7-78ffe86237d1").then((response) => {
+    if(customerId===null) return;
+    console.log("고객 id", customerId)
+    getConsultingList(customerId).then((response) => {
       const consultingListData = response.data as ConsultingList[];
       setHistoryData(consultingListData);
+      setName(consultingListData[0].customerName);
     })
-  }, []);
+  }, [customerId]);
 
   return (
     <div className="p-5 space-y-4">

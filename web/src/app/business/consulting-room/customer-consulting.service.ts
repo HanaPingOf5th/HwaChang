@@ -19,9 +19,9 @@ export async function getConsultingList(
   
   if (params) queryParams.append("customerId", params);
   const response = await instance.get(`${API_PATH}/consulting-room/consulting-list?${queryParams.toString()}`);
-  console.log(response);
 
   const data= response.data as ConsultingList[];
+  console.log(data);
 
   return {
     isSuccess: true,
