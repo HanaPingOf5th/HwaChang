@@ -9,7 +9,6 @@ export default function InfoBar() {
   const [waitingCustomer, setWaitingCustomer] = useState<number>(0);
   const [waitingTeller, setWaitingTeller] = useState<number>(0);
   const [calling, setCalling] = useState<number>(0);
-  const [postProcessing, setPostProcessing] = useState<number>(0);
   const tellerType = useConsultingRoomStore((state) => state.tellerType);
 
   useEffect(() => {
@@ -19,7 +18,6 @@ export default function InfoBar() {
       setWaitingCustomer(response.data.result.waitingCustomer);
       setWaitingTeller(response.data.result.waitingTeller);
       setCalling(response.data.result.calling);
-      setPostProcessing(response.data.result.postProcessing);
     }
     getData();
   }, []);
@@ -29,7 +27,6 @@ export default function InfoBar() {
         <InfoContent status={"고객대기중"} count={waitingCustomer} />
         <InfoContent status={"대기"} count={waitingTeller} />
         <InfoContent status={"통화중"} count={calling} />
-        <InfoContent status={"후처리"} count={postProcessing} />
       </div>
     </div>
   );
