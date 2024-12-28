@@ -21,6 +21,7 @@ interface ConsultingDetail {
   type: string;
   category: string;
   date: string;
+  voiceUrl: string;
 }
 
 interface SummaryProps {
@@ -74,8 +75,8 @@ export default function Summary({ detail }: SummaryProps) {
         <div className="grid gap-4 text-lg text-gray-500 font-pretendard">
           <div className="flex items-center">
             <span className="w-40">유형:</span>
-            <span className={filterStyles(detail.type === "개인금융" ? "개인" : "기업")}>
-              {detail.type === "개인금융" ? "개인" : "기업"}
+            <span className={filterStyles(detail.type === "PERSONAL" ? "개인" : "기업")}>
+              {detail.type === "PERSONAL" ? "개인" : "기업"}
             </span>{" "}
           </div>
           <div className="flex items-center">
@@ -138,7 +139,7 @@ export default function Summary({ detail }: SummaryProps) {
           </div>
         </CardContent>
         <CardContent>
-          <AudioPlayer />
+          <AudioPlayer voiceUrl={detail.voiceUrl} />
         </CardContent>
       </Card>
 

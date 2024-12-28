@@ -15,6 +15,7 @@ export interface ConsultingDetailResponse {
   type: string;
   category: string;
   date: string;
+  voiceUrl: string;
 }
 
 export async function fetchConsultingDetail(consultingRoomId: string): Promise<APIResponseType> {

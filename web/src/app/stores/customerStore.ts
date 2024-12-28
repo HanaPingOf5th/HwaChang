@@ -1,5 +1,3 @@
-// src/app/stores/customerStore.ts
-
 import { create } from "zustand";
 
 interface CustomerState {
