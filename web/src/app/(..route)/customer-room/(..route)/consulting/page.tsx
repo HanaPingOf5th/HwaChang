@@ -7,10 +7,10 @@ import { Video, VideoView } from "../../components/video-view";
 import { createMockMyProfile, mockProfile } from "../../mock/mock-profiles";
 import { ApplicationForm, ApplicationProps } from "../../components/application-form";
 import { ReviewDialog } from "@/app/ui/consulting-room/modal/review-dialog";
-import { SharingLinkDialog } from "@/app/ui/consulting-room/modal/share-link-dialog";
 import { getApplicationForm} from "@/app/business/consulting-room/application-form.service";
 import { useRecorder } from "@/app/utils/web-socket/use-recorder";
 import { useSearchParams } from "next/navigation";
+import { RecordAndUploadButton } from "@/app/ui/consulting-room/modal/record-upload-button";
 
 export default function Home() {
   const params = useSearchParams();
@@ -181,8 +181,8 @@ export default function Home() {
               )}
             </div>
           </AchromaticButton>
-          <ReviewDialog stopAndUpload={stopAndUpload} />
-          <SharingLinkDialog />
+          <RecordAndUploadButton stopAndUpload={stopAndUpload}/>
+          <ReviewDialog/>
           <AchromaticButton
             onClick={() => {
               if(isForm){

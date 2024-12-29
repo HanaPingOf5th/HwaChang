@@ -5,56 +5,15 @@ import Form from "../../component/molecule/form/form-index";
 import { FormSubmitButton } from "../../component/molecule/form/form-submit-button";
 import { Dialog, DialogContent, DialogTrigger } from "@/app/ui/component/molecule/dialog/dialog";
 import { sendReview } from "@/app/business/consulting-room/review.service";
-import { useConsultingRoomStore } from "@/app/stores/consulting-room.provider";
-import {
-  endConsultingRoom,
-} from "@/app/business/consulting-room/consulting-room-end";
+import { useRouter } from "next/navigation";
 
-export function ReviewDialog({ stopAndUpload }: { stopAndUpload: () => Promise<string> }) {
-  const consultingRoomId = useConsultingRoomStore((state)=>state.consultingRoomId);
-  const tellerId = useConsultingRoomStore((state)=>state.tellerId);
-  const customerId = useConsultingRoomStore((state)=>state.customerId);
-  const categoryId = useConsultingRoomStore((state) => state.categoryId);
-  const recordChat = useConsultingRoomStore((state) => state.recordChat);
-
-  const handleEndConsultation = async () => {
-    try {
-      const voiceUrl = await stopAndUpload();
-      console.log("녹음 종료 및 업로드 완료: VoiceUrl:", voiceUrl);
-      alert(`녹음 종료 및 업로드가 완료되었습니다! URL: ${voiceUrl}`);
-      const customerIds = [customerId];
-      const time = new Date().toISOString();
-      const requestData = {
-        consultingRoomId,
-        tellerId,
-        categoryId,
-        customerIds,
-        recordChat,
-        voiceUrl,
-        time,
-      };
-      console.log(requestData);
-
-      const response = await endConsultingRoom(requestData);
-      if (response.isSuccess) {
-        console.log("상담 종료 처리 성공:", response.data);
-        alert("상담 종료가 성공적으로 처리되었습니다.");
-      } else {
-        console.error("상담 종료 처리 실패");
-        alert("상담 종료 처리에 실패했습니다. 다시 시도해주세요.");
-      }
-    } catch (error) {
-      console.error("녹음 종료 및 업로드 중 에러 발생:", error);
-      alert("녹음 업로드에 실패했습니다. 다시 시도해주세요.");
-    }
-  };
+export function ReviewDialog() {
 
   return (
     <Dialog>
       <DialogTrigger asChild>
         <AchromaticButton
           className="rounded-full bg-hwachang-gray2 hover:bg-hwachang-gray3 text-black"
-          onClick={handleEndConsultation}
         >
           상담종료
         </AchromaticButton>
@@ -70,6 +29,7 @@ function Review() {
   const numbers: number[] = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
   const [currentScore, setCurrentScore] = useState<number>(0);
   const [isSubmitted, setIsSubmitted] = useState<boolean>(false);
+  const router = useRouter();
 
   // ToDo: store에서 전역 데이터를 가져와서 consulting-room과 userId 가져오기
   useEffect(() => {
@@ -150,6 +110,7 @@ function Review() {
             <div className="grid grid-cols-2 gap-6 items-center">
               <AchromaticButton
                 className="bg-hwachang-hanasilver text-md hover:bg-hwachang-hwachanggray lg:w-40 h-6 size-auto w-24 rounded-2xl"
+                onClick={()=>{router.push('/customer/main')}}
                 type="button"
               >
                 건너뛰기
@@ -158,6 +119,12 @@ function Review() {
                 className="bg-hwachang-darkgreen text-md lg:w-40 size-auto w-24 rounded-2xl"
                 label="제출하기"
                 position="center"
+                onClick={()=>{
+                  alert("제출되었습니다!")
+                  setTimeout(()=>{
+                    router.push('/customer/main')
+                  }, 500)
+                }}
               />
             </div>
           </CardFooter>
