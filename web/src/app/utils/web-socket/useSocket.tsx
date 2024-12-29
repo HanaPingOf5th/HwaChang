@@ -170,26 +170,10 @@ export function useSocket({id, myKey}:{id: string, myKey:string}) {
       iceServers = iceServers.concat(
         [
           {
-              "url": "stun:global.stun.twilio.com:3478",
-              "urls": "stun:global.stun.twilio.com:3478"
-          },
-          {
               "url": "turn:global.turn.twilio.com:3478?transport=udp",
-              "username": "4f84d1a7af573fb805005fe17806c2c7e6dc1400d9bbfcbb821f9634d06f86c2",
+              "username": "e33d33278e787f4f166203f19f7d4ea5d56320a0fa2792e5b187fc0e7d4fa006",
               "urls": "turn:global.turn.twilio.com:3478?transport=udp",
-              "credential": "Swj7q68VYNCeDP/cxH9y5zBRwaPCoYYuEDh5NGbUtW8="
-          },
-          {
-              "url": "turn:global.turn.twilio.com:3478?transport=tcp",
-              "username": "4f84d1a7af573fb805005fe17806c2c7e6dc1400d9bbfcbb821f9634d06f86c2",
-              "urls": "turn:global.turn.twilio.com:3478?transport=tcp",
-              "credential": "Swj7q68VYNCeDP/cxH9y5zBRwaPCoYYuEDh5NGbUtW8="
-          },
-          {
-              "url": "turn:global.turn.twilio.com:443?transport=tcp",
-              "username": "4f84d1a7af573fb805005fe17806c2c7e6dc1400d9bbfcbb821f9634d06f86c2",
-              "urls": "turn:global.turn.twilio.com:443?transport=tcp",
-              "credential": "Swj7q68VYNCeDP/cxH9y5zBRwaPCoYYuEDh5NGbUtW8="
+              "credential": "R4TKSAdY77ue4mOhspdbXFL7SAMv3bIQIQhU+w40Enk="
           }
       ]
       );
