@@ -21,7 +21,7 @@ export default function InfoBar() {
     getData();
   }, []);
   return (
-    <div className="bg-hwachang-green">
+    <div className="bg-hwachang-green1">
       <div className="flex space-x-5 items-center justify-center p-7">
         <InfoContent status={"고객대기중"} count={waitingCustomer} />
         <InfoContent status={"대기"} count={waitingTeller} />

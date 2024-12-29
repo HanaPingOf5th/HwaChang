@@ -87,19 +87,19 @@ export default function Home() {
 
   return (
     <main>
-      <div className="grid grid-row-1 gap-1 px-10 py-6 shadow-lg">
-        <p className={`mb-6 text-4xl text-black font-bold text-center bg-gray-100 p-4`}>
+      <div className="grid grid-row-1 gap-1 px-10 py-6">
+        <p className={`mb-6 text-4xl text-black font-bold text-center bg-gray-100 rounded-lg p-2`}>
           <strong>상담 대기실</strong>
         </p>
-        <div className="flex justify-between items-center space-x-4 bg-white p-2 rounded-lg">
-          <p className={`mb-6 text-2xl text-gray-700 font-semibold`}>
+        <div className="flex justify-between items-center space-x-4 bg-white p-4 rounded-lg">
+          <p className="text-lg text-gray-600 font-medium">
             상담사를 기다리는 중입니다...
           </p>
           <Dialog>
-            <DialogTrigger asChild>
-              <AchromaticButton className="px-6 py-6 bg-hwachang-darkgreen hover:bg-hwachang-darkgreen text-white rounded-full hover:shadow-lg transition-all duration-300">
-                매칭 시작
-              </AchromaticButton>
+          <DialogTrigger asChild>
+            <AchromaticButton className="px-8 py-5 bg-hwachang-darkgreen hover:bg-[#225b4e] text-white rounded-full shadow-lg transition-transform transform hover:scale-105">
+              매칭 시작
+            </AchromaticButton>
             </DialogTrigger>
             <DialogContent>
               <MatchingAlarm categoryId={ctg} typeId={type} />
