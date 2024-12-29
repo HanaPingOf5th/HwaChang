@@ -6,7 +6,6 @@ import {
   MicOffIcon,
   VideoIcon,
   VideoOffIcon,
-  PowerOff
 } from "lucide-react";
 import { useSocket } from "@/app/utils/web-socket/useSocket";
 import { Video, VideoView } from "@/app/(..route)/customer-room/components/video-view";

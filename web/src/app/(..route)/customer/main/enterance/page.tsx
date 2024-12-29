@@ -9,7 +9,7 @@ function CategoryList() {
   const params = useSearchParams();
   const key = params.get("isIndividual");
   const router = useRouter();
-  const [categories, setCategories] = useState<Category[]>([]);
+  const [categories, setCategories] = useState([]);
   const [pageTitle, setPageTitle] = useState<ConsultingType>(null);
 
   useEffect(() => {
@@ -36,7 +36,7 @@ function CategoryList() {
             className="bg-gradient-to-br from-[#225b4e] to-[#277864] text-white cursor-pointer hover:scale-105 hover:shadow-lg transition-all duration-300 rounded-lg"
             onClick={() => {
               router.push(
-                `/customer-room/waiting?categoryId=${value.categoryId}&type=${value.type === "PERSONAL" ? 0 : 1}`,
+                `/customer-room/waiting?categoryId=${value.categoryId}&type=${value.categoryType === "PERSONAL" ? 0 : 1}`,
               );
             }}
           >

@@ -7,7 +7,7 @@ export type ConsultingType = "CORPORATE" | "PERSONAL"
 export interface Category{
   categoryId: string,
   categoryName: string
-  type:  ConsultingType
+  categoryType:  ConsultingType
 }
 
 export async function getCategories(type: ConsultingType):Promise<APIResponseType>{

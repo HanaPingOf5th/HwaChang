@@ -171,21 +171,21 @@ export function useSocket({id, myKey}:{id: string, myKey:string}) {
       },
       {
           "url": "turn:global.turn.twilio.com:3478?transport=udp",
-          "username": "6e6581c2a8d259f63ffd771a31a935c27066f526c490c7189a560c8ebc937ed7",
+          "username": "17da2081d43915e6d0c79022eadf8c529473367ca0f668725fe9dc2ec9cbb337",
           "urls": "turn:global.turn.twilio.com:3478?transport=udp",
-          "credential": "wS6bt6uK0A5ca5fuXeZGyFbLZQtc9yCXhHQGr3syWnU="
+          "credential": "ZKoeUuiBeRluBzDDJD7xBdX0ogE+zavjNcE5u+UB/yo="
       },
       {
           "url": "turn:global.turn.twilio.com:3478?transport=tcp",
-          "username": "6e6581c2a8d259f63ffd771a31a935c27066f526c490c7189a560c8ebc937ed7",
+          "username": "17da2081d43915e6d0c79022eadf8c529473367ca0f668725fe9dc2ec9cbb337",
           "urls": "turn:global.turn.twilio.com:3478?transport=tcp",
-          "credential": "wS6bt6uK0A5ca5fuXeZGyFbLZQtc9yCXhHQGr3syWnU="
+          "credential": "ZKoeUuiBeRluBzDDJD7xBdX0ogE+zavjNcE5u+UB/yo="
       },
       {
           "url": "turn:global.turn.twilio.com:443?transport=tcp",
-          "username": "6e6581c2a8d259f63ffd771a31a935c27066f526c490c7189a560c8ebc937ed7",
+          "username": "17da2081d43915e6d0c79022eadf8c529473367ca0f668725fe9dc2ec9cbb337",
           "urls": "turn:global.turn.twilio.com:443?transport=tcp",
-          "credential": "wS6bt6uK0A5ca5fuXeZGyFbLZQtc9yCXhHQGr3syWnU="
+          "credential": "ZKoeUuiBeRluBzDDJD7xBdX0ogE+zavjNcE5u+UB/yo="
       }
   ]
   
