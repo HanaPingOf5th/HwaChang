@@ -11,7 +11,6 @@ import {
 import { useSocket } from "@/app/utils/web-socket/useSocket";
 import { Video, VideoView } from "@/app/(..route)/customer-room/components/video-view";
 import { createMockMyProfile, mockProfile } from "@/app/(..route)/customer-room/mock/mock-profiles";
-import { SharingLinkDialog } from "@/app/ui/consulting-room/modal/share-link-dialog";
 import { useConsultingRoomStore } from "@/app/stores/consulting-room.provider";
 import { useRouter } from "next/navigation";
 
@@ -147,12 +146,6 @@ export default function Home() {
       <div className="flex justify-center space-x-4 mt-4">
         <div className="flex justify-center gap-4">
           <AchromaticButton
-              onClick={async()=>{await handleStartScreenStream()}}
-              className="rounded-full bg-hwachang-gray2 hover:bg-hwachang-gray3 text-black"
-            >
-            화면공유
-          </AchromaticButton>
-          <AchromaticButton
             onClick={toggleAudio}
             className="rounded-full bg-hwachang-gray2 hover:bg-hwachang-gray3"
           >
@@ -172,16 +165,21 @@ export default function Home() {
               )}
             </div>
           </AchromaticButton>
+          <AchromaticButton
+              onClick={async()=>{await handleStartScreenStream()}}
+              className="rounded-full bg-hwachang-gray2 hover:bg-hwachang-gray3 text-black"
+            >
+            화면공유
+          </AchromaticButton>
           <AchromaticButton 
             className="rounded-full bg-hwachang-gray2 hover:bg-hwachang-gray3 text-black" type="button" 
             onClick={async ()=>{ await handleStartStream();}}>
             상담시작
           </AchromaticButton>
-          <SharingLinkDialog/>
           <AchromaticButton 
             className="rounded-full bg-hwachang-gray2 hover:bg-hwachang-gray3 text-black" type="button" 
             onClick={()=>{router.push('/teller/main');}}>
-            <PowerOff/>
+            나가기
           </AchromaticButton>
         </div>
       </div>

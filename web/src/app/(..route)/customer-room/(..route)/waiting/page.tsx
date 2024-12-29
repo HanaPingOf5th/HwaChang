@@ -6,7 +6,6 @@ import { MatchingAlarm } from "@/app/ui/consulting-room/modal/matching-alarm";
 import { MicIcon, MicOffIcon, VideoIcon, VideoOffIcon } from "lucide-react";
 import { Video, VideoView } from "../../components/video-view";
 import { createMockMyProfile } from "../../mock/mock-profiles";
-import { SharingLinkDialog } from "@/app/ui/consulting-room/modal/share-link-dialog";
 import { useRouter, useSearchParams } from "next/navigation";
 import { addCustomerToQueue } from "@/app/business/waiting-room/waiting-queue.service";
 
@@ -94,7 +93,7 @@ export default function Home() {
           </p>
           <Dialog>
             <DialogTrigger asChild>
-              <AchromaticButton className="bg-hwachang-brightgreen hover:bg-hwachang-lightgreen text-black">
+              <AchromaticButton className="bg-hwachang-hwachangcolor hover:bg-hwachang-lightgreen text-white">
                 매칭 시작
               </AchromaticButton>
             </DialogTrigger>
@@ -144,8 +143,6 @@ export default function Home() {
           >
             나가기
           </AchromaticButton>
-          <SharingLinkDialog />
-          {/* <VideoSettingDialog videoRef={videoRef}/> */}
         </div>
       </div>
     </main>
