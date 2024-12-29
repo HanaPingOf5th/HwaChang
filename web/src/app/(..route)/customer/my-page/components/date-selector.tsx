@@ -32,7 +32,7 @@ export function DateSelector({
   };
 
   const dateInputStyles =
-    "w-full h-6.5 bg-slate-100 rounded-full border-none outline-none text-center px-4 text-sm";
+    "w-full h-6.5 bg-slate-100 rounded-lg border-none outline-none text-center px-4 text-sm";
 
   return (
     <div className="flex mb-4 items-center">

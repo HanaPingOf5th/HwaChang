@@ -100,7 +100,7 @@ export default function TellerNav() {
             className="object-cover w-48 h-48 rounded-full border-4 border-white shadow-lg"
           />
           <div
-            className={`absolute right-16 transform translate-x-8 bottom-1 w-9 h-9 rounded-full border-4 border-white shadow-lg z-20 ${currentColor}`}
+            className={`absolute right-14 transform translate-x-8 bottom-1 w-9 h-9 rounded-full border-4 border-white shadow-lg z-20 ${currentColor}`}
           ></div>
         </div>
 
@@ -145,7 +145,7 @@ export default function TellerNav() {
 
             <AchromaticButton
               onClick={isEditing ? handleStatusConfirm : handleStatusChange}
-              className="bg-hwachang-green rounded-3xl font-medium text-xl w-full py-8 shadow-lg mt-4"
+              className="bg-hwachang-darkgreen hover:bg-hwachang-darkgreen rounded-3xl font-medium text-xl w-full py-8 shadow-lg mt-4 transition-transform transform hover:scale-105"
             >
               {isEditing ? "상태 변경 완료" : "상태 바꾸러 가기"}
             </AchromaticButton>

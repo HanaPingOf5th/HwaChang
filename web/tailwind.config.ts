@@ -32,7 +32,7 @@ const config: Config = {
       },
       colors: {
         hwachang: {
-          darkgreen: "#1FAB89",
+          darkgreen: "#277864",
           green: "#62D2A2",
           lightgreen: "#9DF3C4",
           lightgreen1: "#B8F6D6",
@@ -68,9 +68,12 @@ const config: Config = {
         'tremor-title': ['1.125rem', { lineHeight: '1.75rem' }],
         'tremor-metric': ['1.875rem', { lineHeight: '2.25rem' }],
       },
+      // fontFamily: {
+      //   sans: ['var(--font-sans)', ...fontFamily.sans],
+      //   pretendard: ['var(--font-pretendard)'],
+      // },
       fontFamily: {
-        sans: ['var(--font-sans)', ...fontFamily.sans],
-        pretendard: ['var(--font-pretendard)'],
+        hanabank: ['HanaBankFont', 'sans-serif'], // 커스텀 폰트 이름 등록
       },
       boxShadow: {
         'banker-card': '0px 0px 10px 0px rgba(48,48,48,0.25)',

@@ -12,7 +12,7 @@ export const mockProfile: Profile = {
   name: "상대방",
 };
 
-export const createMockMyProfile = (isFullHeight: boolean): Profile => ({
+export const createMockMyProfile = (isFullHeight: boolean, name: string): Profile => ({
   picture: (
     <div
       className={`flex justify-center items-center ${
@@ -22,7 +22,7 @@ export const createMockMyProfile = (isFullHeight: boolean): Profile => ({
       <Image src={Cameraoff} alt="Cameraoff" width={50} height={50} />
     </div>
   ),
-  name: "나",
+  name: name,
 });
 
 export const mockOtherProfile: Profile = {

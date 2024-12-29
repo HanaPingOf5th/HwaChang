@@ -55,7 +55,7 @@ export default function TellerWaitingChatting() {
   }, []);
   
   return (
-    <div className="flex justify-center min-w-[311.6px] bg-hwachang-darkgreen">
+    <div className="flex justify-center min-w-[311.6px] bg-hwachang-main">
       <div className="flex justify-center flex-col">
         <div className="flex bg-hwachang-green rounded-2xl rounded-b-none p-3 gap-2">
           <BsChatDots size="25" color="white" />
@@ -104,7 +104,7 @@ export default function TellerWaitingChatting() {
                 value={inputValue}
                 onValueChange={(value) => setInputValue(value)}
               />
-              <AchromaticButton className={`w-full ${inputValue.trim() !== "" ? "bg-hwachang-hwachangcolor" : "bg-hwachang-gray4"}`}>
+              <AchromaticButton className={`w-full ${inputValue.trim() !== "" ? "bg-hwachang-main" : "bg-hwachang-gray4"}`}>
                 <LuSendHorizonal size="20" />
               </AchromaticButton>
             </CardContent>

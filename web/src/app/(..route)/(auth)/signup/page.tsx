@@ -141,7 +141,7 @@ export default function SignupPage() {
       <MainPageContent />
       <div className="flex w-1/2 h-full items-center justify-center bg-white px-4 dark:bg-gray-950">
         <div className="w-full max-w-md space-y-6">
-          <p className="flex flex-col justify-center items-center text-center text-3xl text-[#1FAB89]">
+          <p className="flex flex-col justify-center items-center text-center text-3xl text-hwachang-darkgreen">
             회원가입
           </p>
           {/* 회원가입 Form 영역 */}
@@ -244,7 +244,7 @@ export default function SignupPage() {
               <button
                 onClick={clickHandler}
                 className={`text-white w-1/2 py-4 rounded-lg mt-10 ${
-                  isEmpty ? "bg-[#D9D9D9] cursor-auto" : "bg-[#1FAB89] hover:brightness-90"
+                  isEmpty ? "bg-[#D9D9D9] cursor-auto" : "bg-hwachang-[#1FAB89] hover:brightness-90"
                 }`}
                 disabled={
                   isUsernameDuplicate ||

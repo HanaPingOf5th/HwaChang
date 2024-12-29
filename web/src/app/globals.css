@@ -11,3 +11,14 @@ input[type="range"]::-webkit-slider-thumb {
   border: solid 0.5px #8e8e8e;
   cursor: pointer;
 }
+
+@font-face {
+  font-family: 'HanaBankFont';
+  src: url('../fonts/hana-bank-font.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+}
+
+body {
+  @apply font-hanabank;
+}

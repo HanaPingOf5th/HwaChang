@@ -8,6 +8,7 @@ import { Video, VideoView } from "../../components/video-view";
 import { createMockMyProfile } from "../../mock/mock-profiles";
 import { useRouter, useSearchParams } from "next/navigation";
 import { addCustomerToQueue } from "@/app/business/waiting-room/waiting-queue.service";
+import { useCustomerStore } from "@/app/stores/customerStore";
 
 export default function Home() {
   const router = useRouter();
@@ -23,6 +24,9 @@ export default function Home() {
   const params = useSearchParams();
   const ctg = params.get("categoryId");
   const type = params.get("type");
+
+  // 현재 접속한 고객의 이름
+  const { customerName } = useCustomerStore();
 
   useEffect(() => {
     console.log(type);
@@ -84,18 +88,18 @@ export default function Home() {
   return (
     <main>
       <div className="grid grid-row-1 gap-1 px-10 py-6">
-        <p className={`mb-6 text-4xl text-hwachang-green1`}>
+        <p className={`mb-6 text-4xl text-black font-bold text-center bg-gray-100 rounded-lg p-2`}>
           <strong>상담 대기실</strong>
         </p>
-        <div className="flex justify-between space-x-2">
-          <p className={`mb-6 text-2xl text-hwachang-green1 font-semibold`}>
+        <div className="flex justify-between items-center space-x-4 bg-white p-4 rounded-lg">
+          <p className="text-lg text-gray-600 font-medium">
             상담사를 기다리는 중입니다...
           </p>
           <Dialog>
-            <DialogTrigger asChild>
-              <AchromaticButton className="bg-hwachang-hwachangcolor hover:bg-hwachang-lightgreen text-white">
-                매칭 시작
-              </AchromaticButton>
+          <DialogTrigger asChild>
+            <AchromaticButton className="px-8 py-5 bg-hwachang-darkgreen hover:bg-[#225b4e] text-white rounded-full shadow-lg transition-transform transform hover:scale-105">
+              매칭 시작
+            </AchromaticButton>
             </DialogTrigger>
             <DialogContent>
               <MatchingAlarm categoryId={ctg} typeId={type} />
@@ -105,7 +109,7 @@ export default function Home() {
         <VideoView
           video={<Video ref={videoRef as LegacyRef<HTMLVideoElement>} />}
           onCam={isVideoEnabled}
-          profile={createMockMyProfile(false)}
+          profile={createMockMyProfile(false, customerName)}
         />
       </div>
 

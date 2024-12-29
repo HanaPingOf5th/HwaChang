@@ -156,7 +156,7 @@ export default function Main() {
               <div className="flex justify-items-center">
                 <RadialBarDynamic data={npsData} />
                 <div className="m-auto ">
-                  <Card className="bg-hwachang-hwachangcolor mx-2 shadow-hwachang-hwachangcolor">
+                  <Card className="bg-hwachang-darkgreen mx-2 shadow-hwachang-darkgreen">
                     <CardHeader className="font-semibold text-3xl text-white text-center">
                       <p className="font-bold mb-1">NPS 점수</p>
                     </CardHeader>
@@ -164,8 +164,8 @@ export default function Main() {
                       {npsAvg}점
                     </CardContent>
                   </Card>
-                  <p className="text-xs text-hwachang-hwachangcolor font-semibold pt-2">NPS란 ?</p>
-                  <p className="text-xs text-hwachang-hwachangcolor">
+                  <p className="text-xs text-hwachang-green1 font-semibold m-3">NPS란 ?</p>
+                  <p className="text-xs text-hwachang-green1 m-3">
                     Net Promoter Score의 약자로, <br />
                     브랜드에 대한 고객 충성도를 측정하는 지표 <br />
                     NPS = 추천고객비율(%) - 비추천고객비율(%)
@@ -215,7 +215,7 @@ export default function Main() {
               내가 상담한 손님 중 ...
             </CardHeader>
             <CardContent className="text-2xl font-semibold text-hwachang-green1 flex justify-center items-end">
-              <p className="text-7xl font-bold text-hwachang-hwachangcolor">{npsPromoter}명</p>이
+              <p className="text-7xl font-bold text-hwachang-darkgreen">{npsPromoter}명</p>이
             </CardContent>
             <CardHeader className="text-2xl font-semibold text-hwachang-green1 text-right pt-2">
               나를 또 만나고 싶어해요 !

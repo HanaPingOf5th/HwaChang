@@ -11,6 +11,7 @@ import { getApplicationForm} from "@/app/business/consulting-room/application-fo
 import { useRecorder } from "@/app/utils/web-socket/use-recorder";
 import { useSearchParams } from "next/navigation";
 import { RecordAndUploadButton } from "@/app/ui/consulting-room/modal/record-upload-button";
+import { useConsultingRoomStore } from "@/app/stores/consulting-room.provider";
 
 export default function Home() {
   const params = useSearchParams();
@@ -37,6 +38,9 @@ export default function Home() {
   // 녹화
   const { startRecord, getAudioPermission, stopAndUpload } =
     useRecorder(remoteStream);
+
+  // 현재 접속한 고객의 이름
+  const customerName = useConsultingRoomStore((state) => state.customerName);
 
   useEffect(() => {
     const getMedia = async () => {
@@ -141,7 +145,7 @@ export default function Home() {
                 video={<Video ref={videoRef as LegacyRef<HTMLVideoElement>} isTop={true} />}
                 onCam={isVideoEnabled}
                 isTop={true}
-                profile={createMockMyProfile(true)}
+                profile={createMockMyProfile(true, customerName)}
               />
             </div>
           </div>

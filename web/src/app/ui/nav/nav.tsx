@@ -20,7 +20,7 @@ export default function Nav() {
     <div className="flex h-full flex-col bg-hwachang-darkgreen">
       <div className="flex h-32 justify-center items-center">
         <Link href="/customer/main">
-          <Image src={Logo} alt="Logo" width={120} height={100} className="mt-5" />
+          <Image src={Logo} alt="Logo" width={110} height={100} className="mt-5" />
         </Link>
       </div>
 
