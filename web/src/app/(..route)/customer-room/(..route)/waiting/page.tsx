@@ -6,9 +6,9 @@ import { MatchingAlarm } from "@/app/ui/consulting-room/modal/matching-alarm";
 import { MicIcon, MicOffIcon, VideoIcon, VideoOffIcon } from "lucide-react";
 import { Video, VideoView } from "../../components/video-view";
 import { createMockMyProfile } from "../../mock/mock-profiles";
-import { SharingLinkDialog } from "@/app/ui/consulting-room/modal/share-link-dialog";
 import { useRouter, useSearchParams } from "next/navigation";
 import { addCustomerToQueue } from "@/app/business/waiting-room/waiting-queue.service";
+import { useCustomerStore } from "@/app/stores/customerStore";
 
 export default function Home() {
   const router = useRouter();
@@ -24,6 +24,9 @@ export default function Home() {
   const params = useSearchParams();
   const ctg = params.get("categoryId");
   const type = params.get("type");
+
+  // 현재 접속한 고객의 이름
+  const { customerName } = useCustomerStore();
 
   useEffect(() => {
     console.log(type);
@@ -84,17 +87,17 @@ export default function Home() {
 
   return (
     <main>
-      <div className="grid grid-row-1 gap-1 px-10 py-6">
-        <p className={`mb-6 text-4xl text-hwachang-green1`}>
+      <div className="grid grid-row-1 gap-1 px-10 py-6 shadow-lg">
+        <p className={`mb-6 text-4xl text-black font-bold text-center bg-gray-100 p-4`}>
           <strong>상담 대기실</strong>
         </p>
-        <div className="flex justify-between space-x-2">
-          <p className={`mb-6 text-2xl text-hwachang-green1 font-semibold`}>
+        <div className="flex justify-between items-center space-x-4 bg-white p-2 rounded-lg">
+          <p className={`mb-6 text-2xl text-gray-700 font-semibold`}>
             상담사를 기다리는 중입니다...
           </p>
           <Dialog>
             <DialogTrigger asChild>
-              <AchromaticButton className="bg-hwachang-gray2 hover:bg-hwachang-lightgreen text-black">
+              <AchromaticButton className="px-6 py-6 bg-hwachang-darkgreen hover:bg-hwachang-darkgreen text-white rounded-full hover:shadow-lg transition-all duration-300">
                 매칭 시작
               </AchromaticButton>
             </DialogTrigger>
@@ -106,7 +109,7 @@ export default function Home() {
         <VideoView
           video={<Video ref={videoRef as LegacyRef<HTMLVideoElement>} />}
           onCam={isVideoEnabled}
-          profile={createMockMyProfile(false)}
+          profile={createMockMyProfile(false, customerName)}
         />
       </div>
 
@@ -144,8 +147,6 @@ export default function Home() {
           >
             나가기
           </AchromaticButton>
-          <SharingLinkDialog />
-          {/* <VideoSettingDialog videoRef={videoRef}/> */}
         </div>
       </div>
     </main>

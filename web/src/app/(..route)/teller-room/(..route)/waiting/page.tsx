@@ -9,7 +9,6 @@ import {
 } from "lucide-react";
 import { createMockMyProfile } from "@/app/(..route)/customer-room/mock/mock-profiles";
 import { Video, VideoView } from "@/app/(..route)/customer-room/components/video-view";
-import { SharingLinkDialog } from "@/app/ui/consulting-room/modal/share-link-dialog";
 import { deleteCustomerFromQueueAndCreatingRoom, initialConsultingRoomInfoType } from "@/app/business/waiting-room/waiting-queue.service";
 import { useConsultingRoomStore } from "@/app/stores/consulting-room.provider";
 import { useRouter } from "next/navigation";
@@ -157,8 +156,6 @@ export default function Home() {
           >
             상담실 이동
           </AchromaticButton>
-          <SharingLinkDialog />
-          {/* <VideoSettingDialog videoRef={videoRef}/> */}
         </div>
       </div>
     </main>
