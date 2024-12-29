@@ -132,7 +132,7 @@ export default function Home() {
                 video={<Video ref={videoRef as LegacyRef<HTMLVideoElement>} isTop={true} />}
                 onCam={isVideoEnabled}
                 isTop={true}
-                profile={createMockMyProfile(true)}
+                profile={createMockMyProfile(true, "상담사")}
               />
             </div>
           </div>
