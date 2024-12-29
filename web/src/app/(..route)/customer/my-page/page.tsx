@@ -166,9 +166,11 @@ export default function Home() {
             <FormTextInput
               id={"search"}
               placeholder={"화창 기록을 검색해보세요"}
-              className="rounded-full bg-slate-100"
+              className="rounded-lg bg-slate-100 py-1"
             />
-            <FormSubmitButton label={"검색"} />
+            <FormSubmitButton
+              className="bg-hwachang-darkgreen px-5 py-6"
+              label={"검색"} />
           </div>
         </Form>
       </div>
