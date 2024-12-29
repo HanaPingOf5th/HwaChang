@@ -30,7 +30,7 @@ export default function Home() {
   const [isForm, setIsForm] = useState<boolean>(false);
 
   // rtc
-  const { client, video, remoteStream } = useSocket({id: roomId, myKey:myKey});
+  const { client, video, remoteStream, pcListMap } = useSocket({id: roomId, myKey:myKey});
   const videoRef = useRef<HTMLVideoElement | null>(null);
   const [formData, setFormData] = useState<ApplicationProps | null>(null);
 
@@ -105,6 +105,15 @@ export default function Home() {
       setFormData(value.data as ApplicationProps);
     });
   }, [isForm]);
+
+  useEffect(() => {
+    return () => {
+      pcListMap.forEach((pc) => pc.close());
+      if (videoStream) {
+        videoStream.getTracks().forEach((track) => track.stop());
+      }
+    };
+  }, [videoStream]);
 
   // To-Do: 내가 비디오를 끌 경우, 나의 비디오 상태를 상대방에게 보내는 api 추가: isCam: false
   const toggleVideo = () => {

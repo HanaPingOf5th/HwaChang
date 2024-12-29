@@ -284,10 +284,12 @@ export function useSocket({id, myKey}:{id: string, myKey:string}) {
   ) => {
     await pc.setLocalDescription(sessionDescription);
   };
+  
 
   return {
     client: client,
     video: videoElements,
+    pcListMap: pcListMap,
     startStream: startStream,
     startScreenStream: startScreenStream,
     remoteStream: remoteStream,

@@ -28,7 +28,7 @@ export default function Home() {
   const audioContext = useRef<AudioContext | null>(null);
   const gainNode = useRef<GainNode | null>(null);
   
-  const { client, video, startStream, startScreenStream } = useSocket({id: consultingRoomId, myKey:myKey});
+  const { client, video, startStream, startScreenStream, pcListMap } = useSocket({id: consultingRoomId, myKey:myKey});
   const videoRef = useRef<HTMLVideoElement | null>(null);
 
   useEffect(() => {
@@ -59,6 +59,15 @@ export default function Home() {
 
   useEffect(() => {
     return () => {
+      if (videoStream) {
+        videoStream.getTracks().forEach((track) => track.stop());
+      }
+    };
+  }, [videoStream]);
+
+  useEffect(() => {
+    return () => {
+      pcListMap.forEach((pc) => pc.close());
       if (videoStream) {
         videoStream.getTracks().forEach((track) => track.stop());
       }
