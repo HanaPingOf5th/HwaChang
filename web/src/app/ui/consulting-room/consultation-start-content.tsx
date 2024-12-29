@@ -18,7 +18,7 @@ export default function ConsultationStartContent() {
         고객과의 화상 상담을 시작하세요
       </div>
       <AchromaticButton
-        className="bg-hwachang-main w-1/4 rounded-2xl py-8 text-xl"
+        className="bg-hwachang-darkgreen w-1/4 rounded-2xl py-8 text-xl"
         onClick={handleEntrance}>
         입장하기
       </AchromaticButton>

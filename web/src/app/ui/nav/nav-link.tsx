@@ -36,8 +36,8 @@ export default function NavLinks() {
                 `flex h-[48px] grow items-center
               gap-7 text-lg md:flex-none md:justify-start p-10`,
                 isSelected
-                  ? "bg-white text-hwachang-accentmain rounded-l-full rounded-r-none ml-8"
-                  : "bg-hwachang-main text-white md:rounded-l-full ml-8",
+                  ? "bg-white text-hwachang-white rounded-l-full rounded-r-none ml-8"
+                  : "bg-hwachang-darkgreen text-white md:rounded-l-full ml-8",
               )}
             >
               <Image

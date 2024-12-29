@@ -76,7 +76,7 @@ export default function DocumentSearch() {
           onValueChange={handleSearchChange}
           className="flex-1 p-1 border rounded-l-lg h-10 border-gray-300"
         />
-        <button className="px-4 bg-hwachang-main text-white rounded-md text-sm">검색</button>
+        <button className="px-4 bg-hwachang-darkgreen text-white rounded-md text-sm">검색</button>
       </div>
 
       <div className="p-2 flex flex-wrap gap-4">
@@ -119,7 +119,7 @@ export default function DocumentSearch() {
           {currentPage > 1 ? (
             <button
               onClick={handlePrevPage}
-              className="p-2 text-hwachang-main rounded-full hover:bg-gray-200 flex items-center justify-center"
+              className="p-2 text-hwachang-darkgreen rounded-full hover:bg-gray-200 flex items-center justify-center"
             >
               <IoChevronBack size={24} />
             </button>
@@ -134,7 +134,7 @@ export default function DocumentSearch() {
           {currentPage < totalPages ? (
             <button
               onClick={handleNextPage}
-              className="p-2 text-hwachang-main rounded-full hover:bg-gray-200 flex items-center justify-center"
+              className="p-2 text-hwachang-darkgreen rounded-full hover:bg-gray-200 flex items-center justify-center"
             >
               <IoChevronForward size={24} />
             </button>

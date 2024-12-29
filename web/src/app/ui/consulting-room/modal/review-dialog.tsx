@@ -92,7 +92,7 @@ function Review() {
         name="nps"
         value={num}
         id={`${num}`}
-        className={`w-10 h-10 text-xl font-bold ${currentScore === num ? "bg-hwachang-green" : "bg-hwachang-green"}`}
+        className={`w-10 h-10 text-xl font-bold ${currentScore === num ? "bg-hwachang-darkgreen" : "bg-hwachang-green"}`}
         onClick={() => handleScoreClick(num)}
         type="button"
       >
@@ -155,7 +155,7 @@ function Review() {
                 건너뛰기
               </AchromaticButton>
               <FormSubmitButton
-                className="bg-hwachang-main text-md lg:w-40 size-auto w-24 rounded-2xl"
+                className="bg-hwachang-darkgreen text-md lg:w-40 size-auto w-24 rounded-2xl"
                 label="제출하기"
                 position="center"
               />

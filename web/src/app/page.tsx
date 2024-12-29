@@ -72,7 +72,7 @@ export default function Home() {
                 <span
                   className="font-bold hover:underline"
                   style={{
-                    color: "#3674D8",
+                    color: "#1FAB89",
                   }}
                 >
                   회원 가입

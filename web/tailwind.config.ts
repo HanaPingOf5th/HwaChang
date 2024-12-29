@@ -32,9 +32,8 @@ const config: Config = {
       },
       colors: {
         hwachang: {
-          main: "#A5E3F1",
-          accentmain: "#141C29",
-          green: "#80B1C8",
+          darkgreen: "#277864",
+          green: "#62D2A2",
           lightgreen: "#9DF3C4",
           lightgreen1: "#B8F6D6",
           brightgreen: "#D7FBE8",
