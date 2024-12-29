@@ -164,24 +164,28 @@ export function useSocket({id, myKey}:{id: string, myKey:string}) {
   };
 
   const createPeerConnection = async (otherKey: string) => {
-    const iceServers:RTCIceServer[] = [
+    const iceServers = [
       {
+          "url": "stun:global.stun.twilio.com:3478",
           "urls": "stun:global.stun.twilio.com:3478"
       },
       {
-          "username": "b9c126636fb96dce0868f665f8f91067ab0c1b178c747c300b209b6cefe4ec03",
+          "url": "turn:global.turn.twilio.com:3478?transport=udp",
+          "username": "bcb02c3c57df666ca62942e27df23ebf549c766888b2ac7c044907dc22fcfe6f",
           "urls": "turn:global.turn.twilio.com:3478?transport=udp",
-          "credential": "y8agROmeq1QWwPX+L/PQKDOKubHKAVIe1emA4iH0Sqs="
+          "credential": "nYyC5reTWHJ8sn5o2+lNVQCVtv58sOg1aCnQLsO2TZ0="
       },
       {
-          "username": "b9c126636fb96dce0868f665f8f91067ab0c1b178c747c300b209b6cefe4ec03",
+          "url": "turn:global.turn.twilio.com:3478?transport=tcp",
+          "username": "bcb02c3c57df666ca62942e27df23ebf549c766888b2ac7c044907dc22fcfe6f",
           "urls": "turn:global.turn.twilio.com:3478?transport=tcp",
-          "credential": "y8agROmeq1QWwPX+L/PQKDOKubHKAVIe1emA4iH0Sqs="
+          "credential": "nYyC5reTWHJ8sn5o2+lNVQCVtv58sOg1aCnQLsO2TZ0="
       },
       {
-          "username": "b9c126636fb96dce0868f665f8f91067ab0c1b178c747c300b209b6cefe4ec03",
+          "url": "turn:global.turn.twilio.com:443?transport=tcp",
+          "username": "bcb02c3c57df666ca62942e27df23ebf549c766888b2ac7c044907dc22fcfe6f",
           "urls": "turn:global.turn.twilio.com:443?transport=tcp",
-          "credential": "y8agROmeq1QWwPX+L/PQKDOKubHKAVIe1emA4iH0Sqs="
+          "credential": "nYyC5reTWHJ8sn5o2+lNVQCVtv58sOg1aCnQLsO2TZ0="
       }
   ]
   
