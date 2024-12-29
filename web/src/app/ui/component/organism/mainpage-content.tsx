@@ -1,7 +1,6 @@
 import React from "react";
 import Image from "next/image";
 import Logo from "@/app/utils/public/Logo.png";
-import Teller from "@/app/utils/public/Teller.svg";
 import Sun from "@/app/utils/public/Sun.svg";
 
 export default function MainPageContent() {
@@ -23,10 +22,8 @@ export default function MainPageContent() {
           </p>
         </div>
 
-        {/* 로고 이미지 */}
         <div className="text-2xl flex items-end justify-between">
-          <Image src={Teller} alt="Teller" width={150} height={150} />
-          <div className="flex items-end">
+          <div className="space-y-3">
             <p>화상 창구,</p>
             <Image src={Logo} alt="Logo" width={150} height={150} />
           </div>

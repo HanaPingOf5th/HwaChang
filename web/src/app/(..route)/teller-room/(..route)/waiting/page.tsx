@@ -108,11 +108,11 @@ export default function Home() {
   return (
     <main>
       <div className="grid grid-row-1 gap-1 px-10 py-6">
-        <p className={`mb-6 text-4xl text-black font-bold text-center bg-gray-100 rounded-lg p-2`}>
+        <p className={`mb-6 text-5xl text-black font-bold text-center rounded-lg p-2`}>
           <strong>상담 대기실</strong>
         </p>
         <div className="flex justify-between items-center space-x-4 bg-white p-4 rounded-lg">
-          <p className="text-lg text-gray-600 font-medium">
+          <p className="text-2xl text-gray-600 font-medium">
             손님을 기다리는 중입니다...
           </p>
         </div>

@@ -53,7 +53,7 @@ export default function Home() {
               </div>
               <div className="pt-11">
                 <Form.SubmitButton
-                  className={`text-white w-1/2 py-7 rounded-lg`}
+                  className={`text-white w-1/2 py-7 rounded-lg bg-hwachang-darkgreen hover:bg-hwachang-green1`}
                   position="center"
                   label="로그인"
                 />

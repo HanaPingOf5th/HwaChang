@@ -135,9 +135,9 @@ export default function Home() {
               className={`flex justify-center items-center w-[80px] h-[40px] 
     ${
       value.type === "개인금융"
-        ? "bg-[#CADCFF] text-[#2C71F6] rounded-md"
+        ? "bg-[#dae7fd] text-[#2457be] rounded-md"
         : value.type === "기업금융"
-          ? "bg-[#FFCACA] text-[#F62C2C] rounded-md"
+          ? "bg-[#ffe3e3] text-[#8c1a1ad7] rounded-md"
           : ""
     }`}
             >

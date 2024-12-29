@@ -57,11 +57,11 @@ export default function TellerWaitingChatting() {
   return (
     <div className="flex justify-center min-w-[311.6px] bg-hwachang-main">
       <div className="flex justify-center flex-col">
-        <div className="flex bg-hwachang-green rounded-2xl rounded-b-none p-3 gap-2">
+        <div className="flex bg-hwachang-darkgreen rounded-2xl rounded-b-none p-3 gap-2">
           <BsChatDots size="25" color="white" />
           <p className="text-lg font-medium text-white">채팅</p>
         </div>
-        <Card className="rounded-none rounded-b-lg">
+        <Card className="rounded-none rounded-b-lg shadow-md">
           <CardHeader className="space-y-5">
             <div className="bg-hwachang-gray6 rounded-3xl px-10 py-3 font-medium text-xs text-center text-slate-800">
               {"채팅을 통해 고객님께 필요한 정보를 먼저 제공하거나 돕기 위해 다음 안내를 준비해주세요."}

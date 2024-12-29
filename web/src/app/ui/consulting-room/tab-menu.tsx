@@ -28,14 +28,14 @@ export default function TabMenu() {
     <div className="min-w-[311.6px]">
       <div>
         {TabData.map((tab) => (
-          <AchromaticButton
-            className={`text-white rounded-t-3xl rounded-b-none px-6 py-6 text-sm
-            ${selectedTab === tab.id ? "bg-hwachang-green" : "bg-hwachang-hanasilver"}`}
+          <button
+            className={`text-white rounded-t-3xl rounded-b-none px-6 py-3 text-sm
+            ${selectedTab === tab.id ? "bg-hwachang-darkgreen" : "bg-hwachang-hanasilver"}`}
             key={tab.id}
             onClick={() => setSelectedTab(tab.id)}
           >
             {tab.button}
-          </AchromaticButton>
+          </button>
         ))}
       </div>
 

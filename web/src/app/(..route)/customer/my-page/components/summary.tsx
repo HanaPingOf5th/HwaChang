@@ -96,7 +96,7 @@ export default function Summary({ detail }: SummaryProps) {
 
       <hr className="my-6 border-t-2 border-gray-300" />
 
-      <Card className="bg-hwachang-green">
+      <Card className="">
         <CardHeader className="flex justify-between">
           <CardTitle className="flex items-center text-white text-2xl">
             <IoDocumentTextSharp className="mr-2" size={28} /> 상담 원문
@@ -145,7 +145,7 @@ export default function Summary({ detail }: SummaryProps) {
 
       <hr className="my-6 border-t-2 border-gray-300" />
 
-      <Card className="bg-hwachang-green mt-6">
+      <Card className="mt-6">
         <CardHeader>
           <CardTitle className="flex items-center text-white text-2xl">
             <MdSummarize className="mr-2" size={28} /> 상담 요약 내용

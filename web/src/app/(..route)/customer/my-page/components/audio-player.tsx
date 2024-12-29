@@ -76,32 +76,32 @@ export function AudioPlayer({ voiceUrl }: AudioPlayerProps) {
           onValueChange={(value) => handleSliderChange(value[0])}
           onValueCommit={(value) => handleSliderChange(value[0])}
         />
-        <div className="flex justify-between text-sm mt-2 text-white">
+        <div className="flex justify-between text-sm mt-2 text-hwachang-hwachanggray">
           <span>{formatTime(progress)}</span>
           <span>{formatTime(totalDuration)}</span>
         </div>
         <div className="flex items-center justify-center space-x-6 mt-4">
           <TbRewindBackward5
             onClick={() => handleRewindButton(false)}
-            className="cursor-pointer text-3xl text-white hover:text-teal-300 transition-all transform hover:scale-110"
+            className="cursor-pointer text-3xl text-hwachang-hwachanggray transition-all transform hover:scale-110"
             title="Rewind 5s"
           />
           {isPlaying ? (
             <IoMdPause
               onClick={handlePlayPause}
-              className="cursor-pointer text-4xl text-white hover:text-teal-300 transition-all transform hover:scale-110"
+              className="cursor-pointer text-4xl text-hwachang-hwachanggray transition-all transform hover:scale-110"
               title="Pause"
             />
           ) : (
             <IoPlay
               onClick={handlePlayPause}
-              className="cursor-pointer text-4xl text-white hover:text-teal-300 transition-all transform hover:scale-110"
+              className="cursor-pointer text-4xl text-hwachang-hwachanggray transition-all transform hover:scale-110"
               title="Play"
             />
           )}
           <TbRewindForward5
             onClick={() => handleRewindButton(true)}
-            className="cursor-pointer text-3xl text-white hover:text-teal-300 transition-all transform hover:scale-110"
+            className="cursor-pointer text-3xl text-hwachang-hwachanggray transition-all transform hover:scale-110"
             title="Forward 5s"
           />
         </div>

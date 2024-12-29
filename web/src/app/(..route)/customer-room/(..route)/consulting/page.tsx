@@ -138,7 +138,7 @@ export default function Home() {
   return (
     <main>
       <div>
-        <div className="relative w-full overflow-hidden h-1/6 p-6 bg-slate-100">
+        <div className="relative w-full overflow-hidden h-1/6 p-6">
           <div className="flex transition-transform duration-300" style={{ transform: `translateX(-0%)`}}>
             <div className="w-1/3 flex-shrink-0">
               <VideoView
@@ -188,6 +188,7 @@ export default function Home() {
           <RecordAndUploadButton stopAndUpload={stopAndUpload}/>
           <ReviewDialog/>
           <AchromaticButton
+            className="bg-hwachang-darkgreen hover:bg-hwachang-hanagreen"
             onClick={() => {
               if(isForm){
                 setIsForm(false);
