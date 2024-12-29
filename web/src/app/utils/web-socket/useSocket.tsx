@@ -164,26 +164,27 @@ export function useSocket({id, myKey}:{id: string, myKey:string}) {
   };
 
   const createPeerConnection = async (otherKey: string) => {
-    let iceServers= [];
+    const iceServers:RTCIceServer[] = [
+      { urls: "stun:global.stun.twilio.com:3478" },
+      {
+          urls: "turn:global.turn.twilio.com:3478?transport=udp",
+          username: "e33d33278e787f4f166203f19f7d4ea5d56320a0fa2792e5b187fc0e7d4fa006",
+          credential: "R4TKSAdY77ue4mOhspdbXFL7SAMv3bIQIQhU+w40Enk=",
+      },
+      {
+          urls: "turn:global.turn.twilio.com:3478?transport=tcp",
+          username: "e33d33278e787f4f166203f19f7d4ea5d56320a0fa2792e5b187fc0e7d4fa006",
+          credential: "R4TKSAdY77ue4mOhspdbXFL7SAMv3bIQIQhU+w40Enk=",
+      },
+      {
+          urls: "turn:global.turn.twilio.com:443?transport=tcp",
+          username: "e33d33278e787f4f166203f19f7d4ea5d56320a0fa2792e5b187fc0e7d4fa006",
+          credential: "R4TKSAdY77ue4mOhspdbXFL7SAMv3bIQIQhU+w40Enk=",
+      },
+  ];
+
   
-    try {
-      iceServers = iceServers.concat(
-        [
-          {
-              "url": "turn:global.turn.twilio.com:3478?transport=udp",
-              "username": "e33d33278e787f4f166203f19f7d4ea5d56320a0fa2792e5b187fc0e7d4fa006",
-              "urls": "turn:global.turn.twilio.com:3478?transport=udp",
-              "credential": "R4TKSAdY77ue4mOhspdbXFL7SAMv3bIQIQhU+w40Enk="
-          }
-      ]
-      );
-    } catch (error) {
-      console.error("Twilio TURN/STUN 서버를 가져오는 중 오류:", error);
-    }
-  
-    const configuration: RTCConfiguration = {
-      iceServers,
-    };
+    const configuration: RTCConfiguration = {iceServers: iceServers};
   
     const pc = new RTCPeerConnection(configuration);
   
