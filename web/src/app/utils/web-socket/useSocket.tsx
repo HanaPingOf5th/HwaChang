@@ -166,7 +166,26 @@ export function useSocket({id, myKey}:{id: string, myKey:string}) {
   const createPeerConnection = async (otherKey: string) => {
     const iceServers = [
       {
-          "urls": "stun:stun.l.google.com:19302"
+          "url": "stun:global.stun.twilio.com:3478",
+          "urls": "stun:global.stun.twilio.com:3478"
+      },
+      {
+          "url": "turn:global.turn.twilio.com:3478?transport=udp",
+          "username": "6e6581c2a8d259f63ffd771a31a935c27066f526c490c7189a560c8ebc937ed7",
+          "urls": "turn:global.turn.twilio.com:3478?transport=udp",
+          "credential": "wS6bt6uK0A5ca5fuXeZGyFbLZQtc9yCXhHQGr3syWnU="
+      },
+      {
+          "url": "turn:global.turn.twilio.com:3478?transport=tcp",
+          "username": "6e6581c2a8d259f63ffd771a31a935c27066f526c490c7189a560c8ebc937ed7",
+          "urls": "turn:global.turn.twilio.com:3478?transport=tcp",
+          "credential": "wS6bt6uK0A5ca5fuXeZGyFbLZQtc9yCXhHQGr3syWnU="
+      },
+      {
+          "url": "turn:global.turn.twilio.com:443?transport=tcp",
+          "username": "6e6581c2a8d259f63ffd771a31a935c27066f526c490c7189a560c8ebc937ed7",
+          "urls": "turn:global.turn.twilio.com:443?transport=tcp",
+          "credential": "wS6bt6uK0A5ca5fuXeZGyFbLZQtc9yCXhHQGr3syWnU="
       }
   ]
   
@@ -279,7 +298,5 @@ export function useSocket({id, myKey}:{id: string, myKey:string}) {
     startStream: startStream,
     startScreenStream: startScreenStream,
     remoteStream: remoteStream,
-  };
-
-  
+  };  
 }
