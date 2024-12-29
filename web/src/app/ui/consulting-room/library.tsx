@@ -96,7 +96,10 @@ export default function Library() {
           <div key={index} className="flex flex-col items-center p-3">
             <button
               className="flex flex-col items-center"
-              onClick={() => {sendApplicaiotionForm('dw1234', doc.applicationFormId)}}
+              onClick={async () => {
+                await sendApplicaiotionForm('dw1234', doc.applicationFormId)
+                alert('고객님에게 해당 신청서를 보냈습니다!');
+              }}
             >
               <Image src={Pen} alt="Page Facing Up" width={80} height={80}/>
               <p className="text-left text-sm font-medium">{doc.title}</p>
