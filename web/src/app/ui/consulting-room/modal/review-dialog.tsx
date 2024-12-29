@@ -6,6 +6,7 @@ import { FormSubmitButton } from "../../component/molecule/form/form-submit-butt
 import { Dialog, DialogContent, DialogTrigger } from "@/app/ui/component/molecule/dialog/dialog";
 import { sendReview } from "@/app/business/consulting-room/review.service";
 import { useRouter } from "next/navigation";
+import { useConsultingRoomStore } from "@/app/stores/consulting-room.provider";
 
 export function ReviewDialog() {
 
@@ -29,6 +30,7 @@ function Review() {
   const numbers: number[] = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
   const [currentScore, setCurrentScore] = useState<number>(0);
   const [isSubmitted, setIsSubmitted] = useState<boolean>(false);
+  const {tellerId, consultingRoomId, customerId} = useConsultingRoomStore(state=>state);
   const router = useRouter();
 
   // ToDo: store에서 전역 데이터를 가져와서 consulting-room과 userId 가져오기
@@ -84,19 +86,19 @@ function Review() {
               type="hidden"
               name="consulting-room"
               id="consulting-room"
-              value={"9b1deb4d-3b7d-4bad-9bdd-2b0d7b3dcb6d"}
+              value={consultingRoomId}
             />
             <input
               type="hidden"
               name="user-id"
               id="user-id"
-              value={"9b1deb4d-3b7d-4bad-9bdd-2b0d7b3dcb6d"}
+              value={customerId}
             />
             <input
               type="hidden"
               name="teller-id"
               id="teller-id"
-              value={"9b1deb4d-3b7d-4bad-9bdd-2b0d7b3dcb6d"}
+              value={tellerId}
             />
           </CardContent>
           <CardContent>
