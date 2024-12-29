@@ -1,7 +1,6 @@
 "use client";
 import React, { useState } from "react";
 import { Card } from "../component/molecule/card/card";
-import AchromaticButton from "../component/atom/button/achromatic-button";
 import Library from "./library";
 import DocumentSearch from "./document-search";
 import ConsultationHistory from "./consultation-history";
