@@ -166,30 +166,11 @@ export function useSocket({id, myKey}:{id: string, myKey:string}) {
   const createPeerConnection = async (otherKey: string) => {
     const iceServers = [
       {
-          "url": "stun:global.stun.twilio.com:3478",
-          "urls": "stun:global.stun.twilio.com:3478"
-      },
-      {
-          "url": "turn:global.turn.twilio.com:3478?transport=udp",
-          "username": "bcb02c3c57df666ca62942e27df23ebf549c766888b2ac7c044907dc22fcfe6f",
-          "urls": "turn:global.turn.twilio.com:3478?transport=udp",
-          "credential": "nYyC5reTWHJ8sn5o2+lNVQCVtv58sOg1aCnQLsO2TZ0="
-      },
-      {
-          "url": "turn:global.turn.twilio.com:3478?transport=tcp",
-          "username": "bcb02c3c57df666ca62942e27df23ebf549c766888b2ac7c044907dc22fcfe6f",
-          "urls": "turn:global.turn.twilio.com:3478?transport=tcp",
-          "credential": "nYyC5reTWHJ8sn5o2+lNVQCVtv58sOg1aCnQLsO2TZ0="
-      },
-      {
-          "url": "turn:global.turn.twilio.com:443?transport=tcp",
-          "username": "bcb02c3c57df666ca62942e27df23ebf549c766888b2ac7c044907dc22fcfe6f",
-          "urls": "turn:global.turn.twilio.com:443?transport=tcp",
-          "credential": "nYyC5reTWHJ8sn5o2+lNVQCVtv58sOg1aCnQLsO2TZ0="
+          "urls": "stun:stun.l.google.com:19302"
       }
   ]
   
-    const configuration: RTCConfiguration = {iceServers: iceServers};
+    const configuration: RTCConfiguration = {iceServers: iceServers,};
   
     const pc = new RTCPeerConnection(configuration);
   
