@@ -45,7 +45,7 @@ export function RecordAndUploadButton({ stopAndUpload }: { stopAndUpload: () => 
       <>
         <AchromaticButton
           className="rounded-full bg-hwachang-gray2 hover:bg-hwachang-gray3 text-black"
-          onClick={handleEndConsultation}
+          onClick={async ()=>{await handleEndConsultation()}}
         >녹음 업로드</AchromaticButton>
       </>
     )
