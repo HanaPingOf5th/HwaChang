@@ -165,24 +165,25 @@ export function useSocket({id, myKey}:{id: string, myKey:string}) {
 
   const createPeerConnection = async (otherKey: string) => {
     const iceServers:RTCIceServer[] = [
-      { urls: "stun:global.stun.twilio.com:3478" },
       {
-          urls: "turn:global.turn.twilio.com:3478?transport=udp",
-          username: "e33d33278e787f4f166203f19f7d4ea5d56320a0fa2792e5b187fc0e7d4fa006",
-          credential: "R4TKSAdY77ue4mOhspdbXFL7SAMv3bIQIQhU+w40Enk=",
+          "urls": "stun:global.stun.twilio.com:3478"
       },
       {
-          urls: "turn:global.turn.twilio.com:3478?transport=tcp",
-          username: "e33d33278e787f4f166203f19f7d4ea5d56320a0fa2792e5b187fc0e7d4fa006",
-          credential: "R4TKSAdY77ue4mOhspdbXFL7SAMv3bIQIQhU+w40Enk=",
+          "username": "b9c126636fb96dce0868f665f8f91067ab0c1b178c747c300b209b6cefe4ec03",
+          "urls": "turn:global.turn.twilio.com:3478?transport=udp",
+          "credential": "y8agROmeq1QWwPX+L/PQKDOKubHKAVIe1emA4iH0Sqs="
       },
       {
-          urls: "turn:global.turn.twilio.com:443?transport=tcp",
-          username: "e33d33278e787f4f166203f19f7d4ea5d56320a0fa2792e5b187fc0e7d4fa006",
-          credential: "R4TKSAdY77ue4mOhspdbXFL7SAMv3bIQIQhU+w40Enk=",
+          "username": "b9c126636fb96dce0868f665f8f91067ab0c1b178c747c300b209b6cefe4ec03",
+          "urls": "turn:global.turn.twilio.com:3478?transport=tcp",
+          "credential": "y8agROmeq1QWwPX+L/PQKDOKubHKAVIe1emA4iH0Sqs="
       },
-  ];
-
+      {
+          "username": "b9c126636fb96dce0868f665f8f91067ab0c1b178c747c300b209b6cefe4ec03",
+          "urls": "turn:global.turn.twilio.com:443?transport=tcp",
+          "credential": "y8agROmeq1QWwPX+L/PQKDOKubHKAVIe1emA4iH0Sqs="
+      }
+  ]
   
     const configuration: RTCConfiguration = {iceServers: iceServers};
   
