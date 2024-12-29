@@ -18,6 +18,7 @@ export default function Library() {
   const documentsPerPage = 6;
   const tellerType = useConsultingRoomStore(state => state.tellerType);
   const consultingType:ConsultingType = `${tellerType===0?'PERSONAL':'CORPORATE'}`
+  const userName = useConsultingRoomStore(state=>state.customerName);
 
   const totalPages = Math.ceil(applicationForms.length / documentsPerPage);
 
@@ -97,7 +98,7 @@ export default function Library() {
             <button
               className="flex flex-col items-center"
               onClick={async () => {
-                await sendApplicaiotionForm('dw1234', doc.applicationFormId)
+                await sendApplicaiotionForm(userName, doc.applicationFormId)
                 alert('고객님에게 해당 신청서를 보냈습니다!');
               }}
             >
