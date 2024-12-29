@@ -164,42 +164,32 @@ export function useSocket({id, myKey}:{id: string, myKey:string}) {
   };
 
   const createPeerConnection = async (otherKey: string) => {
-    let iceServers= [];
+    const iceServers = [
+      {
+          "url": "stun:global.stun.twilio.com:3478",
+          "urls": "stun:global.stun.twilio.com:3478"
+      },
+      {
+          "url": "turn:global.turn.twilio.com:3478?transport=udp",
+          "username": "6e6581c2a8d259f63ffd771a31a935c27066f526c490c7189a560c8ebc937ed7",
+          "urls": "turn:global.turn.twilio.com:3478?transport=udp",
+          "credential": "wS6bt6uK0A5ca5fuXeZGyFbLZQtc9yCXhHQGr3syWnU="
+      },
+      {
+          "url": "turn:global.turn.twilio.com:3478?transport=tcp",
+          "username": "6e6581c2a8d259f63ffd771a31a935c27066f526c490c7189a560c8ebc937ed7",
+          "urls": "turn:global.turn.twilio.com:3478?transport=tcp",
+          "credential": "wS6bt6uK0A5ca5fuXeZGyFbLZQtc9yCXhHQGr3syWnU="
+      },
+      {
+          "url": "turn:global.turn.twilio.com:443?transport=tcp",
+          "username": "6e6581c2a8d259f63ffd771a31a935c27066f526c490c7189a560c8ebc937ed7",
+          "urls": "turn:global.turn.twilio.com:443?transport=tcp",
+          "credential": "wS6bt6uK0A5ca5fuXeZGyFbLZQtc9yCXhHQGr3syWnU="
+      }
+  ]
   
-    try {
-      iceServers = iceServers.concat(
-        [
-          {
-              "url": "stun:global.stun.twilio.com:3478",
-              "urls": "stun:global.stun.twilio.com:3478"
-          },
-          {
-              "url": "turn:global.turn.twilio.com:3478?transport=udp",
-              "username": "4f84d1a7af573fb805005fe17806c2c7e6dc1400d9bbfcbb821f9634d06f86c2",
-              "urls": "turn:global.turn.twilio.com:3478?transport=udp",
-              "credential": "Swj7q68VYNCeDP/cxH9y5zBRwaPCoYYuEDh5NGbUtW8="
-          },
-          {
-              "url": "turn:global.turn.twilio.com:3478?transport=tcp",
-              "username": "4f84d1a7af573fb805005fe17806c2c7e6dc1400d9bbfcbb821f9634d06f86c2",
-              "urls": "turn:global.turn.twilio.com:3478?transport=tcp",
-              "credential": "Swj7q68VYNCeDP/cxH9y5zBRwaPCoYYuEDh5NGbUtW8="
-          },
-          {
-              "url": "turn:global.turn.twilio.com:443?transport=tcp",
-              "username": "4f84d1a7af573fb805005fe17806c2c7e6dc1400d9bbfcbb821f9634d06f86c2",
-              "urls": "turn:global.turn.twilio.com:443?transport=tcp",
-              "credential": "Swj7q68VYNCeDP/cxH9y5zBRwaPCoYYuEDh5NGbUtW8="
-          }
-      ]
-      );
-    } catch (error) {
-      console.error("Twilio TURN/STUN 서버를 가져오는 중 오류:", error);
-    }
-  
-    const configuration: RTCConfiguration = {
-      iceServers,
-    };
+    const configuration: RTCConfiguration = {iceServers: iceServers,};
   
     const pc = new RTCPeerConnection(configuration);
   
@@ -299,14 +289,14 @@ export function useSocket({id, myKey}:{id: string, myKey:string}) {
   ) => {
     await pc.setLocalDescription(sessionDescription);
   };
+  
 
   return {
     client: client,
     video: videoElements,
+    pcListMap: pcListMap,
     startStream: startStream,
     startScreenStream: startScreenStream,
     remoteStream: remoteStream,
-  };
-
-  
+  };  
 }

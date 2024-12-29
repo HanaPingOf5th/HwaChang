@@ -7,10 +7,10 @@ import { Video, VideoView } from "../../components/video-view";
 import { createMockMyProfile, mockProfile } from "../../mock/mock-profiles";
 import { ApplicationForm, ApplicationProps } from "../../components/application-form";
 import { ReviewDialog } from "@/app/ui/consulting-room/modal/review-dialog";
-import { SharingLinkDialog } from "@/app/ui/consulting-room/modal/share-link-dialog";
 import { getApplicationForm} from "@/app/business/consulting-room/application-form.service";
 import { useRecorder } from "@/app/utils/web-socket/use-recorder";
 import { useSearchParams } from "next/navigation";
+import { RecordAndUploadButton } from "@/app/ui/consulting-room/modal/record-upload-button";
 
 export default function Home() {
   const params = useSearchParams();
@@ -30,7 +30,7 @@ export default function Home() {
   const [isForm, setIsForm] = useState<boolean>(false);
 
   // rtc
-  const { client, video, remoteStream } = useSocket({id: roomId, myKey:myKey});
+  const { client, video, remoteStream, pcListMap } = useSocket({id: roomId, myKey:myKey});
   const videoRef = useRef<HTMLVideoElement | null>(null);
   const [formData, setFormData] = useState<ApplicationProps | null>(null);
 
@@ -106,6 +106,15 @@ export default function Home() {
     });
   }, [isForm]);
 
+  useEffect(() => {
+    return () => {
+      pcListMap.forEach((pc) => pc.close());
+      if (videoStream) {
+        videoStream.getTracks().forEach((track) => track.stop());
+      }
+    };
+  }, [videoStream]);
+
   // To-Do: 내가 비디오를 끌 경우, 나의 비디오 상태를 상대방에게 보내는 api 추가: isCam: false
   const toggleVideo = () => {
     if (videoStream) {
@@ -172,8 +181,8 @@ export default function Home() {
               )}
             </div>
           </AchromaticButton>
-          <ReviewDialog stopAndUpload={stopAndUpload} />
-          <SharingLinkDialog />
+          <RecordAndUploadButton stopAndUpload={stopAndUpload}/>
+          <ReviewDialog/>
           <AchromaticButton
             onClick={() => {
               if(isForm){
