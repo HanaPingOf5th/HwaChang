@@ -1,7 +1,6 @@
 "use client";
 
-import { HouseEmoji, EnterPriseEmoji } from "@/app/ui/component/atom/fluent-emoji";
-import { Card, CardContent, CardHeader } from "@/app/ui/component/molecule/card/card";
+import { Card, CardHeader } from "@/app/ui/component/molecule/card/card";
 import Link from "next/link";
 import { useEffect } from "react";
 import { fetchCustomerMyInfo } from "@/app/business/auth/customer/customer-auth-myinfo";

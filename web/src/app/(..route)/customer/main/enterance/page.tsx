@@ -1,6 +1,6 @@
 "use client";
 
-import { Card, CardContent, CardFooter, CardHeader } from "@/app/ui/component/molecule/card/card";
+import { Card, CardFooter, CardHeader } from "@/app/ui/component/molecule/card/card";
 import { useSearchParams, useRouter } from "next/navigation";
 import React, { Suspense, useEffect, useState } from "react";
 import { Category, ConsultingType, getCategories } from "@/app/business/categoty/category.service";
