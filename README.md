@@ -11,6 +11,42 @@
 
 ---
 
+## 🧑🏻‍💻 팀원 구성
+
+| **윤영헌** | **김동은** | **김인영** | **유유정** | **이수민** | **임수진** | **함형주** |
+| :------: |  :------: | :------: | :------: | :------: | :------: | :------: |
+| [<img src="https://avatars.githubusercontent.com/u/107925716?v=4" height=150 width=150> <br/>](https://github.com/yoounyoungheon) | [<img src="https://avatars.githubusercontent.com/u/98999882?v=4" height=150 width=150> <br/>](https://github.com/DongExxn) | [<img src="https://avatars.githubusercontent.com/u/152356822?v=4" height=150 width=150> <br/>](https://github.com/kiminyoung0628) | [<img src="https://avatars.githubusercontent.com/u/80961726?v=4" height=150 width=150> <br/>](https://github.com/oU-Ua) | [<img src="https://avatars.githubusercontent.com/u/139415437?v=4" height=150 width=150> <br/>](https://github.com/suminjeff) | [<img src="https://avatars.githubusercontent.com/u/122861956?v=4" height=150 width=150> <br/>](https://github.com/suzinlim) | [<img src="https://avatars.githubusercontent.com/u/108785508?v=4" height=150 width=150> <br/>](https://github.com/xzhhj01) |
+
+---
+
+## ⚒️ 기술 스택
+### Frontend
+
+| **Application**                                           | **Headless UI & Atomic**                                 | **Socket**                                             | **State**                                             |
+|-----------------------------------------------------------|---------------------------------------------------------|-------------------------------------------------------|-------------------------------------------------------|
+| <img src="https://github.com/user-attachments/assets/d6b9a947-464b-412d-9813-6f03db906fa8" /> | <img src="https://github.com/user-attachments/assets/8c019a37-4272-4e78-b801-d4e9e192c9f1" /> | <img src="https://github.com/user-attachments/assets/585a9827-80f1-49fa-b30d-387ba0edb818" /> | <img src="https://github.com/user-attachments/assets/91a12edc-1504-48af-a6a0-b496a9cb284f" /> |
+
+
+### Backend
+
+| **Application**                                           | **Security**                                             | **Infra**                                              | **CI/CD**                                             |
+|-----------------------------------------------------------|----------------------------------------------------------|-------------------------------------------------------|-------------------------------------------------------|
+| ![Application](https://github.com/user-attachments/assets/1597b0d8-fd95-47ce-a3c5-80c9ab5f0290) | ![Security](https://github.com/user-attachments/assets/d0d38269-d321-4a93-82d3-c3f0cad8b442) | ![Infra](https://github.com/user-attachments/assets/aa242c85-c3d2-434d-b7bc-e2f7dbec59d4) | ![CI/CD](https://github.com/user-attachments/assets/a8f08d13-b60a-4e7d-9ace-23e6b4027400) |
+
+---
+
+
+## 📋 ERD
+![image](https://github.com/user-attachments/assets/cacf61ea-f4d3-410c-8942-a7ba0ec9a0a1)
+
+---
+
+## 📂 프로젝트 아키텍쳐
+
+![image](https://github.com/user-attachments/assets/9a5105f2-dc8c-46e5-a05d-ea6340cce57c)
+
+---
+
 ## 📋 주요 페이지
 
 ### 🧑‍💼 고객용 화면
@@ -20,7 +56,8 @@
 #### 1️⃣ 로그인 / 회원가입
 > 고객이 서비스를 사용하기 위해 로그인하거나 회원가입을 진행하는 화면입니다.
 
-**[사진 추가 예정]**
+<img width="1444" src="https://github.com/user-attachments/assets/b7380e2e-06ee-474f-a3d2-6d755a90c68f" />
+
 
 #### 2️⃣ 고객 메인페이지
 > 로그인 후 고객이 접속하게 되는 메인 대시보드입니다.
@@ -94,11 +131,6 @@
 </div>
 
 ---
-
-## 📂 프로젝트 아키텍쳐
-
-![image](https://github.com/user-attachments/assets/9a5105f2-dc8c-46e5-a05d-ea6340cce57c)
-
 
 
 
