@@ -84,6 +84,10 @@
 
 ![image](https://github.com/user-attachments/assets/9a7857dd-a50a-4a48-9f25-9d354c522725)
 
+#### 6️⃣ 신청서 작성 화면
+> 은행원이 고객에게 공유한 신청서를 작성할 수 있는 페이지입니다.
+
+<img width="1150" alt="스크린샷 2024-12-31 오후 1 59 41" src="https://github.com/user-attachments/assets/e488bd42-4ac9-4a78-b0e5-74500c03cac3" />
 
 #### 7️⃣ 후기 작성 화면
 > 상담이 끝난 후 고객이 상담에 대한 후기를 작성하는 페이지입니다.
