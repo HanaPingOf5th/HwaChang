@@ -103,6 +103,7 @@
 > 선택한 상담 기록의 자세한 내용을 확인할 수 있는 화면입니다.
 
 ![image](https://github.com/user-attachments/assets/6eb76a54-8b62-43cf-8a4d-5f7b50919451)
+<img width="1150" alt="스크린샷 2024-12-31 오후 2 01 02 1" src="https://github.com/user-attachments/assets/f023e0ab-34a9-41dc-82bb-d0f7e4a71b4b" />
 
 </div>
 
